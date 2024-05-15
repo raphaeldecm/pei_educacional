@@ -5,23 +5,23 @@ User = get_user_model()
 
 
 class Command(BaseCommand):
-    ADMIN_USERNAME = "admin"
-    ADMIN_EMAIL = "lucas.dantas@ifrn.edu.br"
+    ADMIN_NAME = "admin"
+    ADMIN_EMAIL = "raphael.muniz@ifrn.edu.br"
+    ADMIN_PASSWORD = (
+        "argon2$argon2id$v=19$m=102400,t=2,p=8$MHFqc3lkdkIzTEhqMWs"
+        "3QlNlZ0JmVA$0x4Kwnmi6EeXjaKLl9Tn+HPXF5wphUU4/i1ZxdxooDg"
+    )
     help = "Adding superuser..."
 
     def handle(self, *args, **options):
-        exists = User.objects.filter(is_superuser=True).exists()
 
-        if exists:
+        if User.objects.filter(is_superuser=True).exists():
             self.stdout.write("The superuser already exists")
         else:
             User.objects.create(
-                username=self.ADMIN_USERNAME,
+                name=self.ADMIN_NAME,
                 email=self.ADMIN_EMAIL,
-                password=(
-                    "argon2$argon2id$v=19$m=102400,t=2,p=8$MEJKZWgxQWNPelJZaF"
-                    "Y3VktvZUlCQw$A0+Q1su1qKG/p5k651ay1tBtDdxrVDZIr/yvU0zc/30"
-                ),
+                password=self.ADMIN_PASSWORD,
                 is_superuser=True,
                 is_staff=True,
             )
