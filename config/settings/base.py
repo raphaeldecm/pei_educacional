@@ -87,6 +87,9 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "sistema_pei.users",
     "sistema_pei.core",
+    "sistema_pei.academics",
+    "sistema_pei.people",
+    "sistema_pei.educational_plan",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

@@ -1,12 +1,13 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from sistema_pei.core.models import BaseModel
 from sistema_pei.people.models import Student
 from sistema_pei.people.models import Teacher
 
 
 # Create your models here.
-class Courses(models.Model):
+class Courses(BaseModel):
     class CoursePeriod(models.TextChoices):
         MATUTINO = "Matutino", "Matutino"
         VESPERTINO = "Vespertino", "Vespertino"
@@ -48,7 +49,7 @@ class Courses(models.Model):
         return self.name + " - " + self.period
 
 
-class Subject(models.Model):
+class Subject(BaseModel):
     class SubjectsDuration(models.TextChoices):
         SEMESTRAL = "Semestral", "Semestral"
         ANUAL = "Anual", "Anual"

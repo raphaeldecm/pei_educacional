@@ -1,12 +1,16 @@
+from django.contrib.auth import get_user_model
 from django.core import validators
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from sistema_pei.core import constants
+from sistema_pei.core.models import BaseModel
+from sistema_pei.core.models import get_sentinel_user
+from sistema_pei.people.constants import EDUCATIONAL_NECESSITIES_CHOICES
 
 
 # Create your models here.
-class Person(models.Model):
+class Person(BaseModel):
     name = models.CharField(
         verbose_name=_("Nome"),
         max_length=constants.MAX_CHAR_FIELD_NAME_LENGTH,
@@ -43,6 +47,21 @@ class Responsible(Person):
         return str(self.person)
 
 
+class SpecificNecessitie(models.Model):
+    name = models.CharField(
+        verbose_name=_("Nome"),
+        max_length=constants.MAX_CHAR_FIELD_NAME_LENGTH,
+        choices=EDUCATIONAL_NECESSITIES_CHOICES,
+    )
+
+    class Meta:
+        verbose_name = _("Necessidade Específica")
+        verbose_name_plural = _("Necessidades Específicas")
+
+    def __str__(self):
+        return self.name
+
+
 class Student(Person):
     class Series(models.IntegerChoices):
         YEAR1 = 1, _("1° Ano")
@@ -67,6 +86,24 @@ class Student(Person):
         max_length=constants.SMALL_CHAR_FIELD_NAME_LENGTH,
         blank=True,
     )
+    personal_history = models.TextField(verbose_name=_("Histórico"))
+    image = models.ImageField(upload_to="students", verbose_name=_("Foto"))
+    general_necessitie = models.TextField(
+        verbose_name=_("Outras necessidades educacionais específicas do(a) estudante"),
+    )
+    creation_reasons = models.TextField(
+        verbose_name=_("Motivos para a criação do PEI/ Adaptações"),
+    )
+    educational_necessities = models.ManyToManyField(
+        SpecificNecessitie,
+        verbose_name=_("Necessidades Educacionais Específicas"),
+    )
+    abilities = models.TextField(
+        verbose_name=_("Conhecimentos, Habilidades,Capacidades e Interesses"),
+    )
+    dificulties = models.TextField(verbose_name=_("Dificuldades"))
+
+    specific_necessities = models.TextField(verbose_name=_("Necessidades específicas"))
 
     class Meta:
         verbose_name = _("Discente")
@@ -74,3 +111,18 @@ class Student(Person):
 
     def __str__(self):
         return str(self.person)
+
+
+class Notification(BaseModel):
+    title = models.CharField(max_length=255)
+    text = models.TextField()
+    user = models.ForeignKey(
+        get_user_model,
+        on_delete=get_sentinel_user,
+        null=True,
+        blank=True,
+    )
+    viewed = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return super().__str__()
