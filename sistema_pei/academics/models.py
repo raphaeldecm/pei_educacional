@@ -58,19 +58,25 @@ class Subject(BaseModel):
     subject_type = models.CharField(
         max_length=15,
         choices=SubjectsDuration.choices,
-        verbose_name=("Períodos"),
+        verbose_name=_("Períodos"),
     )
     course = models.ForeignKey(
         Courses,
         on_delete=models.PROTECT,
-        verbose_name=("Curso"),
+        verbose_name=_("Curso"),
+        related_name="subjects",
     )
     teacher = models.ForeignKey(
         Teacher,
         on_delete=models.PROTECT,
-        verbose_name=("Professor(a)"),
+        verbose_name=_("Professor"),
+        related_name="subjects",
     )
-    students = models.ManyToManyField(Student, verbose_name=("Alunos"))
+    students = models.ManyToManyField(
+        Student,
+        verbose_name=_("Alunos"),
+        related_name="subjects",
+    )
     year = models.PositiveSmallIntegerField(verbose_name=_("Ano referência"))
 
     class Meta:

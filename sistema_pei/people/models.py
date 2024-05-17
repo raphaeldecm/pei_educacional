@@ -8,6 +8,8 @@ from sistema_pei.core.models import BaseModel
 from sistema_pei.core.models import get_sentinel_user
 from sistema_pei.people.constants import EDUCATIONAL_NECESSITIES_CHOICES
 
+User = get_user_model()
+
 
 # Create your models here.
 class Person(BaseModel):
@@ -24,6 +26,7 @@ class Person(BaseModel):
     class Meta:
         verbose_name = _("Pessoa")
         verbose_name_plural = _("Pessoas")
+        abstract = True
 
     def __str__(self):
         return self.name
@@ -44,7 +47,7 @@ class Responsible(Person):
         verbose_name_plural = _("Responsáveis")
 
     def __str__(self):
-        return str(self.person)
+        return self.name
 
 
 class SpecificNecessitie(models.Model):
@@ -74,7 +77,7 @@ class Student(Person):
         choices=Series.choices,
         validators=[validators.MinValueValidator(1), validators.MaxValueValidator(4)],
     )
-    responsible = models.ForeignKey(
+    responsible_person = models.ForeignKey(
         Responsible,
         verbose_name=_("Responsável"),
         on_delete=models.SET_NULL,
@@ -110,19 +113,30 @@ class Student(Person):
         verbose_name_plural = _("Discentes")
 
     def __str__(self):
-        return str(self.person)
+        return self.name
 
 
 class Notification(BaseModel):
+    class Type(models.TextChoices):
+        NEWS = "NEWS", _("News")
+        ALERT = "ALERT", _("Alert")
+        FAIL = "FAIL", _("Fail")
+
     title = models.CharField(max_length=255)
     text = models.TextField()
     user = models.ForeignKey(
-        get_user_model,
+        User,
         on_delete=get_sentinel_user,
         null=True,
         blank=True,
+        related_name="notifications",
     )
     viewed = models.BooleanField(default=False)
+    type = models.CharField(
+        verbose_name=_("Notification Type"),
+        choices=Type.choices,
+        max_length=constants.SMALL_CHAR_FIELD_NAME_LENGTH,
+    )
 
     def __str__(self) -> str:
         return super().__str__()

@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from sistema_pei.academics.models import Subject
 from sistema_pei.core.models import BaseModel
@@ -15,34 +16,43 @@ class Pei(BaseModel):
 
     subject = models.ForeignKey(
         Subject,
-        verbose_name="Matéria",
+        verbose_name=_("Matéria"),
         on_delete=models.CASCADE,
+        related_name="peis",
     )
-    student = models.ForeignKey(Student, verbose_name="Aluno", on_delete=models.CASCADE)
+    student = models.ForeignKey(
+        Student,
+        verbose_name=_("Aluno"),
+        on_delete=models.CASCADE,
+        related_name="peis",
+    )
     status = models.CharField(
         max_length=30,
         choices=StatusChoice.choices,
         default=StatusChoice.NOT_START,
     )
-    objective = models.TextField(verbose_name=("Objetivos"), blank=True)
+    objective = models.TextField(
+        verbose_name=_("Objetivos"),
+        blank=True,
+    )
     adapted_objective = models.TextField(
-        verbose_name=("Objetivos Adaptados"),
+        verbose_name=_("Objetivos Adaptados"),
         blank=True,
     )
     content = models.TextField(
-        verbose_name=("Conteúdo"),
+        verbose_name=_("Conteúdo"),
         blank=True,
     )
     adapted_content = models.TextField(
-        verbose_name=("Conteúdo Adaptado"),
+        verbose_name=_("Conteúdo Adaptado"),
         blank=True,
     )
     methodology = models.TextField(
-        verbose_name=("Metodologia"),
+        verbose_name=_("Metodologia"),
         blank=True,
     )
     adapted_methodology = models.TextField(
-        verbose_name=("Metodologia Adaptada"),
+        verbose_name=_("Metodologia Adaptada"),
         blank=True,
     )
     resources = models.TextField(
@@ -50,15 +60,15 @@ class Pei(BaseModel):
         blank=True,
     )
     adapted_resources = models.TextField(
-        verbose_name=("Recursos Adaptados"),
+        verbose_name=_("Recursos Adaptados"),
         blank=True,
     )
     assessments = models.TextField(
-        verbose_name=("Avaliações"),
+        verbose_name=_("Avaliações"),
         blank=True,
     )
     adapted_assessments = models.TextField(
-        verbose_name=("Avaliações Adaptadas"),
+        verbose_name=_("Avaliações Adaptadas"),
         blank=True,
     )
 
@@ -74,8 +84,13 @@ class Pei(BaseModel):
 
 
 class FeedbackPei(BaseModel):
-    feedback = models.TextField(verbose_name="Parecer")
-    pei = models.ForeignKey(Pei, verbose_name="PEI", on_delete=models.CASCADE)
+    feedback = models.TextField(verbose_name=_("Parecer"))
+    pei = models.ForeignKey(
+        Pei,
+        verbose_name=_("PEI"),
+        on_delete=models.CASCADE,
+        related_name="feedbacks",
+    )
 
     def __str__(self):
         return self.feedback
@@ -84,7 +99,12 @@ class FeedbackPei(BaseModel):
 class Comment(BaseModel):
     text = models.CharField(max_length=500)
     date = models.DateTimeField(auto_now_add=True)
-    pei = models.ForeignKey(Pei, on_delete=models.CASCADE)
+    pei = models.ForeignKey(
+        Pei,
+        on_delete=models.CASCADE,
+        verbose_name=_("PEI"),
+        related_name="comments",
+    )
 
     def __str__(self):
         return self.text
@@ -95,8 +115,9 @@ class Anwser(BaseModel):
     date = models.DateTimeField(auto_now_add=True)
     comment = models.ForeignKey(
         Comment,
+        verbose_name=_("Resposta"),
         on_delete=models.CASCADE,
-        related_name="anwser_set",
+        related_name="answers",
     )
 
     def __str__(self):
