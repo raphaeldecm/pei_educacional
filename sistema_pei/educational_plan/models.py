@@ -110,7 +110,7 @@ class Comment(BaseModel):
         return self.text
 
 
-class Anwser(BaseModel):
+class Answer(BaseModel):
     text = models.CharField(max_length=500)
     date = models.DateTimeField(auto_now_add=True)
     comment = models.ForeignKey(

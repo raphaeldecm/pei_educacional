@@ -6,7 +6,8 @@ from django.utils.translation import gettext_lazy as _
 from sistema_pei.core import constants
 from sistema_pei.core.models import BaseModel
 from sistema_pei.core.models import get_sentinel_user
-from sistema_pei.people.constants import EDUCATIONAL_NECESSITIES_CHOICES
+
+from .constants import EDUCATIONAL_NECESSITIES_CHOICES
 
 User = get_user_model()
 
@@ -50,7 +51,7 @@ class Responsible(Person):
         return self.name
 
 
-class SpecificNecessitie(models.Model):
+class SpecificNecessitie(BaseModel):
     name = models.CharField(
         verbose_name=_("Nome"),
         max_length=constants.MAX_CHAR_FIELD_NAME_LENGTH,

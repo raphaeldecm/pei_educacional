@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.core.models import BaseModel
 from sistema_pei.people.models import Student
 from sistema_pei.people.models import Teacher
@@ -13,26 +14,10 @@ class Courses(BaseModel):
         VESPERTINO = "Vespertino", "Vespertino"
         NOTURNO = "Noturno", "Noturno"
 
-    class CourseType(models.TextChoices):
-        TECNICO_INTEGRADO = "Técnico Integrado Regular", "Técnico Integrado Regular"
-        TECNICO_SUBSEQUENTE = "Técnico Subsequente", "Técnico Subsequente"
-        CURSO_SUPERIOR = (
-            "Curso Superior de Licenciatura",
-            "Curso Superior de Licenciatura",
-        )
-        POS_GRADUACAO = "Pós-Graduação", "Pós-Graduação"
-        TECNICO_INTEGRADO_EJA = "Técnico Integrado EJA", "Técnico Integrado EJA"
-        CURSO_SUPERIOR_TECNOLOGIA = (
-            "Curso Superior de Tecnologia",
-            "Curso Superior de Tecnologia",
-        )
-        ENGENHARIA = "Engenharia", "Engenharia"
-        OUTROS = "Outros", "Outros"
-
     name = models.CharField(max_length=80, verbose_name=_("Nome"))
     course_type = models.CharField(
         max_length=55,
-        choices=CourseType.choices,
+        choices=COURSE_TYPE,
         verbose_name=_("Tipo"),
     )
     period = models.CharField(
