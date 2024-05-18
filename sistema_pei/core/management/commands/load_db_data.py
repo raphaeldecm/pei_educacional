@@ -14,7 +14,7 @@ COMMANDS = [
     CommandItem("migrate", "Migrating database..."),
     CommandItem("create_admin_user", "Creating superuser..."),
     CommandItem("create_user_groups", "Creating user groups..."),
-    # CommandItem("load_db_..", "Loading data..."),  # noqa: ERA001
+    CommandItem("load_db_people", "Loading people data..."),
 ]
 
 

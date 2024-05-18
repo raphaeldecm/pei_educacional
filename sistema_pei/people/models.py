@@ -55,7 +55,6 @@ class SpecificNecessitie(BaseModel):
     name = models.CharField(
         verbose_name=_("Nome"),
         max_length=constants.MAX_CHAR_FIELD_NAME_LENGTH,
-        choices=EDUCATIONAL_NECESSITIES_CHOICES,
     )
 
     class Meta:
