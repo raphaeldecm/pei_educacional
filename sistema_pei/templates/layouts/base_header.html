@@ -1,50 +1,85 @@
 {% load static i18n %}
-{% block header %}
+
 <header class="mb-1">
-  <nav class="navbar navbar-expand-md navbar-light bg-light">
-    <div class="container-fluid">
-      <button class="navbar-toggler navbar-toggler-right"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+  <div class="nav-content">
+    <div class="logo-container">
+      <button onclick="handleToggleNav()">
+        <img src="{% static 'images/icons/menu.svg' %}"/>
       </button>
-      <a class="navbar-brand" href="{% url 'home' %}">sistema-pei</a>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="{% url 'home' %}">Home <span class="visually-hidden">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'about' %}">About</a>
-          </li>
-          {% if request.user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link"
-                 href="{% url 'users:detail' request.user.pk %}">{% translate "My Profile" %}</a>
-            </li>
-            <li class="nav-item">
-              {# URL provided by django-allauth/account/urls.py #}
-              <a class="nav-link" href="{% url 'account_logout' %}">{% translate "Sign Out" %}</a>
-            </li>
-          {% else %}
-            {% if ACCOUNT_ALLOW_REGISTRATION %}
-              <li class="nav-item">
-                {# URL provided by django-allauth/account/urls.py #}
-                <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% translate "Sign Up" %}</a>
-              </li>
-            {% endif %}
-            <li class="nav-item">
-              {# URL provided by django-allauth/account/urls.py #}
-              <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% translate "Sign In" %}</a>
-            </li>
-          {% endif %}
-        </ul>
-      </div>
+      <h1>
+        {% comment %} <a href="{% url 'home' %}"> {% endcomment %}
+          <img src="{% static 'images/icons/white-logo.svg' %}"/>
+        </a>
+      </h1>
     </div>
-  </nav>
+  {% block header %}
+    <nav id="header-nav">
+      <ul>
+        {% if request.user.type != "PROFESSOR" %}
+          <li>
+            {% comment %} <a class="select" href="{% url 'home' %}">Início</a> {% endcomment %}
+          </li>
+
+          <li>
+            {% comment %} <a href="{% url 'users:get_users' %}">Usuários</a> {% endcomment %}
+          </li>
+
+          <li>
+            {% comment %} <a href="{% url 'courses_list' %}">Cursos</a> {% endcomment %}
+          </li>
+
+          <li>
+            {% comment %} <a href="{% url 'register_history' %}">Cadastrar Aluno</a> {% endcomment %}
+          </li>
+        {% endif %}
+          <li>
+              <img id="bell" src="{% static 'images/icons/notification.svg' %}"/>
+            <div id="notifications" class="modal">
+
+              <!-- Modal content -->
+              <div class="modal-content">
+                <span class="close">&times;</span>
+                {% if notifications %}
+                  {% for notify in notifications %}
+                    <div class="notify">
+                      <div>
+                        <p class="notify-title">{{ notify.title }}</p>
+                        <p class="notify-text">{{ notify.text }}</p>
+                        <p class="date">Em: {{ notify.created_date }}</p>
+                      </div>
+                      <div>
+                        {% if not notify.viewed %}
+                        {% comment %} <a href="{% url 'see_notification' notify.pk %}"> {% endcomment %}
+                          <img src="{% static 'images/icons/eye.svg' %}" />
+                        </a>
+                        {% endif %}
+                      </div>
+                    </div>
+                  {% endfor %}
+                {% else %}
+                <p>Você não possui notificações</p>
+                {% endif %}
+
+              </div>
+
+            </div>
+          </li>
+      </ul>
+
+      <div class="background" onclick="handleToggleNav()"></div>
+    </nav>
+    <section class="dropdown-profile drop-button">
+      <img src="{% static 'images/icons/profile.svg' %}" alt="perfil"/>
+      <div>
+        <p class="name">{{ request.user.name }}</p>
+        <p class="email">{{ request.user.email }}</p>
+      </div>
+      <img class="arrow" src="{% static 'images/icons/arrow.svg' %}" alt="seta"/>
+      <div class="dropdown-content">
+        {% comment %} <a href="{% url 'account_logout' %}"><span>Sair</span></a> {% endcomment %}
+        {% comment %} <a href="{% url 'account_logout' %}"><img src="{% static 'images/icons/logout.svg' %}"/></a> {% endcomment %}
+      </div>
+    </section>
+  {% endblock header %}
+  </div>
 </header>
-{% endblock header%}

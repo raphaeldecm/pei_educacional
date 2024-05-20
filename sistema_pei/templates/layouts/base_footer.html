@@ -1,50 +1,39 @@
 {% load static i18n %}
-{% block header %}
-<footer class="mb-1">
-  <nav class="navbar navbar-expand-md navbar-light bg-light">
-    <div class="container-fluid">
-      <button class="navbar-toggler navbar-toggler-right"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <a class="navbar-brand" href="{% url 'home' %}">sistema-pei</a>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="{% url 'home' %}">Home <span class="visually-hidden">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'about' %}">About</a>
-          </li>
-          {% if request.user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link"
-                 href="{% url 'users:detail' request.user.pk %}">{% translate "My Profile" %}</a>
-            </li>
-            <li class="nav-item">
-              {# URL provided by django-allauth/account/urls.py #}
-              <a class="nav-link" href="{% url 'account_logout' %}">{% translate "Sign Out" %}</a>
-            </li>
-          {% else %}
-            {% if ACCOUNT_ALLOW_REGISTRATION %}
-              <li class="nav-item">
-                {# URL provided by django-allauth/account/urls.py #}
-                <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% translate "Sign Up" %}</a>
-              </li>
-            {% endif %}
-            <li class="nav-item">
-              {# URL provided by django-allauth/account/urls.py #}
-              <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% translate "Sign In" %}</a>
-            </li>
-          {% endif %}
-        </ul>
-      </div>
-    </div>
-  </nav>
+{% block footer %}
+<footer>
+  <div class="content">
+
+    <div>
+      <h2>
+          <img src="{% static 'images/icons/green-logo.svg' %}"/>
+          Plano Educacional Individualizado
+      </h2>
+      <p>
+          <b>Sobre o sistema:</b>
+          Esse sistema visa o gerenciamento e acompanhamento dos planos educacionais individualizados do IFRN
+          - campus Pau dos Ferros
+      </p>
+  </div>
+
+  <div>
+      <p>
+          <b>Entre em contato:</b>
+          exemplo_email@exemplo.com.br
+      </p>
+      <p>
+          <b>Desenvolvido por:</b>
+          José Matheus Bento
+          <br>
+          Yasmin Carvalho Targino de Alencar
+      </p>
+
+      <span>
+          MADE WITH
+          <img src="{% static 'images/icons/django-logo.svg' %}"/>
+      </span>
+  </div>
+
+  </div>
+  <span class="copyright">© 2023 Gerenciador de Plano Educacional Individualizado</span>
 </footer>
-{% endblock header%}
+{% endblock footer%}
