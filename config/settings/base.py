@@ -83,6 +83,9 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "drf_spectacular",
     "rest_framework_simplejwt",
+    "tailwind",
+    "theme",
+    "django_browser_reload",
 ]
 
 LOCAL_APPS = [
@@ -95,6 +98,15 @@ LOCAL_APPS = [
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+# TAILWIND CSS
+# ------------------------------------------------------------------------------
+# https://django-tailwind.readthedocs.io/en/latest/installation.html
+TAILWIND_APP_NAME = "theme"
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 # MIGRATIONS
 # ------------------------------------------------------------------------------
@@ -148,6 +160,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
     "allauth.account.middleware.AccountMiddleware",
 ]
 
