@@ -12,7 +12,6 @@
         content="An application to manage the individualized educational plans." />
   <meta name="author"
         content="R. Muniz" />
-  <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}" />
   {% block css %}
   {% endblock css %}
 
@@ -39,12 +38,13 @@ referrerpolicy="no-referrer"></script>
 {% endblock javascript %}
 </head>
 
-<body>
+<body class="flex flex-col h-screen">
 
-  {% include "layouts/base_header.html" %}
+  <header class="flex justify-between items-center w-full h-20 bg-green-600 text-zinc-50 font-semibold p-10">
+    {% include "layouts/base_header.html" %}
+  </header>
 
-  <main class="p-1" id="main">
-
+  <main class="flex-1">
       {% if messages %}
         {% include "layouts/messages.html" %}
       {% endif %}
@@ -52,11 +52,11 @@ referrerpolicy="no-referrer"></script>
       {% block content %}
         <p>Use this document as a way to quick start any new project.</p>
       {% endblock content %}
-
-
-
   </main>
-  {% include "layouts/base_footer.html" %}
+
+  <footer class="flex flex-col items-center">
+    {% include "layouts/base_footer.html" %}
+  </footer>
 
   <!-- /container -->
   {% block modal %}

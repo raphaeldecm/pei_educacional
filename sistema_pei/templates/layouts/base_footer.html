@@ -1,24 +1,19 @@
 {% load static i18n %}
-{% block footer %}
-<footer>
-  <div class="content">
 
+  <div class="flex justify-between items-center bg-zinc-50 w-full px-[188px] text-xs">
+    <h2>
+      <img src="{% static 'images/icons/green-logo.svg' %}"/>
+      Plano Educacional Individualizado
+    </h2>
+    <p>
+      <b>Sobre o sistema:</b>
+      Esse sistema visa o gerenciamento e acompanhamento dos planos educacionais individualizados do IFRN
+      - campus Pau dos Ferros
+    </p>
     <div>
-      <h2>
-          <img src="{% static 'images/icons/green-logo.svg' %}"/>
-          Plano Educacional Individualizado
-      </h2>
       <p>
-          <b>Sobre o sistema:</b>
-          Esse sistema visa o gerenciamento e acompanhamento dos planos educacionais individualizados do IFRN
-          - campus Pau dos Ferros
-      </p>
-  </div>
-
-  <div>
-      <p>
-          <b>Entre em contato:</b>
-          exemplo_email@exemplo.com.br
+        <b>Entre em contato:</b>
+        exemplo_email@exemplo.com.br
       </p>
       <p>
           <b>Desenvolvido por:</b>
@@ -31,9 +26,10 @@
           MADE WITH
           <img src="{% static 'images/icons/django-logo.svg' %}"/>
       </span>
+    </div>
   </div>
 
-  </div>
-  <span class="copyright">© 2023 Gerenciador de Plano Educacional Individualizado</span>
-</footer>
-{% endblock footer%}
+
+
+  <span class="flex justify-center items-center h-8 text-xs bg-gray-900 text-zinc-50 w-full">© 2023 Gerenciador de Plano Educacional Individualizado</span>
+

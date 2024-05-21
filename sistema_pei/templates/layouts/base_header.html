@@ -1,10 +1,7 @@
 {% load static i18n %}
 
-<header class="flex justify-center items-center w-full h-20 border bg-green-600">
-
-  <div class="logo-container">
+  <div class="flex justify-center items-center">
     <button onclick="handleToggleNav()">
-      <img src="{% static 'images/icons/menu.svg' %}"/>
     </button>
     <h1>
       <a href="{% url 'home' %}">
@@ -13,11 +10,10 @@
     </h1>
   </div>
 
-  <nav>
-    <ul>
-      {% if request.user.type != "PROFESSOR" %}
+  <nav class="">
+    <ul class="flex justify-center items-center gap-4">
         <li>
-          <a class="select" href="#">Início</a>
+          <a class="" href="#">Início</a>
         </li>
 
         <li>
@@ -31,57 +27,36 @@
         <li>
           <a href="#">Cadastrar Aluno</a>
         </li>
-      {% endif %}
-        <li>
-          <i class="bi-bell" style="font-size: 1rem; color: white;"></i>
-
-          <div id="notifications" class="modal">
-
-            <!-- Modal content -->
-            <div class="modal-content">
-              <span class="close">&times;</span>
-              {% if notifications %}
-                {% for notify in notifications %}
-                  <div class="notify">
-                    <div>
-                      <p class="notify-title">{{ notify.title }}</p>
-                      <p class="notify-text">{{ notify.text }}</p>
-                      <p class="date">Em: {{ notify.created_date }}</p>
-                    </div>
-                    <div>
-                      {% if not notify.viewed %}
-                      {% comment %} <a href="{% url 'see_notification' notify.pk %}"> {% endcomment %}
-                        <img src="{% static 'images/icons/eye.svg' %}" />
-                      </a>
-                      {% endif %}
-                    </div>
-                  </div>
-                {% endfor %}
-              {% else %}
-              <p>Você não possui notificações</p>
-              {% endif %}
-
-            </div>
-
-          </div>
-        </li>
     </ul>
-    <div class="background" onclick="handleToggleNav()"></div>
   </nav>
 
-  <div class="dropdown" style="font-size: 1rem; color: white;">
-    <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <i class="bi-person-circle" style="font-size: 1rem; color: white;" alt="perfil"></i>
-      <div>
-        <p class="name">{{ request.user.name }}</p>
-        <p class="email">{{ request.user.email }}</p>
-      </div>
-    </a>
+  <div class="relative inline-block text-left">
+    <div>
+      <a onclick=toggleDropdown() type="button" class="inline-flex w-full justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold hover:cursor-pointer" id="menu-button" aria-expanded="true" aria-haspopup="true">
+        <i class="bi-person-circle" style="font-size: 1rem; color: white;" alt="perfil"></i>
+        <div>
+          <p class="name">{{ request.user.name }}</p>
+          <p class="email">{{ request.user.email }}</p>
+        </div>
+        <svg class="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+        </svg>
+      </a>
+    </div>
 
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-      <a href="{% url 'account_logout' %}"><span>Sair</span></a>
-      <a href="{% url 'account_logout' %}"><i class="bi bi-box-arrow-right"></i></a>
+    <div id=dropdown class="hidden absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+      <div class="py-1" role="none">
+        <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+        <a href="{% url 'account_logout' %}" class="text-gray-700 block w-full px-4 py-2 text-left text-sm" role="menuitem" tabindex="-1" id="menu-item-0">Sair</a>
+
+      </div>
     </div>
   </div>
 
-</header>
+<script>
+
+  function toggleDropdown() {
+    const dropdown = document.getElementById('dropdown')
+    dropdown.classList.toggle('hidden')
+  }
+</script>
