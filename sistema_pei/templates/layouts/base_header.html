@@ -1,13 +1,13 @@
 {% load static i18n %}
 
-<header class="mb-1">
+<header>
   <div class="nav-content">
     <div class="logo-container">
       <button onclick="handleToggleNav()">
         <img src="{% static 'images/icons/menu.svg' %}"/>
       </button>
       <h1>
-        {% comment %} <a href="{% url 'home' %}"> {% endcomment %}
+        <a href="{% url 'home' %}">
           <img src="{% static 'images/icons/white-logo.svg' %}"/>
         </a>
       </h1>
@@ -17,23 +17,24 @@
       <ul>
         {% if request.user.type != "PROFESSOR" %}
           <li>
-            {% comment %} <a class="select" href="{% url 'home' %}">Início</a> {% endcomment %}
+            <a class="select" href="#">Início</a>
           </li>
 
           <li>
-            {% comment %} <a href="{% url 'users:get_users' %}">Usuários</a> {% endcomment %}
+            <a href="#' %}">Usuários</a>
           </li>
 
           <li>
-            {% comment %} <a href="{% url 'courses_list' %}">Cursos</a> {% endcomment %}
+            <a href="#">Cursos</a>
           </li>
 
           <li>
-            {% comment %} <a href="{% url 'register_history' %}">Cadastrar Aluno</a> {% endcomment %}
+            <a href="#">Cadastrar Aluno</a>
           </li>
         {% endif %}
           <li>
-              <img id="bell" src="{% static 'images/icons/notification.svg' %}"/>
+            <i class="bi-bell" style="font-size: 1rem; color: white;"></i>
+
             <div id="notifications" class="modal">
 
               <!-- Modal content -->
@@ -68,18 +69,22 @@
 
       <div class="background" onclick="handleToggleNav()"></div>
     </nav>
-    <section class="dropdown-profile drop-button">
-      <img src="{% static 'images/icons/profile.svg' %}" alt="perfil"/>
-      <div>
-        <p class="name">{{ request.user.name }}</p>
-        <p class="email">{{ request.user.email }}</p>
+
+    <div class="dropdown" style="font-size: 1rem; color: white;">
+      <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="bi-person-circle" style="font-size: 1rem; color: white;" alt="perfil"></i>
+        <div>
+          <p class="name">{{ request.user.name }}</p>
+          <p class="email">{{ request.user.email }}</p>
+        </div>
+      </a>
+
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a href="{% url 'account_logout' %}"><span>Sair</span></a>
+        <a href="{% url 'account_logout' %}"><i class="bi bi-box-arrow-right"></i></a>
       </div>
-      <img class="arrow" src="{% static 'images/icons/arrow.svg' %}" alt="seta"/>
-      <div class="dropdown-content">
-        {% comment %} <a href="{% url 'account_logout' %}"><span>Sair</span></a> {% endcomment %}
-        {% comment %} <a href="{% url 'account_logout' %}"><img src="{% static 'images/icons/logout.svg' %}"/></a> {% endcomment %}
-      </div>
-    </section>
+    </div>
+
   {% endblock header %}
   </div>
 </header>
