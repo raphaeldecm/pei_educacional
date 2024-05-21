@@ -1,5 +1,9 @@
 {
-  "dependencies": {
-    "bootstrap-icons": "^1.11.3"
+  "scripts": {
+    "dev": "tailwindcss -i sistema_pei/static/tw/tailwind-input.css -o sistema_pei/static/css/output.css --watch",
+    "build": "tailwindcss build sistema_pei/static/tw/tailwind-input.css -o sistema_pei/static/css/output.css"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.3"
   }
 }

@@ -1,90 +1,87 @@
 {% load static i18n %}
 
-<header>
-  <div class="nav-content">
-    <div class="logo-container">
-      <button onclick="handleToggleNav()">
-        <img src="{% static 'images/icons/menu.svg' %}"/>
-      </button>
-      <h1>
-        <a href="{% url 'home' %}">
-          <img src="{% static 'images/icons/white-logo.svg' %}"/>
-        </a>
-      </h1>
-    </div>
-  {% block header %}
-    <nav id="header-nav">
-      <ul>
-        {% if request.user.type != "PROFESSOR" %}
-          <li>
-            <a class="select" href="#">Início</a>
-          </li>
+<header class="flex justify-center items-center w-full h-20 border bg-green-600">
 
-          <li>
-            <a href="#' %}">Usuários</a>
-          </li>
+  <div class="logo-container">
+    <button onclick="handleToggleNav()">
+      <img src="{% static 'images/icons/menu.svg' %}"/>
+    </button>
+    <h1>
+      <a href="{% url 'home' %}">
+        <img src="{% static 'images/icons/white-logo.svg' %}"/>
+      </a>
+    </h1>
+  </div>
 
-          <li>
-            <a href="#">Cursos</a>
-          </li>
+  <nav>
+    <ul>
+      {% if request.user.type != "PROFESSOR" %}
+        <li>
+          <a class="select" href="#">Início</a>
+        </li>
 
-          <li>
-            <a href="#">Cadastrar Aluno</a>
-          </li>
-        {% endif %}
-          <li>
-            <i class="bi-bell" style="font-size: 1rem; color: white;"></i>
+        <li>
+          <a href="#' %}">Usuários</a>
+        </li>
 
-            <div id="notifications" class="modal">
+        <li>
+          <a href="#">Cursos</a>
+        </li>
 
-              <!-- Modal content -->
-              <div class="modal-content">
-                <span class="close">&times;</span>
-                {% if notifications %}
-                  {% for notify in notifications %}
-                    <div class="notify">
-                      <div>
-                        <p class="notify-title">{{ notify.title }}</p>
-                        <p class="notify-text">{{ notify.text }}</p>
-                        <p class="date">Em: {{ notify.created_date }}</p>
-                      </div>
-                      <div>
-                        {% if not notify.viewed %}
-                        {% comment %} <a href="{% url 'see_notification' notify.pk %}"> {% endcomment %}
-                          <img src="{% static 'images/icons/eye.svg' %}" />
-                        </a>
-                        {% endif %}
-                      </div>
+        <li>
+          <a href="#">Cadastrar Aluno</a>
+        </li>
+      {% endif %}
+        <li>
+          <i class="bi-bell" style="font-size: 1rem; color: white;"></i>
+
+          <div id="notifications" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              {% if notifications %}
+                {% for notify in notifications %}
+                  <div class="notify">
+                    <div>
+                      <p class="notify-title">{{ notify.title }}</p>
+                      <p class="notify-text">{{ notify.text }}</p>
+                      <p class="date">Em: {{ notify.created_date }}</p>
                     </div>
-                  {% endfor %}
-                {% else %}
-                <p>Você não possui notificações</p>
-                {% endif %}
-
-              </div>
+                    <div>
+                      {% if not notify.viewed %}
+                      {% comment %} <a href="{% url 'see_notification' notify.pk %}"> {% endcomment %}
+                        <img src="{% static 'images/icons/eye.svg' %}" />
+                      </a>
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endfor %}
+              {% else %}
+              <p>Você não possui notificações</p>
+              {% endif %}
 
             </div>
-          </li>
-      </ul>
 
-      <div class="background" onclick="handleToggleNav()"></div>
-    </nav>
+          </div>
+        </li>
+    </ul>
+    <div class="background" onclick="handleToggleNav()"></div>
+  </nav>
 
-    <div class="dropdown" style="font-size: 1rem; color: white;">
-      <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="bi-person-circle" style="font-size: 1rem; color: white;" alt="perfil"></i>
-        <div>
-          <p class="name">{{ request.user.name }}</p>
-          <p class="email">{{ request.user.email }}</p>
-        </div>
-      </a>
-
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <a href="{% url 'account_logout' %}"><span>Sair</span></a>
-        <a href="{% url 'account_logout' %}"><i class="bi bi-box-arrow-right"></i></a>
+  <div class="dropdown" style="font-size: 1rem; color: white;">
+    <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <i class="bi-person-circle" style="font-size: 1rem; color: white;" alt="perfil"></i>
+      <div>
+        <p class="name">{{ request.user.name }}</p>
+        <p class="email">{{ request.user.email }}</p>
       </div>
-    </div>
+    </a>
 
-  {% endblock header %}
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+      <a href="{% url 'account_logout' %}"><span>Sair</span></a>
+      <a href="{% url 'account_logout' %}"><i class="bi bi-box-arrow-right"></i></a>
+    </div>
   </div>
+
 </header>

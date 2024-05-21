@@ -1,6 +1,5 @@
 {% load static i18n %}<!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
-{% load static tailwind_tags %}
 <html lang="{{ LANGUAGE_CODE }}">
   <head>
     <meta charset="utf-8" />
@@ -13,7 +12,6 @@
         content="An application to manage the individualized educational plans." />
   <meta name="author"
         content="R. Muniz" />
-  {% tailwind_css %}
   <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}" />
   {% block css %}
   {% endblock css %}
@@ -22,6 +20,7 @@
 <!-- This file stores project-specific CSS -->
 
   <link href="{% static 'css/project.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/output.css' %}" rel="stylesheet" />
 
 <!-- Le javascript
     ================================================== -->
