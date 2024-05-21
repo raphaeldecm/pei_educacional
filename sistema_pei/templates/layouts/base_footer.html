@@ -1,16 +1,25 @@
 {% load static i18n %}
 
-  <div class="flex justify-between items-center bg-zinc-50 w-full px-[188px] text-xs">
-    <h2>
-      <img src="{% static 'images/icons/green-logo.svg' %}"/>
-      Plano Educacional Individualizado
-    </h2>
-    <p>
-      <b>Sobre o sistema:</b>
-      Esse sistema visa o gerenciamento e acompanhamento dos planos educacionais individualizados do IFRN
-      - campus Pau dos Ferros
-    </p>
-    <div>
+  <div class="flex justify-between items-center bg-white w-full px-[24px] py-[32px]">
+
+    <div class="flex justify-center items-center gap-2">
+      <div>
+        <h2 class="text-[7px] text-green-600 font-semibold">
+          <img src="{% static 'images/icons/green-logo.svg' %}"/>
+          Plano Educacional Individualizado
+        </h2>
+      </div>
+      <div class="text-[10px]">
+        <p class="font-bold">Sobre o sistema:</p>
+        <p>
+          Esse sistema visa o gerenciamento e <br>
+          acompanhamento dos planos educacionais <br>
+          individualizados do IFRN - campus Pau dos Ferros
+        </p>
+      </div>
+    </div>
+
+    <div class="flex justify-center items-center">
       <p>
         <b>Entre em contato:</b>
         exemplo_email@exemplo.com.br
