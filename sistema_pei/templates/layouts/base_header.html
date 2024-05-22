@@ -1,7 +1,8 @@
 {% load static i18n %}
 
-  <div class="flex justify-center items-center">
-    <button onclick="handleToggleNav()">
+  <div class="flex justify-center items-center gap-4">
+    <button class="block md:hidden" onclick="handleToggleNav()">
+      <i class="fas fa-regular fa-bars text-2xl"></i>
     </button>
     <h1>
       <a href="{% url 'home' %}">
@@ -10,7 +11,7 @@
     </h1>
   </div>
 
-  <nav class="">
+  <nav class="hidden md:flex flex-col">
     <ul class="flex justify-center items-center gap-4">
         <li>
           <a class="" href="#">Início</a>
@@ -30,10 +31,10 @@
     </ul>
   </nav>
 
-  <div class="relative inline-block text-left">
+  <div class="hidden relative lg:inline-block text-left">
     <div>
       <a onclick=toggleDropdown() type="button" class="inline-flex w-full justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold hover:cursor-pointer" id="menu-button" aria-expanded="true" aria-haspopup="true">
-        <i class="bi-person-circle" style="font-size: 1rem; color: white;" alt="perfil"></i>
+        <i class="fas fa-solid fa-circle-user"></i>
         <div>
           <p class="name">{{ request.user.name }}</p>
           <p class="email">{{ request.user.email }}</p>
