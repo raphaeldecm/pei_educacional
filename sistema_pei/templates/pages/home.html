@@ -1,8 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="flex justify-center items-center h-full">
-  <h1>Home</h1>
-  <p>Use this document as a way to quick start any new project.</p>
+<div class="flex flex-col justify-center items-center py-4
+  border rounded-lg bg-white shadow-lg
+">
+  <h1 class="font-semibold text-2xl">Bem Vindo!</h1>
+  <p class="text-center w-2/3">Sistema dedicado ao gerenciamento e acompanhamento dos planos educacionais individualizados do IFRN - Campus Pau dos Ferros</p>
+  <div class="flex justify-center items-center p-4">
+    <a class="w-42 bg-green-600 text-white rounded-lg px-4 py-2 m-2 font-bold cursor-pointer" href="{% url 'account_login' %}">Entrar</a>
+    <a class="w-42 bg-zinc-700 text-white rounded-lg px-4 py-2 m-2 font-bold cursor-pointer" href="{% url 'account_login' %}">Entrar com Suap</a>
+  </div>
 </div>
 {% endblock content %}

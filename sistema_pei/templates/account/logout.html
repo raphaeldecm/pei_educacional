@@ -1,0 +1,28 @@
+{% extends "account/base.html" %}
+{% load allauth i18n %}
+{% block head_title %}
+    {% trans "Sign Out" %}
+{% endblock head_title %}
+{% block inner %}
+
+  <div class="">
+    <h1 class="font-semibold">
+      {% trans "Sign Out" %}
+    </h1>
+
+    <p class="py-4">
+      {% trans 'Are you sure you want to sign out?' %}
+    </p>
+
+    <form class="flex justify-center" method="post" action="{% url 'account_logout' %}">
+      {% csrf_token %}
+      {% if redirect_field_value %}
+      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+      {% endif %}
+      <button class="bg-red-500 text-white rounded-lg px-4 py-2 m-2 font-bold cursor-pointer" type="submit">
+        {% translate 'Sign Out' %}
+      </button>
+    </form>
+  </div>
+
+{% endblock inner %}
