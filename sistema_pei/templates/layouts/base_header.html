@@ -9,9 +9,6 @@
         <img src="{% static 'images/icons/white-logo.svg' %}"/>
       </a>
     </h1>
-    {% if not user.is_authenticated %}
-      <h1 class="text-2xl" href="{% url 'home' %}">Gerenciamento de Planos Educacionais Individualizados</h1>
-    {% endif %}
   </div>
   {% if user.is_authenticated %}
   <nav class="hidden md:flex flex-col">
