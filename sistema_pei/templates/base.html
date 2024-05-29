@@ -16,6 +16,7 @@
   {% endblock css %}
 
 <!-- Your stuff: Third-party CSS libraries go here -->
+  <!-- Fontawesome-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" />
 <!-- This file stores project-specific CSS -->
 
@@ -45,9 +46,11 @@ referrerpolicy="no-referrer"></script>
     {% include "layouts/base_header.html" %}
   </header>
 
-  <main class="flex flex-1 justify-center items-center bg-gray-100">
+  <main class="flex flex-1 flex-col justify-center items-center bg-gray-100">
       {% if messages %}
-        {% include "layouts/messages.html" %}
+        <div class="fixed p-4 top-14 right-4 flex flex-col gap-4">
+          {% include "layouts/messages.html" %}
+        </div>
       {% endif %}
 
       {% block content %}
