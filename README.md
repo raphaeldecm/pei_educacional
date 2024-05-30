@@ -11,6 +11,22 @@ Moved to [settings](http://cookiecutter-django.readthedocs.io/en/latest/settings
 
 ## Basic Commands
 
+### Setting Up Tthe Styles
+
+- Install tailwind dependences:
+
+    $ npm run install
+
+- Execute this command to apply the style changes with Tailwin Css:
+
+    $ npm run dev
+
+### Setting Up Your Users
+
+- Load the initial information and migrate the database with:
+
+    $ python manage.py load_db_data
+
 ### Setting Up Your Users
 
 - To create a **normal user account**, just go to Sign Up and fill out the form. Once you submit it, you'll see a "Verify Your E-mail Address" page. Go to your console to see a simulated email verification message. Copy the link into your browser. Now the user's email should be verified and ready to go.
