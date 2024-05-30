@@ -48,17 +48,19 @@
     </ul>
   </nav>
 
-  <div class="hidden relative lg:inline-block text-left">
+  <div class="relative text-left">
     <div>
-      <a onclick=toggleDropdown() type="button" class="inline-flex w-full justify-center items-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold hover:cursor-pointer" id="menu-button" aria-expanded="true" aria-haspopup="true">
-        <i class="fas fa-solid fa-circle-user"></i>
-        <div>
+      <a onclick=toggleDropdown() type="button" class="inline-flex w-full justify-center items-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold hover:cursor-pointer hover:bg-zinc-200/10" id="menu-button" aria-expanded="true" aria-haspopup="true">
+        <div class="bg-green-500/50 py-2.5 px-3 rounded-full">
+          <i class="fas fa-solid fa-user fa-lg"></i>
+        </div>
+        <div class="hidden lg:block">
           <p class="name">{{ request.user.name }}</p>
           <p class="email">{{ request.user.email }}</p>
         </div>
-        <svg class="-mr-1 h-5 w-5 text-zinc-50" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-        </svg>
+        <div class="ml-2 text-zinc-50">
+          <i class="fas fa-solid fa-angle-down"></i>
+        </div>
       </a>
     </div>
 
