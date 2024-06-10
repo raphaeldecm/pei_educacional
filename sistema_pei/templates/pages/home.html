@@ -1,8 +1,74 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% load static i18n %} {% block content %}
 
-{% block content %}
+<div class="w-full h-full">
+  <div>
+    <h1 class="font-semibold text-[30px]">Olá 👋, {{ request.user.name }}!</h1>
+    <p class="text-[18px]">Seja bem-vindo (a)</p>
+  </div>
 
-  <h1 class="font-semibold text-2xl">Bem Vindo!</h1>
-  <p class="text-center w-2/3">Sistema dedicado ao gerenciamento e acompanhamento dos planos educacionais individualizados do IFRN - Campus Pau dos Ferros</p>
+  <div class="flex gap-[28px]">
+    <div
+      class="flex rounded-lg items-center justify-center mt-10 gap-[16px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-red-500 to-red-700"
+    >
+      <img
+        src="{% static 'images/icons/icon-uninitiated-peis.svg' %}"
+        width="85px"
+        height="30px"
+      />
+      <div class="flex-col text-neutral-50">
+        <p class="text-[30px]">07</p>
+        <p>PEIs não iniciados</p>
+        <p>Ver todos</p>
+      </div>
+    </div>
+
+    <div
+      class="flex rounded-lg items-center justify-center mt-10 gap-[16px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-amber-400 to-amber-500"
+    >
+      <img
+        src="{% static 'images/icons/icon-in-progress-peis.svg' %}"
+        width="85px"
+        height="30px"
+      />
+      <div class="flex-col text-neutral-50">
+        <p class="text-[30px]">07</p>
+        <p>PEIs em andamento</p>
+        <p>Ver todos</p>
+      </div>
+    </div>
+
+    <div
+      class="flex rounded-lg items-center justify-center mt-10 gap-[16px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-blue-600 to-blue-700"
+      title="Foram preenchidos mas ainda sem parecer, pois o semestre ainda está em andamento."
+    >
+      <img
+        src="{% static 'images/icons/icon-filled-peis.svg' %}"
+        width="85px"
+        height="30px"
+      />
+      <div class="flex-col text-neutral-50">
+        <p class="text-[30px]">07</p>
+        <p>PEIs Preenchidos</p>
+        <p>Ver todos</p>
+      </div>
+    </div>
+
+    <div
+      class="flex rounded-lg items-center justify-center mt-10 gap-[16px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-green-600 to-green-700"
+      title="Preenchidos totalmente e finalizados."
+    >
+      <img
+        src="{% static 'images/icons/icon-finished-peis.svg' %}"
+        width="85px"
+        height="30px"
+      />
+      <div class="flex-col text-neutral-50">
+        <p class="text-[30px]">07</p>
+        <p>PEIs Finalizados</p>
+        <p>Ver todos</p>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock content %}
