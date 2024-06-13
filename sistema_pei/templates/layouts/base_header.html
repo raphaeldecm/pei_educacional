@@ -64,20 +64,52 @@
       </a>
     </div>
 
-    <div id=dropdown class="hidden absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+    <div id="dropdown" class="hidden absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
       <div class="py-1" role="none">
         <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-        <a href="{% url 'account_logout' %}" class="text-gray-700 block w-full px-4 py-2 text-left text-sm" role="menuitem" tabindex="-1" id="menu-item-0">Sair</a>
+        <a id="logoutButton" class="text-gray-700 block w-full px-4 py-2 text-left text-sm cursor-pointer" role="menuitem" aria-haspopup="true" tabindex="-1" id="menu-item-0" >
+          {% trans "Sign Out" %}
+        </a>
 
       </div>
     </div>
   </div>
   {% endif %}
 
-<script>
 
+    <!-- Modal de Logout -->
+    {% include "../account/logout.html" %}
+
+<script>
   function toggleDropdown() {
     const dropdown = document.getElementById('dropdown')
     dropdown.classList.toggle('hidden')
   }
+
+
+  document.addEventListener('DOMContentLoaded', function() {
+    /**
+    * Lida com interações com um modal de logout.
+    * Mostra e oculta o modal com base nas ações do usuário.
+    **/
+
+    var logoutButton = document.getElementById('logoutButton');
+    var logoutModal = document.getElementById('logoutModal');
+    var closeModalButton = document.getElementById('closeModalButton');
+
+    logoutButton.addEventListener('click', function() {
+      logoutModal.classList.remove('hidden');
+    });
+
+    closeModalButton.addEventListener('click', function() {
+      logoutModal.classList.add('hidden');
+    });
+
+    // Caso o ususario click fora do modal vai fechar.
+    window.addEventListener('click', function(event) {
+      if (event.target == logoutModal) {
+        logoutModal.classList.add('hidden');
+      }
+    });
+  });
 </script>
