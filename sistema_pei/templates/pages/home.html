@@ -8,7 +8,7 @@
 
   <div class="flex gap-[28px]">
     <div
-      class="flex rounded-lg items-center justify-center mt-10 gap-[16px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-red-500 to-red-700"
+      class="flex rounded-lg items-center justify-center hover:scale-[1.05] cursor-pointer transition-all mt-10 gap-[16px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-red-500 to-red-700"
     >
       <img
         src="{% static 'images/icons/icon-uninitiated-peis.svg' %}"
@@ -23,7 +23,7 @@
     </div>
 
     <div
-      class="flex rounded-lg items-center justify-center mt-10 gap-[16px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-amber-400 to-amber-500"
+      class="flex rounded-lg items-center justify-center hover:scale-[1.05] cursor-pointer transition-all mt-10 gap-[16px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-amber-400 to-amber-500"
     >
       <img
         src="{% static 'images/icons/icon-in-progress-peis.svg' %}"
@@ -38,7 +38,7 @@
     </div>
 
     <div
-      class="flex rounded-lg items-center justify-center mt-10 gap-[16px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-blue-600 to-blue-700"
+      class="flex rounded-lg items-center justify-center hover:scale-[1.05] cursor-pointer transition-all mt-10 gap-[16px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-blue-600 to-blue-700"
       title="Foram preenchidos mas ainda sem parecer, pois o semestre ainda está em andamento."
     >
       <img
@@ -54,7 +54,7 @@
     </div>
 
     <div
-      class="flex rounded-lg items-center justify-center mt-10 gap-[16px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-green-600 to-green-700"
+      class="flex rounded-lg items-center justify-center hover:scale-[1.05] cursor-pointer transition-all mt-10 gap-[16px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-green-600 to-green-700"
       title="Preenchidos totalmente e finalizados."
     >
       <img
@@ -66,6 +66,191 @@
         <p class="text-[30px]">07</p>
         <p>PEIs Finalizados</p>
         <p>Ver todos</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-[101px]">
+    <div
+      class="flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2"
+    >
+      <img
+        src="{% static 'images/icons/icon-search.svg' %}"
+        width="18px"
+        height="18px"
+      />
+      <input
+        type="text"
+        placeholder="Pesquisar..."
+        class="outline-none placeholder:text-[18px] rounded-lg h-full w-full"
+      />
+    </div>
+
+    <div class="mt-[35px] flex gap-[19px]">
+      <div class="relative w-[322px] cursor-pointer">
+        <img
+          class="absolute top-[12px] right-[10px]"
+          src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+          width="24px"
+          height="24px"
+        />
+        <select
+          name="course"
+          class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none"
+        >
+          <option value="default" selected disabled>
+            Selecione o curso...
+          </option>
+        </select>
+      </div>
+
+      <div class="relative w-[322px] cursor-pointer">
+        <img
+          class="absolute top-[12px] right-[10px]"
+          src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+          width="24px"
+          height="24px"
+        />
+        <select
+          name="teacher"
+          class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none"
+        >
+          <option value="default" selected disabled>
+            Selecione o professor...
+          </option>
+        </select>
+      </div>
+
+      <div class="relative w-[322px] cursor-pointer">
+        <img
+          class="absolute top-[12px] right-[10px]"
+          src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+          width="24px"
+          height="24px"
+        />
+        <select
+          name="studyShift"
+          class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none"
+        >
+          <option value="default" selected disabled>
+            Selecione o turno...
+          </option>
+          <option value="matutino">Matutino</option>
+          <option value="vespertino">Vespertino</option>
+          <option value="noturno">Noturno</option>
+        </select>
+      </div>
+
+      <div class="relative w-[322px] cursor-pointer">
+        <img
+          class="absolute top-[12px] right-[10px]"
+          src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+          width="24px"
+          height="24px"
+        />
+        <select
+          name="status"
+          class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none"
+        >
+          <option value="default" selected disabled>
+            Selecione o status...
+          </option>
+          <option value="naoIniciado">Não iniciado</option>
+          <option value="andamento">Em andamento</option>
+          <option value="finalizado">Finalizado</option>
+        </select>
+      </div>
+
+      <div class="relative w-[322px] cursor-pointer">
+        <img
+          class="absolute top-[12px] right-[10px]"
+          src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+          width="24px"
+          height="24px"
+        />
+        <select
+          name="status"
+          class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none"
+        >
+          <option value="default" selected disabled>
+            Selecionar diciplina...
+          </option>
+        </select>
+      </div>
+
+      <button class="flex items-center justify-center gap-[10px] w-[100px] h-[48px] bg-green-500 rounded-[6px] text-neutral-50">
+          <img
+            src="{% static 'images/icons/icon-filter.svg' %}"
+            width="24px"
+            height="24px"
+          />
+          <span>Filtrar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-[36px] w-full">
+    <table class="w-full border border-slate-400 [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px]">
+      <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px] [&_th]:px-[76px]">
+        <tr>
+          <th>Perfil</th>
+          <th>Matrícula</th>
+          <th>Nome</th>
+          <th>Status</th>
+          <th>Curso</th>
+          <th>Qtd. disciplinas</th>
+        </tr>
+      </thead>
+      <tbody class="[&_tr]:border-y [&_tr]:border-slate-400 [&_tr]:h-[97px] [&_td]:px-[76px] [&_td:nth-child(4)]:text-red-500">
+        <tr>
+          <td>Image</td>
+          <td>202292374828</td>
+          <td>Usuário</td>
+          <td>PEI Não iniciado</td>
+          <td>Informática</td>
+          <td>2</td>
+        </tr>
+        <tr>
+          <td>Image</td>
+          <td>202292374828</td>
+          <td>Usuário</td>
+          <td>PEI Não iniciado</td>
+          <td>Informática</td>
+          <td>2</td>
+        </tr>
+        <tr>
+          <td>Image</td>
+          <td>202292374828</td>
+          <td>Usuário</td>
+          <td>PEI Não iniciado</td>
+          <td>Informática</td>
+          <td>2</td>
+        </tr>
+        <tr>
+          <td>Image</td>
+          <td>202292374828</td>
+          <td>Usuário</td>
+          <td>PEI Não iniciado</td>
+          <td>Informática</td>
+          <td>2</td>
+        </tr>
+        <tr>
+          <td>Image</td>
+          <td>202292374828</td>
+          <td>Usuário</td>
+          <td>PEI Não iniciado</td>
+          <td>Informática</td>
+          <td>2</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="mt-[50px] w-full flex items-center justify-between text-[18px]">
+      <span class="font-semibold ">Página 1 de 10</span>
+      <div class="flex gap-[36px]">
+        <button class="w-[110px] h-[44px] font-medium text-slate-400 border border-slate-400 rounded-lg">Anterior</button>
+        <button class="w-[110px] h-[44px] font-medium text-slate-400 border border-slate-400 rounded-lg">Próximo</button>
       </div>
     </div>
   </div>

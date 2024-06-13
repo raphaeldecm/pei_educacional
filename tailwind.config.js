@@ -12,6 +12,9 @@ module.exports = {
           '100%': { opacity: '0'},
         },
       }),
+      fontFamily: {
+        poppins: ["Poppins", "sans-serif"]
+      }
     },
   },
   plugins: [],
