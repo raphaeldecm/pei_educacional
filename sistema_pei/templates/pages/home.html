@@ -82,7 +82,7 @@
       <input
         type="text"
         placeholder="Pesquisar..."
-        class="outline-none placeholder:text-[18px] rounded-lg h-full w-full"
+        class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50"
       />
     </div>
 
@@ -96,7 +96,7 @@
         />
         <select
           name="course"
-          class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none"
+          class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
         >
           <option value="default" selected disabled>
             Selecione o curso...
@@ -113,7 +113,7 @@
         />
         <select
           name="teacher"
-          class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none"
+          class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
         >
           <option value="default" selected disabled>
             Selecione o professor...
@@ -130,7 +130,7 @@
         />
         <select
           name="studyShift"
-          class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none"
+          class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
         >
           <option value="default" selected disabled>
             Selecione o turno...
@@ -150,7 +150,7 @@
         />
         <select
           name="status"
-          class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none"
+          class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
         >
           <option value="default" selected disabled>
             Selecione o status...
@@ -170,7 +170,7 @@
         />
         <select
           name="status"
-          class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none"
+          class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
         >
           <option value="default" selected disabled>
             Selecionar diciplina...
@@ -190,8 +190,8 @@
     </div>
   </div>
 
-  <div class="mt-[36px] w-full">
-    <table class="w-full border border-slate-400 [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px]">
+  <div class="mt-[36px] w-full border border-slate-400 rounded-lg">
+    <table class="table-auto w-full [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px]">
       <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px] [&_th]:px-[76px]">
         <tr>
           <th>Perfil</th>
@@ -202,56 +202,125 @@
           <th>Qtd. disciplinas</th>
         </tr>
       </thead>
-      <tbody class="[&_tr]:border-y [&_tr]:border-slate-400 [&_tr]:h-[97px] [&_td]:px-[76px] [&_td:nth-child(4)]:text-red-500">
+      <tbody class="[&_tr]:border-t [&_tr]:border-slate-400 [&_tr]:h-[97px] [&_td]:px-[76px]">
         <tr>
-          <td>Image</td>
+          <td>      
+            <img
+              src="{% static 'images/icons/icon-user-placeholder.svg' %}"
+              width="61px"
+              height="61px"
+              class="rounded-full"
+            />
+          </td>
           <td>202292374828</td>
           <td>Usuário</td>
-          <td>PEI Não iniciado</td>
+          <td>
+            <div class=" bg-red-300 text-red-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-red-700">
+               PEI Não iniciado
+            </div>
+          </td>
           <td>Informática</td>
           <td>2</td>
+          <td>
+            <img
+              src="{% static 'images/icons/icon-eye.svg' %}"
+              width="24px"
+              height="24px"
+              class="cursor-pointer"
+            />
+          </td>
         </tr>
         <tr>
-          <td>Image</td>
+          <td>      
+            <img
+              src="{% static 'images/icons/icon-user-placeholder.svg' %}"
+              width="61px"
+              height="61px"
+              class="rounded-full"
+            />
+          </td>
           <td>202292374828</td>
           <td>Usuário</td>
-          <td>PEI Não iniciado</td>
+          <td>
+            <div class=" bg-amber-300 text-amber-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-amber-700">
+               PEI em andamento
+            </div>
+          </td>
           <td>Informática</td>
           <td>2</td>
+          <td>
+            <img
+              src="{% static 'images/icons/icon-eye.svg' %}"
+              width="24px"
+              height="24px"
+              class="cursor-pointer"
+            />
+          </td>
         </tr>
         <tr>
-          <td>Image</td>
+          <td>      
+            <img
+              src="{% static 'images/icons/icon-user-placeholder.svg' %}"
+              width="61px"
+              height="61px"
+              class="rounded-full"
+            />
+          </td>
           <td>202292374828</td>
           <td>Usuário</td>
-          <td>PEI Não iniciado</td>
+          <td>
+            <div class=" bg-blue-300 text-blue-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-blue-700">
+               PEI Preenchido
+            </div>
+          </td>
           <td>Informática</td>
           <td>2</td>
+          <td>
+            <img
+              src="{% static 'images/icons/icon-eye.svg' %}"
+              width="24px"
+              height="24px"
+              class="cursor-pointer"
+            />
+          </td>
         </tr>
         <tr>
-          <td>Image</td>
+          <td>      
+            <img
+              src="{% static 'images/icons/icon-user-placeholder.svg' %}"
+              width="61px"
+              height="61px"
+              class="rounded-full"
+            />
+          </td>
           <td>202292374828</td>
           <td>Usuário</td>
-          <td>PEI Não iniciado</td>
+          <td>
+            <div class=" bg-green-300 text-green-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-green-700">
+               PEI Finalizado
+            </div>
+          </td>
           <td>Informática</td>
           <td>2</td>
-        </tr>
-        <tr>
-          <td>Image</td>
-          <td>202292374828</td>
-          <td>Usuário</td>
-          <td>PEI Não iniciado</td>
-          <td>Informática</td>
-          <td>2</td>
+          <td>
+            <img
+              src="{% static 'images/icons/icon-eye.svg' %}"
+              width="24px"
+              height="24px"
+              class="cursor-pointer"
+            />
+          </td>
         </tr>
       </tbody>
     </table>
 
-    <div class="mt-[50px] w-full flex items-center justify-between text-[18px]">
-      <span class="font-semibold ">Página 1 de 10</span>
-      <div class="flex gap-[36px]">
-        <button class="w-[110px] h-[44px] font-medium text-slate-400 border border-slate-400 rounded-lg">Anterior</button>
-        <button class="w-[110px] h-[44px] font-medium text-slate-400 border border-slate-400 rounded-lg">Próximo</button>
-      </div>
+  </div>
+  
+  <div class="mt-[50px] mb-[26px] w-full flex items-center justify-between text-[18px]">
+    <span class="font-semibold ">Página 1 de 10</span>
+    <div class="flex gap-[36px]">
+      <button class="w-[110px] h-[44px] font-medium text-slate-400 border border-slate-400 rounded-lg">Anterior</button>
+      <button class="w-[110px] h-[44px] font-medium text-slate-400 border border-slate-400 rounded-lg">Próximo</button>
     </div>
   </div>
 </div>

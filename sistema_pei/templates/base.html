@@ -47,13 +47,13 @@ referrerpolicy="no-referrer"></script>
 <body class="flex flex-col h-screen font-poppins">
 
   <header class="flex center justify-center items-center w-full min-h-[85px] bg-neutral-50 text-slate-400 border-b-2">
-    <div class=" flex justify-between items-center w-[90%] mx-auto">
+    <div class=" flex justify-between items-center w-full max-w-[1767px] mx-auto">
       {% include "layouts/base_header.html" %}
     </div>
   </header>
 
   <main class="flex flex-1 flex-col justify-center items-center bg-neutral-50">
-    <div class="flex flex-col justify-center items-center py-8 h-full w-[90%] mx-auto">
+    <div class="flex flex-col justify-center items-center py-8 h-full w-full max-w-[1767px] mx-auto">
       {% if messages %}
         <div class="fixed p-4 top-14 right-4 flex flex-col gap-4">
           {% include "layouts/messages.html" %}
@@ -66,7 +66,7 @@ referrerpolicy="no-referrer"></script>
     </div>
   </main>
 
-  <footer class="flex flex-col items-center border-t shadow-xl">
+  <footer class="flex flex-col items-center border-t shadow-xl bg-green-950">
     {% include "layouts/base_footer.html" %}
   </footer>
 
