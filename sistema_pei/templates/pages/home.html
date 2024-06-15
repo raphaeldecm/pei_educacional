@@ -16,7 +16,7 @@
         height="30px"
       />
       <div class="flex-col text-neutral-50">
-        <p class="text-[30px]">07</p>
+        <p class="text-[30px]">{{pending_peis}}</p>
         <p>PEIs não iniciados</p>
         <p>Ver todos</p>
       </div>
@@ -31,7 +31,7 @@
         height="30px"
       />
       <div class="flex-col text-neutral-50">
-        <p class="text-[30px]">07</p>
+        <p class="text-[30px]">{{in_progress_peis}}</p>
         <p>PEIs em andamento</p>
         <p>Ver todos</p>
       </div>
@@ -47,7 +47,7 @@
         height="30px"
       />
       <div class="flex-col text-neutral-50">
-        <p class="text-[30px]">07</p>
+        <p class="text-[30px]">{{filled_peis}}</p>
         <p>PEIs Preenchidos</p>
         <p>Ver todos</p>
       </div>
@@ -63,7 +63,7 @@
         height="30px"
       />
       <div class="flex-col text-neutral-50">
-        <p class="text-[30px]">07</p>
+        <p class="text-[30px]">{{finished_peis}}</p>
         <p>PEIs Finalizados</p>
         <p>Ver todos</p>
       </div>
@@ -203,114 +203,49 @@
         </tr>
       </thead>
       <tbody class="[&_tr]:border-t [&_tr]:border-slate-400 [&_tr]:h-[97px] [&_td]:px-[76px]">
-        <tr>
-          <td>      
-            <img
-              src="{% static 'images/icons/icon-user-placeholder.svg' %}"
-              width="61px"
-              height="61px"
-              class="rounded-full"
-            />
-          </td>
-          <td>202292374828</td>
-          <td>Usuário</td>
-          <td>
-            <div class=" bg-red-300 text-red-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-red-700">
-               PEI Não iniciado
-            </div>
-          </td>
-          <td>Informática</td>
-          <td>2</td>
-          <td>
-            <img
-              src="{% static 'images/icons/icon-eye.svg' %}"
-              width="24px"
-              height="24px"
-              class="cursor-pointer"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>      
-            <img
-              src="{% static 'images/icons/icon-user-placeholder.svg' %}"
-              width="61px"
-              height="61px"
-              class="rounded-full"
-            />
-          </td>
-          <td>202292374828</td>
-          <td>Usuário</td>
-          <td>
-            <div class=" bg-amber-300 text-amber-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-amber-700">
-               PEI em andamento
-            </div>
-          </td>
-          <td>Informática</td>
-          <td>2</td>
-          <td>
-            <img
-              src="{% static 'images/icons/icon-eye.svg' %}"
-              width="24px"
-              height="24px"
-              class="cursor-pointer"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>      
-            <img
-              src="{% static 'images/icons/icon-user-placeholder.svg' %}"
-              width="61px"
-              height="61px"
-              class="rounded-full"
-            />
-          </td>
-          <td>202292374828</td>
-          <td>Usuário</td>
-          <td>
-            <div class=" bg-blue-300 text-blue-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-blue-700">
-               PEI Preenchido
-            </div>
-          </td>
-          <td>Informática</td>
-          <td>2</td>
-          <td>
-            <img
-              src="{% static 'images/icons/icon-eye.svg' %}"
-              width="24px"
-              height="24px"
-              class="cursor-pointer"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>      
-            <img
-              src="{% static 'images/icons/icon-user-placeholder.svg' %}"
-              width="61px"
-              height="61px"
-              class="rounded-full"
-            />
-          </td>
-          <td>202292374828</td>
-          <td>Usuário</td>
-          <td>
-            <div class=" bg-green-300 text-green-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-green-700">
-               PEI Finalizado
-            </div>
-          </td>
-          <td>Informática</td>
-          <td>2</td>
-          <td>
-            <img
-              src="{% static 'images/icons/icon-eye.svg' %}"
-              width="24px"
-              height="24px"
-              class="cursor-pointer"
-            />
-          </td>
-        </tr>
+        {%for pei in all_peis %}
+          <tr>
+            <td>      
+              <img
+                src="{{ pei.student.image.url }}"
+                width="61px"
+                height="61px"
+                class="rounded-full"
+              />
+            </td>
+            <td>{{pei.student.registration}}</td>
+            <td>{{pei.student.name}}</td>
+            <td>
+              {%if pei.status == 'NOT_START'  %}
+                <div class=" bg-red-300 text-red-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-red-700">
+                  PEI Não iniciado
+                </div>
+              {%elif pei.status == 'IN_PROGRESS' %}
+                <div class=" bg-amber-300 text-amber-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-amber-700">
+                  PEI em andamento
+                </div>
+              {%elif pei.status == 'FEEDBACK' %}
+                <div class=" bg-blue-300 text-blue-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-blue-700">
+                  PEI Preenchido
+                </div>
+              {%elif pei.status == 'COMPLETED' %}
+                <div class=" bg-green-300 text-green-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-green-700">
+                  PEI Finalizado
+                </div>
+              {%endif%}
+            </td>
+            <td>{{pei.subject.course}}</td>
+            <td>{{pei.student.subjects.all.count}}</td>
+            <td>
+              <img
+                src="{% static 'images/icons/icon-eye.svg' %}"
+                width="24px"
+                height="24px"
+                class="cursor-pointer"
+              />
+            </td>
+          </tr>
+        {%endfor%}
       </tbody>
     </table>
 
