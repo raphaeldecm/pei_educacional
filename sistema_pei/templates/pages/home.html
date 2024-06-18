@@ -7,67 +7,75 @@
   </div>
 
   <div class="flex gap-[28px] w-[calc(100vw-100px)] max-w-[1693px] overflow-x-auto">
-    <div
-      class="flex rounded-lg items-center justify-center cursor-pointer mt-10 gap-[16px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-red-500 to-red-700"
-    >
-      <img
-        src="{% static 'images/icons/icon-uninitiated-peis.svg' %}"
-        width="85px"
-        height="30px"
-      />
-      <div class="flex-col text-neutral-50">
-        <p class="text-[30px]">{{pending_peis}}</p>
-        <p>PEIs não iniciados</p>
-        <p>Ver todos</p>
+    <a href="?&status=NOT_START">
+      <div
+        class="flex rounded-lg items-center justify-center cursor-pointer mt-10 gap-[16px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-red-500 to-red-700"
+      >
+        <img
+          src="{% static 'images/icons/icon-uninitiated-peis.svg' %}"
+          width="85px"
+          height="30px"
+        />
+        <div class="flex-col text-neutral-50">
+          <p class="text-[30px]">{{pending_peis}}</p>
+          <p>PEIs não iniciados</p>
+          <p>Ver todos</p>
+        </div>
       </div>
-    </div>
+    </a>
 
-    <div
-      class="flex rounded-lg items-center justify-center cursor-pointer mt-10 gap-[16px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-amber-400 to-amber-500"
-    >
-      <img
-        src="{% static 'images/icons/icon-in-progress-peis.svg' %}"
-        width="85px"
-        height="30px"
-      />
-      <div class="flex-col text-neutral-50">
-        <p class="text-[30px]">{{in_progress_peis}}</p>
-        <p>PEIs em andamento</p>
-        <p>Ver todos</p>
+    <a href="?&status=IN_PROGRESS">
+      <div
+        class="flex rounded-lg items-center justify-center cursor-pointer mt-10 gap-[16px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-amber-400 to-amber-500"
+      >
+        <img
+          src="{% static 'images/icons/icon-in-progress-peis.svg' %}"
+          width="85px"
+          height="30px"
+        />
+        <div class="flex-col text-neutral-50">
+          <p class="text-[30px]">{{in_progress_peis}}</p>
+          <p>PEIs em andamento</p>
+          <p>Ver todos</p>
+        </div>
       </div>
-    </div>
+    </a>
 
-    <div
-      class="flex rounded-lg items-center justify-center cursor-pointer mt-10 gap-[16px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-blue-600 to-blue-700"
-      title="Foram preenchidos mas ainda sem parecer, pois o semestre ainda está em andamento."
-    >
-      <img
-        src="{% static 'images/icons/icon-filled-peis.svg' %}"
-        width="85px"
-        height="30px"
-      />
-      <div class="flex-col text-neutral-50">
-        <p class="text-[30px]">{{filled_peis}}</p>
-        <p>PEIs Preenchidos</p>
-        <p>Ver todos</p>
+    <a href="?&status=FEEDBACK">
+      <div
+        class="flex rounded-lg items-center justify-center cursor-pointer mt-10 gap-[16px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-blue-600 to-blue-700"
+        title="Foram preenchidos mas ainda sem parecer, pois o semestre ainda está em andamento."
+      >
+        <img
+          src="{% static 'images/icons/icon-filled-peis.svg' %}"
+          width="85px"
+          height="30px"
+        />
+        <div class="flex-col text-neutral-50">
+          <p class="text-[30px]">{{filled_peis}}</p>
+          <p>PEIs Preenchidos</p>
+          <p>Ver todos</p>
+        </div>
       </div>
-    </div>
+    </a>
 
-    <div
-      class="flex rounded-lg items-center justify-center cursor-pointer mt-10 gap-[16px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-green-600 to-green-700"
-      title="Preenchidos totalmente e finalizados."
-    >
-      <img
-        src="{% static 'images/icons/icon-finished-peis.svg' %}"
-        width="85px"
-        height="30px"
-      />
-      <div class="flex-col text-neutral-50">
-        <p class="text-[30px]">{{finished_peis}}</p>
-        <p>PEIs Finalizados</p>
-        <p>Ver todos</p>
+    <a href="?&status=COMPLETED">
+      <div
+        class="flex rounded-lg items-center justify-center cursor-pointer mt-10 gap-[16px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-green-600 to-green-700"
+        title="Preenchidos totalmente e finalizados."
+      >
+        <img
+          src="{% static 'images/icons/icon-finished-peis.svg' %}"
+          width="85px"
+          height="30px"
+        />
+        <div class="flex-col text-neutral-50 block">
+          <p class="text-[30px]">{{finished_peis}}</p>
+          <p>PEIs Finalizados</p>
+          <p>Ver todos</p>
+        </div>
       </div>
-    </div>
+    </a>
   </div>
 
   <div class="mt-[101px]">
@@ -85,6 +93,7 @@
           name="search"
           placeholder="Pesquisar..."
           class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50"
+          value="{{request.GET.search}}"
         />
       </div>
 
@@ -273,12 +282,21 @@
   </div>
   
   <div class="mt-[50px] mb-[26px] w-full flex items-center justify-between text-[18px]">
-    <span class="font-semibold ">Página 1 de 10</span>
+    <span class="font-semibold">Página {{ all_peis.number }} de {{ all_peis.paginator.num_pages }}</span>
     <div class="flex gap-[36px]">
-      <button class="w-[110px] h-[44px] font-medium text-slate-400 border border-slate-400 rounded-lg">Anterior</button>
-      <button class="w-[110px] h-[44px] font-medium text-slate-400 border border-slate-400 rounded-lg">Próximo</button>
+      {% if all_peis.has_previous %}
+        <a href="{% url 'home' %}?{% if request.GET.course %}course={{ request.GET.course }}&{% endif %}{% if request.GET.teacher %}teacher={{ request.GET.teacher }}&{% endif %}{% if request.GET.period %}period={{ request.GET.period }}&{% endif %}{% if request.GET.status %}status={{ request.GET.status }}&{% endif %}{% if request.GET.subject %}subject={{ request.GET.subject }}&{% endif %}{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}page={{ all_peis.previous_page_number }}">
+          <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-400 border border-slate-400 rounded-lg">Anterior</div>
+        </a>
+      {% endif %}
+
+      {% if all_peis.has_next %}
+        <a href="{% url 'home' %}?{% if request.GET.course %}course={{ request.GET.course }}&{% endif %}{% if request.GET.teacher %}teacher={{ request.GET.teacher }}&{% endif %}{% if request.GET.period %}period={{ request.GET.period }}&{% endif %}{% if request.GET.status %}status={{ request.GET.status }}&{% endif %}{% if request.GET.subject %}subject={{ request.GET.subject }}&{% endif %}{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}page={{ all_peis.next_page_number }}">
+          <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-400 border border-slate-400 rounded-lg">Próximo</div>
+        </a>
+      {% endif %}
     </div>
-  </div>
+</div>
 </div>
 
 {% endblock content %}
