@@ -23,6 +23,7 @@ Informações enviadas pelo SUAP durante o login
  """
 
 from social_core.backends.oauth import BaseOAuth2
+from django.contrib.auth.models import Group
 
 class SuapOAuth2(BaseOAuth2):
     name = 'suap'
@@ -58,4 +59,18 @@ class SuapOAuth2(BaseOAuth2):
             'first_name': first_name.strip(),
             'last_name': last_name.strip(),
             'email': response['email'],
+            'name': response['nome'],
         }
+
+    def auth_complete(self, *args, **kwargs):
+        """Após completar a autenticação"""
+        user = super(SuapOAuth2, self).auth_complete(*args, **kwargs)
+
+        group_name = 'Professor'
+
+        # Verifique se o usuário já pertence ao grupo 'Professor'
+        if not user.groups.filter(name=group_name).exists():
+            professor_group, _ = Group.objects.get_or_create(name=group_name)
+            user.groups.add(professor_group)
+
+        return user
