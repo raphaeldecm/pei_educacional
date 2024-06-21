@@ -66,10 +66,9 @@ class SuapOAuth2(BaseOAuth2):
         """Após completar a autenticação"""
         user = super(SuapOAuth2, self).auth_complete(*args, **kwargs)
 
-        group_name = 'Professor'
-
         # Verifique se o usuário já pertence ao grupo 'Professor'
-        if not user.groups.filter(name=group_name).exists():
+        group_name = 'Professor'
+        if user and not user.groups.filter(name=group_name).exists():
             professor_group, _ = Group.objects.get_or_create(name=group_name)
             user.groups.add(professor_group)
 
