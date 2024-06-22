@@ -17,13 +17,17 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 
-from sistema_pei.core.views import HomePageView
-
+from sistema_pei.core.views import HomePageView, UsersPageView
 urlpatterns = [
     path(
         "",
         login_required(HomePageView.as_view()),
         name="home",
+    ),
+    path(
+        "users/",
+        login_required(UsersPageView.as_view()),
+        name="users",
     ),
     path(
         "about/",

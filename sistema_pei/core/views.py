@@ -1,8 +1,12 @@
+from django.core.mail import EmailMessage
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.core.paginator import Paginator, PageNotAnInteger
+from django.template.loader import render_to_string
 from django.db.models import Q
 
+from django.conf import settings
 from sistema_pei.academics.models import Courses, Subject
 from sistema_pei.educational_plan.models import Pei
 from sistema_pei.people.models import Teacher
@@ -58,3 +62,36 @@ class HomePageView(TemplateView):
         context['all_peis'] = all_peis
 
         return context
+
+class UsersPageView(TemplateView):
+    template_name = "pages/users.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        recipient = request.POST.get('recipient')
+        
+        context = {
+            'message': 'email convite',
+            'user': 'Nome do Usuário',
+        }
+        
+        html_message = render_to_string('layouts/email_template.html', context)
+        
+        email = EmailMessage(
+            subject="PEIs - Convite",
+            body=html_message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[recipient]
+        )
+        
+        email.content_subtype = "html"
+        
+        
+        try:
+            email.send()
+            return HttpResponseRedirect('/')
+        except Exception as e:
+            return HttpResponse(f"Erro ao enviar o e-mail: {e}")

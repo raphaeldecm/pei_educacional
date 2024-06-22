@@ -13,7 +13,7 @@
     <nav class="hidden md:flex flex-col">
       <ul class="flex justify-center items-center gap-[28px] text-slate-400 text-base">
           <li>
-            <a href="#" class="flex gap-[10px]">
+            <a href="{% url 'home' %}" class="flex gap-[10px]">
               <img src="{% static 'images/icons/icon-home.svg' %}" alt="">
               <span>Home</span>
             </a>
@@ -27,7 +27,7 @@
           </li>
   
           <li>
-            <a href="#" class="flex gap-[10px]">
+            <a href="{% url 'users' %}" class="flex gap-[10px]">
               <img src="{% static 'images/icons/icon-users.svg' %}" alt="">
               <span>Usuários</span>
             </a>
