@@ -47,6 +47,7 @@ class HomePageView(TemplateView):
             filters['subject__id'] = self.request.GET['subject']
 
         peis_list = Pei.objects.filter(**filters)
+        peis_list = peis_list.order_by('id')
 
         if 'search' in self.request.GET:
             peis_list = peis_list.filter(Q(student__name__icontains=self.request.GET['search']) | Q(student__registration__icontains=self.request.GET['search']))
