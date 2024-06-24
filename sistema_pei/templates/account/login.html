@@ -21,7 +21,9 @@
     </p>
   {% endif %}
 
-  <form class="w-full" action="{% url 'account_login' %}" method="post">
+  <form class="w-full" action="{% url 'account_login'
+OU
+%}" method="post">
     {% csrf_token %}
 
     <div class="mb-4">
@@ -84,7 +86,20 @@
     </div>
   </form>
 
+  <div class="w-full flex flex-col items-center gap-5">
+    <div class="flex items-center justify-center w-full">
+      <div class="w-full border-t border-gray-300"></div>
+      <span class="px-3 text-gray-600">OU</span>
+      <div class="w-full border-t border-gray-300"></div>
+    </div>
+
+    <a class="font-sans text-base button is-dark is-large border p-2 rounded-lg hover:text-green-500 hover:border-green-500 transition duration-300 ease-in-out" href="{% url 'social:begin' 'suap' %}">
+      <span class="font-bold font-sans text-2xl pr-2">IF</span>
+      Continuar com o SUAP
+    </a>
+  </div>
 </div>
+
 
 {% endblock login_content %}
 
