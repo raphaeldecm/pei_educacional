@@ -1,62 +1,61 @@
 {% load static i18n %}
 
-  <div class="flex justify-center items-center gap-4">
+  <div class="flex justify-center items-center gap-[40px]">
     <button class="block md:hidden" onclick="handleToggleNav()">
       <i class="fas fa-regular fa-bars text-2xl"></i>
     </button>
     <h1>
       <a href="{% url 'home' %}">
-        <img src="{% static 'images/icons/white-logo.svg' %}"/>
+        <img src="{% static 'images/icons/green-logo.svg' %}" width="85px" height="30px"/>
       </a>
     </h1>
+
+    <nav class="hidden md:flex flex-col">
+      <ul class="flex justify-center items-center gap-[28px] text-slate-400 text-base">
+          <li>
+            <a href="#" class="flex gap-[10px]">
+              <img src="{% static 'images/icons/icon-home.svg' %}" alt="">
+              <span>Home</span>
+            </a>
+          </li>
+  
+          <li>
+            <a href="#" class="flex gap-[10px]">
+              <img src="{% static 'images/icons/icon-courses.svg' %}" alt="">
+              <span>Cursos</span>
+            </a>
+          </li>
+  
+          <li>
+            <a href="#" class="flex gap-[10px]">
+              <img src="{% static 'images/icons/icon-users.svg' %}" alt="">
+              <span>Usuários</span>
+            </a>
+          </li>
+  
+          <li>
+            <a href="#" class="flex gap-[10px]">
+              <img src="{% static 'images/icons/icon-register-student.svg' %}" alt="">
+              <span>Cadastrar Aluno</span>
+            </a>
+          </li>
+      </ul>
+    </nav>
   </div>
   {% if user.is_authenticated %}
-  <nav class="hidden md:flex flex-col">
-    <ul class="flex justify-center items-center gap-4">
-        <li>
-          <a class="" href="#">
-            <i class="fas fa-home fa-lg"></i>
-            Início
-          </a>
-        </li>
 
-        <li>
-          <a href="#' %}">
-            <i class="fas fa-users fa-lg"></i>
-            Usuários
-          </a>
-        </li>
-
-        <li>
-          <a href="#">
-            <i class="fas fa-chalkboard-teacher fa-lg"></i>
-            Cursos
-          </a>
-        </li>
-
-        <li>
-          <a href="#">
-            <i class="fas fa-user-plus fa-lg"></i>
-            Cadastrar Aluno
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class="fas fa-bell fa-lg"></i>
-          </a>
-        </li>
-    </ul>
-  </nav>
-
-  <div class="relative text-left">
+  <div class="flex items-center relative text-left gap-6">
+    <div class="flex w-[400px] h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
+      <img src="{% static 'images/icons/icon-search.svg' %}" width="18px" height="18px">
+      <input type="text" placeholder="Pesquisar..." class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50">
+    </div>
+    <div class="cursor-pointer">
+      <img src="{% static 'images/icons/icon-notification.svg' %}" alt="">
+    </div>
     <div>
-      <a onclick=toggleDropdown() type="button" class="inline-flex w-full justify-center items-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold hover:cursor-pointer hover:bg-zinc-200/10" id="menu-button" aria-expanded="true" aria-haspopup="true">
+      <a onclick=toggleDropdown() type="button" class="inline-flex w-full justify-center items-center gap-x-1.5 rounded-md py-2 text-sm font-semibold hover:cursor-pointer hover:bg-zinc-200/10" id="menu-button" aria-expanded="true" aria-haspopup="true">
         <div class="bg-green-500/50 py-2.5 px-3 rounded-full">
           <i class="fas fa-solid fa-user fa-lg"></i>
-        </div>
-        <div class="hidden lg:block">
-          <p class="name">{{ request.user.name }}</p>
-          <p class="email">{{ request.user.email }}</p>
         </div>
         <div class="ml-2 text-zinc-50">
           <i class="fas fa-solid fa-angle-down"></i>
