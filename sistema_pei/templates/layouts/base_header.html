@@ -44,40 +44,40 @@
   </div>
   {% if user.is_authenticated %}
 
-  <div class="flex items-center relative text-left gap-6">
-    <div class="flex w-[400px] h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
-      <img src="{% static 'images/icons/icon-search.svg' %}" width="18px" height="18px">
-      <input type="text" placeholder="Pesquisar..." class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50">
-    </div>
-    <div class="cursor-pointer">
-      <img src="{% static 'images/icons/icon-notification.svg' %}" alt="">
-    </div>
-    <div>
-      <a onclick=toggleDropdown() type="button" class="inline-flex w-full justify-center items-center gap-x-1.5 rounded-md py-2 text-sm font-semibold hover:cursor-pointer hover:bg-zinc-200/10" id="menu-button" aria-expanded="true" aria-haspopup="true">
-        <div class="bg-green-500/50 py-2.5 px-3 rounded-full">
-          <i class="fas fa-solid fa-user fa-lg"></i>
-        </div>
-        <div class="ml-2 text-zinc-50">
-          <i class="fas fa-solid fa-angle-down"></i>
-        </div>
-      </a>
-    </div>
-
-    <div id="dropdown" class="hidden absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-      <div class="py-1" role="none">
-        <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-        <a id="logoutButton" class="text-gray-700 block w-full px-4 py-2 text-left text-sm cursor-pointer" role="menuitem" aria-haspopup="true" tabindex="-1" id="menu-item-0" >
-          {% trans "Sign Out" %}
+    <div class="flex items-center relative text-left gap-6">
+      <div class="flex w-[400px] h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
+        <img src="{% static 'images/icons/icon-search.svg' %}" width="18px" height="18px">
+        <input type="text" placeholder="Pesquisar..." class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50">
+      </div>
+      <div class="cursor-pointer">
+        <img src="{% static 'images/icons/icon-notification.svg' %}" alt="">
+      </div>
+      <div>
+        <a onclick=toggleDropdown() type="button" class="inline-flex w-full justify-center items-center gap-x-1.5 rounded-md py-2 text-sm font-semibold hover:cursor-pointer hover:bg-zinc-200/10" id="menu-button" aria-expanded="true" aria-haspopup="true">
+          <div class="bg-green-500/50 py-2.5 px-3 rounded-full">
+            <i class="fas fa-solid fa-user fa-lg"></i>
+          </div>
+          <div class="ml-2 text-zinc-50">
+            <i class="fas fa-solid fa-angle-down"></i>
+          </div>
         </a>
+      </div>
 
+      <div id="dropdown" class="hidden absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">        
+        <div class="py-1" role="none">
+          <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+          <a id="logoutButton" class="text-gray-700 block w-full px-4 py-2 text-left text-sm cursor-pointer" role="menuitem" aria-haspopup="true" tabindex="-1" id="menu-item-0" >
+            {% trans "Sign Out" %}
+          </a>
+
+        </div>
       </div>
     </div>
-  </div>
   {% endif %}
 
 
-    <!-- Modal de Logout -->
-    {% include "../account/logout.html" %}
+<!-- Modal de Logout -->
+{% include "../account/logout.html" %}
 
 <script>
   function toggleDropdown() {
