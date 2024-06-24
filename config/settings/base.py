@@ -93,6 +93,7 @@ LOCAL_APPS = [
     "sistema_pei.academics",
     "sistema_pei.people",
     "sistema_pei.educational_plan",
+    "suap_backend",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -271,6 +272,7 @@ SOCIAL_AUTH_PIPELINE = (
     "social_core.pipeline.social_auth.associate_user",
     "social_core.pipeline.social_auth.load_extra_data",
     "social_core.pipeline.user.user_details",
+    "sistema_pei.suap_backend.pipeline.verifica_grupo_usuario",
 )
 
 # DJANGO SOCIALL LOGIN
