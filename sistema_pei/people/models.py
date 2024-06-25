@@ -13,6 +13,19 @@ User = get_user_model()
 
 
 # Create your models here.
+
+class Sector(BaseModel):
+    name = models.CharField(
+        verbose_name="Nome",
+        max_length=constants.MAX_CHAR_FIELD_NAME_LENGTH,
+    )
+    class Meta:
+        verbose_name = _("Setor")
+        verbose_name_plural = _("Setores")
+
+    def __str__(self):
+        return self.name
+
 class Person(BaseModel):
     name = models.CharField(
         verbose_name=_("Nome"),
@@ -32,7 +45,6 @@ class Person(BaseModel):
     def __str__(self):
         return self.name
 
-
 class Teacher(Person):
     class Meta:
         verbose_name = _("Professor")
@@ -46,7 +58,8 @@ class Responsible(Person):
     class Meta:
         verbose_name = _("Responsável")
         verbose_name_plural = _("Responsáveis")
-
+        
+    sector = models.ForeignKey("Sector", verbose_name=_("Setor"), on_delete=models.CASCADE, blank=True, null=True)
     def __str__(self):
         return self.name
 

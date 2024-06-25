@@ -9,7 +9,8 @@ from django.db.models import Q
 from django.conf import settings
 from sistema_pei.academics.models import Courses, Subject
 from sistema_pei.educational_plan.models import Pei
-from sistema_pei.people.models import Teacher
+from sistema_pei.people.models import Sector, Teacher
+from django.contrib.auth.models import Group
 
 
 class HomePageView(TemplateView):
@@ -69,14 +70,19 @@ class UsersPageView(TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['groups'] = Group.objects.all()
+        context['sectors'] = Sector.objects.all()
+        
         return context
     
     def post(self, request, *args, **kwargs):
         recipient = request.POST.get('recipient')
+        sector = Sector.objects.get(id=request.POST.get('sector')) 
+        group = Group.objects.get(id=request.POST.get('group')) 
         
         context = {
-            'message': 'email convite',
-            'user': 'Nome do Usuário',
+            'sector_name': sector.name,
+            'group_name': group.name,
         }
         
         html_message = render_to_string('layouts/email_template.html', context)
