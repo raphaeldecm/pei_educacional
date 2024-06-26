@@ -21,9 +21,7 @@
     </p>
   {% endif %}
 
-  <form class="w-full" action="{% url 'account_login'
-OU
-%}" method="post">
+  <form class="w-full" action="{% url 'account_login'%}" method="post">
     {% csrf_token %}
 
     <div class="mb-4">
@@ -33,7 +31,7 @@ OU
 
       <input type="email" id="{{ form.login.id_for_label }}" name="{{ form.login.name }}" placeholder="Exemplo@gmail.com"
              value="{{ form.login.value|default_if_none:'' }}"
-             class="bg-transparent font-sans appearance-none border rounded-lg w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900"
+             class="bg-transparent font-sans appearance-none border rounded-lg w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
              tabindex="0">
 
       {% comment %} /List Erros {% endcomment %}
@@ -53,7 +51,7 @@ OU
       <div class="relative">
         <input type="password" id="{{ form.password.id_for_label }}" name="{{ form.password.name }}" placeholder="Digite sua senha aqui!"
                value="{{ form.password.value|default_if_none:'' }}"
-               class="bg-transparent font-sans appearance-none border rounded-lg w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900"
+               class="bg-transparent font-sans appearance-none border rounded-lg w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
                tabindex="0">
 
         <img src="{% static 'images/icons/eye.svg' %}" alt="Icone em formato de olho representando ação de mostrar senha"
