@@ -360,6 +360,8 @@ ACCOUNT_FORMS = {"signup": "sistema_pei.users.forms.UserSignupForm"}
 SOCIALACCOUNT_ADAPTER = "sistema_pei.users.adapters.SocialAccountAdapter"
 # https://docs.allauth.org/en/latest/socialaccount/configuration.html
 SOCIALACCOUNT_FORMS = {"signup": "sistema_pei.users.forms.UserSocialSignupForm"}
+# https://docs.allauth.org/en/latest/account/configuration.html
+ACCOUNT_PREVENT_ENUMERATION = False
 
 # django-rest-framework
 # -------------------------------------------------------------------------------
