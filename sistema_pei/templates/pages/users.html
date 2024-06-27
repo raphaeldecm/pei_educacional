@@ -7,7 +7,7 @@
 
     <form class="flex gap-[8px]" method="post">
       {% csrf_token %}
-      <input type="email" name="recipient" placeholder="Digite o email..." class="outline-none placeholder:text-[18px] rounded-lg l bg-neutral-50 flex flex-1 h-[48px] border border-slate-300 px-[10px] gap-2">
+      <input type="email" name="recipient" placeholder="Digite o email..." class="outline-none placeholder:text-[18px] rounded-lg l bg-neutral-50 flex flex-1 h-[48px] border border-slate-300 px-[10px] gap-2" required>
 
       <div class="relative w-[322px] cursor-pointer">
         <img
@@ -19,6 +19,7 @@
         <select
           name="group"
           class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
+          required
         >
           <option value="default" selected disabled>
             Selecione o tipo...
@@ -39,6 +40,7 @@
         <select
           name="sector"
           class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
+          required
         >
           <option value="default" selected disabled>
             Selecione o setor...

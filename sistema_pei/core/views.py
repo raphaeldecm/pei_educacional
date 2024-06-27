@@ -1,16 +1,24 @@
 from django.core.mail import EmailMessage
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.core.paginator import Paginator, PageNotAnInteger
 from django.template.loader import render_to_string
 from django.db.models import Q
+from django.contrib.sites.shortcuts import get_current_site
+from allauth.account.models import EmailAddress
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.db import IntegrityError
+import re
 
 from django.conf import settings
 from sistema_pei.academics.models import Courses, Subject
 from sistema_pei.educational_plan.models import Pei
-from sistema_pei.people.models import Sector, Teacher
+from sistema_pei.people.models import Teacher, User
 from django.contrib.auth.models import Group
+
+from sistema_pei.users.models import Sector
 
 
 class HomePageView(TemplateView):
@@ -73,16 +81,38 @@ class UsersPageView(TemplateView):
         context['groups'] = Group.objects.all()
         context['sectors'] = Sector.objects.all()
         
+        request = self.request
+        if request.GET.get('alert') == "success":
+            context['messages'] = ["Convite enviado!"]
+        elif request.GET.get('alert') == "error":
+            context['messages'] = ["Usuário já cadastrado!"]
+        
         return context
     
     def post(self, request, *args, **kwargs):
         recipient = request.POST.get('recipient')
+        username = re.split(r'@', recipient)[0]
+        
         sector = Sector.objects.get(id=request.POST.get('sector')) 
         group = Group.objects.get(id=request.POST.get('group')) 
+        current_site = get_current_site(request)
+        
+        try:
+            user = User.objects.create_user(email=recipient, name=username, is_active=False, sector=sector)
+            group.user_set.add(user)
+            EmailAddress.objects.create(user=user, email=recipient, verified=True, primary=True)
+        except IntegrityError:
+            return HttpResponseRedirect('?alert=error')
+        
+        token = default_token_generator.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        activation_link = f"http://{current_site.domain}/activate/{uid}/{token}/"
         
         context = {
             'sector_name': sector.name,
             'group_name': group.name,
+            'user': username,
+            'activation_link': activation_link,
         }
         
         html_message = render_to_string('layouts/email_template.html', context)
@@ -96,9 +126,8 @@ class UsersPageView(TemplateView):
         
         email.content_subtype = "html"
         
-        
         try:
             email.send()
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('?alert=success')
         except Exception as e:
             return HttpResponse(f"Erro ao enviar o e-mail: {e}")

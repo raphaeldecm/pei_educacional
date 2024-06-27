@@ -32,14 +32,9 @@ class NotificationAdmin(admin.ModelAdmin):
     readonly_fields = ["updated_by", "created_at"]
     list_display = ["title", "user", "created_at", "updated_at"]
 
-class SectorAdmin(admin.ModelAdmin):
-    search_fields = ["name"]
-    list_display = ["name"]
-
 
 admin.site.register(models.Teacher, TeacherAdmin)
 admin.site.register(models.Responsible, ResponsibleAdmin)
 admin.site.register(models.SpecificNecessitie, SpecificNecessitieAdmin)
 admin.site.register(models.Student, StudentAdmin)
 admin.site.register(models.Notification, NotificationAdmin)
-admin.site.register(models.Sector, SectorAdmin)
