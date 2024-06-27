@@ -5,11 +5,13 @@ from django.urls import reverse
 def verificar_tipo_usuario(strategy, details, backend, response, *args, **kwargs):
     """
     Verifica o tipo de usuário retornado pelo SUAP e interrompe o processo
-    se o tipo de usuário não for 'Professor'.
+    se o tipo de usuário não for 'Servidor (Docente)' e o campus não for 'PF'.
     """
 
     tipo_usuario = response.get('tipo_usuario')
-    if tipo_usuario != 'Professor':
+    campus = response.get('campus')
+    
+    if tipo_usuario != 'Servidor (Docente)' or campus != 'PF':
         return HttpResponseRedirect(reverse('suap_login:erro_tipo_usuario'))
 
     return None
