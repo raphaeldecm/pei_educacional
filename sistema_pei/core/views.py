@@ -1,11 +1,24 @@
-from django.shortcuts import render
+from django.core.mail import EmailMessage
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import TemplateView
 from django.core.paginator import Paginator, PageNotAnInteger
+from django.template.loader import render_to_string
 from django.db.models import Q
+from django.contrib.sites.shortcuts import get_current_site
+from allauth.account.models import EmailAddress
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.db import IntegrityError
+import re
 
+from django.conf import settings
 from sistema_pei.academics.models import Courses, Subject
 from sistema_pei.educational_plan.models import Pei
-from sistema_pei.people.models import Teacher
+from sistema_pei.people.models import Teacher, User
+from django.contrib.auth.models import Group
+
+from sistema_pei.users.models import Sector
 
 
 class HomePageView(TemplateView):
@@ -43,6 +56,7 @@ class HomePageView(TemplateView):
             filters['subject__id'] = self.request.GET['subject']
 
         peis_list = Pei.objects.filter(**filters)
+        peis_list = peis_list.order_by('id')
 
         if 'search' in self.request.GET:
             peis_list = peis_list.filter(Q(student__name__icontains=self.request.GET['search']) | Q(student__registration__icontains=self.request.GET['search']))
@@ -58,3 +72,62 @@ class HomePageView(TemplateView):
         context['all_peis'] = all_peis
 
         return context
+
+class UsersPageView(TemplateView):
+    template_name = "pages/users.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['groups'] = Group.objects.all()
+        context['sectors'] = Sector.objects.all()
+        
+        request = self.request
+        if request.GET.get('alert') == "success":
+            context['messages'] = ["Convite enviado!"]
+        elif request.GET.get('alert') == "error":
+            context['messages'] = ["Usuário já cadastrado!"]
+        
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        recipient = request.POST.get('recipient')
+        username = re.split(r'@', recipient)[0]
+        
+        sector = Sector.objects.get(id=request.POST.get('sector')) 
+        group = Group.objects.get(id=request.POST.get('group')) 
+        current_site = get_current_site(request)
+        
+        try:
+            user = User.objects.create_user(email=recipient, name=username, is_active=False, sector=sector)
+            group.user_set.add(user)
+            EmailAddress.objects.create(user=user, email=recipient, verified=True, primary=True)
+        except IntegrityError:
+            return HttpResponseRedirect('?alert=error')
+        
+        token = default_token_generator.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        activation_link = f"http://{current_site.domain}/activate/{uid}/{token}/"
+        
+        context = {
+            'sector_name': sector.name,
+            'group_name': group.name,
+            'user': username,
+            'activation_link': activation_link,
+        }
+        
+        html_message = render_to_string('layouts/email_template.html', context)
+        
+        email = EmailMessage(
+            subject="PEIs - Convite",
+            body=html_message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[recipient]
+        )
+        
+        email.content_subtype = "html"
+        
+        try:
+            email.send()
+            return HttpResponseRedirect('?alert=success')
+        except Exception as e:
+            return HttpResponse(f"Erro ao enviar o e-mail: {e}")

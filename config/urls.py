@@ -11,19 +11,24 @@ from django.contrib.auth.decorators import login_required
 from drf_spectacular.views import SpectacularAPIView
 from drf_spectacular.views import SpectacularSwaggerView
 from rest_framework.authtoken.views import obtain_auth_token
+from sistema_pei.people.views import activate_account
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
     TokenVerifyView,
 )
 
-from sistema_pei.core.views import HomePageView
-
+from sistema_pei.core.views import HomePageView, UsersPageView
 urlpatterns = [
     path(
         "",
         login_required(HomePageView.as_view()),
         name="home",
+    ),
+    path(
+        "users/",
+        login_required(UsersPageView.as_view()),
+        name="users",
     ),
     path(
         "about/",
@@ -35,6 +40,7 @@ urlpatterns = [
     # User management
     path("users/", include("sistema_pei.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
+    path('activate/<uidb64>/<token>/', activate_account, name='activate'),
     # JWT
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
