@@ -242,6 +242,12 @@ EMAIL_BACKEND = env(
     "DJANGO_EMAIL_BACKEND",
     default="django.core.mail.backends.smtp.EmailBackend",
 )
+
+EMAIL_HOST = env("DJANGO_EMAIL_HOST", default="smtp.gmail.com")
+EMAIL_PORT = env("DJANGO_EMAIL_PORT", default=587)
+EMAIL_USE_SSL = env("DJANGO_EMAIL_USE_SSL", default=False)
+EMAIL_USE_TLS = env("DJANGO_EMAIL_USE_TLS", default=True)
+
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-timeout
 EMAIL_TIMEOUT = 5
 
@@ -360,6 +366,8 @@ ACCOUNT_FORMS = {"signup": "sistema_pei.users.forms.UserSignupForm"}
 SOCIALACCOUNT_ADAPTER = "sistema_pei.users.adapters.SocialAccountAdapter"
 # https://docs.allauth.org/en/latest/socialaccount/configuration.html
 SOCIALACCOUNT_FORMS = {"signup": "sistema_pei.users.forms.UserSocialSignupForm"}
+# https://docs.allauth.org/en/latest/account/configuration.html
+ACCOUNT_PREVENT_ENUMERATION = False
 
 # django-rest-framework
 # -------------------------------------------------------------------------------

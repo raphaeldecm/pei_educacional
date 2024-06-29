@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 from .forms import UserAdminChangeForm
 from .forms import UserAdminCreationForm
-from .models import User
+from .models import Sector, User
 
 if settings.DJANGO_ADMIN_FORCE_ALLAUTH:
     # Force the `admin` sign in process to go through the `django-allauth` workflow:
@@ -19,7 +19,7 @@ class UserAdmin(auth_admin.UserAdmin):
     form = UserAdminChangeForm
     add_form = UserAdminCreationForm
     fieldsets = (
-        (None, {"fields": ("email", "password")}),
+        (None, {"fields": ("email", "password", "sector")}),
         (_("Personal info"), {"fields": ("name",)}),
         (
             _("Permissions"),
@@ -47,3 +47,5 @@ class UserAdmin(auth_admin.UserAdmin):
             },
         ),
     )
+
+admin.site.register(Sector)

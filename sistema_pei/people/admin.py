@@ -9,7 +9,6 @@ class TeacherAdmin(admin.ModelAdmin):
     readonly_fields = ["updated_by", "created_at"]
     list_display = ["name", "email"]
 
-
 class ResponsibleAdmin(admin.ModelAdmin):
     search_fields = ["name"]
     readonly_fields = ["updated_by", "created_at"]

@@ -17,7 +17,7 @@ Informações enviadas pelo SUAP durante o login
     'email_academico': string (@academico.ifrn.edu.br),
     'campus': 'PF',
     'foto': Links com foto de perfil,
-    'tipo_usuario': 'Aluno',
+    'tipo_usuario': 'Aluno' (Professor tem o tipo: 'Servidor (Docente)'),
     'email_preferencial': string (@academico.ifrn.edu.br)
 }
  """

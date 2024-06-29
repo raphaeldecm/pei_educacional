@@ -13,26 +13,26 @@
     <nav class="hidden md:flex flex-col">
       <ul class="flex justify-center items-center gap-[28px] text-slate-400 text-base">
           <li>
-            <a href="#" class="flex gap-[10px]">
+            <a href="{% url 'home' %}" class="flex gap-[10px]">
               <img src="{% static 'images/icons/icon-home.svg' %}" alt="">
               <span>Home</span>
             </a>
           </li>
-  
+
           <li>
             <a href="#" class="flex gap-[10px]">
               <img src="{% static 'images/icons/icon-courses.svg' %}" alt="">
               <span>Cursos</span>
             </a>
           </li>
-  
+
           <li>
-            <a href="#" class="flex gap-[10px]">
+            <a href="{% url 'users' %}" class="flex gap-[10px]">
               <img src="{% static 'images/icons/icon-users.svg' %}" alt="">
               <span>Usuários</span>
             </a>
           </li>
-  
+
           <li>
             <a href="#" class="flex gap-[10px]">
               <img src="{% static 'images/icons/icon-register-student.svg' %}" alt="">
@@ -63,10 +63,10 @@
         </a>
       </div>
 
-      <div id="dropdown" class="hidden absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">        
-        <div class="py-1" role="none">
+      <div id="dropdown" class="hidden absolute right-0 z-10 mt-28 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+        <div class="py-1 cursor-pointer" role="none">
           <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-          <a id="logoutButton" class="text-gray-700 block w-full px-4 py-2 text-left text-sm cursor-pointer" role="menuitem" aria-haspopup="true" tabindex="-1" id="menu-item-0" >
+          <a id="logoutButton" class="text-slate-900-700 block w-full px-4 py-2 text-left text-sm cursor-pointer font-sans align-baseline font-light hover:text-green-700" role="menuitem" aria-haspopup="true" tabindex="-1" id="menu-item-0" >
             {% trans "Sign Out" %}
           </a>
 
@@ -85,6 +85,19 @@
     dropdown.classList.toggle('hidden')
   }
 
+  document.addEventListener('click', function(event) {
+    /**
+    * Lida com interações com um modal de logout.
+    * Mostra e oculta o modal com base nas ações do usuário.
+    **/
+
+    const dropdown = document.getElementById('dropdown');
+    const menuButton = document.getElementById('menu-button');
+
+    if (!dropdown.classList.contains('hidden') && !dropdown.contains(event.target) && !menuButton.contains(event.target)) {
+      dropdown.classList.add('hidden');
+    }
+  });
 
   document.addEventListener('DOMContentLoaded', function() {
     /**
@@ -111,4 +124,5 @@
       }
     });
   });
+
 </script>
