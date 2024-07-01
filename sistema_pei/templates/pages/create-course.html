@@ -1,0 +1,72 @@
+{% extends "base.html" %} {% load static i18n %} {% block content %}
+
+<div class="w-full">
+  <h1 class="text-[32px] font-medium mb-[38px]">Criar Curso</h1>
+  <form action="{% url 'create_course' %}" method="post">
+    {% csrf_token %}
+    <div class="flex items-center gap-[3%]">
+      <div class="flex-1">
+        <label for="name" class="font-medium text-[18px]">Nome:</label>
+        <input
+          type="text"
+          name="name"
+          placeholder="Digite o nome do curso..."
+          class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+          value="{{request.GET.name}}"
+        />
+      </div>
+      <div class="flex-1">
+        <label for="period" class="font-medium text-[18px]">Turno:</label>
+        <div class="relative w-full cursor-pointer mt-[16px]">
+          <img
+            class="absolute top-[12px] right-[10px]"
+            src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+            width="24px"
+            height="24px"
+          />
+          <select
+            name="period"
+            class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
+          >
+            <option value="default" selected disabled>
+              Selecione o turno...
+            </option>
+            <option value="Matutino">Matutino</option>
+            <option value="Vespertino">Vespertino</option>
+            <option value="Noturno">Noturno</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-[24px]">
+      <label for="type" class="font-medium text-[18px]">Tipo:</label>
+      <div class="relative w-full cursor-pointer mt-[16px]">
+        <img
+          class="absolute top-[12px] right-[10px]"
+          src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+          width="24px"
+          height="24px"
+        />
+        <select
+          name="course_type"
+          class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
+          required
+        >
+          <option value="default" selected disabled>
+            Selecione o tipo...
+          </option>
+          {% for type in course_types %}
+            <option value="{{type}}">{{type}}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    
+    <button class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer mt-[56px]">
+      Cadastrar
+    </button>
+  </form>
+</div>
+
+{% endblock content %}

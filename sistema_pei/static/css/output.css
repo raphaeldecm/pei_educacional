@@ -652,6 +652,10 @@ video {
   z-index: 10;
 }
 
+.z-50 {
+  z-index: 50;
+}
+
 .m-10 {
   margin: 2.5rem;
 }
@@ -719,8 +723,8 @@ video {
   margin-top: 2.5rem;
 }
 
-.mt-2 {
-  margin-top: 0.5rem;
+.mt-28 {
+  margin-top: 7rem;
 }
 
 .mt-4 {
@@ -749,6 +753,50 @@ video {
 
 .mt-\[50px\] {
   margin-top: 50px;
+}
+
+.mt-\[53px\] {
+  margin-top: 53px;
+}
+
+.mb-\[\] {
+  margin-bottom: ;
+}
+
+.mb-\[16px\] {
+  margin-bottom: 16px;
+}
+
+.mt-\[16px\] {
+  margin-top: 16px;
+}
+
+.mt-\[\] {
+  margin-top: ;
+}
+
+.mt-\[24px\] {
+  margin-top: 24px;
+}
+
+.mt-\[18px\] {
+  margin-top: 18px;
+}
+
+.mt-\[56px\] {
+  margin-top: 56px;
+}
+
+.mb-\[7px\] {
+  margin-bottom: 7px;
+}
+
+.mb-\[78px\] {
+  margin-bottom: 78px;
+}
+
+.mb-\[26\] {
+  margin-bottom: 26;
 }
 
 .block {
@@ -1062,6 +1110,26 @@ video {
   gap: 8px;
 }
 
+.gap-\[\] {
+  gap: ;
+}
+
+.gap-\[10\%\] {
+  gap: 10%;
+}
+
+.gap-\[4\%\] {
+  gap: 4%;
+}
+
+.gap-\[2\%\] {
+  gap: 2%;
+}
+
+.gap-\[3\%\] {
+  gap: 3%;
+}
+
 .gap-x-1 {
   -moz-column-gap: 0.25rem;
        column-gap: 0.25rem;
@@ -1145,6 +1213,11 @@ video {
 .border-slate-400 {
   --tw-border-opacity: 1;
   border-color: rgb(148 163 184 / var(--tw-border-opacity));
+}
+
+.border-green-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(22 163 74 / var(--tw-border-opacity));
 }
 
 .bg-amber-300 {
@@ -1350,6 +1423,16 @@ video {
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+
+.py-\[11px\] {
+  padding-top: 11px;
+  padding-bottom: 11px;
+}
+
+.px-\[44px\] {
+  padding-left: 44px;
+  padding-right: 44px;
 }
 
 .pb-2 {
@@ -1608,6 +1691,16 @@ video {
   color: rgb(100 116 139 / var(--tw-text-opacity));
 }
 
+.placeholder\:text-slate-300::-moz-placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(203 213 225 / var(--tw-text-opacity));
+}
+
+.placeholder\:text-slate-300::placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(203 213 225 / var(--tw-text-opacity));
+}
+
 .hover\:cursor-pointer:hover {
   cursor: pointer;
 }
@@ -1648,6 +1741,10 @@ video {
 .focus\:outline-none:focus {
   outline: 2px solid transparent;
   outline-offset: 2px;
+}
+
+.focus\:outline-green-500:focus {
+  outline-color: #22c55e;
 }
 
 @media (min-width: 50px) {
@@ -1750,7 +1847,7 @@ video {
   border-top-width: 1px;
 }
 
-.\[\&_tr\]\:border-slate-400 tr {
+.\[\&_tr\]\:border-slate-300 tr {
   --tw-border-opacity: 1;
-  border-color: rgb(148 163 184 / var(--tw-border-opacity));
+  border-color: rgb(203 213 225 / var(--tw-border-opacity));
 }
