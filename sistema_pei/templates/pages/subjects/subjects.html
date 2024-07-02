@@ -87,7 +87,7 @@
             <td class="pl-[76px]">{{subject.name}}</td>
             <td>{{subject.teacher}}</td>
             <td>{{subject.subject_type}}</td>
-            <td>{{subject.students|length}}</td>
+            <td>{{subject.students.all|length}}</td>
             <td class="min-w-[40px] !px-[0px]">
               <a href="{% url 'edit_subject' subject.id %}">
                 <img

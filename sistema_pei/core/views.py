@@ -397,9 +397,8 @@ class EditSubjectPageView(TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        course_id = self.kwargs.get('course_id')
-        course = get_object_or_404(Courses, id=course_id)
-        course_subjects = course.subjects.all()
+        subject_id = self.kwargs.get('subject_id')
+        subject = get_object_or_404(Subject, id=subject_id) 
         
         # Breadcrumbs
         context['breadcrumbs_data'] = [
@@ -419,21 +418,23 @@ class EditSubjectPageView(TemplateView):
             }
         ]
         
-        filters = {}
-        if 'search_subject' in self.request.GET:
-            filters['search_subject'] = self.request.GET['search_subject']
-            course_subjects = course_subjects.filter(Q(name__icontains=self.request.GET['search_subject']))
+        subject_students = subject.students.all() 
+        
+        if 'search_student' in self.request.GET:
+            search_query = self.request.GET['search_student']
+            subject_students = subject.students.filter(Q(name__icontains=search_query))
             
-        context['course'] = course
-        context['course_subjects'] = course_subjects
+        context['subject'] = subject
+        context['subject_students'] = subject_students
+        context['teachers']= Teacher.objects.all()
         context['course_types']=[course[0] for course in COURSE_TYPE]
         
         return context
 
     def post(self, request, *args, **kwargs):
-        course_id = self.kwargs.get('course_id')
-        course = get_object_or_404(Courses, id=course_id)
-        form = CourseForm(request.POST, instance=course)
+        subject_id = self.kwargs.get('subject_id')
+        subject = get_object_or_404(Subject, id=subject_id)
+        form = SubjectForm(request.POST, instance=subject)
         if form.is_valid():
             form.save()
             return redirect('courses')
