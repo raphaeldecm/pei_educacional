@@ -787,6 +787,18 @@ video {
   margin-bottom: 32px;
 }
 
+.mb-\[\] {
+  margin-bottom: ;
+}
+
+.mb-\[69px\] {
+  margin-bottom: 69px;
+}
+
+.mb-\[30px\] {
+  margin-bottom: 30px;
+}
+
 .block {
   display: block;
 }
@@ -1498,6 +1510,10 @@ video {
 .text-sm {
   font-size: 0.875rem;
   line-height: 1.25rem;
+}
+
+.text-\[16px\] {
+  font-size: 16px;
 }
 
 .font-bold {
