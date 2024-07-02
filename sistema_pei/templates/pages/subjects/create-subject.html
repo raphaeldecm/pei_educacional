@@ -2,8 +2,8 @@
 
 <div class="w-full">
   {% include '../../layouts/breadcrumbs.html' with breadcrumb_data=breadcrumb_data %}
-  <h1 class="text-[32px] font-medium mb-[38px]">Criar Curso</h1>
-  <form action="{% url 'create_course' %}" method="post">
+  <h1 class="text-[32px] font-medium mb-[38px]">Criar Matéria</h1>
+  <form action="{% url 'create_subject' course.id %}" method="post">
     {% csrf_token %}
     <div class="flex items-center gap-[3%]">
       <div class="flex-1">
@@ -14,10 +14,11 @@
           placeholder="Digite o nome do curso..."
           class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
           value="{{request.GET.name}}"
+          required
         />
       </div>
       <div class="flex-1">
-        <label for="period" class="font-medium text-[18px]">Turno:</label>
+        <label for="teacher" class="font-medium text-[18px]">Professor:</label>
         <div class="relative w-full cursor-pointer mt-[16px]">
           <img
             class="absolute top-[12px] right-[10px]"
@@ -26,48 +27,43 @@
             height="24px"
           />
           <select
-            name="period"
+            name="teacher"
             class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
+            required
           >
             <option value="default" selected disabled>
-              Selecione o turno...
+              Selecione o professor...
             </option>
-            <option value="Matutino">Matutino</option>
-            <option value="Vespertino">Vespertino</option>
-            <option value="Noturno">Noturno</option>
+            {% for teacher in teachers %}
+              <option value="{{teacher.id}}">{{teacher.name}}</option>
+            {% endfor %}
           </select>
         </div>
       </div>
     </div>
 
-    <div class="mt-[24px]">
-      <label for="type" class="font-medium text-[18px]">Tipo:</label>
-      <div class="relative w-full cursor-pointer mt-[16px]">
-        <img
-          class="absolute top-[12px] right-[10px]"
-          src="{% static 'images/icons/icon-updown-arrow.svg' %}"
-          width="24px"
-          height="24px"
-        />
-        <select
-          name="course_type"
-          class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
-          required
-        >
-          <option value="default" selected disabled>
-            Selecione o tipo...
-          </option>
-          {% for type in course_types %}
-            <option value="{{type}}">{{type}}</option>
-          {% endfor %}
-        </select>
+    <div class="mt-6">
+      <label for="type" class="font-medium text-lg">Duração:</label>
+      <div class="flex gap-[70px] mt-[18px]">
+        <div class="flex items-center space-x-4 mt-2">
+          <div class="flex items-center gap-[8px]">
+            <input type="radio" required id="Semestral" name="subject_type" value="Semestral" class="hidden peer">
+            <label for="Semestral" class="flex items-center cursor-pointer w-[20px] h-[20px] rounded-[5px] peer-checked:[&_img]:block bg-slate-300">
+              <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}" width="20px" height="20px" class="hidden" alt="Checkmark">
+            </label>
+            <span>Semestral</span>
+          </div>
+        </div>
+        <div class="flex items-center space-x-4 mt-2">
+          <div class="flex items-center gap-[8px]">
+            <input type="radio" id="Anual" required name="subject_type" value="Anual" class="hidden peer">
+            <label for="Anual" class="flex items-center cursor-pointer peer-checked:text-white border border-gray-300 w-[20px] h-[20px] rounded-[5px] peer-checked:border-none peer-checked:[&_img]:block bg-slate-300">
+              <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}" width="20px" height="20px" class="hidden" alt="Checkmark">
+            </label>
+            <span>Anual</span>
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div>
-      {%for subject in course.subjects%}
-        <h1>{{subject.name}}</h1>
-      {%endfor%}
     </div>
     
     <button class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer mt-[56px]">

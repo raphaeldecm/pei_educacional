@@ -89,7 +89,7 @@
             <td>{{subject.subject_type}}</td>
             <td>{{subject.students|length}}</td>
             <td class="min-w-[40px] !px-[0px]">
-              <a href="{% url 'edit_course' course.id %}">
+              <a href="{% url 'edit_subject' subject.id %}">
                 <img
                   src="{% static 'images/icons/icon-edit-element.svg' %}"
                   width="24px"
@@ -121,7 +121,7 @@
     </div>
   </div>
   <div class="flex mt-[56px] gap-[16px]">
-    <a href="{% url 'create_course' %}" class=" text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer">
+    <a href="{% url 'create_subject' course.id %}" class=" text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer">
       Cadastrar Nova Matéria
     </a>
     <a href="{% url 'delete_course' course.id %}" onclick="return confirm('Tem certeza que deseja excluir o curso {{ course.name }}?')" class="text-[18px] py-[11px] px-[44px] border border-red-500 rounded-lg font-medium cursor-pointer">

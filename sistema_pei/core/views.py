@@ -14,12 +14,13 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.db import IntegrityError
 from django.views.generic import View
+import datetime
 import re
 
 from django.conf import settings
 from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.academics.models import Courses, Subject
-from sistema_pei.core.forms import CourseForm
+from sistema_pei.core.forms import CourseForm, SubjectForm
 from sistema_pei.educational_plan.models import Pei
 from sistema_pei.people.models import Teacher, User
 from django.contrib.auth.models import Group
@@ -287,7 +288,7 @@ class DeleteSubjectView(View):
 
 class SubjectsPageView(TemplateView):
     template_name = "pages/subjects/subjects.html"
-    paginate_by=1
+    paginate_by=10
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -344,3 +345,96 @@ class SubjectsPageView(TemplateView):
 
 
         return context
+    
+class CreateSubjectPageView(TemplateView):
+    template_name = "pages/subjects/create-subject.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        course_id = self.kwargs.get('course_id')
+        course = get_object_or_404(Courses, id=course_id)
+        context['course'] = course
+        
+        # Breadcrumbs
+        context['breadcrumbs_data'] = [
+            {
+                "icon":"images/icons/icon-home-green.svg",
+                "name":"Home",
+                "url":"home"
+            },
+            {
+                "icon":"images/icons/icon-courses-green.svg",
+                "name":"Cursos",
+                "url":"courses"
+            },
+            {
+                "icon":"images/icons/icon-courses-green.svg",
+                "name":"Matérias",
+            },
+            {
+                "icon":"images/icons/icon-edit-green.svg",
+                "name":"Criar Matéria"
+            },
+        ]
+        context['course_types']=[course[0] for course in COURSE_TYPE]
+        context['teachers']= Teacher.objects.all()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = SubjectForm(request.POST)
+        course_id = self.kwargs.get('course_id')
+        course = get_object_or_404(Courses, id=course_id)
+
+        if form.is_valid():
+            form.instance.course = course
+            form.instance.year = datetime.datetime.now().year
+            form.save()
+            return redirect(f'/subjects/{course.id}') 
+        return self.render_to_response(self.get_context_data(form=form))
+
+class EditSubjectPageView(TemplateView):
+    template_name = "pages/subjects/edit-subject.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        course_id = self.kwargs.get('course_id')
+        course = get_object_or_404(Courses, id=course_id)
+        course_subjects = course.subjects.all()
+        
+        # Breadcrumbs
+        context['breadcrumbs_data'] = [
+            {
+                "icon":"images/icons/icon-home-green.svg",
+                "name":"Home",
+                "url":"home"
+            },
+            {
+                "icon":"images/icons/icon-courses-green.svg",
+                "name":"Cursos",
+                "url":"courses"
+            },
+            {
+                "icon":"images/icons/icon-edit-green.svg",
+                "name":"Editar Curso",
+            }
+        ]
+        
+        filters = {}
+        if 'search_subject' in self.request.GET:
+            filters['search_subject'] = self.request.GET['search_subject']
+            course_subjects = course_subjects.filter(Q(name__icontains=self.request.GET['search_subject']))
+            
+        context['course'] = course
+        context['course_subjects'] = course_subjects
+        context['course_types']=[course[0] for course in COURSE_TYPE]
+        
+        return context
+
+    def post(self, request, *args, **kwargs):
+        course_id = self.kwargs.get('course_id')
+        course = get_object_or_404(Courses, id=course_id)
+        form = CourseForm(request.POST, instance=course)
+        if form.is_valid():
+            form.save()
+            return redirect('courses')
+        return self.render_to_response(self.get_context_data(form=form))

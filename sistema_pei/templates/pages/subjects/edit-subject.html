@@ -3,7 +3,7 @@
 <div class="w-full">
   {% include '../../layouts/breadcrumbs.html' with breadcrumb_data=breadcrumb_data %}
   <h1 class="text-[32px] font-medium mb-[38px]">Editar Curso: {{course.name}} - {{course.period}}</h1>
-  <form action="{% url 'edit_course' course.id %}" method="post" id="edit-form">
+  <form action="{% url 'edit_subject' subject.id %}" method="post" id="edit-form">
     {% csrf_token %}
     <div class="flex items-center gap-[3%]">
       <div class="flex-1">
