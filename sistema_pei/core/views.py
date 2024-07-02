@@ -423,9 +423,18 @@ class EditSubjectPageView(TemplateView):
         if 'search_student' in self.request.GET:
             search_query = self.request.GET['search_student']
             subject_students = subject.students.filter(Q(name__icontains=search_query))
+        
+
+        students_with_courses = []
+        for student in subject_students:
+            course_name = subject.course.name if subject.course else "Curso não definido"
+            students_with_courses.append({
+                'student': student,
+                'course_name': course_name
+            })
             
         context['subject'] = subject
-        context['subject_students'] = subject_students
+        context['subject_students_with_courses'] = students_with_courses
         context['teachers']= Teacher.objects.all()
         context['course_types']=[course[0] for course in COURSE_TYPE]
         

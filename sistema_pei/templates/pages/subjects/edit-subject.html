@@ -78,13 +78,13 @@
     </form>
 
     <div class="flex flex-col gap-[16px] mt-[40px]">
-        {% for student in subject_students %}
+        {% for student_with_course in subject_students_with_courses %}
         <div class="flex justify-between items-center h-[44px] border border-slate-300 px-[15px] rounded-lg">
-            <span class="text-[18px]"><strong>{{ student.registration }}</strong> - {{ student.name }} |
-                <strong>Curso:</strong> {{ student.course }}</span>
+            <span class="text-[18px]"><strong>{{ student_with_course.student.registration }}</strong> - {{ student_with_course.student.name }} |
+                <strong>Curso:</strong> {{ student_with_course.course_name }}</span>
 
             <a href="{% url 'delete_subject' subject.id %}"
-                onclick="return confirm('Tem certeza que deseja excluir a matéria {{ student.name }}?')">
+                onclick="return confirm('Tem certeza que deseja excluir a matéria {{ student_with_course.student.name }}?')">
                 <img src="{% static 'images/icons/icon-remove-element.svg' %}" width="18px" height="20px"
                     class="cursor-pointer" />
             </a>
