@@ -1,9 +1,11 @@
 from django.contrib.auth import login
 from django.contrib.auth.tokens import default_token_generator
+from django.urls import reverse_lazy
 from django.utils.http import urlsafe_base64_decode
 from django.shortcuts import render, redirect
 from sistema_pei.people.models import User, Student
 from django.views.generic.edit import CreateView
+from django.contrib import messages
 
 from .forms import StudentForm
 
@@ -30,4 +32,13 @@ class StudentCreateView(CreateView):
     model = Student
     form_class = StudentForm
     template_name = 'pages/student_create.html'
-    success_url = '/'
+    success_url = reverse_lazy('student_create')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+
+        name_value = form.cleaned_data['name']
+        success_message = f'estudante {name_value} cadastrado com sucesso'
+        messages.success(self.request, success_message)
+
+        return response
