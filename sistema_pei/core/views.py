@@ -283,3 +283,64 @@ class DeleteSubjectView(View):
         subject = get_object_or_404(Subject, id=subject_id)
         subject.delete()
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    
+
+class SubjectsPageView(TemplateView):
+    template_name = "pages/subjects/subjects.html"
+    paginate_by=1
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        course_id = self.kwargs.get('course_id')
+        course = get_object_or_404(Courses, id=course_id)
+        course_subjects = course.subjects.all()
+        context['course'] = course
+        
+        # Breadcrumbs
+        context['breadcrumbs_data'] = [
+            {
+                "icon":"images/icons/icon-home-green.svg",
+                "name":"Home",
+                "url":"home"
+            },
+            {
+                "icon":"images/icons/icon-courses-green.svg",
+                "name":"Cursos",
+                "url":"courses"
+            },
+            {
+                "icon":"images/icons/icon-courses-green.svg",
+                "name":"Matérias"
+            },
+        ]
+        
+        # Filter Selectors
+        context['teachers'] = Teacher.objects.all()
+        
+        # Table
+        filters = {}
+        if 'duration' in self.request.GET:
+            filters['subject_type'] = self.request.GET['duration']
+        if 'teacher' in self.request.GET:
+            filters['teacher'] = self.request.GET['teacher']
+
+        course_subjects = course_subjects.filter(**filters)
+        
+        if 'search' in self.request.GET:
+            course_subjects = course_subjects.filter(Q(name__icontains=self.request.GET['search']))
+            
+
+        paginator = Paginator(course_subjects, self.paginate_by)
+        page_number = self.request.GET.get('page')
+        
+        try:
+            all_course_subjects = paginator.page(page_number)
+        except PageNotAnInteger:
+            all_course_subjects = paginator.page(1)
+        except EmptyPage:
+            all_course_subjects = paginator.page(paginator.num_pages)
+
+        context['course_subjects'] = all_course_subjects
+
+
+        return context
