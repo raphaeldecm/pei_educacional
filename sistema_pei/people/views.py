@@ -2,7 +2,10 @@ from django.contrib.auth import login
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_decode
 from django.shortcuts import render, redirect
-from sistema_pei.people.models import User
+from sistema_pei.people.models import User, Student
+from django.views.generic.edit import CreateView
+
+from .forms import StudentForm
 
 def activate_account(request, uidb64, token):
     try:
@@ -21,3 +24,10 @@ def activate_account(request, uidb64, token):
         return redirect('/')
     else:
         return render(request, '403.html')
+
+
+class StudentCreateView(CreateView):
+    model = Student
+    form_class = StudentForm
+    template_name = 'pages/student_create.html'
+    success_url = '/'

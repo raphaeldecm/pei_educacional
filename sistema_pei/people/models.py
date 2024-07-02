@@ -46,7 +46,7 @@ class Responsible(Person):
     class Meta:
         verbose_name = _("Responsável")
         verbose_name_plural = _("Responsáveis")
-        
+
     def __str__(self):
         return self.name
 
@@ -77,6 +77,7 @@ class Student(Person):
         choices=Series.choices,
         validators=[validators.MinValueValidator(1), validators.MaxValueValidator(4)],
     )
+
     responsible_person = models.ForeignKey(
         Responsible,
         verbose_name=_("Responsável"),
@@ -84,26 +85,34 @@ class Student(Person):
         null=True,
         related_name="students",
     )
+
     registration = models.CharField(
         verbose_name=_("Matrícula"),
         max_length=constants.SMALL_CHAR_FIELD_NAME_LENGTH,
         blank=True,
     )
+
     personal_history = models.TextField(verbose_name=_("Histórico"))
+
     image = models.ImageField(upload_to="students", verbose_name=_("Foto"))
+
     general_necessitie = models.TextField(
         verbose_name=_("Outras necessidades educacionais específicas do(a) estudante"),
     )
+
     creation_reasons = models.TextField(
         verbose_name=_("Motivos para a criação do PEI/ Adaptações"),
     )
+
     educational_necessities = models.ManyToManyField(
         SpecificNecessitie,
         verbose_name=_("Necessidades Educacionais Específicas"),
     )
+
     abilities = models.TextField(
         verbose_name=_("Conhecimentos, Habilidades,Capacidades e Interesses"),
     )
+
     dificulties = models.TextField(verbose_name=_("Dificuldades"))
 
     specific_necessities = models.TextField(verbose_name=_("Necessidades específicas"))
