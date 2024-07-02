@@ -205,8 +205,17 @@ class EditCoursePageView(TemplateView):
         context = super().get_context_data(**kwargs)
         course_id = self.kwargs.get('course_id')
         course = get_object_or_404(Courses, id=course_id)
+        course_subjects = course.subjects.all()
+        
+        filters = {}
+        if 'search_subject' in self.request.GET:
+            filters['search_subject'] = self.request.GET['search_subject']
+            course_subjects = course_subjects.filter(Q(name__icontains=self.request.GET['search_subject']))
+            
         context['course'] = course
+        context['course_subjects'] = course_subjects
         context['course_types']=[course[0] for course in COURSE_TYPE]
+        
         return context
 
     def post(self, request, *args, **kwargs):
