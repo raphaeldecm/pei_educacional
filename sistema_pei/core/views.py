@@ -139,7 +139,7 @@ class UsersPageView(TemplateView):
             return HttpResponse(f"Erro ao enviar o e-mail: {e}")
         
 class CoursesPageView(TemplateView):
-    template_name = "pages/courses.html"
+    template_name = "pages/courses/courses.html"
     paginate_by=10
     
     def get_context_data(self, **kwargs):
@@ -190,7 +190,7 @@ class CoursesPageView(TemplateView):
         return context
 
 class CreateCoursesPageView(TemplateView):
-    template_name = "pages/create-course.html"
+    template_name = "pages/courses/create-course.html"
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -231,7 +231,7 @@ class DeleteCourseView(View):
     
     
 class EditCoursePageView(TemplateView):
-    template_name = "pages/edit-course.html"
+    template_name = "pages/courses/edit-course.html"
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
