@@ -368,10 +368,6 @@ class CreateSubjectPageView(TemplateView):
                 "url":"courses"
             },
             {
-                "icon":"images/icons/icon-courses-green.svg",
-                "name":"Matérias",
-            },
-            {
                 "icon":"images/icons/icon-edit-green.svg",
                 "name":"Criar Matéria"
             },
@@ -414,8 +410,8 @@ class EditSubjectPageView(TemplateView):
             },
             {
                 "icon":"images/icons/icon-edit-green.svg",
-                "name":"Editar Curso",
-            }
+                "name":"Editar Matéria"
+            },
         ]
         
         subject_students = subject.students.all() 
