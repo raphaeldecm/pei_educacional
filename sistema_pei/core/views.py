@@ -196,3 +196,31 @@ class DeleteCourseView(View):
         course = get_object_or_404(Courses, id=course_id)
         course.delete()
         return redirect('courses')
+    
+    
+class EditCoursePageView(TemplateView):
+    template_name = "pages/edit-course.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        course_id = self.kwargs.get('course_id')
+        course = get_object_or_404(Courses, id=course_id)
+        context['course'] = course
+        context['course_types']=[course[0] for course in COURSE_TYPE]
+        return context
+
+    def post(self, request, *args, **kwargs):
+        course_id = self.kwargs.get('course_id')
+        course = get_object_or_404(Courses, id=course_id)
+        form = CourseForm(request.POST, instance=course)
+        if form.is_valid():
+            form.save()
+            return redirect('courses')
+        return self.render_to_response(self.get_context_data(form=form))
+    
+    
+class DeleteSubjectView(View):
+    def get(self, request, subject_id):
+        subject = get_object_or_404(Subject, id=subject_id)
+        subject.delete()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

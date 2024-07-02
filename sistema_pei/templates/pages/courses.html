@@ -3,7 +3,6 @@
 <div class="w-full">
   <h1 class="text-[32px] font-medium mb-[38px]">Cursos</h1>
   <form>
-
     <div
       class="mb-[26px] flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2"
     >
@@ -92,12 +91,14 @@
             <td>{{course.period}}</td>
             <td>{{course.course_type}}</td>
             <td class="min-w-[40px] !px-[0px]">
-              <img
-                src="{% static 'images/icons/icon-edit-element.svg' %}"
-                width="24px"
-                height="24px"
-                class="cursor-pointer"
-              />
+              <a href="{% url 'edit_course' course.id %}">
+                <img
+                  src="{% static 'images/icons/icon-edit-element.svg' %}"
+                  width="24px"
+                  height="24px"
+                  class="cursor-pointer"
+                />
+              </a>
             </td>
             <td class="min-w-[40px] !px-[0px]">
               <a href="{% url 'delete_course' course.id %}" onclick="return confirm('Tem certeza que deseja excluir o curso {{ course.name }}?')">

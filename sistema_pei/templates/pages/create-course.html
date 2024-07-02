@@ -62,6 +62,12 @@
         </select>
       </div>
     </div>
+
+    <div>
+      {%for subject in course.subjects%}
+        <h1>{{subject.name}}</h1>
+      {%endfor%}
+    </div>
     
     <button class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer mt-[56px]">
       Cadastrar
