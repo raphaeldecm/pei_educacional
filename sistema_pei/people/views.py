@@ -35,10 +35,29 @@ class StudentCreateView(CreateView):
     success_url = reverse_lazy('student_create')
 
     def form_valid(self, form):
+        student = form.save(commit=False)
+        student.created_by = self.request.user
+        student.updated_by = None
+        student.save()
+
         response = super().form_valid(form)
 
         name_value = form.cleaned_data['name']
         success_message = f'estudante {name_value} cadastrado com sucesso'
         messages.success(self.request, success_message)
+
+        return response
+
+
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+
+        print(f'aqui ============= { form.cleaned_data }')
+        print(f'Erros: { form.errors }')
+
+        # Adiciona mensagens de erro ao contexto da requisição
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(self.request, f'Erro no campo {field}: {error}')
 
         return response

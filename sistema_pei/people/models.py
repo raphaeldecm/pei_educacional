@@ -7,6 +7,7 @@ from sistema_pei.core import constants
 from sistema_pei.core.models import BaseModel
 from sistema_pei.core.models import get_sentinel_user
 
+
 from .constants import EDUCATIONAL_NECESSITIES_CHOICES
 
 User = get_user_model()
@@ -117,6 +118,12 @@ class Student(Person):
 
     specific_necessities = models.TextField(verbose_name=_("Necessidades específicas"))
 
+    course = models.ForeignKey(
+        'academics.Courses',
+        on_delete=models.PROTECT,
+        verbose_name=_("Curso"),
+        related_name="students",
+    )
     class Meta:
         verbose_name = _("Discente")
         verbose_name_plural = _("Discentes")
