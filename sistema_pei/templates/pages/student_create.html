@@ -4,15 +4,15 @@
 {% load static %}
 
 {% block content %}
-  <div class="w-10/12 border p-8 rounded-lg">
+  <div class="w-10/12 mt-10">
     <h2 class="font-sans text-slate-900 text-3xl font-medium">Cadastrar Aluno</h2>
     <form action="{% url 'student_create' %}" method="post" enctype="multipart/form-data" class="mt-10 grid grid-cols-2 gap-8">
         {% csrf_token %}
 
         <!-- Campo image -->
-        <div class="mb-4 col-span-2 flex flex-col items-center">
+        <div class="mb-4 col-span-2 flex flex-col items-center gap-4">
 
-          <img id="profileImage" src="" alt="imagem de perfil" class="h-40 w-40 rounded-full bg-green-200 object-cover text-transparent">
+          <img id="profileImage" src="{% static 'images/img/boy_user-profile.svg' %}" alt="imagem de perfil" class="h-40 w-40 rounded-full bg-transparent border object-cover text-transparent">
 
           <label for="{{ form.image.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
             Imagem de Perfil
@@ -87,14 +87,17 @@
           <label for="{{ form.responsible_person.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
             Responsável
           </label>
+
           <select id="{{ form.responsible_person.id_for_label }}"
                   name="{{ form.responsible_person.name }}"
                   class="bg-transparent font-sans appearance-none border rounded-lg h-11 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
           >
-              {% for choice in form.responsible_person.field.choices %}
-                  <option value="{{ choice.0 }}" {% if choice.0 == form.responsible_person.value %}selected{% endif %}>{{ choice.1 }}</option>
-              {% endfor %}
+
+            {% for value, label in form.responsible_person.field.choices %}
+              <option value="{{ value }}" {% if value|stringformat:"s" == form.responsible_person.value %} selected {% endif %}>{{ label }}</option>
+            {% endfor %}
           </select>
+
           {% if form.responsible.errors %}
             <ul class="list-disc p-2">
               {% for error in form.responsible.errors %}
@@ -148,27 +151,29 @@
           {% endif %}
       </div>
 
-            <!-- Campo course -->
-            <div class="mb-4">
-              <label for="{{ form.course.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
-                Curso
-              </label>
-              <select id="{{ form.course.id_for_label }}"
-                      name="{{ form.course.name }}"
-                      class="bg-transparent font-sans appearance-none border rounded-lg h-11 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
-              >
-                  {% for choice in form.course.field.choices %}
-                    <option class="hover:bg-green-100" value="{{ choice.0 }}" {% if choice.0 in form.course.value %}selected{% endif %}>{{ choice.1 }}</option>
-                  {% endfor %}
-              </select>
-              {% if form.course.errors %}
-                <ul class="list-disc p-2">
-                  {% for error in form.course.errors %}
-                    <li class="text-red-500 ml-2">{{ error }}</li>
-                  {% endfor %}
-                </ul>
-              {% endif %}
-            </div>
+      <!-- Campo course -->
+      <div class="mb-4">
+        <label for="{{ form.course.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
+          Curso
+        </label>
+
+        <select id="{{ form.course.id_for_label }}"
+                name="{{ form.course.name }}"
+                class="bg-transparent font-sans appearance-none border rounded-lg h-11 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
+        >
+            {% for value, label in form.course.field.choices %}
+              <option value="{{ value }}" {% if value|stringformat:"s" == form.course.value %} selected {% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+
+        {% if form.course.errors %}
+          <ul class="list-disc p-2">
+            {% for error in form.course.errors %}
+              <li class="text-red-500 ml-2">{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
 
       <hr class="col-span-2">
 
@@ -177,14 +182,25 @@
         <label for="{{ form.educational_necessities.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
           Necessidades especiais especificas
         </label>
+
+        <p class="my-4 font-sans text-slate-400">
+          Selecione uma ou mais opções pressionando 'Ctrl' (ou 'Cmd' no Mac) e clicando nos itens desejados. Você também pode arrastar o mouse para selecionar um grupo de opções consecutivas.
+        </p>
+
         <select id="{{ form.educational_necessities.id_for_label }}"
                 name="{{ form.educational_necessities.name }}" multiple
                 class="indeterminate:bg-gray-300 bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
         >
-            {% for choice in form.educational_necessities.field.choices %}
-                <option class="hover:bg-green-100" value="{{ choice.0 }}" {% if choice.0 in form.educational_necessities.value %}selected{% endif %}>{{ choice.1 }}</option>
+            {% for value, label in form.educational_necessities.field.choices %}
+                <option class="hover:bg-green-100" value="{{ value }}" {% if value|stringformat:"s" in form.educational_necessities.value %}selected{% endif %}>{{ label }}</option>
             {% endfor %}
+
+            {% for value, label in form.course.field.choices %}
+              <option value="{{ value }}" {% if value|stringformat:"s" == form.course.value %} selected {% endif %}>{{ label }}</option>
+            {% endfor %}
+
         </select>
+
         {% if form.educational_necessities.errors %}
           <ul class="list-disc p-2">
             {% for error in form.educational_necessities.errors %}
@@ -344,5 +360,8 @@
         reader.readAsDataURL(file);
     }
 }
+
+
+
 </script>
 {% endblock inline_javascript %}

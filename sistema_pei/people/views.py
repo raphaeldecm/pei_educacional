@@ -52,12 +52,7 @@ class StudentCreateView(CreateView):
     def form_invalid(self, form):
         response = super().form_invalid(form)
 
-        print(f'aqui ============= { form.cleaned_data }')
-        print(f'Erros: { form.errors }')
-
-        # Adiciona mensagens de erro ao contexto da requisição
-        for field, errors in form.errors.items():
-            for error in errors:
-                messages.error(self.request, f'Erro no campo {field}: {error}')
+        error_message = f'Erro ao cadastrar usuario!'
+        messages.error(self.request, error_message)
 
         return response
