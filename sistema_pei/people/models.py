@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from sistema_pei.core import constants
 from sistema_pei.core.models import BaseModel
 from sistema_pei.core.models import get_sentinel_user
+from django.core.exceptions import ValidationError
 
 
 from .constants import EDUCATIONAL_NECESSITIES_CHOICES
@@ -67,18 +68,6 @@ class SpecificNecessitie(BaseModel):
 
 
 class Student(Person):
-    class Series(models.IntegerChoices):
-        YEAR1 = 1, _("1° Ano")
-        YEAR2 = 2, _("2° Ano")
-        YEAR3 = 3, _("3° Ano")
-        YEAR4 = 4, _("4° Ano")
-
-    serie = models.PositiveSmallIntegerField(
-        verbose_name=_("Série"),
-        choices=Series.choices,
-        validators=[validators.MinValueValidator(1), validators.MaxValueValidator(4)],
-    )
-
     responsible_person = models.ForeignKey(
         Responsible,
         verbose_name=_("Responsável"),
@@ -124,12 +113,18 @@ class Student(Person):
         verbose_name=_("Curso"),
         related_name="students",
     )
+
+    reference_period = models.PositiveSmallIntegerField(
+        verbose_name=_("Período de Referência"),
+    )
+
     class Meta:
         verbose_name = _("Discente")
         verbose_name_plural = _("Discentes")
 
     def __str__(self):
         return self.name
+
 
 
 class Notification(BaseModel):

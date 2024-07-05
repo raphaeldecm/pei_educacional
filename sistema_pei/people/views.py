@@ -7,7 +7,7 @@ from sistema_pei.people.models import User, Student
 from django.views.generic.edit import CreateView
 from django.contrib import messages
 
-from .forms import StudentForm
+from .forms import ViewStudentForm
 
 def activate_account(request, uidb64, token):
     try:
@@ -30,7 +30,7 @@ def activate_account(request, uidb64, token):
 
 class StudentCreateView(CreateView):
     model = Student
-    form_class = StudentForm
+    form_class = ViewStudentForm
     template_name = 'pages/student_create.html'
     success_url = reverse_lazy('student_create')
 

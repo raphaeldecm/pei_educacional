@@ -107,23 +107,25 @@
         {% endif %}
       </div>
 
-      <!-- Campo serie -->
+      <!-- Campo course -->
       <div class="mb-4">
-          <label for="{{ form.serie.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
-            Série
-          </label>
-          <select id="{{ form.serie.id_for_label }}"
-                  name="{{ form.serie.name }}"
-                  class="bg-transparent font-sans appearance-none border rounded-lg h-11 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
-          >
-              {% for choice in form.serie.field.choices %}
-                  <option value="{{ choice.0 }}" {% if choice.0 == form.serie.value %}selected{% endif %}>{{ choice.1 }}</option>
-              {% endfor %}
-          </select>
-        {% if form.serie.errors %}
+        <label for="{{ form.course.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
+          Curso
+        </label>
+
+        <select id="{{ form.course.id_for_label }}"
+                name="{{ form.course.name }}"
+                class="bg-transparent font-sans appearance-none border rounded-lg h-11 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
+        >
+            {% for value, label in form.course.field.choices %}
+              <option value="{{ value }}" {% if value|stringformat:"s" == form.course.value %} selected {% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+
+        {% if form.course.errors %}
           <ul class="list-disc p-2">
-            {% for error in form.serie.errors %}
-              <li class="text-red-500 ml-2" >{{ error }}</li>
+            {% for error in form.course.errors %}
+              <li class="text-red-500 ml-2">{{ error }}</li>
             {% endfor %}
           </ul>
         {% endif %}
@@ -151,29 +153,26 @@
           {% endif %}
       </div>
 
-      <!-- Campo course -->
       <div class="mb-4">
-        <label for="{{ form.course.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
-          Curso
+        <label for="{{ form.reference_period.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
+          Período de Referência (Periodo atual do aluno)
         </label>
-
-        <select id="{{ form.course.id_for_label }}"
-                name="{{ form.course.name }}"
-                class="bg-transparent font-sans appearance-none border rounded-lg h-11 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
-        >
-            {% for value, label in form.course.field.choices %}
-              <option value="{{ value }}" {% if value|stringformat:"s" == form.course.value %} selected {% endif %}>{{ label }}</option>
-            {% endfor %}
-        </select>
-
-        {% if form.course.errors %}
+        <input type="number"
+                id="{{ form.reference_period.id_for_label }}"
+                name="{{ form.reference_period.name }}"
+                value="{{ form.reference_period.value|default_if_none:'' }}"
+                placeholder="Ex: 4"
+                min="1"
+                class="bg-transparent font-sans appearance-none border rounded-lg w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
+                />
+        {% if form.reference_period.errors %}
           <ul class="list-disc p-2">
-            {% for error in form.course.errors %}
-              <li class="text-red-500 ml-2">{{ error }}</li>
+            {% for error in form.reference_period.errors %}
+              <li class="text-red-500 ml-2" >{{ error }}</li>
             {% endfor %}
-          </ul>
+                </ul>
         {% endif %}
-      </div>
+    </div>
 
       <hr class="col-span-2">
 
@@ -287,9 +286,9 @@
                     placeholder="Escreva aqui!"
                     class="bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
           >{{ form.general_necessitie.value|default_if_none:'' }}</textarea>
-          {% if form.serie.errors %}
+          {% if form.general_necessitie.errors %}
             <ul class="list-disc p-2">
-              {% for error in form.serie.errors %}
+              {% for error in form.general_necessitie.errors %}
                 <li class="text-red-500 ml-2" >{{ error }}</li>
               {% endfor %}
             </ul>
@@ -316,7 +315,7 @@
         {% endif %}
       </div>
 
-      <!-- Campo creation_reasons -->
+        <!-- Campo creation_reasons -->
       <div class="mb-4 col-span-2">
         <label for="{{ form.creation_reasons.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
           Motivos para a criação do PEI/ Adaptações
@@ -327,14 +326,15 @@
                   class="bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
                   >{{ form.creation_reasons.value|default_if_none:'' }}</textarea>
 
-      {% if form.creation_reasons.errors %}
-        <ul class="list-disc p-2">
-          {% for error in form.creation_reasons.errors %}
-            <li class="text-red-500 ml-2" >{{ error }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    </div>
+        {% if form.creation_reasons.errors %}
+          <ul class="list-disc p-2">
+            {% for error in form.creation_reasons.errors %}
+              <li class="text-red-500 ml-2" >{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+
 
       <button type="submit" class="col-span-2 font-sans bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded transition duration-300 ease-in-out">
         Salvar

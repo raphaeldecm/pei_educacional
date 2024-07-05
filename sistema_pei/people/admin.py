@@ -1,5 +1,7 @@
 from django.contrib import admin
 
+from sistema_pei.people.forms import AdminStudentForm
+
 # Register your models here.
 from . import models
 
@@ -22,9 +24,15 @@ class SpecificNecessitieAdmin(admin.ModelAdmin):
 
 
 class StudentAdmin(admin.ModelAdmin):
+    form = AdminStudentForm
     search_fields = ["name"]
     readonly_fields = ["updated_by", "created_at"]
     list_display = ["name", "email", "responsible_person"]
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            obj.updated_by = request.user
+        obj.save()
 
 
 class NotificationAdmin(admin.ModelAdmin):
