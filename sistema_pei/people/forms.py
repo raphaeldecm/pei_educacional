@@ -1,8 +1,6 @@
 from django import forms
-from .models import Student, StudentFile
+from .models import Student
 from django.core.exceptions import ValidationError
-from django.utils.safestring import mark_safe
-
 
 class MultipleFileInput(forms.FileInput):
     allow_multiple_selected = True
@@ -58,3 +56,15 @@ class ViewStudentForm(AdminStudentForm):
 
     class Meta(AdminStudentForm.Meta):
         exclude = ('created_by', 'updated_by')
+
+    def clean_files(self):
+        files = self.cleaned_data.get('files', [])
+        allowed_extensions = ['.pdf', '.doc', '.docx', '.jpg', '.jpeg', '.png', '.xlsx', '.xls']
+
+        for file in files:
+            if not any(file.name.lower().endswith(ext) for ext in allowed_extensions):
+                raise ValidationError(
+                    f"Arquivo {file.name} possuia uma extensão não suportada. As extensões suportadas são: {', '.join(allowed_extensions)}"
+                )
+
+        return files

@@ -215,6 +215,14 @@
                   </button>
               </div>
           </div>
+
+          {% if form.files.errors %}
+          <ul class="list-disc p-2">
+            {% for error in form.files.errors %}
+              <li class="text-red-500 ml-2" >{{ error }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
       </div>
 
       <hr class="col-span-2">

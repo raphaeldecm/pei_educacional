@@ -55,9 +55,20 @@ class StudentCreateView(CreateView):
 
 
     def form_invalid(self, form):
-        response = super().form_invalid(form)
+        # Armazenar temporariamente os caminhos das imagens em caso de erro
+        uploaded_images = []
+        for key, value in self.request.FILES.items():
+            if isinstance(value, list):
+                for file in value:
+                    if hasattr(file, 'temporary_file_path'):
+                        uploaded_images.append(file.temporary_file_path())
+            elif hasattr(value, 'temporary_file_path'):
+                uploaded_images.append(value.temporary_file_path())
 
-        error_message = f'Erro ao cadastrar usuario!'
+        # Adicionar mensagem de erro
+        error_message = f'Ocorreu um erro ao cadastrar o estudante.'
         messages.error(self.request, error_message)
 
-        return response
+        # Passar os caminhos das imagens e o formulário de volta para o contexto
+        context = self.get_context_data(form=form, uploaded_images=uploaded_images)
+        return self.render_to_response(context)
