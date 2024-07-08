@@ -1,0 +1,21 @@
+{% load static %}
+
+<div class="flex gap-[16px] mb-[30px]">
+    {% for item in breadcrumbs_data%}
+        {% if not forloop.first %}
+        <img
+            src="{% static 'images/icons/icon-breadcrumbs-arrow.svg' %}"
+            width="10px"
+            height="20px"
+        />
+        {%endif%}
+        <a href="{%if item.url%}{% url item.url%}{%else%}#{%endif%}" class="flex gap-[10px] font-medium text-[16px] text-green-500">
+            <img
+                src="{% static item.icon %}"
+                width="19px"
+                height="19px"
+            />
+            <p>{{item.name}}</p>
+        </a>
+    {%endfor%}
+</div>
