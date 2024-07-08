@@ -1,6 +1,24 @@
 from django import forms
-from .models import Student
+from .models import Student, StudentFile
 from django.core.exceptions import ValidationError
+from django.utils.safestring import mark_safe
+
+
+class MultipleFileInput(forms.FileInput):
+    allow_multiple_selected = True
+
+class MultipleFileField(forms.FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("widget", MultipleFileInput())
+        super().__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        single_file_clean = super().clean
+        if isinstance(data, (list, tuple)):
+            result = [single_file_clean(d, initial) for d in data]
+        else:
+            result = [single_file_clean(data, initial)]
+        return result
 
 class AdminStudentForm(forms.ModelForm):
     """
@@ -11,9 +29,10 @@ class AdminStudentForm(forms.ModelForm):
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):
-            super(AdminStudentForm, self).__init__(*args, **kwargs)
-            self.fields['responsible_person'].empty_label = "Selecione um responsável..."
-            self.fields['course'].empty_label = "Selecione um curso..."
+        super(AdminStudentForm, self).__init__(*args, **kwargs)
+        self.fields['responsible_person'].empty_label = "Selecione um responsável..."
+        self.fields['course'].empty_label = "Selecione um curso..."
+
 
     def clean_reference_period(self):
         reference_period = self.cleaned_data.get('reference_period')
@@ -32,6 +51,10 @@ class ViewStudentForm(AdminStudentForm):
     """
     Formulário para ser usado no Template de cadastro do aluno.
     Os campos 'created_by', 'updated_by' devem ser atualizados na view.
+    Files: Anexos do estudante.
     """
+
+    files = MultipleFileField(required=False)
+
     class Meta(AdminStudentForm.Meta):
         exclude = ('created_by', 'updated_by')

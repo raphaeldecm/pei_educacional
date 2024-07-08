@@ -79,7 +79,6 @@ class Student(Person):
     registration = models.CharField(
         verbose_name=_("Matrícula"),
         max_length=constants.SMALL_CHAR_FIELD_NAME_LENGTH,
-        blank=True,
     )
 
     personal_history = models.TextField(verbose_name=_("Histórico"))
@@ -88,10 +87,12 @@ class Student(Person):
 
     general_necessitie = models.TextField(
         verbose_name=_("Outras necessidades educacionais específicas do(a) estudante"),
+        blank=True,
     )
 
     creation_reasons = models.TextField(
         verbose_name=_("Motivos para a criação do PEI/ Adaptações"),
+        blank=True,
     )
 
     educational_necessities = models.ManyToManyField(
@@ -101,11 +102,18 @@ class Student(Person):
 
     abilities = models.TextField(
         verbose_name=_("Conhecimentos, Habilidades,Capacidades e Interesses"),
+        blank=True,
     )
 
-    dificulties = models.TextField(verbose_name=_("Dificuldades"))
+    dificulties = models.TextField(
+        verbose_name=_("Dificuldades"),
+        blank=True,
+    )
 
-    specific_necessities = models.TextField(verbose_name=_("Necessidades específicas"))
+    specific_necessities = models.TextField(
+        verbose_name=_("Necessidades específicas"),
+        blank=True,
+    )
 
     course = models.ForeignKey(
         'academics.Courses',
@@ -125,7 +133,21 @@ class Student(Person):
     def __str__(self):
         return self.name
 
+class StudentFile(models.Model):
+    student = models.ForeignKey(
+        'Student',
+        on_delete=models.CASCADE,
+        related_name='files'
+    )
+    file = models.FileField(upload_to='student_files/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        verbose_name = _("Anexo")
+        verbose_name_plural = _("Anexos")
+
+    def __str__(self):
+        return f"Anexo de {self.student.name}"
 
 class Notification(BaseModel):
     class Type(models.TextChoices):
@@ -151,3 +173,4 @@ class Notification(BaseModel):
 
     def __str__(self) -> str:
         return super().__str__()
+

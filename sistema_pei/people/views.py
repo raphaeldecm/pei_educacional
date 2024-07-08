@@ -3,7 +3,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.urls import reverse_lazy
 from django.utils.http import urlsafe_base64_decode
 from django.shortcuts import render, redirect
-from sistema_pei.people.models import User, Student
+from sistema_pei.people.models import User, Student, StudentFile
 from django.views.generic.edit import CreateView
 from django.contrib import messages
 
@@ -39,6 +39,11 @@ class StudentCreateView(CreateView):
         student.created_by = self.request.user
         student.updated_by = None
         student.save()
+
+        files = form.cleaned_data.get('files')
+        if files:
+            for file in files:
+                StudentFile.objects.create(student=student, file=file)
 
         response = super().form_valid(form)
 

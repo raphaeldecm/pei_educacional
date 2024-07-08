@@ -34,6 +34,10 @@ class StudentAdmin(admin.ModelAdmin):
             obj.updated_by = request.user
         obj.save()
 
+class StudentFileAdmin(admin.ModelAdmin):
+    search_fields = ['student__name', 'file']
+    readonly_fields = ['uploaded_at']
+    list_display = ['student', 'file', 'uploaded_at']
 
 class NotificationAdmin(admin.ModelAdmin):
     search_fields = ["title"]
@@ -45,4 +49,5 @@ admin.site.register(models.Teacher, TeacherAdmin)
 admin.site.register(models.Responsible, ResponsibleAdmin)
 admin.site.register(models.SpecificNecessitie, SpecificNecessitieAdmin)
 admin.site.register(models.Student, StudentAdmin)
+admin.site.register(models.StudentFile, StudentFileAdmin)
 admin.site.register(models.Notification, NotificationAdmin)
