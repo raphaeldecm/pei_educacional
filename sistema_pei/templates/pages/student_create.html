@@ -22,6 +22,7 @@
                 name="{{ form.image.name }}"
                 accept="image/png, image/jpeg"
                 onchange="previewImage(event)"
+                required
                 class="font-sans text-slate-900 block file:cursor-pointer text-sm
                 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold
                 file:bg-green-200 file:text-green-700 hover:file:bg-green-300"
@@ -47,6 +48,7 @@
                   name="{{ form.name.name }}"
                   value="{{ form.name.value|default_if_none:'' }}"
                   placeholder="Jõao doria da silva"
+                  required
                   class="bg-transparent font-sans appearance-none border rounded-lg w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
           />
           {% if form.name.errors %}
@@ -68,6 +70,7 @@
                   name="{{ form.email.name }}"
                   value="{{ form.email.value|default_if_none:'' }}"
                   placeholder="Ex: exemplo@gmail.com"
+                  required
                   class="bg-transparent font-sans appearance-none border rounded-lg w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
           />
           {% if form.email.errors %}
@@ -121,6 +124,7 @@
         <div class="relative">
             <select id="{{ form.course.id_for_label }}"
                     name="{{ form.course.name }}"
+                    required
                     class="bg-transparent font-sans appearance-none border rounded-lg h-11 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
             >
               {% for value, label in form.course.field.choices %}
@@ -156,6 +160,7 @@
                   value="{{ form.registration.value|default_if_none:'' }}"
                   placeholder="Ex: 2022019505020"
                   min="1"
+                  required
                   class="bg-transparent font-sans appearance-none border rounded-lg w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
                   />
           {% if form.registration.errors %}
@@ -177,6 +182,7 @@
                 value="{{ form.reference_period.value|default_if_none:'' }}"
                 placeholder="Ex: 4"
                 min="1"
+                required
                 class="bg-transparent font-sans appearance-none border rounded-lg w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
                 />
         {% if form.reference_period.errors %}
@@ -238,7 +244,9 @@
         </p>
 
         <select id="{{ form.educational_necessities.id_for_label }}"
-                name="{{ form.educational_necessities.name }}" multiple
+                name="{{ form.educational_necessities.name }}"
+                multiple
+                required
                 class="indeterminate:bg-gray-300 bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
         >
           {% for value, label in form.educational_necessities.field.choices %}
@@ -266,6 +274,7 @@
           <textarea id="{{ form.personal_history.id_for_label }}"
                     name="{{ form.personal_history.name }}"
                     placeholder="Escreva aqui!"
+                    required
                     class="bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
           >{{ form.personal_history.value|default_if_none:'' }}</textarea>
           {% if form.personal_history.errors %}

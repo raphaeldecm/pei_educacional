@@ -41,7 +41,10 @@ urlpatterns = [
     path("users/", include("sistema_pei.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     path('activate/<uidb64>/<token>/', activate_account, name='activate'),
-    path('student/create/', StudentCreateView.as_view(), name='student_create'),
+    path(
+        'student/create/',
+        login_required(StudentCreateView.as_view()),
+        name='student_create'),
     # JWT
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
