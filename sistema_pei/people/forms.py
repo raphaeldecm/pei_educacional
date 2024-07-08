@@ -28,7 +28,6 @@ class AdminStudentForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(AdminStudentForm, self).__init__(*args, **kwargs)
-        self.fields['responsible_person'].empty_label = "Selecione um responsável..."
         self.fields['course'].empty_label = "Selecione um curso..."
 
 

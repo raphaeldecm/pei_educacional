@@ -43,16 +43,6 @@ class Teacher(Person):
     def __str__(self):
         return self.name
 
-
-class Responsible(Person):
-    class Meta:
-        verbose_name = _("Responsável")
-        verbose_name_plural = _("Responsáveis")
-
-    def __str__(self):
-        return self.name
-
-
 class SpecificNecessitie(BaseModel):
     name = models.CharField(
         verbose_name=_("Nome"),
@@ -68,14 +58,6 @@ class SpecificNecessitie(BaseModel):
 
 
 class Student(Person):
-    responsible_person = models.ForeignKey(
-        Responsible,
-        verbose_name=_("Responsável"),
-        on_delete=models.SET_NULL,
-        null=True,
-        related_name="students",
-    )
-
     registration = models.CharField(
         verbose_name=_("Matrícula"),
         max_length=constants.SMALL_CHAR_FIELD_NAME_LENGTH,
@@ -126,6 +108,10 @@ class Student(Person):
         verbose_name=_("Período de Referência"),
     )
 
+    sectors = models.ManyToManyField(
+        'users.Sector',
+        verbose_name=_("Setores"),
+    )
     class Meta:
         verbose_name = _("Discente")
         verbose_name_plural = _("Discentes")

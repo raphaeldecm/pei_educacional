@@ -82,39 +82,6 @@
         {% endif %}
       </div>
 
-        <!-- Campo responsible_person -->
-      <div class="mb-4 mini:col-span-2 md:col-span-1">
-        <label for="{{ form.responsible_person.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
-          Responsável
-        </label>
-
-        <div class="relative">
-          <select id="{{ form.responsible_person.id_for_label }}"
-                  name="{{ form.responsible_person.name }}"
-                  class="bg-transparent font-sans appearance-none border rounded-lg h-11 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
-          >
-            {% for value, label in form.responsible_person.field.choices %}
-              <option value="{{ value }}" {% if value|stringformat:"s" == form.responsible_person.value %} selected {% endif %}>{{ label }}</option>
-            {% endfor %}
-          </select>
-
-          <img class="absolute top-[12px] right-[10px]"
-              src="{% static 'images/icons/icon-updown-arrow.svg' %}"
-              width="24px"
-              height="24px"
-          />
-        </div>
-
-
-        {% if form.responsible.errors %}
-            <ul class="list-disc p-2">
-              {% for error in form.responsible.errors %}
-                <li class="text-red-500 ml-2" >{{ error }}</li>
-              {% endfor %}
-            </ul>
-        {% endif %}
-      </div>
-
       <!-- Campo course -->
       <div class="mb-4 mini:col-span-2 md:col-span-1">
         <label for="{{ form.course.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
@@ -194,41 +161,35 @@
         {% endif %}
       </div>
 
-      <hr class="col-span-2">
+      <!-- Campo responsible_person -->
+      <div class="mb-4 col-span-2">
+        <label for="{{ form.sectors.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
+          Equipe multe proficional responsavel
+        </label>
 
-      <div class="col-span-2">
-          <label class="font-sans font-medium text-lg text-ls block mb-4">
-            Anexos
-          </label>
+        <p class="my-4 font-sans text-slate-400">
+          Selecione uma ou mais opções pressionando 'Ctrl' (ou 'Cmd' no Mac) e clicando nos itens desejados. Você também pode arrastar o mouse para selecionar um grupo de opções consecutivas.
+        </p>
 
-          <div class="w-full">
-              <div id="file-list" class="my-4 space-y-2"></div>
+        <select id="{{ form.sectors.id_for_label }}"
+                name="{{ form.sectors.name }}"
+                multiple
+                required
+                class="indeterminate:bg-gray-300 bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
+        >
+          {% for value, label in form.sectors.field.choices %}
+              <option class="hover:bg-green-100" value="{{ value }}" {% if value|stringformat:"s" in form.sectors.value %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
 
-              <div>
-                  <input id="{{ form.files.id_for_label }}"
-                        name="{{ form.files.name }}"
-                        type="file"
-                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls"
-                        multiple
-                        class="hidden"
-                  >
 
-                  <button type="button" id="add-files-button"
-                          class="flex gap-2 bg-transparent font-sans appearance-none border rounded w-full py-6 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
-                  >
-                    <img src="{% static 'images/icons/clip_icon.svg' %}" alt="icone de clip de papel, representa um arquivo anexado">
-                    Escolha o anexo
-                  </button>
-              </div>
-          </div>
-
-          {% if form.files.errors %}
-          <ul class="list-disc p-2">
-            {% for error in form.files.errors %}
-              <li class="text-red-500 ml-2" >{{ error }}</li>
-            {% endfor %}
-          </ul>
-          {% endif %}
+        {% if form.sectors.errors %}
+            <ul class="list-disc p-2">
+              {% for error in form.sectors.errors %}
+                <li class="text-red-500 ml-2" >{{ error }}</li>
+              {% endfor %}
+            </ul>
+        {% endif %}
       </div>
 
       <hr class="col-span-2">
@@ -266,6 +227,42 @@
 
       <hr class="col-span-2">
 
+      <div class="col-span-2">
+        <label class="font-sans font-medium text-lg text-ls block mb-4">
+          Anexos
+        </label>
+
+        <div class="w-full">
+            <div id="file-list" class="my-4 space-y-2"></div>
+
+            <div>
+                <input id="{{ form.files.id_for_label }}"
+                      name="{{ form.files.name }}"
+                      type="file"
+                      accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls"
+                      multiple
+                      class="hidden"
+                >
+
+                <button type="button" id="add-files-button"
+                        class="flex gap-2 bg-transparent font-sans appearance-none border rounded w-full py-6 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
+                >
+                  <img src="{% static 'images/icons/clip_icon.svg' %}" alt="icone de clip de papel, representa um arquivo anexado">
+                  Escolha o anexo
+                </button>
+            </div>
+        </div>
+
+        {% if form.files.errors %}
+        <ul class="list-disc p-2">
+          {% for error in form.files.errors %}
+            <li class="text-red-500 ml-2" >{{ error }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
+    <hr class="col-span-2">
       <!-- Campo personal_history -->
       <div class="mb-4 col-span-2">
           <label for="{{ form.personal_history.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
