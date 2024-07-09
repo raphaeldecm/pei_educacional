@@ -11,14 +11,14 @@ from django.contrib.auth.decorators import login_required
 from drf_spectacular.views import SpectacularAPIView
 from drf_spectacular.views import SpectacularSwaggerView
 from rest_framework.authtoken.views import obtain_auth_token
-from sistema_pei.people.views import activate_account
+from sistema_pei.people.views import activate_account, StudentCreateView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
     TokenVerifyView,
 )
 
-from sistema_pei.core.views import HomePageView, UsersPageView
+from sistema_pei.core.views import CoursesPageView, CreateCoursesPageView, DeleteCourseView, DeleteSubjectView, EditCoursePageView, HomePageView, UsersPageView
 urlpatterns = [
     path(
         "",
@@ -31,6 +31,31 @@ urlpatterns = [
         name="users",
     ),
     path(
+        "courses/",
+        login_required(CoursesPageView.as_view()),
+        name="courses",
+    ),
+    path(
+        "courses/create",
+        login_required(CreateCoursesPageView.as_view()),
+        name="create_course",
+    ),
+    path(
+        "courses/edit/<int:course_id>",
+        login_required(EditCoursePageView.as_view()),
+        name="edit_course",
+    ),
+    path(
+        "courses/delete/<int:course_id>",
+        login_required(DeleteCourseView.as_view()),
+        name="delete_course",
+    ),
+    path(
+        "subjects/delete/<int:subject_id>",
+        login_required(DeleteSubjectView.as_view()),
+        name="delete_subject",
+    ),
+    path(
         "about/",
         TemplateView.as_view(template_name="pages/about.html"),
         name="about",
@@ -41,6 +66,10 @@ urlpatterns = [
     path("users/", include("sistema_pei.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     path('activate/<uidb64>/<token>/', activate_account, name='activate'),
+    path(
+        'student/create/',
+        login_required(StudentCreateView.as_view()),
+        name='student_create'),
     # JWT
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
