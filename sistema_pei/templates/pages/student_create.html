@@ -15,7 +15,7 @@
         <img id="profileImage" src="{% static 'images/img/boy_user-profile.svg' %}" alt="imagem de perfil" class="h-40 w-40 rounded-full bg-transparent border object-cover text-transparent">
 
         <label for="{{ form.image.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
-          Foto do aluno
+          Foto do aluno <span class="text-red-500">*</span>
         </label>
         <input type="file"
                 id="{{ form.image.id_for_label }}"
@@ -41,7 +41,7 @@
       <!-- Campo name -->
       <div class="mb-4 mini:col-span-2 md:col-span-1">
           <label for="{{ form.name.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
-            Nome
+            Nome <span class="text-red-500">*</span>
           </label>
           <input type="text"
                   id="{{ form.name.id_for_label }}"
@@ -63,7 +63,7 @@
       <!-- Campo email -->
       <div class="mb-4 mini:col-span-2 md:col-span-1">
           <label for="{{ form.email.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
-            E-mail
+            E-mail <span class="text-red-500">*</span>
           </label>
           <input type="email"
                   id="{{ form.email.id_for_label }}"
@@ -85,7 +85,7 @@
       <!-- Campo course -->
       <div class="mb-4 mini:col-span-2 md:col-span-1">
         <label for="{{ form.course.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
-          Curso
+          Curso <span class="text-red-500">*</span>
         </label>
 
         <div class="relative">
@@ -123,7 +123,7 @@
       <!-- Campo registration -->
       <div class="mb-4 mini:col-span-2 md:col-span-1">
           <label for="{{ form.registration.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
-            Matrícula
+            Matrícula <span class="text-red-500">*</span>
           </label>
           <input type="number"
                   id="{{ form.registration.id_for_label }}"
@@ -145,7 +145,7 @@
 
       <div class="mb-4 mini:col-span-2 md:col-span-1">
         <label for="{{ form.reference_period.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
-          Período de Referência (Periodo atual do aluno)
+          Período de Referência (Periodo atual do aluno) <span class="text-red-500">*</span>
         </label>
         <input type="number"
                 id="{{ form.reference_period.id_for_label }}"
@@ -168,7 +168,7 @@
       <!-- Campo responsible_person -->
       <div class="mb-4 col-span-2">
         <label for="{{ form.sectors.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
-          Equipe multe proficional responsavel
+          Equipe multe proficional responsavel <span class="text-red-500">*</span>
         </label>
 
         <p class="my-4 font-sans text-slate-400">
@@ -201,7 +201,7 @@
       <!-- Campo educational_necessities -->
       <div class="mb-4 col-span-2">
         <label for="{{ form.educational_necessities.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
-          Necessidades especiais especificas
+          Necessidades especiais especificas <span class="text-red-500">*</span>
         </label>
 
         <p class="my-4 font-sans text-slate-400">
@@ -270,7 +270,7 @@
       <!-- Campo personal_history -->
       <div class="mb-4 col-span-2">
           <label for="{{ form.personal_history.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
-            Histórico
+            Histórico <span class="text-red-500">*</span>
           </label>
           <textarea id="{{ form.personal_history.id_for_label }}"
                     name="{{ form.personal_history.name }}"
