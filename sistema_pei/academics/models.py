@@ -70,3 +70,4 @@ class Subject(BaseModel):
 
     def __str__(self):
         return self.name + " - " + self.course.name
+
