@@ -22,7 +22,7 @@ from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.academics.models import Courses, Subject
 from sistema_pei.core.forms import CourseForm, SubjectForm
 from sistema_pei.educational_plan.models import Pei
-from sistema_pei.people.models import Teacher, User
+from sistema_pei.people.models import Student, Teacher, User
 from django.contrib.auth.models import Group
 
 from sistema_pei.users.models import Sector
@@ -229,6 +229,15 @@ class DeleteCourseView(View):
         course = get_object_or_404(Courses, id=course_id)
         course.delete()
         return redirect('courses')
+    
+    
+class RemoveStudentFromSubjectView(View):
+    def get(self, request, subject_id, student_id):
+        subject = get_object_or_404(Subject, id=subject_id)
+        student = get_object_or_404(Student, id=student_id)
+        subject.students.remove(student)
+        return redirect(f'/subjects/edit/{subject.id}')
+    
     
     
 class EditCoursePageView(TemplateView):
