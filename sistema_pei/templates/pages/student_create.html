@@ -94,9 +94,13 @@
                     required
                     class="bg-transparent font-sans appearance-none border rounded-lg h-11 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
             >
-              {% for value, label in form.course.field.choices %}
+            {% for value, label in form.course.field.choices %}
+              {% if forloop.first %}
+                <option value="{{ value }}" disabled selected>{{ label }}</option>
+              {% else %}
                 <option value="{{ value }}" {% if value|stringformat:"s" == form.course.value %} selected {% endif %}>{{ label }}</option>
-              {% endfor %}
+              {% endif %}
+            {% endfor %}
             </select>
 
           <img class="absolute top-[12px] right-[10px]"

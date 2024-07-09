@@ -4,4 +4,4 @@ from django import forms
 class CourseForm(forms.ModelForm):
     class Meta:
         model = Courses
-        fields = ['name', 'period', 'course_type']
+        fields = ['name', 'period', 'course_type', 'number_of_periods']
