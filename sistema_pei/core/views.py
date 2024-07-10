@@ -292,9 +292,8 @@ class DeleteSubjectView(View):
     def get(self, request, subject_id):
         subject = get_object_or_404(Subject, id=subject_id)
         subject.delete()
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+        return redirect('courses')
     
-
 class SubjectsPageView(TemplateView):
     template_name = "pages/subjects/subjects.html"
     paginate_by=10
@@ -383,6 +382,11 @@ class CreateSubjectPageView(TemplateView):
         ]
         context['course_types']=[course[0] for course in COURSE_TYPE]
         context['teachers']= Teacher.objects.all()
+        
+        request = self.request
+        if request.GET.get('alert') == "error":
+            context['messages'] = ["Erro - Matéria já foi cadastrada!"]
+    
         return context
 
     def post(self, request, *args, **kwargs):
@@ -391,6 +395,11 @@ class CreateSubjectPageView(TemplateView):
         course = get_object_or_404(Courses, id=course_id)
 
         if form.is_valid():
+            existing_subject = Subject.objects.filter(name=form.cleaned_data['name']).exists()
+            
+            if existing_subject:
+                 return redirect(f'{request.path}?alert=error')
+            
             form.instance.course = course
             form.instance.year = datetime.datetime.now().year
             form.save()
@@ -423,7 +432,7 @@ class EditSubjectPageView(TemplateView):
             },
         ]
         
-        subject_students = subject.students.all() 
+        subject_students = subject.students.all()
         
         if 'search_student' in self.request.GET:
             search_query = self.request.GET['search_student']
