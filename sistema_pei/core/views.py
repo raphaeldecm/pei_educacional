@@ -138,7 +138,11 @@ class UsersPageView(TemplateView):
             return HttpResponseRedirect('?alert=success')
         except Exception as e:
             return HttpResponse(f"Erro ao enviar o e-mail: {e}")
-        
+
+class ProfilePageView(TemplateView):
+    template_name = "pages/profile.html"
+
+
 class CoursesPageView(TemplateView):
     template_name = "pages/courses/courses.html"
     paginate_by=10
