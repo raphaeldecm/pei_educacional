@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import MinValueValidator
 
 from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.core.models import BaseModel
@@ -24,6 +25,14 @@ class Courses(BaseModel):
         max_length=15,
         choices=CoursePeriod.choices,
         verbose_name=_("Turno"),
+    )
+
+    number_of_periods = models.PositiveSmallIntegerField(
+        verbose_name=_("Número de períodos"),
+        default=1,
+        validators=[
+            MinValueValidator(1),
+        ]
     )
 
     class Meta:
@@ -70,3 +79,4 @@ class Subject(BaseModel):
 
     def __str__(self):
         return self.name + " - " + self.course.name
+
