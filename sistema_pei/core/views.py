@@ -22,7 +22,7 @@ from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.academics.models import Courses, Subject
 from sistema_pei.core.forms import CourseForm, SubjectForm
 from sistema_pei.educational_plan.models import Pei
-from sistema_pei.people.models import Student, Teacher, User
+from sistema_pei.people.models import Student, StudentFile, Teacher, User
 from django.contrib.auth.models import Group
 
 from sistema_pei.users.models import Sector
@@ -149,6 +149,7 @@ class ProfilePageView(TemplateView):
         
         # Profile data
         context['student'] = student
+        context['student_files'] = StudentFile.objects.filter(student=student)
 
         # Tabs
         context['active_tab'] = self.request.GET.get('tab', 'general')

@@ -24,64 +24,56 @@
     <div class="mx-[166px] mt-[65px] flex items-start gap-[10%]">
 
       <div class="flex flex-col justify-center items-center">
-        <div class="w-[219px] h-[219px] rounded-full bg-amber-600 flex justify-center items-center">
+        <div class="w-[219px] h-[219px] rounded-full bg-amber-600 flex justify-center overflow-hidden items-center">
           <img
-            src="{% static 'images/icons/django-logo.svg' %}"
-            width="219px"
-            height="219px"
+            src="{{ student.image.url }}"
+            class="w-full h-full object-cover"
+            alt="Student Image"
           />
         </div>
-        <p class="mt-[24px] bg-green-950 border border-green-500 rounded-full text-neutral-50 px-[8px]"># 20231094041111</p>
+        <p class="mt-[24px] bg-green-950 border border-green-500 rounded-full text-neutral-50 px-[8px]"># {{student.registration}}</p>
 
       </div>
 
       <div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-0 h-[237px] mb-[28px]">
-          <div class="border-b border-slate-300">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-0 h-[237px] mb-[20px]">
+          <div class="border-b border-slate-300 pr-[12px]">
             <p class="text-slate-900 font-medium text-[18px] mb-[28px]">Nome completo</p>
-            <p class="text-slate-400 text-[16px] truncate">Yammin Carvalho da silva lima</p>
+            <p class="text-slate-400 text-[16px] truncate">{{student.name}}</p>
           </div>
           <div class="border-b border-slate-300">
             <p class="text-slate-900 font-medium text-[18px] mb-[28px]">Curso</p>
-            <p class="text-slate-400 text-[16px] truncate">Técnico em nível médio em informática - Técnico integrado regular</p>
+            <p class="text-slate-400 text-[16px] truncate">{{student.course.name}}</p>
           </div>
-          <div class="border-b border-slate-300">
+          <div class="border-b border-slate-300 pr-[12px]">
             <p class="text-slate-900 font-medium text-[18px] mb-[28px]">Equipe multiprofissional responsável:</p>
-            <div class="flex gap-[13px] h-[41px]">
-              <span class="bg-amber-400 text-white px-3 h-full rounded-full flex items-center">ETEP</span>
-              <span class="bg-amber-400 text-white px-3 h-full rounded-full flex items-center">NAPNE</span>
-              <span class="bg-amber-400 text-white px-3 h-full rounded-full flex items-center">COAES</span>
+            <div class="flex gap-[8px] h-[52px] overflow-x-auto custom-scrollbar pb-[8px]">
+              {%for sector in student.sectors.all%}
+                <span class="bg-amber-400 text-white px-3 h-full rounded-full flex items-center">{{sector.name}}</span>
+              {%endfor%}
             </div>
           </div>
           <div class="border-b border-slate-300">
-            <p class="text-slate-900 font-medium text-[18px] mb-[28px]">Necesidades especiais específicas:</p>
-            <div class="flex gap-[13px] h-[41px]">
-              <span class="bg-blue-300 text-white px-3 h-full rounded-full flex items-center">ETEP</span>
-              <span class="bg-blue-300 text-white px-3 h-full rounded-full flex items-center">NAPNE</span>
-              <span class="bg-blue-300 text-white px-3 h-full rounded-full flex items-center">COAES</span>
+            <p class="text-slate-900 font-medium text-[18px] mb-[28px]">Equipe multiprofissional responsável:</p>
+            <div class="flex gap-[8px] h-[52px] overflow-x-auto custom-scrollbar pb-[8px]">
+              {%for necessitie in student.educational_necessities.all%}
+                <span class="bg-blue-400 text-white px-3 h-full rounded-full flex items-center whitespace-nowrap">{{necessitie}}</span>
+              {%endfor%}
             </div>
           </div>
         </div>
         <div>
           <p class="text-slate-900 font-medium text-[18px]">Anexos:</p>
 
-          <button class="flex justify-between items-center gap-2 bg-transparent appearance-none border rounded w-full h-[77px] px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500 [&_span]:hover:text-green-500 mt-[19px]"
-          >
-            <div class="flex gap-2">
-              <img src="{% static 'images/icons/clip_icon.svg' %}" alt="icone de clip de papel, representa um arquivo anexado">
-              <p>NOME DO ARQUIVO</p>
-            </div>
-            <span class="text-slate-900">Download</span>
-          </button>
-          <button class="flex justify-between items-center gap-2 bg-transparent appearance-none border rounded w-full h-[77px] px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500 [&_span]:hover:text-green-500 mt-[19px]"
-          >
-            <div class="flex gap-2">
-              <img src="{% static 'images/icons/clip_icon.svg' %}" alt="icone de clip de papel, representa um arquivo anexado">
-              <p>NOME DO ARQUIVO</p>
-            </div>
-            <span class="text-slate-900">Download</span>
-          </button>
-
+          {% for file in student_files %}
+          <div class="flex justify-between items-center gap-2 bg-transparent appearance-none border rounded w-full h-[77px] px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500 hover:text-green-500 mt-[19px] [&_a]:hover:text-green-500">
+              <div class="flex gap-2">
+                  <img src="{% static 'images/icons/clip_icon.svg' %}" alt="icone de clip de papel, representa um arquivo anexado">
+                  <p>{{ file.file.name }}</p>
+              </div>
+              <a href="{{ file.file.url }}" class="text-slate-900" download>Download</a>
+          </div>
+          {% endfor %}
         </div>
       </div>
     </div>

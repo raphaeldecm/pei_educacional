@@ -38,6 +38,23 @@ referrerpolicy="no-referrer"></script>
 <script defer src="{% static 'js/project.js' %}"></script>
 {% block javascript %}
 {% endblock javascript %}
+
+<style>
+  .custom-scrollbar::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #e5e7eb;
+    border-radius: 10px;
+  }
+</style>
+
 </head>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">

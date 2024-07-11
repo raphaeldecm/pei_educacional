@@ -837,6 +837,14 @@ video {
   margin-bottom: 2rem;
 }
 
+.mb-\[2px\] {
+  margin-bottom: 2px;
+}
+
+.mb-\[20px\] {
+  margin-bottom: 20px;
+}
+
 .block {
   display: block;
 }
@@ -953,6 +961,14 @@ video {
 
 .h-screen {
   height: 100vh;
+}
+
+.h-\[46px\] {
+  height: 46px;
+}
+
+.h-\[52px\] {
+  height: 52px;
 }
 
 .min-h-40 {
@@ -1272,6 +1288,10 @@ video {
   margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
 }
 
+.overflow-hidden {
+  overflow: hidden;
+}
+
 .overflow-x-auto {
   overflow-x: auto;
 }
@@ -1283,6 +1303,10 @@ video {
 .truncate {
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.whitespace-nowrap {
   white-space: nowrap;
 }
 
@@ -1462,6 +1486,11 @@ video {
 .bg-amber-400 {
   --tw-bg-opacity: 1;
   background-color: rgb(251 191 36 / var(--tw-bg-opacity));
+}
+
+.bg-blue-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(96 165 250 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-50 {
@@ -1665,6 +1694,30 @@ video {
 
 .pb-1 {
   padding-bottom: 0.25rem;
+}
+
+.pl-2 {
+  padding-left: 0.5rem;
+}
+
+.pl-\[12px\] {
+  padding-left: 12px;
+}
+
+.pr-\[12px\] {
+  padding-right: 12px;
+}
+
+.pb-\[\] {
+  padding-bottom: ;
+}
+
+.pb-\[4px\] {
+  padding-bottom: 4px;
+}
+
+.pb-\[8px\] {
+  padding-bottom: 8px;
 }
 
 .text-left {
@@ -2144,6 +2197,11 @@ video {
     font-size: 1rem;
     line-height: 1.5rem;
   }
+}
+
+.\[\&_a\]\:hover\:text-green-500:hover a {
+  --tw-text-opacity: 1;
+  color: rgb(34 197 94 / var(--tw-text-opacity));
 }
 
 .peer:checked ~ .peer-checked\:\[\&_img\]\:block img {
