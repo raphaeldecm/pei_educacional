@@ -22,7 +22,7 @@ from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.academics.models import Courses, Subject
 from sistema_pei.core.forms import CourseForm, SubjectForm
 from sistema_pei.educational_plan.models import Pei
-from sistema_pei.people.models import Teacher, User
+from sistema_pei.people.models import Student, Teacher, User
 from django.contrib.auth.models import Group
 
 from sistema_pei.users.models import Sector
@@ -144,6 +144,11 @@ class ProfilePageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        student_id = self.kwargs.get('student_id')
+        student = get_object_or_404(Student, id=student_id)
+        
+        # Profile data
+        context['student'] = student
 
         # tabs
         context['active_tab'] = self.request.GET.get('tab', 'general')
@@ -157,7 +162,7 @@ class ProfilePageView(TemplateView):
             },
             {
                 "icon":"images/icons/icon-courses-green.svg",
-                "name":"NOME DO ALUNO",
+                "name":student.name,
             }
         ]
         return context

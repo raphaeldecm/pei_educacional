@@ -31,7 +31,7 @@ urlpatterns = [
         name="users",
     ),
         path(
-        "profile/",
+        "profile/<int:student_id>",
         login_required(ProfilePageView.as_view()),
         name="profile",
     ),
