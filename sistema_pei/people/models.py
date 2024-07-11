@@ -6,6 +6,8 @@ from django.utils.translation import gettext_lazy as _
 from sistema_pei.core import constants
 from sistema_pei.core.models import BaseModel
 from sistema_pei.core.models import get_sentinel_user
+from django.core.exceptions import ValidationError
+
 
 User = get_user_model()
 
@@ -99,48 +101,60 @@ class SpecificNecessitie(BaseModel):
 
 
 class Student(Person):
-    class Series(models.IntegerChoices):
-        YEAR1 = 1, _("1° Ano")
-        YEAR2 = 2, _("2° Ano")
-        YEAR3 = 3, _("3° Ano")
-        YEAR4 = 4, _("4° Ano")
-
-    serie = models.PositiveSmallIntegerField(
-        verbose_name=_("Série"),
-        choices=Series.choices,
-        validators=[validators.MinValueValidator(1), validators.MaxValueValidator(4)],
-    )
-    responsible_person = models.ForeignKey(
-        Responsible,
-        verbose_name=_("Responsável"),
-        on_delete=models.SET_NULL,
-        null=True,
-        related_name="students",
-    )
     registration = models.CharField(
         verbose_name=_("Matrícula"),
         max_length=constants.SMALL_CHAR_FIELD_NAME_LENGTH,
-        blank=True,
     )
+
     personal_history = models.TextField(verbose_name=_("Histórico"))
+
     image = models.ImageField(upload_to="students", verbose_name=_("Foto"))
+
     general_necessitie = models.TextField(
         verbose_name=_("Outras necessidades educacionais específicas do(a) estudante"),
+        blank=True,
     )
+
     creation_reasons = models.TextField(
         verbose_name=_("Motivos para a criação do PEI/ Adaptações"),
+        blank=True,
     )
+
     educational_necessities = models.ManyToManyField(
         SpecificNecessitie,
         verbose_name=_("Necessidades Educacionais Específicas"),
     )
+
     abilities = models.TextField(
         verbose_name=_("Conhecimentos, Habilidades,Capacidades e Interesses"),
+        blank=True,
     )
-    dificulties = models.TextField(verbose_name=_("Dificuldades"))
 
-    specific_necessities = models.TextField(verbose_name=_("Necessidades específicas"))
+    dificulties = models.TextField(
+        verbose_name=_("Dificuldades"),
+        blank=True,
+    )
 
+    specific_necessities = models.TextField(
+        verbose_name=_("Necessidades específicas"),
+        blank=True,
+    )
+
+    course = models.ForeignKey(
+        'academics.Courses',
+        on_delete=models.PROTECT,
+        verbose_name=_("Curso"),
+        related_name="students",
+    )
+
+    reference_period = models.PositiveSmallIntegerField(
+        verbose_name=_("Período de Referência"),
+    )
+
+    sectors = models.ManyToManyField(
+        'users.Sector',
+        verbose_name=_("Setores"),
+    )
     class Meta:
         verbose_name = _("Discente")
         verbose_name_plural = _("Discentes")
@@ -148,6 +162,21 @@ class Student(Person):
     def __str__(self):
         return self.name
 
+class StudentFile(models.Model):
+    student = models.ForeignKey(
+        'Student',
+        on_delete=models.CASCADE,
+        related_name='files'
+    )
+    file = models.FileField(upload_to='student_files/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("Anexo")
+        verbose_name_plural = _("Anexos")
+
+    def __str__(self):
+        return f"Anexo de {self.student.name}"
 
 class Notification(BaseModel):
     class Type(models.TextChoices):
@@ -173,3 +202,4 @@ class Notification(BaseModel):
 
     def __str__(self) -> str:
         return super().__str__()
+

@@ -1,19 +1,25 @@
+from itertools import count
 from django.core.mail import EmailMessage
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 from django.core.paginator import Paginator, PageNotAnInteger
 from django.template.loader import render_to_string
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.contrib.sites.shortcuts import get_current_site
 from allauth.account.models import EmailAddress
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.db import IntegrityError
+from django.views.generic import View
 import re
 
 from django.conf import settings
+from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.academics.models import Courses, Subject
+from sistema_pei.core.forms import CourseForm
 from sistema_pei.educational_plan.models import Pei
 from sistema_pei.people.models import Teacher, User
 from django.contrib.auth.models import Group
@@ -56,11 +62,11 @@ class HomePageView(TemplateView):
             filters['subject__id'] = self.request.GET['subject']
 
         peis_list = Pei.objects.filter(**filters)
-        peis_list = peis_list.order_by('id')
-
+        
         if 'search' in self.request.GET:
             peis_list = peis_list.filter(Q(student__name__icontains=self.request.GET['search']) | Q(student__registration__icontains=self.request.GET['search']))
             
+        peis_list = peis_list.order_by('id')
         paginator = Paginator(peis_list, self.paginate_by)
         page_number = self.request.GET.get('page')
         
@@ -131,3 +137,149 @@ class UsersPageView(TemplateView):
             return HttpResponseRedirect('?alert=success')
         except Exception as e:
             return HttpResponse(f"Erro ao enviar o e-mail: {e}")
+        
+class CoursesPageView(TemplateView):
+    template_name = "pages/courses/courses.html"
+    paginate_by=10
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Breadcrumbs
+        context['breadcrumbs_data'] = [
+            {
+                "icon":"images/icons/icon-home-green.svg",
+                "name":"Home",
+                "url":"home"
+            },
+            {
+                "icon":"images/icons/icon-courses-green.svg",
+                "name":"Cursos",
+            }
+        ]
+        
+        # Filter Selectors
+        context['course_types']=[course[0] for course in COURSE_TYPE]
+        
+        # Table
+        filters = {}
+        if 'period' in self.request.GET:
+            filters['period'] = self.request.GET['period']
+        if 'type' in self.request.GET:
+            filters['course_type'] = self.request.GET['type']
+
+        courses_list = Courses.objects.filter(**filters)
+        
+        if 'search' in self.request.GET:
+            courses_list = courses_list.filter(Q(name__icontains=self.request.GET['search']))
+            
+
+        courses_list = courses_list.annotate(num_subjects=Count('subjects')).order_by('id')
+        paginator = Paginator(courses_list, self.paginate_by)
+        page_number = self.request.GET.get('page')
+        
+        try:
+            all_courses = paginator.page(page_number)
+        except PageNotAnInteger:
+            all_courses = paginator.page(1)
+        except EmptyPage:
+            all_courses = paginator.page(paginator.num_pages)
+
+        context['courses'] = all_courses
+
+        return context
+
+class CreateCoursesPageView(TemplateView):
+    template_name = "pages/courses/create-course.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Breadcrumbs
+        context['breadcrumbs_data'] = [
+            {
+                "icon":"images/icons/icon-home-green.svg",
+                "name":"Home",
+                "url":"home"
+            },
+            {
+                "icon":"images/icons/icon-courses-green.svg",
+                "name":"Cursos",
+                "url":"courses"
+            },
+            {
+                "icon":"images/icons/icon-edit-green.svg",
+                "name":"Criar Curso",
+            }
+        ]
+        
+        context['course_types']=[course[0] for course in COURSE_TYPE]
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = CourseForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('courses') 
+        return self.render_to_response(self.get_context_data(form=form))
+
+class DeleteCourseView(View):
+    def get(self, request, course_id):
+        course = get_object_or_404(Courses, id=course_id)
+        course.delete()
+        return redirect('courses')
+    
+    
+class EditCoursePageView(TemplateView):
+    template_name = "pages/courses/edit-course.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        course_id = self.kwargs.get('course_id')
+        course = get_object_or_404(Courses, id=course_id)
+        course_subjects = course.subjects.all()
+        
+        # Breadcrumbs
+        context['breadcrumbs_data'] = [
+            {
+                "icon":"images/icons/icon-home-green.svg",
+                "name":"Home",
+                "url":"home"
+            },
+            {
+                "icon":"images/icons/icon-courses-green.svg",
+                "name":"Cursos",
+                "url":"courses"
+            },
+            {
+                "icon":"images/icons/icon-edit-green.svg",
+                "name":"Editar Curso",
+            }
+        ]
+        
+        filters = {}
+        if 'search_subject' in self.request.GET:
+            filters['search_subject'] = self.request.GET['search_subject']
+            course_subjects = course_subjects.filter(Q(name__icontains=self.request.GET['search_subject']))
+            
+        context['course'] = course
+        context['course_subjects'] = course_subjects
+        context['course_types']=[course[0] for course in COURSE_TYPE]
+        
+        return context
+
+    def post(self, request, *args, **kwargs):
+        course_id = self.kwargs.get('course_id')
+        course = get_object_or_404(Courses, id=course_id)
+        form = CourseForm(request.POST, instance=course)
+        if form.is_valid():
+            form.save()
+            return redirect('courses')
+        return self.render_to_response(self.get_context_data(form=form))
+    
+    
+class DeleteSubjectView(View):
+    def get(self, request, subject_id):
+        subject = get_object_or_404(Subject, id=subject_id)
+        subject.delete()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
