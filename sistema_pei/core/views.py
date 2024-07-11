@@ -141,6 +141,23 @@ class UsersPageView(TemplateView):
 
 class ProfilePageView(TemplateView):
     template_name = "pages/profile.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Breadcrumbs
+        context['breadcrumbs_data'] = [
+            {
+                "icon":"images/icons/icon-home-green.svg",
+                "name":"Home",
+                "url":"home"
+            },
+            {
+                "icon":"images/icons/icon-courses-green.svg",
+                "name":"NOME DO ALUNO",
+            }
+        ]
+        return context
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

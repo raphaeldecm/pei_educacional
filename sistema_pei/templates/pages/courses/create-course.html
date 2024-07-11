@@ -38,6 +38,18 @@
           </select>
         </div>
       </div>
+      <div class="flex-1">
+        <label for="name" class="font-medium text-[18px]">Qtd. Periodos:</label>
+        <input
+          type="number"
+          name="number_of_periods"
+          min="1"
+          placeholder="Digite o nome do curso..."
+          required
+          class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+          value="{{request.GET.number_of_periods}}"
+        />
+      </div>
     </div>
 
     <div class="mt-[24px]">
@@ -69,7 +81,7 @@
         <h1>{{subject.name}}</h1>
       {%endfor%}
     </div>
-    
+
     <button class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer mt-[56px]">
       Cadastrar
     </button>

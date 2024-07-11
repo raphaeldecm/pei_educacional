@@ -36,6 +36,18 @@
           </select>
         </div>
       </div>
+      <div class="flex-1">
+        <label for="name" class="font-medium text-[18px]">Qtd. Periodos:</label>
+        <input
+          type="number"
+          name="number_of_periods"
+          min="1"
+          placeholder="Digite o nome do curso..."
+          required
+          class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+          value="{{course.number_of_periods}}"
+        />
+      </div>
     </div>
 
     <div class="mt-[24px] mb-[32px]">
@@ -61,7 +73,7 @@
         </select>
       </div>
     </div>
-    
+
   </form>
 
   {% if course.subjects.all|length > 0 %}
@@ -85,12 +97,12 @@
         />
       </div>
     </form>
-  
+
     <div class="flex flex-col gap-[16px] mt-[40px]">
     {% for subject in course_subjects %}
       <div class="flex justify-between items-center h-[44px] border border-slate-300 px-[15px] rounded-lg">
         <span class="text-[18px]"><strong>{{ subject.name }}</strong> - {{subject.teacher.name}} | <strong>Duração:</strong> {{subject.subject_type}}</span>
-  
+
         <a href="{% url 'delete_subject' subject.id %}" onclick="return confirm('Tem certeza que deseja excluir a matéria {{ subject.name }}?')">
           <img
             src="{% static 'images/icons/icon-remove-element.svg' %}"
