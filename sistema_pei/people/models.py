@@ -9,12 +9,26 @@ from sistema_pei.core.models import get_sentinel_user
 from django.core.exceptions import ValidationError
 
 
-from .constants import EDUCATIONAL_NECESSITIES_CHOICES
-
 User = get_user_model()
 
 
 # Create your models here.
+class Campus(BaseModel):
+    name = models.CharField(
+        verbose_name=_("Nome"),
+        max_length=constants.MAX_CHAR_FIELD_NAME_LENGTH,
+        unique=True,
+    )
+    abbreviation = models.CharField(
+        verbose_name=_("Abreviação"), max_length=4, unique=True,
+    )
+
+    class Meta:
+        verbose_name = _("Campus")
+        verbose_name_plural = _("Campi")
+
+    def __str__(self):
+        return self.name
 
 class Person(BaseModel):
     name = models.CharField(
@@ -36,12 +50,41 @@ class Person(BaseModel):
         return self.name
 
 class Teacher(Person):
+
+    campus = models.ForeignKey(
+        Campus,
+        on_delete=models.SET_NULL,
+        verbose_name=_("Campus"),
+        null=True,
+        related_name="teachers",
+    )
+    photo = models.ImageField(
+        upload_to="teachers",
+        verbose_name=_("Foto"),
+        blank=True,
+    )
+    code = models.CharField(
+        verbose_name=_("Matrícula"),
+        max_length=constants.SMALL_CHAR_FIELD_NAME_LENGTH,
+        blank=True,
+        unique=True,
+    )
     class Meta:
         verbose_name = _("Professor")
         verbose_name_plural = _("Professores")
 
     def __str__(self):
         return self.name
+
+
+class Responsible(Person):
+    class Meta:
+        verbose_name = _("Responsável")
+        verbose_name_plural = _("Responsáveis")
+
+    def __str__(self):
+        return self.name
+
 
 class SpecificNecessitie(BaseModel):
     name = models.CharField(
