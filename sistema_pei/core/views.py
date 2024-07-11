@@ -150,9 +150,21 @@ class ProfilePageView(TemplateView):
         # Profile data
         context['student'] = student
 
-        # tabs
+        # Tabs
         context['active_tab'] = self.request.GET.get('tab', 'general')
-
+        
+        ## Tab General
+        
+        
+        ## Tab General
+        
+        
+        ## Tab Notes
+        
+        
+        ## Tab Edit
+        
+        
         # Breadcrumbs
         context['breadcrumbs_data'] = [
             {
