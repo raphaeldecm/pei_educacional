@@ -141,10 +141,13 @@ class UsersPageView(TemplateView):
 
 class ProfilePageView(TemplateView):
     template_name = "pages/profile.html"
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
+
+        # tabs
+        context['active_tab'] = self.request.GET.get('tab', 'general')
+
         # Breadcrumbs
         context['breadcrumbs_data'] = [
             {
@@ -157,11 +160,6 @@ class ProfilePageView(TemplateView):
                 "name":"NOME DO ALUNO",
             }
         ]
-        return context
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['active_tab'] = self.request.GET.get('tab', 'general')
         return context
 
 
