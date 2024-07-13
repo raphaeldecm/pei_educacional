@@ -1,5 +1,5 @@
 <div class="grid grid-cols-1 md:grid-cols-6 gap-9 mb-20">
-  <nav class="space-y-2 max-w-[280px] col-span-1">
+  <nav class="space-y-2 min-w-[100px] max-w-[280px] col-span-1">
     <h2 class="font-poppins text-green-500 font-semibold text-lg uppercase">Sumário</h2>
     <ol class="list-decimal pl-7 space-y-2">
       {% if student.personal_history %}
@@ -14,7 +14,7 @@
       {% endif %}
       {% if student.abilities or student.dificulties %}
         <li class="text-green-500">
-          <a href="#aptidao-e-dificuldades" class="block max-w-xs truncate">Aptidão e dificuldades</a>
+          <a href="#aptidao-e-dificuldades" class="block max-w-xs truncate hover:underline">Aptidão e dificuldades</a>
           <ol class="list-decimal pl-7 space-y-2 mt-2">
               {% if student.abilities %}
                 <li class="text-green-500 hover:underline">

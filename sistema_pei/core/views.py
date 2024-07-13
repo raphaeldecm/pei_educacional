@@ -149,10 +149,15 @@ class ProfilePageView(TemplateView):
 
         # Profile data
         context['student'] = student
-        print(student.educational_necessities)
 
         # Tabs
-        context['active_tab'] = self.request.GET.get('tab', 'general')
+        allowed_tabs = ('general', 'historic', 'grades', 'edit_student_data')
+        requested_tab = self.request.GET.get('tab', 'general')
+        if requested_tab in allowed_tabs:
+            context['active_tab'] = requested_tab
+        else:
+            context['active_tab'] = 'general'
+
 
         ## Tab General
 
