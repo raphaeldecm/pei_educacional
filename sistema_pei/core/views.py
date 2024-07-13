@@ -146,25 +146,23 @@ class ProfilePageView(TemplateView):
         context = super().get_context_data(**kwargs)
         student_id = self.kwargs.get('student_id')
         student = get_object_or_404(Student, id=student_id)
-        
+
         # Profile data
         context['student'] = student
+        print(student.educational_necessities)
 
         # Tabs
         context['active_tab'] = self.request.GET.get('tab', 'general')
-        
+
         ## Tab General
-        
-        
-        ## Tab General
-        
-        
+
+
         ## Tab Notes
-        
-        
+
+
         ## Tab Edit
-        
-        
+
+
         # Breadcrumbs
         context['breadcrumbs_data'] = [
             {
