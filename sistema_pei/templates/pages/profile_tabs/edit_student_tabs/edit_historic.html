@@ -1,0 +1,134 @@
+<div>
+  <form method="post" action="{% url 'edit_personal_historic_data' student.id %}" enctype="multipart/form-data">
+    {% csrf_token %}
+
+      <!-- Campo personal_history -->
+    <div class="mb-10">
+      <label for="{{ form.personal_history.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
+        Histórico
+      </label>
+      <textarea id="{{ form.personal_history.id_for_label }}"
+                name="{{ form.personal_history.name }}"
+                placeholder="Escreva aqui!"
+                class="bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
+      >{{ form.personal_history.value|default_if_none:'' }}</textarea>
+      {% if form.personal_history.errors %}
+        <ul class="list-disc p-2">
+          {% for error in form.personal_history.errors %}
+            <li class="text-red-500 ml-2" >{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+
+    <!-- Campo specific_necessities -->
+    <div class="mb-10">
+      <label for="{{ form.specific_necessities.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
+        Necessidades Educacionais Especificas
+      </label>
+      <textarea id="{{ form.specific_necessities.id_for_label }}"
+                name="{{ form.specific_necessities.name }}"
+                placeholder="Escreva aqui!"
+                class="bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
+                >{{ form.specific_necessities.value|default_if_none:'' }}</textarea>
+
+      {% if form.specific_necessities.errors %}
+        <ul class="list-disc p-2">
+          {% for error in form.specific_necessities.errors %}
+            <li class="text-red-500 ml-2" >{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+
+    <div class="space-y-4 mb-10">
+      <p class="font-sans font-medium text-lg text-ls block mb-4">
+        Aptidão e dificuldades Apresentadas
+      </p>
+
+      <!-- Campo abilities -->
+      <div>
+        <label for="{{ form.abilities.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4 text-slate-400">
+          Conhecimentos, Habilidades, Capacidades e Interesses
+        </label>
+        <textarea id="{{ form.abilities.id_for_label }}"
+                  name="{{ form.abilities.name }}"
+                  placeholder="Escreva aqui!"
+                  class="bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
+                  >{{ form.abilities.value|default_if_none:'' }}</textarea>
+
+        {% if form.abilities.errors %}
+          <ul class="list-disc p-2">
+            {% for error in form.abilities.errors %}
+              <li class="text-red-500 ml-2" >{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+
+      <!-- Campo dificulties -->
+      <div>
+        <label for="{{ form.dificulties.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4 text-slate-400">
+          Dificuldades
+        </label>
+        <textarea id="{{ form.dificulties.id_for_label }}"
+                  name="{{ form.dificulties.name }}"
+                  placeholder="Escreva aqui!"
+                  class="bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
+                  >{{ form.dificulties.value|default_if_none:'' }}</textarea>
+
+        {% if form.dificulties.errors %}
+          <ul class="list-disc p-2">
+            {% for error in form.dificulties.errors %}
+              <li class="text-red-500 ml-2" >{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Campo general_necessitie -->
+    <div class="mb-10">
+        <label for="{{ form.general_necessitie.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
+          Outras necessidades educacionais especificas do(a) estudante
+        </label>
+        <textarea id="{{ form.general_necessitie.id_for_label }}"
+                  name="{{ form.general_necessitie.name }}"
+                  placeholder="Escreva aqui!"
+                  class="bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
+        >{{ form.general_necessitie.value|default_if_none:'' }}</textarea>
+        {% if form.general_necessitie.errors %}
+          <ul class="list-disc p-2">
+            {% for error in form.general_necessitie.errors %}
+              <li class="text-red-500 ml-2" >{{ error }}</li>
+            {% endfor %}
+          </ul>
+      {% endif %}
+    </div>
+
+      <!-- Campo creation_reasons -->
+    <div class="mb-10">
+      <label for="{{ form.creation_reasons.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
+        Questões Geradoras para criação do pei/Adaptações
+      </label>
+      <textarea id="{{ form.creation_reasons.id_for_label }}"
+                name="{{ form.creation_reasons.name }}"
+                placeholder="Escreva aqui!"
+                class="bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
+                >{{ form.creation_reasons.value|default_if_none:'' }}</textarea>
+
+      {% if form.creation_reasons.errors %}
+        <ul class="list-disc p-2">
+          {% for error in form.creation_reasons.errors %}
+            <li class="text-red-500 ml-2" >{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+
+
+    <button type="submit" class="w-full font-sans bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded transition duration-300 ease-in-out">
+      Atualizar dados
+    </button>
+  </form>
+</div>

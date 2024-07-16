@@ -3,6 +3,7 @@ from django.core.mail import EmailMessage
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
 from django.views.generic import TemplateView
 from django.core.paginator import Paginator, PageNotAnInteger
 from django.template.loader import render_to_string
@@ -22,11 +23,13 @@ from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.academics.models import Courses, Subject
 from sistema_pei.core.forms import CourseForm, SubjectForm
 from sistema_pei.educational_plan.models import Pei
+from sistema_pei.people.forms import ViewEditDataStudentForm, ViewEdithistoricStudentForm, ViewStudentForm
 from sistema_pei.people.models import Student, Teacher, User
 from django.contrib.auth.models import Group
 
 from sistema_pei.users.models import Sector
 
+from django.contrib import messages
 
 class HomePageView(TemplateView):
     template_name = "pages/home.html"
@@ -158,14 +161,15 @@ class ProfilePageView(TemplateView):
         else:
             context['active_tab'] = 'general'
 
+        sub_tab = self.request.GET.get('sub_tab', 'edit_personal_data')
+        context['sub_active_tab'] = sub_tab
 
-        ## Tab General
-
-
-        ## Tab Notes
-
-
-        ## Tab Edit
+        # Formulário condicionado pela sub_tab
+        if requested_tab == 'edit_student_data':
+            if sub_tab == 'edit_personal_data':
+                context['form'] = ViewEditDataStudentForm(instance=student)
+            elif sub_tab == 'edit_historic':
+                context['form'] = ViewEdithistoricStudentForm(instance=student)
 
 
         # Breadcrumbs
@@ -181,6 +185,39 @@ class ProfilePageView(TemplateView):
             }
         ]
         return context
+
+
+class EditPersonalDataView(View):
+    def post(self, request, *args, **kwargs):
+        student_id = kwargs.get('student_id')
+        student = get_object_or_404(Student, id=student_id)
+        form = ViewEditDataStudentForm(request.POST, request.FILES, instance=student)
+
+        if form.is_valid():
+            form.save()
+            success_message = f'Atulizações salvas com sucesso!'
+            messages.success(self.request, success_message)
+        else:
+            success_message = f'Erro ao atualizar dados!'
+            messages.error(self.request, success_message)
+
+        return redirect(f'/profile/{student.id}?tab=edit_student_data&sub_tab=edit_personal_data#tab')
+
+class EditHistoricPersonalDataView(View):
+    def post(self, request, *args, **kwargs):
+        student_id = kwargs.get('student_id')
+        student = get_object_or_404(Student, id=student_id)
+        form = ViewEdithistoricStudentForm(request.POST, instance=student)
+
+        if form.is_valid():
+            form.save()
+            success_message = f'Atulizações salvas com sucesso!'
+            messages.success(self.request, success_message)
+        else:
+            success_message = f'Erro ao atualizar dados!'
+            messages.error(self.request, success_message)
+
+        return redirect(f'/profile/{student.id}?tab=edit_student_data&sub_tab=edit_historic#tab')
 
 
 class CoursesPageView(TemplateView):

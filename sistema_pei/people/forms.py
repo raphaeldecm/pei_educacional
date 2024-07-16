@@ -67,3 +67,41 @@ class ViewStudentForm(AdminStudentForm):
                 )
 
         return files
+
+
+class ViewEditDataStudentForm(AdminStudentForm):
+
+    class Meta(AdminStudentForm.Meta):
+        exclude = (
+            'created_by',
+            'updated_by',
+            'personal_history',
+            'creation_reasons',
+            'abilities',
+            'dificulties',
+            'general_necessitie',
+        )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['educational_necessities'].required = False
+        self.fields['course'].required = False
+        self.fields['sectors'].required = False
+
+
+class ViewEdithistoricStudentForm(forms.ModelForm):
+
+    class Meta:
+        model = Student
+        exclude = (
+            'created_by',
+            'updated_by',
+            'name',
+            'email',
+            'image',
+            'registration',
+            'educational_necessities',
+            'course',
+            'reference_period',
+            'sectors',
+        )
