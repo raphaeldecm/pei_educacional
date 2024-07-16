@@ -1,1 +1,49 @@
-<p>Notas em contrução!</p>
+{% load static i18n %}
+<div class="flex gap-[5%]">
+  <div
+    class="flex flex-col gap-[16px] text-[18px] text-slate-300 w-full max-w-[218px]"
+  >
+    <p class="p-[10px] bg-green-500 text-white rounded-lg cursor-pointer">
+      5° semestre
+    </p>
+    <p class="p-[10px] rounded-lg cursor-pointer">4° semestre</p>
+    <p class="p-[10px] rounded-lg cursor-pointer">3° semestre</p>
+    <p class="p-[10px] rounded-lg cursor-pointer">2° semestre</p>
+    <p class="p-[10px] rounded-lg cursor-pointer">1° semestre</p>
+  </div>
+  <div class="flex-1">
+    <div class="h-[837px] border border-slate-300 rounded-lg">
+      {% comment %} Gráfico {% endcomment %}
+    </div>
+    <div
+      class="mt-[36px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg"
+    >
+      <table
+        class="table-auto w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px]"
+      >
+        <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">
+          <tr>
+            <th class="pl-[76px]">Matéria</th>
+            <th>1° Bimestre</th>
+            <th>2° Bimestre</th>
+            <th>3° Bimestre</th>
+            <th>4° Bimestre</th>
+          </tr>
+        </thead>
+        <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
+          <tr>
+            <td class="pl-[76px]">
+                <div class="w-[23px] h-[23px] bg-blue-600 rounded-full" />
+                <p class="ml-[32px] translate-y-[-1px]">Matemática</p>
+              </div>
+            </td>
+            <td>100</td>
+            <td>70</td>
+            <td>70</td>
+            <td>70</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
