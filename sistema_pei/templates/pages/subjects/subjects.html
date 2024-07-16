@@ -2,7 +2,7 @@
 
 <div class="w-full">
   {% include '../../layouts/breadcrumbs.html' with breadcrumb_data=breadcrumb_data %}
-  <h1 class="text-[32px] font-medium mb-[38px]">Cursos</h1>
+  <h1 class="text-[32px] font-medium mb-[38px]">Curso: {{course.name}}</h1>
   <form>
     <div
       class="mb-[26px] flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2"
@@ -29,15 +29,15 @@
           height="24px"
         />
         <select
-          name="type"
+          name="teacher"
           class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
           required
         >
           <option value="default" selected disabled>
-            Selecione o tipo...
+            Selecione o Professor...
           </option>
-          {% for type in course_types %}
-            <option value="{{type}}">{{type}}</option>
+          {% for teacher in teachers %}
+            <option value="{{teacher.id}}">{{teacher.name}}</option>
           {% endfor %}
         </select>
       </div>
@@ -49,15 +49,14 @@
           height="24px"
         />
         <select
-          name="period"
+          name="duration"
           class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
         >
           <option value="default" selected disabled>
-            Selecione o turno...
+            Selecione a duração...
           </option>
-          <option value="Matutino">Matutino</option>
-          <option value="Vespertino">Vespertino</option>
-          <option value="Noturno">Noturno</option>
+          <option value="Semestral">Semestral</option>
+          <option value="Anual">Anual</option>
         </select>
       </div>
 
@@ -75,46 +74,24 @@
     <table class="table-auto w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px]">
       <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">
         <tr>
-          <th class="pl-[76px]">Nome do curso</th>
-          <th>Matérias</th>
-          <th>Turno</th>
-          <th>Tipo</th>
-          <th></th>
-          <th></th>
+          <th class="pl-[76px]">Nome da Matéria</th>
+          <th>Professor</th>
+          <th>Duração</th>
+          <th>Qtd. Alunos</th>
           <th></th>
         </tr>
       </thead>
       <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
-        {%for course in courses %}
+        {%for subject in course_subjects %}
           <tr>
-            <td class="pl-[76px]">{{course.name}}</td>
-            <td>{{course.num_subjects}}</td>
-            <td>{{course.period}}</td>
-            <td>{{course.course_type}}</td>
+            <td class="pl-[76px]">{{subject.name}}</td>
+            <td>{{subject.teacher}}</td>
+            <td>{{subject.subject_type}}</td>
+            <td>{{subject.students.all|length}}</td>
             <td class="min-w-[40px] !px-[0px]">
-              <a href="{% url 'edit_course' course.id %}">
+              <a href="{% url 'edit_subject' subject.id %}">
                 <img
                   src="{% static 'images/icons/icon-edit-element.svg' %}"
-                  width="24px"
-                  height="24px"
-                  class="cursor-pointer"
-                />
-              </a>
-            </td>
-            <td class="min-w-[40px] !px-[0px]">
-              <a href="{% url 'delete_course' course.id %}" onclick="return confirm('Tem certeza que deseja excluir o curso {{ course.name }}?')">
-                <img
-                  src="{% static 'images/icons/icon-remove-element.svg' %}"
-                  width="24px"
-                  height="24px"
-                  class="cursor-pointer"
-                />
-              </a>
-            </td>
-            <td class="min-w-[40px] !px-[0px]">
-              <a href="{% url 'subjects' course.id %}" >
-                <img
-                  src="{% static 'images/icons/icon-eye.svg' %}"
                   width="24px"
                   height="24px"
                   class="cursor-pointer"
@@ -128,24 +105,29 @@
 
   </div>
   <div class="mt-[50px] mb-[78px] w-full flex items-center justify-between text-[18px]">
-    <span class="font-semibold">Página {{ courses.number }} de {{ courses.paginator.num_pages }}</span>
+    <span class="font-semibold">Página {{ course_subjects.number }} de {{ course_subjects.paginator.num_pages }}</span>
     <div class="flex gap-[36px]">
-      {% if courses.has_previous %}
-        <a href="{% url 'courses' %}?{% if request.GET.period %}period={{ request.GET.period }}&{% endif %}{% if request.GET.type %}type={{ request.GET.type }}&{% endif %}page={{ courses.previous_page_number }}">
+      {% if course_subjects.has_previous %}
+        <a href="?{% if request.GET.duration %}duration={{ request.GET.duration }}&{% endif %}{% if request.GET.teacher %}teacher={{ request.GET.teacher }}&{% endif %}page={{ course_subjects.previous_page_number }}">
           <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-400 border border-slate-400 rounded-lg">Anterior</div>
         </a>
       {% endif %}
 
-      {% if courses.has_next %}
-        <a href="{% url 'courses' %}?{% if request.GET.period %}period={{ request.GET.period }}&{% endif %}{% if request.GET.type %}type={{ request.GET.type }}&{% endif %}page={{ courses.next_page_number }}">
+      {% if course_subjects.has_next %}
+        <a href="?{% if request.GET.duration %}duration={{ request.GET.duration }}&{% endif %}{% if request.GET.teacher %}teacher={{ request.GET.teacher }}&{% endif %}page={{ course_subjects.next_page_number }}">
           <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-400 border border-slate-400 rounded-lg">Próximo</div>
         </a>
       {% endif %}
     </div>
   </div>
-  <a href="{% url 'create_course' %}" class=" text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer">
-    Cadastrar Novo Curso
-  </a>
+  <div class="flex mt-[56px] gap-[16px]">
+    <a href="{% url 'create_subject' course.id %}" class=" text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer">
+      Cadastrar Nova Matéria
+    </a>
+    <a href="{% url 'delete_course' course.id %}" onclick="return confirm('Tem certeza que deseja excluir o curso {{ course.name }}?')" class="text-[18px] py-[11px] px-[44px] border border-red-500 rounded-lg font-medium cursor-pointer">
+      Excluir Curso
+    </a>
+  </div>
 </div>
 
 {% endblock content %}

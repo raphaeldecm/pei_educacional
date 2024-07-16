@@ -18,7 +18,7 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 
-from sistema_pei.core.views import CoursesPageView, CreateCoursesPageView, DeleteCourseView, DeleteSubjectView, EditCoursePageView, HomePageView, UsersPageView
+from sistema_pei.core.views import CoursesPageView, CreateCoursesPageView, CreateSubjectPageView, DeleteCourseView, DeleteSubjectView, EditCoursePageView, EditSubjectPageView, HomePageView, RemoveStudentFromSubjectView, SubjectsPageView, UsersPageView
 urlpatterns = [
     path(
         "",
@@ -54,6 +54,26 @@ urlpatterns = [
         "subjects/delete/<int:subject_id>",
         login_required(DeleteSubjectView.as_view()),
         name="delete_subject",
+    ),
+    path(
+        "subjects/<int:course_id>",
+        login_required(SubjectsPageView.as_view()),
+        name="subjects",
+    ),
+    path(
+        "subjects/create/<int:course_id>",
+        login_required(CreateSubjectPageView.as_view()),
+        name="create_subject",
+    ),
+    path(
+        "subjects/edit/<int:subject_id>",
+        login_required(EditSubjectPageView.as_view()),
+        name="edit_subject",
+    ),
+    path(
+        "subjects/remove_student_from_subject/<int:subject_id>/<int:student_id>",
+        login_required(RemoveStudentFromSubjectView.as_view()),
+        name="remove_student_from_subject",
     ),
     path(
         "about/",
