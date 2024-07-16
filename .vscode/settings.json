@@ -9,5 +9,8 @@
   },
   "[python]": {
     "editor.defaultFormatter": "ms-python.autopep8"
+  },
+  "[django-html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }

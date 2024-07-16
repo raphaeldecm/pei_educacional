@@ -62,6 +62,7 @@
             </div>
           </div>
         </div>
+        {% if student_files|length > 0 %}
         <div>
           <p class="text-slate-900 font-medium text-[18px]">Anexos:</p>
 
@@ -75,6 +76,7 @@
           </div>
           {% endfor %}
         </div>
+        {%endif%}
       </div>
     </div>
   </div>

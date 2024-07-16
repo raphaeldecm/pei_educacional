@@ -141,6 +141,7 @@ class UsersPageView(TemplateView):
 
 class ProfilePageView(TemplateView):
     template_name = "pages/profile.html"
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -155,8 +156,37 @@ class ProfilePageView(TemplateView):
         context['active_tab'] = self.request.GET.get('tab', 'general')
         
         ## Tab General
+        student_peis = context['student_peis'] = Pei.objects.filter(student=student)
+
+        ### Filters Selectors
+        context['selector_teachers'] = Teacher.objects.all()
+
+        ### Filters
+        filters = {}
+        if 'course' in self.request.GET:
+            filters['subject__course__id'] = self.request.GET['course']
+        if 'teacher' in self.request.GET:
+            filters['subject__teacher__id'] = self.request.GET['teacher']
+        if 'period' in self.request.GET:
+            filters['subject__course__period'] = self.request.GET['period']
+        if 'status' in self.request.GET:
+            filters['status'] = self.request.GET['status']
+
+        student_peis = student_peis.filter(**filters)
+
+        if 'search' in self.request.GET:
+            student_peis = student_peis.filter(Q(subject__name__icontains=self.request.GET['search']))
         
-        
+        student_peis = student_peis.order_by('id')
+        paginator = Paginator(student_peis, self.paginate_by)
+        page_number = self.request.GET.get('page')
+
+        try:
+            student_peis = paginator.page(page_number)
+        except PageNotAnInteger:
+            student_peis = paginator.page(1)
+
+        context['student_peis'] = student_peis
         ## Tab General
         
         
