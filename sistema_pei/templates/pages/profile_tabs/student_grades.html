@@ -12,8 +12,10 @@
     <p class="p-[10px] rounded-lg cursor-pointer">1° semestre</p>
   </div>
   <div class="flex-1">
-    <div class="h-[837px] border border-slate-300 rounded-lg">
-      {% comment %} Gráfico {% endcomment %}
+    <div class="h-[837px] border border-slate-300 rounded-lg px-[20px] py-[40px]">
+        <div>
+            <canvas id="myChart"></canvas>
+        </div>
     </div>
     <div
       class="mt-[36px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg"
@@ -47,3 +49,35 @@
     </div>
   </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['1° Bimestre', '2° Bimestre', '3° Bimestre', '4° Bimestre'],
+      datasets: [{
+        label: 'Matemática',
+        data: [12, 19, 3, 5],
+        borderWidth: 2,
+        tension: 0.2,
+      },{
+        label: 'Português',
+        data: [10, 16, 6, 10],
+        borderWidth: 2,
+        tension: 0.2,
+      }
+      ]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
