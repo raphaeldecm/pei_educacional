@@ -167,9 +167,17 @@ class ProfilePageView(TemplateView):
         # Formulário condicionado pela sub_tab
         if requested_tab == 'edit_student_data':
             if sub_tab == 'edit_personal_data':
-                context['form'] = ViewEditDataStudentForm(instance=student)
+                form = ViewEditDataStudentForm(instance=student)
+                if 'form_errors' in self.request.session:
+                    form.errors.update(self.request.session['form_errors'])
+                    del self.request.session['form_errors']
+                context['form'] = form
             elif sub_tab == 'edit_historic':
-                context['form'] = ViewEdithistoricStudentForm(instance=student)
+                form = ViewEdithistoricStudentForm(instance=student)
+                if 'form_errors' in self.request.session:
+                    form.errors.update(self.request.session['form_errors'])
+                    del self.request.session['form_errors']
+                context['form'] = form
 
 
         # Breadcrumbs
@@ -200,6 +208,8 @@ class EditPersonalDataView(View):
         else:
             success_message = f'Erro ao atualizar dados!'
             messages.error(self.request, success_message)
+            request.session['form_errors'] = form.errors
+            request.session['form_data'] = request.POST
 
         return redirect(f'/profile/{student.id}?tab=edit_student_data&sub_tab=edit_personal_data#tab')
 
@@ -216,6 +226,8 @@ class EditHistoricPersonalDataView(View):
         else:
             success_message = f'Erro ao atualizar dados!'
             messages.error(self.request, success_message)
+            request.session['form_errors'] = form.errors
+            request.session['form_data'] = request.POST
 
         return redirect(f'/profile/{student.id}?tab=edit_student_data&sub_tab=edit_historic#tab')
 

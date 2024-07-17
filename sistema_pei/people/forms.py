@@ -80,6 +80,7 @@ class ViewEditDataStudentForm(AdminStudentForm):
             'abilities',
             'dificulties',
             'general_necessitie',
+            'specific_necessities',
         )
 
     def __init__(self, *args, **kwargs):
