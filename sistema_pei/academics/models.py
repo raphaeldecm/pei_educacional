@@ -85,14 +85,15 @@ class StudentGrades(BaseModel):
         Student,
         on_delete=models.PROTECT,
         verbose_name=_("Aluno"),
-        related_name="grades",
     )
     subject = models.ForeignKey(
         Subject,
         on_delete=models.PROTECT,
         verbose_name=_("Matéria"),
-        related_name="grades",
     )
+    
+    class Meta:
+        abstract = True
 
     def __str__(self):
         return self.student.name + " - " + self.subject.name
