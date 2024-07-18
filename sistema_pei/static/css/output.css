@@ -1068,10 +1068,6 @@ video {
   width: max-content;
 }
 
-.w-\[600px\] {
-  width: 600px;
-}
-
 .min-w-\[100px\] {
   min-width: 100px;
 }

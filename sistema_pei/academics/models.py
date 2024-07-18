@@ -80,3 +80,37 @@ class Subject(BaseModel):
     def __str__(self):
         return self.name + " - " + self.course.name
 
+class StudentGrades(BaseModel):
+    student = models.ForeignKey(
+        Student,
+        on_delete=models.PROTECT,
+        verbose_name=_("Aluno"),
+        related_name="grades",
+    )
+    subject = models.ForeignKey(
+        Subject,
+        on_delete=models.PROTECT,
+        verbose_name=_("Matéria"),
+        related_name="grades",
+    )
+
+    def __str__(self):
+        return self.student.name + " - " + self.subject.name
+    
+class StudentGradesSemestral(StudentGrades):
+    grade1 = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name=_("1 - Bimestre"))
+    grade2 = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name=_("2 - Bimestre"))
+
+    class Meta:
+        verbose_name = _("Nota Semestral")
+        verbose_name_plural = _("Notas Semestrais")
+
+class StudentGradesAnual(StudentGrades):
+    grade1 = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name=_("1 - Bimestre"))
+    grade2 = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name=_("2 - Bimestre"))
+    grade3 = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name=_("3 - Bimestre"))
+    grade4 = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name=_("4 - Bimestre"))
+
+    class Meta:
+        verbose_name = _("Nota Anual")
+        verbose_name_plural = _("Notas Anuais")
