@@ -40,16 +40,22 @@ referrerpolicy="no-referrer"></script>
 {% endblock javascript %}
 </head>
 
-<body class="flex flex-col h-screen">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
-  <header class="flex justify-between items-center w-full h-20 bg-green-600 text-zinc-50 font-semibold p-10 border-b-2 shadow-xl">
-    {% include "layouts/base_header.html" %}
+<body class="flex flex-col h-screen font-poppins">
+
+  <header class="flex center justify-center items-center w-full min-h-[85px] bg-neutral-50 text-slate-400 border-b-2">
+    <div class=" flex justify-between items-center w-full px-[74px] max-w-[1841px] mx-auto">
+      {% include "layouts/base_header.html" %}
+    </div>
   </header>
 
-  <main class="flex flex-1 flex-col justify-center items-center bg-gray-100">
-    <div class="flex flex-col justify-center items-center py-8 bg-white h-full w-2/3 mx-auto">
+  <main class="flex flex-1 flex-col justify-center items-center bg-neutral-50">
+    <div class="flex flex-col items-center py-8 h-full w-full px-[74px] max-w-[1841px] mx-auto">
       {% if messages %}
-        <div class="fixed p-4 top-14 right-4 flex flex-col gap-4">
+        <div class="fixed p-4 top-20 flex flex-col gap-4">
           {% include "layouts/messages.html" %}
         </div>
       {% endif %}
@@ -60,7 +66,7 @@ referrerpolicy="no-referrer"></script>
     </div>
   </main>
 
-  <footer class="flex flex-col items-center border-t shadow-xl">
+  <footer class="flex flex-col items-center border-t shadow-xl bg-green-950">
     {% include "layouts/base_footer.html" %}
   </footer>
 

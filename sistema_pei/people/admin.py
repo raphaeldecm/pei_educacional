@@ -1,20 +1,19 @@
 from django.contrib import admin
 
+from sistema_pei.people.forms import AdminStudentForm
+
 # Register your models here.
 from . import models
 
+class CampusAdmin(admin.ModelAdmin):
+    search_fields = ["name"]
+    readonly_fields = ["updated_by", "created_at"]
+    list_display = ["name", "abbreviation"]
 
 class TeacherAdmin(admin.ModelAdmin):
     search_fields = ["name"]
     readonly_fields = ["updated_by", "created_at"]
-    list_display = ["name", "email"]
-
-
-class ResponsibleAdmin(admin.ModelAdmin):
-    search_fields = ["name"]
-    readonly_fields = ["updated_by", "created_at"]
-    list_display = ["name", "email"]
-
+    list_display = ["name", "email", "campus"]
 
 class SpecificNecessitieAdmin(admin.ModelAdmin):
     search_fields = ["name"]
@@ -23,10 +22,20 @@ class SpecificNecessitieAdmin(admin.ModelAdmin):
 
 
 class StudentAdmin(admin.ModelAdmin):
+    form = AdminStudentForm
     search_fields = ["name"]
     readonly_fields = ["updated_by", "created_at"]
-    list_display = ["name", "email", "responsible_person"]
+    list_display = ["name", "email"]
 
+    def save_model(self, request, obj, form, change):
+        if change:
+            obj.updated_by = request.user
+        obj.save()
+
+class StudentFileAdmin(admin.ModelAdmin):
+    search_fields = ['student__name', 'file']
+    readonly_fields = ['uploaded_at']
+    list_display = ['student', 'file', 'uploaded_at']
 
 class NotificationAdmin(admin.ModelAdmin):
     search_fields = ["title"]
@@ -34,8 +43,9 @@ class NotificationAdmin(admin.ModelAdmin):
     list_display = ["title", "user", "created_at", "updated_at"]
 
 
+admin.site.register(models.Campus, CampusAdmin)
 admin.site.register(models.Teacher, TeacherAdmin)
-admin.site.register(models.Responsible, ResponsibleAdmin)
 admin.site.register(models.SpecificNecessitie, SpecificNecessitieAdmin)
 admin.site.register(models.Student, StudentAdmin)
+admin.site.register(models.StudentFile, StudentFileAdmin)
 admin.site.register(models.Notification, NotificationAdmin)

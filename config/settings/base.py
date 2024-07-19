@@ -84,6 +84,7 @@ THIRD_PARTY_APPS = [
     "drf_spectacular",
     "rest_framework_simplejwt",
     "django_browser_reload",
+    "social_django",
 ]
 
 LOCAL_APPS = [
@@ -92,6 +93,7 @@ LOCAL_APPS = [
     "sistema_pei.academics",
     "sistema_pei.people",
     "sistema_pei.educational_plan",
+    "suap_backend",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -112,6 +114,7 @@ MIGRATION_MODULES = {"sites": "sistema_pei.contrib.sites.migrations"}
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
+    "suap_backend.backends.SuapOAuth2",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
 AUTH_USER_MODEL = "users.User"
@@ -156,6 +159,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_browser_reload.middleware.BrowserReloadMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    "social_django.middleware.SocialAuthExceptionMiddleware",
 ]
 
 # STATIC
@@ -202,6 +206,9 @@ TEMPLATES = [
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
                 "sistema_pei.users.context_processors.allauth_settings",
+
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -235,6 +242,12 @@ EMAIL_BACKEND = env(
     "DJANGO_EMAIL_BACKEND",
     default="django.core.mail.backends.smtp.EmailBackend",
 )
+
+EMAIL_HOST = env("DJANGO_EMAIL_HOST", default="smtp.gmail.com")
+EMAIL_PORT = env("DJANGO_EMAIL_PORT", default=587)
+EMAIL_USE_SSL = env("DJANGO_EMAIL_USE_SSL", default=False)
+EMAIL_USE_TLS = env("DJANGO_EMAIL_USE_TLS", default=True)
+
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-timeout
 EMAIL_TIMEOUT = 5
 
@@ -249,6 +262,31 @@ MANAGERS = ADMINS
 # https://cookiecutter-django.readthedocs.io/en/latest/settings.html#other-environment-settings
 # Force the `admin` sign in process to go through the `django-allauth` workflow
 DJANGO_ADMIN_FORCE_ALLAUTH = env.bool("DJANGO_ADMIN_FORCE_ALLAUTH", default=False)
+
+# settings.py
+
+# DJANGO SOCIALL LOGIN
+# https://python-social-auth.readthedocs.io/en/latest/pipeline.html
+SOCIAL_AUTH_PIPELINE = (
+    "social_core.pipeline.social_auth.social_details",
+    "social_core.pipeline.social_auth.social_uid",
+    "social_core.pipeline.social_auth.auth_allowed",
+    "sistema_pei.suap_backend.pipeline.verificar_tipo_usuario",  # Verifica o tipo de usuário antes de prosseguir
+    "social_core.pipeline.social_auth.social_user",
+    "social_core.pipeline.user.get_username",
+    "social_core.pipeline.user.create_user",
+    "social_core.pipeline.social_auth.associate_user",
+    "social_core.pipeline.social_auth.load_extra_data",
+    "social_core.pipeline.user.user_details",
+    "sistema_pei.suap_backend.pipeline.verifica_grupo_usuario",
+)
+
+# DJANGO SOCIALL LOGIN
+# https://python-social-auth.readthedocs.io/en/latest/configuration/settings.html
+SOCIAL_AUTH_SUAP_REDIRECT_URI = "http://127.0.0.1:8000/social/complete/suap/"
+SOCIAL_AUTH_SUAP_KEY = env("SOCIAL_AUTH_SUAP_KEY", default=" ")
+SOCIAL_AUTH_SUAP_SECRET = env("SOCIAL_AUTH_SUAP_SECRET", default=" ")
+
 
 # LOGGING
 # ------------------------------------------------------------------------------
@@ -328,6 +366,8 @@ ACCOUNT_FORMS = {"signup": "sistema_pei.users.forms.UserSignupForm"}
 SOCIALACCOUNT_ADAPTER = "sistema_pei.users.adapters.SocialAccountAdapter"
 # https://docs.allauth.org/en/latest/socialaccount/configuration.html
 SOCIALACCOUNT_FORMS = {"signup": "sistema_pei.users.forms.UserSocialSignupForm"}
+# https://docs.allauth.org/en/latest/account/configuration.html
+ACCOUNT_PREVENT_ENUMERATION = False
 
 # django-rest-framework
 # -------------------------------------------------------------------------------
@@ -360,3 +400,4 @@ SPECTACULAR_SETTINGS = {
 }
 # Your stuff...
 # ------------------------------------------------------------------------------
+

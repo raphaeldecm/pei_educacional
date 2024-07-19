@@ -11,17 +11,69 @@ from django.contrib.auth.decorators import login_required
 from drf_spectacular.views import SpectacularAPIView
 from drf_spectacular.views import SpectacularSwaggerView
 from rest_framework.authtoken.views import obtain_auth_token
+from sistema_pei.people.views import activate_account, StudentCreateView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
     TokenVerifyView,
 )
 
+from sistema_pei.core.views import CoursesPageView, CreateCoursesPageView, CreateSubjectPageView, DeleteCourseView, DeleteSubjectView, EditCoursePageView, EditSubjectPageView, HomePageView, RemoveStudentFromSubjectView, SubjectsPageView, UsersPageView
 urlpatterns = [
     path(
         "",
-        login_required(TemplateView.as_view(template_name="pages/home.html")),
+        login_required(HomePageView.as_view()),
         name="home",
+    ),
+    path(
+        "users/",
+        login_required(UsersPageView.as_view()),
+        name="users",
+    ),
+    path(
+        "courses/",
+        login_required(CoursesPageView.as_view()),
+        name="courses",
+    ),
+    path(
+        "courses/create",
+        login_required(CreateCoursesPageView.as_view()),
+        name="create_course",
+    ),
+    path(
+        "courses/edit/<int:course_id>",
+        login_required(EditCoursePageView.as_view()),
+        name="edit_course",
+    ),
+    path(
+        "courses/delete/<int:course_id>",
+        login_required(DeleteCourseView.as_view()),
+        name="delete_course",
+    ),
+    path(
+        "subjects/delete/<int:subject_id>",
+        login_required(DeleteSubjectView.as_view()),
+        name="delete_subject",
+    ),
+    path(
+        "subjects/<int:course_id>",
+        login_required(SubjectsPageView.as_view()),
+        name="subjects",
+    ),
+    path(
+        "subjects/create/<int:course_id>",
+        login_required(CreateSubjectPageView.as_view()),
+        name="create_subject",
+    ),
+    path(
+        "subjects/edit/<int:subject_id>",
+        login_required(EditSubjectPageView.as_view()),
+        name="edit_subject",
+    ),
+    path(
+        "subjects/remove_student_from_subject/<int:subject_id>/<int:student_id>",
+        login_required(RemoveStudentFromSubjectView.as_view()),
+        name="remove_student_from_subject",
     ),
     path(
         "about/",
@@ -33,6 +85,11 @@ urlpatterns = [
     # User management
     path("users/", include("sistema_pei.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
+    path('activate/<uidb64>/<token>/', activate_account, name='activate'),
+    path(
+        'student/create/',
+        login_required(StudentCreateView.as_view()),
+        name='student_create'),
     # JWT
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
@@ -41,6 +98,8 @@ urlpatterns = [
     path("__reload__/", include("django_browser_reload.urls")),
     # Your stuff: custom urls includes go here
     # ...
+    path('social/', include('social_django.urls', namespace='social')),
+    path('suap_backend/', include('suap_backend.urls', namespace='suap_login')),
     # Media files
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
 ]

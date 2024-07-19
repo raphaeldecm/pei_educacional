@@ -1,0 +1,66 @@
+{% extends "base.html" %} {% load static i18n %} {% block content %}
+
+<div class="w-full">
+  <h1 class="text-[32px] font-medium mb-[38px]">Usuários</h1>
+  <div>
+    <p class="text-[18px] font-semibold mb-[24px]">CONVIDAR USUÁRIO:</p>
+
+    <form class="flex gap-[8px]" method="post">
+      {% csrf_token %}
+      <input type="email" name="recipient" placeholder="Digite o email..." class="outline-none placeholder:text-[18px] rounded-lg l bg-neutral-50 flex flex-1 h-[48px] border border-slate-300 px-[10px] gap-2" required>
+
+      <div class="relative w-[322px] cursor-pointer">
+        <img
+          class="absolute top-[12px] right-[10px]"
+          src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+          width="24px"
+          height="24px"
+        />
+        <select
+          name="group"
+          class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
+          required
+        >
+          <option value="default" selected disabled>
+            Selecione o tipo...
+          </option>
+          {% for group in groups%}
+            <option value="{{group.id}}">{{group.name}}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="relative w-[322px] cursor-pointer">
+        <img
+          class="absolute top-[12px] right-[10px]"
+          src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+          width="24px"
+          height="24px"
+        />
+        <select
+          name="sector"
+          class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
+          required
+        >
+          <option value="default" selected disabled>
+            Selecione o setor...
+          </option>
+          {% for sector in sectors%}
+            <option value="{{sector.id}}">{{sector.name}}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <button class="flex items-center justify-center gap-[10px] min-w-[102px] h-[48px] bg-green-500 rounded-[6px] text-neutral-50">
+        <img
+          src="{% static 'images/icons/icon-filter.svg' %}"
+          width="24px"
+          height="24px"
+        />
+        <span>Enviar</span>
+    </button>
+    </form>
+  </div>
+</div>
+
+{% endblock content %}
