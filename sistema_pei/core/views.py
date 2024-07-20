@@ -188,19 +188,18 @@ class ProfilePageView(TemplateView):
 
         context['student_peis'] = student_peis
         ## Tab Notes
-        
-        if 'selectedPeriod' in self.request.GET:
-            pass
-        
-        # Pegar notas de acordo com tipo de duração do curso
         if (student.course.durationType == "SEMESTER"):
-            context["student_notes"] = StudentGradesSemestral.objects.filter(student=student)
+            student_notes = StudentGradesSemestral.objects.filter(student=student)
+            if 'selectedPeriod' in self.request.GET:
+                student_notes = student_notes.filter(semester=self.request.GET['selectedPeriod'])
         else:
-            context["student_notes"] = StudentGradesAnual.objects.filter(student=student)
+            student_notes = StudentGradesAnual.objects.filter(student=student)
+            if 'selectedPeriod' in self.request.GET:
+                student_notes = student_notes.filter(year=self.request.GET['selectedPeriod'])
         
         
         
-            
+        context["student_notes"] = student_notes
         ## Tab Edit
         
         
