@@ -24,7 +24,7 @@ from sistema_pei.academics.models import Courses, Subject
 from sistema_pei.core.forms import CourseForm, SubjectForm
 from sistema_pei.educational_plan.models import Pei
 from sistema_pei.people.forms import ViewEditDataStudentForm, ViewEdithistoricStudentForm, ViewStudentForm
-from sistema_pei.people.models import Student, Teacher, User
+from sistema_pei.people.models import Student, StudentFile, Teacher, User
 from django.contrib.auth.models import Group
 
 from sistema_pei.users.models import Sector
@@ -179,6 +179,11 @@ class ProfilePageView(TemplateView):
                     del self.request.session['form_errors']
                 context['form'] = form
 
+        #sub tab Anexos
+        if requested_tab == 'edit_student_data':
+            if sub_tab == 'edit_files':
+                context['student_files'] = StudentFile.objects.filter(student=student)
+
 
         # Breadcrumbs
         context['breadcrumbs_data'] = [
@@ -230,6 +235,24 @@ class EditHistoricPersonalDataView(View):
             request.session['form_data'] = request.POST
 
         return redirect(f'/profile/{student.id}?tab=edit_student_data&sub_tab=edit_historic#tab')
+
+class DeletePersonalFilesView(View):
+    def post(self, request, *args, **kwargs):
+        student_id = kwargs.get('student_id')
+        file_id = request.POST.get('file_id')
+        student = get_object_or_404(Student, id=student_id)
+        file = get_object_or_404(StudentFile, id=file_id, student=student)
+
+        try:
+            file.delete()
+            success_message = 'Arquivo deletado com sucesso!'
+            messages.success(self.request, success_message)
+        except Exception as e:
+            error_message = f'Erro ao deletar arquivo: {str(e)}'
+            messages.error(self.request, error_message)
+
+        return redirect(f'/profile/{student.id}?tab=edit_student_data&sub_tab=edit_files#tab')
+
 
 
 class CoursesPageView(TemplateView):

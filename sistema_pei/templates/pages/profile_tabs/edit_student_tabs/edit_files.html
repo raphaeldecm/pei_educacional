@@ -1,1 +1,61 @@
-<p>Página de editar anexos em contrução!</p>
+{% load static %}
+
+<div>
+  <h2 class="font-poppins text-lg mb-4">Anexos</h2>
+  <ul class="space-y-4">
+      {% for file in student_files %}
+          <li class="flex justify-between gap-2 bg-transparent font-sans appearance-none border rounded w-full py-6 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">
+            <span class="flex gap-2 text-gray-700">
+              <img src="{% static 'images/icons/clip_icon.svg' %}" alt="icone de clip de papel, representa um arquivo anexado">
+              {{ file.file.name }}
+            </span>
+            <div>
+              <a href="{{ file.file.url }}" download class="ml-4 text-green-500 cursor-pointer hover:underline">Download</a>
+              <form action="{% url 'delete_personal_file' student.id %}" method="post" class="inline">
+                {% csrf_token %}
+                <input type="hidden" name="file_id" value="{{ file.id }}">
+                <button type="submit" class="ml-4 text-red-500 cursor-pointer hover:underline">Remover</button>
+              </form>
+            </div>
+          </li>
+      {% empty %}
+          <li>Não há arquivos disponíveis para este aluno.</li>
+      {% endfor %}
+  </ul>
+
+  <div class="w-full">
+    <label class="font-sans font-medium text-lg text-ls block mb-4">
+      Adicone novos arquivos
+    </label>
+
+    <div class="w-full">
+        <div id="file-list" class="my-4 space-y-2"></div>
+
+        <div>
+            <input id="{{ form.files.id_for_label }}"
+                  name="{{ form.files.name }}"
+                  type="file"
+                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls"
+                  multiple
+                  class="hidden"
+            >
+
+            <button type="button" id="add-files-button"
+                    class="flex gap-2 bg-transparent font-sans appearance-none border rounded w-full py-6 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
+            >
+              <img src="{% static 'images/icons/clip_icon.svg' %}" alt="icone de clip de papel, representa um arquivo anexado">
+              Escolha o anexo
+            </button>
+        </div>
+    </div>
+
+    {% if form.files.errors %}
+    <ul class="list-disc p-2">
+      {% for error in form.files.errors %}
+        <li class="text-red-500 ml-2" >{{ error }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+</div>
+
