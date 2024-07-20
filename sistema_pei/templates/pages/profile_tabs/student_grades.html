@@ -64,18 +64,28 @@
   new Chart(ctx, {
     type: 'line',
     data: {
-      labels: ['1° Bimestre', '2° Bimestre', '3° Bimestre', '4° Bimestre'],
-      datasets: [{
-        label: 'Matemática',
-        data: [12, 19, 3, 5],
-        borderWidth: 2,
-        tension: 0.2,
-      },{
-        label: 'Português',
-        data: [10, 16, 6, 10],
-        borderWidth: 2,
-        tension: 0.2,
-      }
+      labels: [
+        	'1° Bimestre', 
+          '2° Bimestre',
+          {%if student.course.durationType != "SEMESTER" %}
+            '3° Bimestre',
+            '4° Bimestre'
+          {%endif%}
+          ],
+      datasets: [
+        {% for subject_grades in student_notes %}
+        {
+          label: '{{subject_grades.subject.name}}',
+          data: [
+            {% if subject_grades.grade1 %}{{subject_grades.grade1}},{%endif%}
+            {% if subject_grades.grade2 %}{{subject_grades.grade2}},{%endif%}
+            {% if subject_grades.grade3 %}{{subject_grades.grade3}},{%endif%}
+            {% if subject_grades.grade4 %}{{subject_grades.grade4}},{%endif%}
+          ].filter((p) => p !=0),
+          borderWidth: 2,
+          tension: 0.2,
+        },
+        {%endfor%}
       ]
     },
     options: {
