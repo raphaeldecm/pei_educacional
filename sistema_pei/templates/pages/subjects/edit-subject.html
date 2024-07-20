@@ -83,8 +83,8 @@
             <span class="text-[18px]"><strong>{{ student_with_course.student.registration }}</strong> - {{ student_with_course.student.name }} |
                 <strong>Curso:</strong> {{ student_with_course.course_name }}</span>
 
-            <a href="{% url 'delete_subject' subject.id %}"
-                onclick="return confirm('Tem certeza que deseja excluir a matéria {{ student_with_course.student.name }}?')">
+            <a href="{% url 'remove_student_from_subject' subject.id student_with_course.student.id %}"
+                onclick="return confirm('Tem certeza que deseja remover o estudante {{student_with_course.student.name}} da matéria {{ subject.name }} ?')">
                 <img src="{% static 'images/icons/icon-remove-element.svg' %}" width="18px" height="20px"
                     class="cursor-pointer" />
             </a>
