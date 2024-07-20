@@ -14,6 +14,10 @@ class Courses(BaseModel):
         MATUTINO = "Matutino", "Matutino"
         VESPERTINO = "Vespertino", "Vespertino"
         NOTURNO = "Noturno", "Noturno"
+    
+    class CourseDurationType(models.TextChoices):
+        SEMESTER = "SEMESTER", _("Semestral")
+        YEAR = "YEAR", _("Anual")
 
     name = models.CharField(max_length=80, verbose_name=_("Nome"))
     course_type = models.CharField(
@@ -26,9 +30,14 @@ class Courses(BaseModel):
         choices=CoursePeriod.choices,
         verbose_name=_("Turno"),
     )
+    
+    durationType = models.CharField(
+        choices=CourseDurationType.choices,
+        verbose_name=_("Tipo de duração"),
+    )
 
     number_of_periods = models.PositiveSmallIntegerField(
-        verbose_name=_("Número de períodos"),
+        verbose_name=_("Número de períodos/Anos"),
         default=1,
         validators=[
             MinValueValidator(1),
@@ -101,6 +110,8 @@ class StudentGrades(BaseModel):
 class StudentGradesSemestral(StudentGrades):
     grade1 = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name=_("1 - Bimestre"))
     grade2 = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name=_("2 - Bimestre"))
+    
+    semester = models.IntegerField(verbose_name=_("Semestre"))
 
     class Meta:
         verbose_name = _("Nota Semestral")
@@ -111,6 +122,8 @@ class StudentGradesAnual(StudentGrades):
     grade2 = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name=_("2 - Bimestre"))
     grade3 = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name=_("3 - Bimestre"))
     grade4 = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name=_("4 - Bimestre"))
+    
+    year = models.IntegerField(verbose_name=_("Ano"))
 
     class Meta:
         verbose_name = _("Nota Anual")

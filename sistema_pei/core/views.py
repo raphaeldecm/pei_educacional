@@ -19,7 +19,7 @@ import re
 
 from django.conf import settings
 from sistema_pei.academics.constants import COURSE_TYPE
-from sistema_pei.academics.models import Courses, Subject
+from sistema_pei.academics.models import Courses, StudentGradesAnual, StudentGradesSemestral, Subject
 from sistema_pei.core.forms import CourseForm, SubjectForm
 from sistema_pei.educational_plan.models import Pei
 from sistema_pei.people.models import Student, StudentFile, Teacher, User
@@ -187,12 +187,20 @@ class ProfilePageView(TemplateView):
             student_peis = paginator.page(1)
 
         context['student_peis'] = student_peis
-        ## Tab General
-        
-        
         ## Tab Notes
         
+        if 'selectedPeriod' in self.request.GET:
+            pass
         
+        # Pegar notas de acordo com tipo de duração do curso
+        if (student.course.durationType == "SEMESTER"):
+            context["student_notes"] = StudentGradesSemestral.objects.filter(student=student)
+        else:
+            context["student_notes"] = StudentGradesAnual.objects.filter(student=student)
+        
+        
+        
+            
         ## Tab Edit
         
         
