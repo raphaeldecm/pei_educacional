@@ -1,5 +1,5 @@
 from django import forms
-from .models import Student
+from .models import Student, StudentFile
 from django.core.exceptions import ValidationError
 
 class MultipleFileInput(forms.FileInput):
@@ -106,3 +106,26 @@ class ViewEdithistoricStudentForm(forms.ModelForm):
             'reference_period',
             'sectors',
         )
+
+class StudentFilesForm(forms.ModelForm):
+    files = MultipleFileField(required=False)
+
+    class Meta:
+        model = StudentFile
+        fields = ['files']
+
+    def __init__(self, *args, **kwargs):
+        super(StudentFilesForm, self).__init__(*args, **kwargs)
+        self.fields['files'].required = False
+
+    def clean_files(self):
+        files = self.cleaned_data.get('files', [])
+        allowed_extensions = ['.pdf', '.doc', '.docx', '.jpg', '.jpeg', '.png', '.xlsx', '.xls']
+
+        for file in files:
+            if not any(file.name.lower().endswith(ext) for ext in allowed_extensions):
+                raise ValidationError(
+                    f"Arquivo {file.name} possui uma extensão não suportada. As extensões suportadas são: {', '.join(allowed_extensions)}"
+                )
+
+        return files

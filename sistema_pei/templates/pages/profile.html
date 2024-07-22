@@ -140,31 +140,165 @@
   </section>
 </div>
 
+
+<!-- Modal -->
+<div id="confirmationModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex flex-wrap items-center justify-center hidden">
+  <div class="bg-white p-6 rounded-lg shadow-lg">
+    <h2 class="text-xl font-semibold mb-4">Confirmar Atualização</h2>
+    <p class="mb-4 text-slate-400">Tem certeza de que deseja atualizar seus dados? Esta ação não pode ser desfeita.</p>
+    <div class="flex justify-end space-x-4">
+      <button id="cancelButton" class="text-slate-900 hover:text-red-700 hover:underline py-2 px-4 rounded">Cancelar</button>
+      <button id="confirmButton" class="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+
 {% endblock content %}
 
 
 {% block inline_javascript %}
 <script>
-  function previewImage(event) {
-
+  document.addEventListener('DOMContentLoaded', function () {
     /*
-    Preview da imagen de perfil
+    Exibe modal para confirmação de atualização de dados ao
+    Ativar qualquer botão de atualizar dados.
     */
 
-    const input = event.target;
-    const file = input.files[0];
-    const reader = new FileReader();
+    const updateForm = document.getElementById('updateForm');
+    const submitButton = document.getElementById('submit-button');
+    const modal = document.getElementById('confirmationModal');
+    const confirmButton = document.getElementById('confirmButton');
+    const cancelButton = document.getElementById('cancelButton');
 
-    reader.onload = function(e) {
-      const preview = document.getElementById('profileImage');
-      preview.src = e.target.result;
-    };
+    submitButton.addEventListener('click', function (event) {
+      event.preventDefault();
+      modal.classList.remove('hidden');
+    });
 
-    if (file) {
-      reader.readAsDataURL(file);
+    confirmButton.addEventListener('click', function () {
+      modal.classList.add('hidden');
+      updateForm.submit();
+    });
+
+    cancelButton.addEventListener('click', function () {
+      modal.classList.add('hidden');
+    });
+  });
+
+  {% if sub_active_tab == 'edit_personal_data' %}
+    function previewImage(event) {
+      /*
+      Preview da imagen de perfil
+      */
+
+      const input = event.target;
+      const file = input.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        const preview = document.getElementById('profileImage');
+        preview.src = e.target.result;
+      };
+
+      if (file) {
+        reader.readAsDataURL(file);
+      }
     }
-  }
 
-  
+  {% elif sub_active_tab == 'edit_files' %}
+    document.addEventListener('DOMContentLoaded', () => {
+
+      /*
+      Comportamento dos campos de anexo.
+      Lista os arquivos selecionados e os adicionam ao input oculto.
+      */
+
+      const fileUpload = {
+        fileList: document.getElementById('file-list'),
+        inputElement: document.getElementById('{{ form.files.id_for_label }}'),
+        files: [],
+
+        init() {
+            document.getElementById('add-files-button').addEventListener('click', () => {
+                this.inputElement.click();
+            });
+
+            this.inputElement.addEventListener('change', (event) => {
+                this.handleFileSelect(event);
+            });
+        },
+
+        handleFileSelect(event) {
+            const newFiles = Array.from(event.target.files);
+            this.files = this.files.concat(newFiles);
+            this.updateFileList();
+            this.updateInputFiles();
+        },
+
+        removeFile(index) {
+            this.files.splice(index, 1);
+            this.updateFileList();
+            this.updateInputFiles();
+        },
+
+        updateFileList() {
+            this.fileList.innerHTML = '';
+            this.files.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'flex justify-between gap-2 bg-transparent truncate font-poppins appearance-none border rounded w-full py-6 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500';
+                fileItem.innerHTML = `
+                    <span class="flex gap-2 text-gray-700">
+                      <img src="{% static 'images/icons/clip_icon.svg' %}" alt="icone de clip de papel, representa um arquivo anexado">
+                      ${file.name}
+                    </span>
+                    <button class="ml-4 text-red-500 cursor-pointer hover:underline" onclick="fileUpload.removeFile(${index})">Remover</button>
+                `;
+                this.fileList.appendChild(fileItem);
+            });
+        },
+
+        updateInputFiles() {
+            const dataTransfer = new DataTransfer();
+            this.files.forEach(file => dataTransfer.items.add(file));
+            this.inputElement.files = dataTransfer.files;
+        }
+      };
+
+      fileUpload.init();
+      window.fileUpload = fileUpload;
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      /*
+      Exibe modal para confirmação de atualização de dados ao
+      Selecioanr botão de remover
+      */
+      const removeButtons = document.querySelectorAll('.removeFile');
+      const confirmationModal = document.getElementById('confirmationModal');
+      const cancelButton = document.getElementById('cancelButton');
+      const confirmButton = document.getElementById('confirmButton');
+      let formToSubmit;
+
+      removeButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+          event.preventDefault();
+          formToSubmit = button.closest('form');
+          confirmationModal.classList.remove('hidden');
+        });
+      });
+
+      cancelButton.addEventListener('click', () => {
+        confirmationModal.classList.add('hidden');
+      });
+
+      confirmButton.addEventListener('click', () => {
+        if (formToSubmit) {
+          formToSubmit.submit();
+        }
+        confirmationModal.classList.add('hidden');
+      });
+    });
+  {% endif %}
 </script>
 {% endblock inline_javascript %}

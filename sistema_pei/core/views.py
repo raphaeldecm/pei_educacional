@@ -23,7 +23,7 @@ from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.academics.models import Courses, Subject
 from sistema_pei.core.forms import CourseForm, SubjectForm
 from sistema_pei.educational_plan.models import Pei
-from sistema_pei.people.forms import ViewEditDataStudentForm, ViewEdithistoricStudentForm, ViewStudentForm
+from sistema_pei.people.forms import StudentFilesForm, ViewEditDataStudentForm, ViewEdithistoricStudentForm, ViewStudentForm
 from sistema_pei.people.models import Student, StudentFile, Teacher, User
 from django.contrib.auth.models import Group
 
@@ -164,7 +164,8 @@ class ProfilePageView(TemplateView):
         sub_tab = self.request.GET.get('sub_tab', 'edit_personal_data')
         context['sub_active_tab'] = sub_tab
 
-        # Formulário condicionado pela sub_tab
+        # Formulário condicionado pela sub_tab (enviado na url)
+        # Pega os erros do formulário que estão armazenados na sessão.
         if requested_tab == 'edit_student_data':
             if sub_tab == 'edit_personal_data':
                 form = ViewEditDataStudentForm(instance=student)
@@ -174,6 +175,12 @@ class ProfilePageView(TemplateView):
                 context['form'] = form
             elif sub_tab == 'edit_historic':
                 form = ViewEdithistoricStudentForm(instance=student)
+                if 'form_errors' in self.request.session:
+                    form.errors.update(self.request.session['form_errors'])
+                    del self.request.session['form_errors']
+                context['form'] = form
+            elif sub_tab == 'edit_files':
+                form = StudentFilesForm()
                 if 'form_errors' in self.request.session:
                     form.errors.update(self.request.session['form_errors'])
                     del self.request.session['form_errors']
@@ -201,6 +208,9 @@ class ProfilePageView(TemplateView):
 
 
 class EditPersonalDataView(View):
+    """
+    View para editar os dados pessoais de um aluno.
+    """
     def post(self, request, *args, **kwargs):
         student_id = kwargs.get('student_id')
         student = get_object_or_404(Student, id=student_id)
@@ -219,6 +229,9 @@ class EditPersonalDataView(View):
         return redirect(f'/profile/{student.id}?tab=edit_student_data&sub_tab=edit_personal_data#tab')
 
 class EditHistoricPersonalDataView(View):
+    """
+    View para editar o histórico pessoal de um aluno.
+    """
     def post(self, request, *args, **kwargs):
         student_id = kwargs.get('student_id')
         student = get_object_or_404(Student, id=student_id)
@@ -237,6 +250,9 @@ class EditHistoricPersonalDataView(View):
         return redirect(f'/profile/{student.id}?tab=edit_student_data&sub_tab=edit_historic#tab')
 
 class DeletePersonalFilesView(View):
+    """
+    View para deletar arquivos pessoais de um aluno.
+    """
     def post(self, request, *args, **kwargs):
         student_id = kwargs.get('student_id')
         file_id = request.POST.get('file_id')
@@ -250,6 +266,27 @@ class DeletePersonalFilesView(View):
         except Exception as e:
             error_message = f'Erro ao deletar arquivo: {str(e)}'
             messages.error(self.request, error_message)
+
+        return redirect(f'/profile/{student.id}?tab=edit_student_data&sub_tab=edit_files#tab')
+
+class UploadStudentFilesView(View):
+    """
+    View para fazer upload de arquivos para um aluno.
+    """
+    def post(self, request, *args, **kwargs):
+        student_id = kwargs.get('student_id')
+        student = get_object_or_404(Student, id=student_id)
+        form = StudentFilesForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            files = form.cleaned_data['files']
+            for file in files:
+                StudentFile.objects.create(student=student, file=file)
+            messages.success(request, 'Arquivos carregados com sucesso!')
+        else:
+            messages.error(request, 'Erro ao carregar arquivos!')
+            request.session['form_errors'] = form.errors
+            request.session['form_data'] = request.POST
 
         return redirect(f'/profile/{student.id}?tab=edit_student_data&sub_tab=edit_files#tab')
 
