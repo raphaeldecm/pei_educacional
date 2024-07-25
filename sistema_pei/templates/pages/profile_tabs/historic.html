@@ -1,1 +1,90 @@
-<p>Histórico em construção!</p>
+<div class="grid grid-cols-1 md:grid-cols-6 gap-9 mb-20">
+  <nav class="space-y-2 min-w-[100px] max-w-[280px] col-span-1">
+    <h2 class="font-poppins text-green-500 font-semibold text-lg uppercase">Sumário</h2>
+    <ol class="list-decimal pl-7 space-y-2">
+      {% if student.personal_history %}
+        <li class="text-green-500 hover:underline">
+          <a href="#historico" class="block max-w-xs truncate">Histórico</a>
+        </li>
+      {% endif %}
+      {% if student.specific_necessities %}
+        <li class="text-green-500 hover:underline">
+          <a href="#necessidades" class="block max-w-xs truncate">Necessidades</a>
+        </li>
+      {% endif %}
+      {% if student.abilities or student.dificulties %}
+        <li class="text-green-500">
+          <a href="#aptidao-e-dificuldades" class="block max-w-xs truncate hover:underline">Aptidão e dificuldades</a>
+          <ol class="list-decimal pl-7 space-y-2 mt-2">
+              {% if student.abilities %}
+                <li class="text-green-500 hover:underline">
+                  <a href="#conhecimento" class="block max-w-xs truncate">Conhecimento, habilidades....</a>
+                </li>
+              {% endif %}
+              {% if student.dificulties %}
+                <li class="text-green-500 hover:underline">
+                  <a href="#dificuldades" class="block max-w-xs truncate">Dificuldades</a>
+                </li>
+              {% endif %}
+          </ol>
+        </li>
+      {% endif %}
+      {% if student.general_necessitie %}
+        <li class="text-green-500 hover:underline">
+          <a href="#outras-necessidades" class="block max-w-xs truncate">Outras necessidades específicas</a>
+        </li>
+      {% endif %}
+      {% if student.creation_reasons %}
+        <li class="text-green-500 hover:underline">
+          <a href="#questoes-geradoras" class="block max-w-xs truncate">Questões geradoras para criação...</a>
+        </li>
+      {% endif %}
+    </ol>
+  </nav>
+
+  <div class="w-full space-y-9 col-span-5">
+    {% if student.personal_history %}
+      <section id="historico" class="space-y-7">
+        <h2 class="font-poppins text-lg text-green-500 font-medium uppercase">Histórico</h2>
+        <p class="text-justify font-poppins text-lg">{{ student.personal_history }}</p>
+      </section>
+    {% endif %}
+
+    {% if student.specific_necessities %}
+      <section id="necessidades" class="space-y-7">
+        <h2 class="font-poppins text-lg text-green-500 font-medium uppercase">Necessidades Educacionais Específicas</h2>
+        <p class="text-justify font-poppins text-lg">{{ student.specific_necessities }}</p>
+      </section>
+    {% endif %}
+
+    {% if student.abilities or student.dificulties %}
+    <section id="aptidao-e-dificuldades" class="space-y-7">
+      <h2 class="font-poppins text-lg text-green-500 font-medium uppercase">Aptidão e Dificuldades Apresentadas</h2>
+
+      {% if student.abilities %}
+        <h3 id="conhecimento" class="font-poppins text-lg text-slate-900 font-medium">Conhecimento, Habilidades, Capacidades e Interesses</h3>
+        <p class="text-justify font-poppins text-lg">{{ student.abilities }}</p>
+      {% endif %}
+
+      {% if student.dificulties %}
+        <h3 id="dificuldades" class="font-poppins text-lg text-slate-900 font-medium">Dificuldades</h3>
+        <p class="text-justify font-poppins text-lg">{{ student.dificulties }}</p>
+      {% endif %}
+    </section>
+    {% endif %}
+
+    {% if student.general_necessitie %}
+      <section id="outras-necessidades" class="space-y-7">
+        <h2 class="font-poppins text-lg text-green-500 font-medium uppercase">Outras necessidades educacionais específicas do(a) estudante</h2>
+        <p class="text-justify font-poppins text-lg">{{ student.general_necessitie }}</p>
+      </section>
+    {% endif %}
+
+    {% if student.creation_reasons %}
+      <section id="questoes-geradoras" class="space-y-7">
+        <h2 class="font-poppins text-lg text-green-500 font-medium uppercase">Questões Geradoras para criação do pei/Adaptações</h2>
+        <p class="text-justify font-poppins text-lg">{{ student.creation_reasons }}</p>
+      </section>
+    {% endif %}
+  </div>
+</div>
