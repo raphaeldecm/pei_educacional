@@ -39,7 +39,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=100)),
                 ('subject_type', models.CharField(choices=[('Semestral', 'Semestral'), ('Anual', 'Anual')], max_length=15, verbose_name='Períodos')),
                 ('year', models.PositiveSmallIntegerField(verbose_name='Ano referência')),
-                ('course', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='subjects', to='academics.courses', verbose_name='Curso')),
+                ('course', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='subjects', to='academics.course', verbose_name='Curso')),
             ],
             options={
                 'verbose_name': 'Disciplina',

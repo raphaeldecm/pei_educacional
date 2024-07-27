@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('academics', '0002_initial'),
-        ('people', '0003_alter_specificnecessitie_name'),
+        ('people', '0003_alter_specificnecessitie_name_sector_and_more'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 

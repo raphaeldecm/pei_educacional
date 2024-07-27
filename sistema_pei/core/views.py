@@ -19,7 +19,7 @@ import re
 
 from django.conf import settings
 from sistema_pei.academics.constants import COURSE_TYPE
-from sistema_pei.academics.models import Courses, StudentGradesAnual, StudentGradesSemestral, Subject
+from sistema_pei.academics.models import Course, EnrollmentYearly, EnrollmentSemester, Subject
 from sistema_pei.core.forms import CourseForm, SubjectForm
 from sistema_pei.educational_plan.models import Pei
 from sistema_pei.people.models import Student, StudentFile, Teacher, User
@@ -36,7 +36,7 @@ class HomePageView(TemplateView):
         context = super().get_context_data(**kwargs)
 
         # Filter Selectors
-        context['selector_courses'] = Courses.objects.all()
+        context['selector_courses'] = Course.objects.all()
         context['selector_teachers'] = Teacher.objects.all()
         context['selector_Subjects'] = Subject.objects.all()
 
@@ -195,11 +195,11 @@ class ProfilePageView(TemplateView):
         context['student_peis'] = student_peis
         ## Tab Notes
         if (student.course.durationType == "SEMESTER"):
-            student_notes = StudentGradesSemestral.objects.filter(student=student)
+            student_notes = EnrollmentSemester.objects.filter(student=student)
             if 'selectedPeriod' in self.request.GET:
                 student_notes = student_notes.filter(semester=self.request.GET['selectedPeriod'])
         else:
-            student_notes = StudentGradesAnual.objects.filter(student=student)
+            student_notes = EnrollmentYearly.objects.filter(student=student)
             if 'selectedPeriod' in self.request.GET:
                 student_notes = student_notes.filter(year=self.request.GET['selectedPeriod'])
         
@@ -254,7 +254,7 @@ class CoursesPageView(TemplateView):
         if 'type' in self.request.GET:
             filters['course_type'] = self.request.GET['type']
 
-        courses_list = Courses.objects.filter(**filters)
+        courses_list = Course.objects.filter(**filters)
 
         if 'search' in self.request.GET:
             courses_list = courses_list.filter(Q(name__icontains=self.request.GET['search']))
@@ -311,7 +311,7 @@ class CreateCoursesPageView(TemplateView):
 
 class DeleteCourseView(View):
     def get(self, request, course_id):
-        course = get_object_or_404(Courses, id=course_id)
+        course = get_object_or_404(Course, id=course_id)
         course.delete()
         return redirect('courses')
 
@@ -328,7 +328,7 @@ class EditCoursePageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         course_id = self.kwargs.get('course_id')
-        course = get_object_or_404(Courses, id=course_id)
+        course = get_object_or_404(Course, id=course_id)
         course_subjects = course.subjects.all()
 
         # Breadcrumbs
@@ -362,7 +362,7 @@ class EditCoursePageView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         course_id = self.kwargs.get('course_id')
-        course = get_object_or_404(Courses, id=course_id)
+        course = get_object_or_404(Course, id=course_id)
         form = CourseForm(request.POST, instance=course)
         if form.is_valid():
             form.save()
@@ -384,7 +384,7 @@ class SubjectsPageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         course_id = self.kwargs.get('course_id')
-        course = get_object_or_404(Courses, id=course_id)
+        course = get_object_or_404(Course, id=course_id)
         course_subjects = course.subjects.all()
         context['course'] = course
 
@@ -443,7 +443,7 @@ class CreateSubjectPageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         course_id = self.kwargs.get('course_id')
-        course = get_object_or_404(Courses, id=course_id)
+        course = get_object_or_404(Course, id=course_id)
         context['course'] = course
 
         # Breadcrumbs
@@ -475,7 +475,7 @@ class CreateSubjectPageView(TemplateView):
     def post(self, request, *args, **kwargs):
         form = SubjectForm(request.POST)
         course_id = self.kwargs.get('course_id')
-        course = get_object_or_404(Courses, id=course_id)
+        course = get_object_or_404(Course, id=course_id)
 
         if form.is_valid():
             existing_subject = Subject.objects.filter(name=form.cleaned_data['name']).exists()

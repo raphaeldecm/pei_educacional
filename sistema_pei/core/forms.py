@@ -1,13 +1,13 @@
-from sistema_pei.academics.models import Courses, Subject
+from sistema_pei.academics.models import Course, Subject
 from django import forms
 
 class CourseForm(forms.ModelForm):
     class Meta:
-        model = Courses
+        model = Course
         fields = ['name', 'period', 'course_type', 'number_of_periods']
 
 class SubjectForm(forms.ModelForm):
     class Meta:
         model = Subject
-        fields = ['name', 'teacher', 'subject_type']
+        fields = ['name', 'subject_type']
         
