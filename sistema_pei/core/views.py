@@ -19,7 +19,7 @@ import re
 
 from django.conf import settings
 from sistema_pei.academics.constants import COURSE_TYPE
-from sistema_pei.academics.models import Course, EnrollmentYearly, EnrollmentSemester, Subject
+from sistema_pei.academics.models import Course, Enrollment, Subject
 from sistema_pei.core.forms import CourseForm, SubjectForm
 from sistema_pei.educational_plan.models import Pei
 from sistema_pei.people.models import Student, StudentFile, Teacher, User
@@ -62,7 +62,7 @@ class HomePageView(TemplateView):
         if 'subject' in self.request.GET:
             filters['subject__id'] = self.request.GET['subject']
 
-        peis_list = Pei.objects.filter(**filters)
+        peis_list = Enrollment.objects.filter(**filters)
 
         if 'search' in self.request.GET:
             peis_list = peis_list.filter(Q(student__name__icontains=self.request.GET['search']) | Q(student__registration__icontains=self.request.GET['search']))

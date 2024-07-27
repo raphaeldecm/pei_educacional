@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from sistema_pei.academics.models import Offer
+from sistema_pei.academics.models import Enrollment, Offer
 from sistema_pei.core.models import BaseModel
 
 
@@ -13,9 +13,9 @@ class Pei(BaseModel):
         COMPLETED = "COMPLETED", _("Preenchidos")
         FEEDBACK = "FEEDBACK", _("Com parecer")
 
-    offer = models.ForeignKey(
-        Offer,
-        verbose_name=_("Oferta"),
+    enrollment = models.ForeignKey(
+        Enrollment,
+        verbose_name=_("Inscrição"),
         on_delete=models.PROTECT,
         related_name="peis",
     )
@@ -68,9 +68,9 @@ class Pei(BaseModel):
     def __str__(self):
         return (
             "("
-            + self.offer.subject.name
+            + self.enrollment.student.name
             + "-"
-            + self.offer.teacher.name
+            + self.enrollment.offer.teacher.name
         )
 
 

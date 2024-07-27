@@ -19,7 +19,6 @@ class Course(BaseModel):
         SEMESTER = "SEMESTER", _("Semestral")
         YEAR = "YEAR", _("Anual")
 
-
     name = models.CharField(max_length=80, verbose_name=_("Nome"))
     course_type = models.CharField(
         max_length=55,
@@ -121,19 +120,7 @@ class Enrollment(BaseModel):
         verbose_name=_("Aluno"),
         on_delete=models.PROTECT,
     )
-
-    class Meta:
-        abstract = True
-        unique_together = ('offer', 'student')
-
-    def calcular_media(self):
-        pass
-
-    def __str__(self):
-        return f'{self.student.name} - {self.offer.subject.name} - {self.offer.year}'
-
-
-class EnrollmentSemester(Enrollment):
+    
     grade1 = models.DecimalField(
         verbose_name=_("1 - Bimestre"),
         max_digits=5,
@@ -141,6 +128,7 @@ class EnrollmentSemester(Enrollment):
         null=True,
         blank=True,
     )
+    
     grade2 = models.DecimalField(
         verbose_name=_("2 - Bimestre"),
         max_digits=5,
@@ -149,32 +137,6 @@ class EnrollmentSemester(Enrollment):
         blank=True,
     )
     
-    def calcular_media(self):
-        notas = [self.grade1, self.grade2]
-        notas = [nota for nota in notas if nota is not None]
-        return sum(notas) / len(notas) if notas else None
-    
-    semester = models.IntegerField(verbose_name=_("Semestre"))
-
-    class Meta:
-        verbose_name = _("Matrícula Semestral")
-        verbose_name_plural = _("Matrículas Semestrais")
-
-class EnrollmentYearly(Enrollment):
-    grade1 = models.DecimalField(
-        verbose_name=_("1 - Bimestre"),
-        max_digits=5,
-        decimal_places=2,
-        null=True,
-        blank=True,
-    )
-    grade2 = models.DecimalField(
-        verbose_name=_("2 - Bimestre"),
-        max_digits=5,
-        decimal_places=2,
-        null=True,
-        blank=True,
-    )
     grade3 = models.DecimalField(
         verbose_name=_("3 - Bimestre"),
         max_digits=5,
@@ -182,6 +144,7 @@ class EnrollmentYearly(Enrollment):
         null=True,
         blank=True,
     )
+    
     grade4 = models.DecimalField(
         verbose_name=_("4 - Bimestre"),
         max_digits=5,
@@ -189,14 +152,15 @@ class EnrollmentYearly(Enrollment):
         null=True,
         blank=True,
     )
-    
-    def calcular_media(self):
-        notas = [self.grade1, self.grade2, self.grade3, self.grade4]
-        notas = [nota for nota in notas if nota is not None]
-        return sum(notas) / len(notas) if notas else None
-    
-    year = models.IntegerField(verbose_name=_("Ano"))
 
     class Meta:
-        verbose_name = _("Matrícula Anual")
-        verbose_name_plural = _("Matrículas Anuais")
+        unique_together = ('offer', 'student')
+        verbose_name = _("Inscrição")
+        verbose_name_plural = _("Inscrições")
+
+    def calcular_media(self):
+        pass
+
+    def __str__(self):
+        return f'{self.student} - {self.offer.subject}'
+

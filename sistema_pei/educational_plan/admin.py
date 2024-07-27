@@ -5,10 +5,10 @@ from . import models
 
 
 class PeiAdmin(admin.ModelAdmin):
-    search_fields = ["offer"]
+    search_fields = ["enrollment"]
     readonly_fields = ["updated_by", "created_at"]
-    list_display = ["offer", "status"]
-    list_filter = ["status", "offer"]
+    list_display = ["enrollment", "status"]
+    list_filter = ["status", "enrollment"]
 
 
 class FeedbackAdmin(admin.ModelAdmin):
