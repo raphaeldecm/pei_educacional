@@ -75,7 +75,7 @@ class Subject(BaseModel):
         verbose_name_plural = _("Disciplinas")
 
     def __str__(self):
-        return self.name + " - " + self.course.name
+        return self.name
 
 class Offer(BaseModel):
     class OfferStatus(models.TextChoices):

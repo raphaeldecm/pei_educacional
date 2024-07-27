@@ -68,11 +68,9 @@ class Pei(BaseModel):
     def __str__(self):
         return (
             "("
-            + self.student.registration
-            + ")"
-            + self.student.name
-            + " / "
-            + self.subject.name
+            + self.offer.subject.name
+            + "-"
+            + self.offer.teacher.name
         )
 
 
