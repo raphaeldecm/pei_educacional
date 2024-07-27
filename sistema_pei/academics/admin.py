@@ -7,7 +7,7 @@ from . import models
 class SubjectAdmin(admin.ModelAdmin):
     search_fields = ["iteraction_text"]
     readonly_fields = ["updated_by", "created_at"]
-    list_display = ["name", "subject_type", "course", "teacher"]
+    list_display = ["name", "subject_type"]
 
 
 class CoursesAdmin(admin.ModelAdmin):
@@ -27,6 +27,6 @@ class StudentGradesSemestralAdmin(admin.ModelAdmin):
 
 
 admin.site.register(models.Subject, SubjectAdmin)
-admin.site.register(models.Courses, CoursesAdmin)
 admin.site.register(models.StudentGradesAnual, StudentGradesAnualAdmin)
 admin.site.register(models.StudentGradesSemestral, StudentGradesSemestralAdmin)
+admin.site.register(models.Course, CoursesAdmin)

@@ -1,29 +1,22 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from sistema_pei.academics.models import Subject
+from sistema_pei.academics.models import Offer
 from sistema_pei.core.models import BaseModel
-from sistema_pei.people.models import Student
 
 
 # Create your models here.
 class Pei(BaseModel):
     class StatusChoice(models.TextChoices):
-        NOT_START = "NOT_START", "Não iniciado"
-        IN_PROGRESS = "IN_PROGRESS", "Em andamento"
-        COMPLETED = "COMPLETED", "Preenchidos"
-        FEEDBACK = "FEEDBACK", "Com parecer"
+        NOT_START = "NOT_START", _("Não iniciado")
+        IN_PROGRESS = "IN_PROGRESS", _("Em andamento")
+        COMPLETED = "COMPLETED", _("Preenchidos")
+        FEEDBACK = "FEEDBACK", _("Com parecer")
 
-    subject = models.ForeignKey(
-        Subject,
-        verbose_name=_("Matéria"),
-        on_delete=models.CASCADE,
-        related_name="peis",
-    )
-    student = models.ForeignKey(
-        Student,
-        verbose_name=_("Aluno"),
-        on_delete=models.CASCADE,
+    offer = models.ForeignKey(
+        Offer,
+        verbose_name=_("Oferta"),
+        on_delete=models.PROTECT,
         related_name="peis",
     )
     status = models.CharField(
