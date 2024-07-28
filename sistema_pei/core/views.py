@@ -62,12 +62,11 @@ class HomePageView(TemplateView):
         if 'subject' in self.request.GET:
             filters['subject__id'] = self.request.GET['subject']
 
-        peis_list = Enrollment.objects.filter(**filters)
+        peis_list = Pei.objects.filter(**filters).annotate(subject_count=Count('enrollment__student__course__subjects'))
 
         if 'search' in self.request.GET:
             peis_list = peis_list.filter(Q(student__name__icontains=self.request.GET['search']) | Q(student__registration__icontains=self.request.GET['search']))
 
-        peis_list = peis_list.order_by('id')
         paginator = Paginator(peis_list, self.paginate_by)
         page_number = self.request.GET.get('page')
 

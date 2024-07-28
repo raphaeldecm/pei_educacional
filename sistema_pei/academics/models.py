@@ -114,6 +114,7 @@ class Enrollment(BaseModel):
         'academics.Offer',
         verbose_name=_("Oferta"),
         on_delete=models.PROTECT,
+        related_name="enrollments"
     )
     student = models.ForeignKey(
         'people.Student',
