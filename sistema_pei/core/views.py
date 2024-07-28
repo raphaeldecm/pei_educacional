@@ -49,23 +49,23 @@ class HomePageView(TemplateView):
         context['finished_peis'] = Pei.objects.filter(
             status='COMPLETED').count()
 
-        # Table
         filters = {}
+
         if 'course' in self.request.GET:
-            filters['subject__course__id'] = self.request.GET['course']
+            filters['enrollment__student__course__id'] = self.request.GET['course']
         if 'teacher' in self.request.GET:
-            filters['subject__teacher__id'] = self.request.GET['teacher']
+            filters['enrollment__offer__teacher__id'] = self.request.GET['teacher']
         if 'period' in self.request.GET:
-            filters['subject__course__period'] = self.request.GET['period']
+            filters['enrollment__student__course__period'] = self.request.GET['period']
         if 'status' in self.request.GET:
             filters['status'] = self.request.GET['status']
         if 'subject' in self.request.GET:
-            filters['subject__id'] = self.request.GET['subject']
+            filters['enrollment__offer__subject__id'] = self.request.GET['subject']
 
-        peis_list = Pei.objects.filter(**filters).annotate(subject_count=Count('enrollment__student__course__subjects'))
+        peis_list = Pei.objects.filter(**filters).annotate(subject_count=Count('enrollment__student__course__subjects', distinct=True))
 
         if 'search' in self.request.GET:
-            peis_list = peis_list.filter(Q(student__name__icontains=self.request.GET['search']) | Q(student__registration__icontains=self.request.GET['search']))
+            peis_list = peis_list.filter(Q(enrollment__student__name__icontains=self.request.GET['search']) | Q(enrollment__student__registration__icontains=self.request.GET['search']))
 
         paginator = Paginator(peis_list, self.paginate_by)
         page_number = self.request.GET.get('page')

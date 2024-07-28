@@ -152,7 +152,7 @@ class Enrollment(BaseModel):
         decimal_places=2,
         null=True,
         blank=True,
-    )
+    ) 
 
     class Meta:
         unique_together = ('offer', 'student')
@@ -163,5 +163,5 @@ class Enrollment(BaseModel):
         pass
 
     def __str__(self):
-        return f'{self.student} - {self.offer.subject}'
+        return f'{self.student} - {self.offer.subject.name}'
 
