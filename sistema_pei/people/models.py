@@ -141,7 +141,7 @@ class Student(Person):
     )
 
     course = models.ForeignKey(
-        'academics.Courses',
+        'academics.Course',
         on_delete=models.PROTECT,
         verbose_name=_("Curso"),
         related_name="students",

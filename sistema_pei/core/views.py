@@ -19,15 +19,10 @@ import re
 
 from django.conf import settings
 from sistema_pei.academics.constants import COURSE_TYPE
-from sistema_pei.academics.models import Courses, Subject
+from sistema_pei.academics.models import Course, Enrollment, Subject
 from sistema_pei.core.forms import CourseForm, SubjectForm
 from sistema_pei.educational_plan.models import Pei
-from sistema_pei.people.models import (
-    Student,
-    Teacher,
-    User,
-)
-
+from sistema_pei.people.models import Student, StudentFile, Teacher, User
 from django.contrib.auth.models import Group
 
 from sistema_pei.users.models import Sector
@@ -41,7 +36,7 @@ class HomePageView(TemplateView):
         context = super().get_context_data(**kwargs)
 
         # Filter Selectors
-        context['selector_courses'] = Courses.objects.all()
+        context['selector_courses'] = Course.objects.all()
         context['selector_teachers'] = Teacher.objects.all()
         context['selector_Subjects'] = Subject.objects.all()
 
@@ -54,25 +49,24 @@ class HomePageView(TemplateView):
         context['finished_peis'] = Pei.objects.filter(
             status='COMPLETED').count()
 
-        # Table
         filters = {}
+
         if 'course' in self.request.GET:
-            filters['subject__course__id'] = self.request.GET['course']
+            filters['enrollment__student__course__id'] = self.request.GET['course']
         if 'teacher' in self.request.GET:
-            filters['subject__teacher__id'] = self.request.GET['teacher']
+            filters['enrollment__offer__teacher__id'] = self.request.GET['teacher']
         if 'period' in self.request.GET:
-            filters['subject__course__period'] = self.request.GET['period']
+            filters['enrollment__student__course__period'] = self.request.GET['period']
         if 'status' in self.request.GET:
             filters['status'] = self.request.GET['status']
         if 'subject' in self.request.GET:
-            filters['subject__id'] = self.request.GET['subject']
+            filters['enrollment__offer__subject__id'] = self.request.GET['subject']
 
-        peis_list = Pei.objects.filter(**filters)
+        peis_list = Pei.objects.filter(**filters).annotate(subject_count=Count('enrollment__student__course__subjects', distinct=True))
 
         if 'search' in self.request.GET:
-            peis_list = peis_list.filter(Q(student__name__icontains=self.request.GET['search']) | Q(student__registration__icontains=self.request.GET['search']))
+            peis_list = peis_list.filter(Q(enrollment__student__name__icontains=self.request.GET['search']) | Q(enrollment__student__registration__icontains=self.request.GET['search']))
 
-        peis_list = peis_list.order_by('id')
         paginator = Paginator(peis_list, self.paginate_by)
         page_number = self.request.GET.get('page')
 
@@ -146,6 +140,7 @@ class UsersPageView(TemplateView):
 
 class ProfilePageView(TemplateView):
     template_name = "pages/profile.html"
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -154,6 +149,7 @@ class ProfilePageView(TemplateView):
 
         # Profile data
         context['student'] = student
+        context['student_files'] = StudentFile.objects.filter(student=student)
 
         # Tabs
         allowed_tabs = ('general', 'historic', 'grades', 'edit_student_data')
@@ -165,11 +161,50 @@ class ProfilePageView(TemplateView):
 
 
         ## Tab General
+        student_peis = context['student_peis'] = Pei.objects.filter(student=student)
 
+        ### Filters Selectors
+        context['selector_teachers'] = Teacher.objects.all()
 
+        ### Filters
+        filters = {}
+        if 'course' in self.request.GET:
+            filters['subject__course__id'] = self.request.GET['course']
+        if 'teacher' in self.request.GET:
+            filters['subject__teacher__id'] = self.request.GET['teacher']
+        if 'period' in self.request.GET:
+            filters['subject__course__period'] = self.request.GET['period']
+        if 'status' in self.request.GET:
+            filters['status'] = self.request.GET['status']
+
+        student_peis = student_peis.filter(**filters)
+
+        if 'search' in self.request.GET:
+            student_peis = student_peis.filter(Q(subject__name__icontains=self.request.GET['search']))
+        
+        student_peis = student_peis.order_by('id')
+        paginator = Paginator(student_peis, self.paginate_by)
+        page_number = self.request.GET.get('page')
+
+        try:
+            student_peis = paginator.page(page_number)
+        except PageNotAnInteger:
+            student_peis = paginator.page(1)
+
+        context['student_peis'] = student_peis
         ## Tab Notes
-
-
+        if (student.course.durationType == "SEMESTER"):
+            student_notes = EnrollmentSemester.objects.filter(student=student)
+            if 'selectedPeriod' in self.request.GET:
+                student_notes = student_notes.filter(semester=self.request.GET['selectedPeriod'])
+        else:
+            student_notes = EnrollmentYearly.objects.filter(student=student)
+            if 'selectedPeriod' in self.request.GET:
+                student_notes = student_notes.filter(year=self.request.GET['selectedPeriod'])
+        
+        
+        
+        context["student_notes"] = student_notes
         ## Tab Edit
 
 
@@ -218,7 +253,7 @@ class CoursesPageView(TemplateView):
         if 'type' in self.request.GET:
             filters['course_type'] = self.request.GET['type']
 
-        courses_list = Courses.objects.filter(**filters)
+        courses_list = Course.objects.filter(**filters)
 
         if 'search' in self.request.GET:
             courses_list = courses_list.filter(Q(name__icontains=self.request.GET['search']))
@@ -275,7 +310,7 @@ class CreateCoursesPageView(TemplateView):
 
 class DeleteCourseView(View):
     def get(self, request, course_id):
-        course = get_object_or_404(Courses, id=course_id)
+        course = get_object_or_404(Course, id=course_id)
         course.delete()
         return redirect('courses')
 
@@ -292,7 +327,7 @@ class EditCoursePageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         course_id = self.kwargs.get('course_id')
-        course = get_object_or_404(Courses, id=course_id)
+        course = get_object_or_404(Course, id=course_id)
         course_subjects = course.subjects.all()
 
         # Breadcrumbs
@@ -326,7 +361,7 @@ class EditCoursePageView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         course_id = self.kwargs.get('course_id')
-        course = get_object_or_404(Courses, id=course_id)
+        course = get_object_or_404(Course, id=course_id)
         form = CourseForm(request.POST, instance=course)
         if form.is_valid():
             form.save()
@@ -348,7 +383,7 @@ class SubjectsPageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         course_id = self.kwargs.get('course_id')
-        course = get_object_or_404(Courses, id=course_id)
+        course = get_object_or_404(Course, id=course_id)
         course_subjects = course.subjects.all()
         context['course'] = course
 
@@ -407,7 +442,7 @@ class CreateSubjectPageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         course_id = self.kwargs.get('course_id')
-        course = get_object_or_404(Courses, id=course_id)
+        course = get_object_or_404(Course, id=course_id)
         context['course'] = course
 
         # Breadcrumbs
@@ -439,7 +474,7 @@ class CreateSubjectPageView(TemplateView):
     def post(self, request, *args, **kwargs):
         form = SubjectForm(request.POST)
         course_id = self.kwargs.get('course_id')
-        course = get_object_or_404(Courses, id=course_id)
+        course = get_object_or_404(Course, id=course_id)
 
         if form.is_valid():
             existing_subject = Subject.objects.filter(name=form.cleaned_data['name']).exists()

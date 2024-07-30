@@ -113,8 +113,8 @@
               Selecione o curso...
             </option>
             {% for course in selector_courses %}
-              <option value="{{course.id}}">
-                {{course.name}}
+              <option value="{{ course.id }}" {% if request.GET.course == course.id|stringformat:'s' %}selected{% endif %}>
+                {{ course.name }}
               </option>
             {% endfor %}
           </select>
@@ -135,8 +135,8 @@
               Selecione o professor...
             </option>
             {% for teacher in selector_teachers %}
-              <option value="{{teacher.id}}">
-                {{teacher.name}}
+              <option value="{{ teacher.id }}" {% if request.GET.teacher == teacher.id|stringformat:'s' %}selected{% endif %}>
+                {{ teacher.name }}
               </option>
             {% endfor %}
           </select>
@@ -156,9 +156,9 @@
             <option value="default" selected disabled>
               Selecione o turno...
             </option>
-            <option value="Matutino">Matutino</option>
-            <option value="Vespertino">Vespertino</option>
-            <option value="Noturno">Noturno</option>
+            <option value="MORNING" {% if request.GET.period == 'MORNING' %}selected{% endif %}>Matutino</option>
+            <option value="AFTERNOON" {% if request.GET.period == 'AFTERNOON' %}selected{% endif %}>Vespertino</option>
+            <option value="NIGHT" {% if request.GET.period == 'NIGHT' %}selected{% endif %}>Noturno</option>
           </select>
         </div>
   
@@ -176,10 +176,10 @@
             <option value="default" selected disabled>
               Selecione o status...
             </option>
-            <option value="NOT_START">Não iniciado</option>
-            <option value="IN_PROGRESS">Em andamento</option>
-            <option value="FEEDBACK">Com Parecer</option>
-            <option value="COMPLETED">Finalizado</option>
+            <option value="NOT_START" {% if request.GET.status == 'NOT_START' %}selected{% endif %}>Não iniciado</option>
+            <option value="IN_PROGRESS" {% if request.GET.status == 'IN_PROGRESS' %}selected{% endif %}>Em andamento</option>
+            <option value="FEEDBACK" {% if request.GET.status == 'FEEDBACK' %}selected{% endif %}>Com Parecer</option>
+            <option value="COMPLETED" {% if request.GET.status == 'COMPLETED' %}selected{% endif %}>Finalizado</option>
           </select>
         </div>
   
@@ -198,8 +198,8 @@
               Selecionar diciplina...
             </option>
             {% for subject in selector_Subjects %}
-              <option value="{{subject.id}}">
-                {{subject.name}}
+              <option value="{{ subject.id }}" {% if request.GET.subject == subject.id|stringformat:'s' %}selected{% endif %}>
+                {{ subject.name }}
               </option>
             {% endfor %}
           </select>
@@ -235,14 +235,14 @@
           <tr>
             <td class="pl-[76px]">      
               <img
-                src="{{ pei.student.image.url }}"
+                src="{{ pei.enrollment.student.image.url }}"
                 width="61px"
                 height="61px"
                 class="rounded-full"
               />
             </td>
-            <td>{{pei.student.registration}}</td>
-            <td>{{pei.student.name}}</td>
+            <td>{{pei.enrollment.student.registration}}</td>
+            <td>{{pei.enrollment.student.name}}</td>
             <td>
               {%if pei.status == 'NOT_START'  %}
                 <div class=" bg-red-300 text-red-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-red-700">
@@ -262,8 +262,8 @@
                 </div>
               {%endif%}
             </td>
-            <td>{{pei.subject.course}}</td>
-            <td>{{pei.student.subjects.all.count}}</td>
+            <td>{{pei.enrollment.student.course.name}}</td>
+            <td>{{ pei.subject_count }}</td>
             <td class="min-w-[40px] !px-[0px]">
               <img
                 src="{% static 'images/icons/icon-eye.svg' %}"
