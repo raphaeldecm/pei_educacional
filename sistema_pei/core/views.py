@@ -384,10 +384,8 @@ class SubjectsPageView(TemplateView):
         context = super().get_context_data(**kwargs)
         course_id = self.kwargs.get('course_id')
         course = get_object_or_404(Course, id=course_id)
+        course_subjects = course.subjects.all()
         context['course'] = course
-        
-        offers = Offer.objects.filter(subject__courses=course_id)
-        
 
         # Breadcrumbs
         context['breadcrumbs_data'] = [
@@ -414,27 +412,24 @@ class SubjectsPageView(TemplateView):
         filters = {}
         if 'duration' in self.request.GET:
             filters['subject_type'] = self.request.GET['duration']
-        if 'teacher' in self.request.GET:
-            filters['teacher'] = self.request.GET['teacher']
 
-        offers = offers.filter(**filters)
+        course_subjects = course_subjects.filter(**filters)
 
         if 'search' in self.request.GET:
-            offers = offers.filter(Q(name__icontains=self.request.GET['search']))
+            course_subjects = course_subjects.filter(Q(name__icontains=self.request.GET['search']))
 
 
-        paginator = Paginator(offers, self.paginate_by)
+        paginator = Paginator(course_subjects, self.paginate_by)
         page_number = self.request.GET.get('page')
 
         try:
-            all_offers = paginator.page(page_number)
+            all_course_subjects = paginator.page(page_number)
         except PageNotAnInteger:
-            all_offers = paginator.page(1)
+            all_course_subjects = paginator.page(1)
         except EmptyPage:
-            all_offers = paginator.page(paginator.num_pages)
+            all_course_subjects = paginator.page(paginator.num_pages)
 
-        context['offers'] = all_offers
-
+        context['course_subjects'] = all_course_subjects
 
         return context
 
