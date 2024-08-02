@@ -19,7 +19,7 @@ import re
 
 from django.conf import settings
 from sistema_pei.academics.constants import COURSE_TYPE
-from sistema_pei.academics.models import Course, Enrollment, Subject
+from sistema_pei.academics.models import Course, Enrollment, Offer, Subject
 from sistema_pei.core.forms import CourseForm, SubjectForm
 from sistema_pei.educational_plan.models import Pei
 from sistema_pei.people.models import Student, StudentFile, Teacher, User
@@ -384,8 +384,10 @@ class SubjectsPageView(TemplateView):
         context = super().get_context_data(**kwargs)
         course_id = self.kwargs.get('course_id')
         course = get_object_or_404(Course, id=course_id)
-        course_subjects = course.subjects.all()
         context['course'] = course
+        
+        offers = Offer.objects.filter(subject__courses=course_id)
+        
 
         # Breadcrumbs
         context['breadcrumbs_data'] = [
@@ -415,23 +417,23 @@ class SubjectsPageView(TemplateView):
         if 'teacher' in self.request.GET:
             filters['teacher'] = self.request.GET['teacher']
 
-        course_subjects = course_subjects.filter(**filters)
+        offers = offers.filter(**filters)
 
         if 'search' in self.request.GET:
-            course_subjects = course_subjects.filter(Q(name__icontains=self.request.GET['search']))
+            offers = offers.filter(Q(name__icontains=self.request.GET['search']))
 
 
-        paginator = Paginator(course_subjects, self.paginate_by)
+        paginator = Paginator(offers, self.paginate_by)
         page_number = self.request.GET.get('page')
 
         try:
-            all_course_subjects = paginator.page(page_number)
+            all_offers = paginator.page(page_number)
         except PageNotAnInteger:
-            all_course_subjects = paginator.page(1)
+            all_offers = paginator.page(1)
         except EmptyPage:
-            all_course_subjects = paginator.page(paginator.num_pages)
+            all_offers = paginator.page(paginator.num_pages)
 
-        context['course_subjects'] = all_course_subjects
+        context['offers'] = all_offers
 
 
         return context
