@@ -440,7 +440,7 @@ class CreateSubjectPageView(TemplateView):
         context = super().get_context_data(**kwargs)
         course_id = self.kwargs.get('course_id')
         course = get_object_or_404(Course, id=course_id)
-        context['course'] = course
+        context['current_course'] = course
 
         # Breadcrumbs
         context['breadcrumbs_data'] = [
@@ -460,7 +460,7 @@ class CreateSubjectPageView(TemplateView):
             },
         ]
         context['course_types']=[course[0] for course in COURSE_TYPE]
-        context['teachers']= Teacher.objects.all()
+        context['courses']= Course.objects.all()
 
         request = self.request
         if request.GET.get('alert') == "error":
