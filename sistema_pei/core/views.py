@@ -366,6 +366,8 @@ class EditCoursePageView(TemplateView):
         if form.is_valid():
             form.save()
             return redirect('courses')
+        else:
+            print(form.errors)
         return self.render_to_response(self.get_context_data(form=form))
 
 

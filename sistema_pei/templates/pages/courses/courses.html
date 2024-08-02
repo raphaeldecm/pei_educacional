@@ -37,7 +37,7 @@
             Selecione o tipo...
           </option>
           {% for type in course_types %}
-            <option value="{{type}}">{{type}}</option>
+            <option value="{{ type }}" {% if request.GET.type == type %}selected{% endif %}>{{ type }}</option>
           {% endfor %}
         </select>
       </div>
@@ -55,9 +55,10 @@
           <option value="default" selected disabled>
             Selecione o turno...
           </option>
-          <option value="Matutino">Matutino</option>
-          <option value="Vespertino">Vespertino</option>
-          <option value="Noturno">Noturno</option>
+          <option value="MORNING" {% if request.GET.period == 'MORNING' %}selected{% endif %}>Matutino</option>
+          <option value="AFTERNOON" {% if request.GET.period == 'AFTERNOON' %}selected{% endif %}>Vespertino</option>
+          <option value="NIGHT" {% if request.GET.period == 'NIGHT' %}selected{% endif %}>Noturno</option>
+
         </select>
       </div>
 
@@ -89,7 +90,7 @@
           <tr>
             <td class="pl-[76px]">{{course.name}}</td>
             <td>{{course.num_subjects}}</td>
-            <td>{{course.period}}</td>
+            <td>{{course.get_period_display}}</td>
             <td>{{course.course_type}}</td>
             <td class="min-w-[40px] !px-[0px]">
               <a href="{% url 'edit_course' course.id %}">

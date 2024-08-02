@@ -32,9 +32,34 @@
             <option value="default" selected disabled>
               Selecione o turno...
             </option>
-            <option value="Matutino">Matutino</option>
-            <option value="Vespertino">Vespertino</option>
-            <option value="Noturno">Noturno</option>
+            <option value="MORNING">Matutino</option>
+            <option value="AFTERNOON">Vespertino</option>
+            <option value="NIGHT">Noturno</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-[3%] mt-[24px]">
+      <div class="flex-1">
+        <label for="type" class="font-medium text-[18px]">Duração:</label>
+        <div class="relative w-full cursor-pointer mt-[16px]">
+          <img
+            class="absolute top-[12px] right-[10px]"
+            src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+            width="24px"
+            height="24px"
+          />
+          <select
+            name="durationType"
+            class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
+            required
+          >
+            <option value="default" selected disabled>
+              Selecione a duração...
+            </option>
+            <option value="SEMESTER">Semestral</option>
+            <option value="YEAR">Anual</option>
           </select>
         </div>
       </div>
@@ -47,11 +72,9 @@
           placeholder="Digite o nome do curso..."
           required
           class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
-          value="{{request.GET.number_of_periods}}"
         />
       </div>
     </div>
-
     <div class="mt-[24px]">
       <label for="type" class="font-medium text-[18px]">Tipo:</label>
       <div class="relative w-full cursor-pointer mt-[16px]">
