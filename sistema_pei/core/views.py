@@ -405,9 +405,6 @@ class SubjectsPageView(TemplateView):
             },
         ]
 
-        # Filter Selectors
-        context['teachers'] = Teacher.objects.all()
-
         # Table
         filters = {}
         if 'duration' in self.request.GET:
@@ -492,6 +489,9 @@ class EditSubjectPageView(TemplateView):
         context = super().get_context_data(**kwargs)
         subject_id = self.kwargs.get('subject_id')
         subject = get_object_or_404(Subject, id=subject_id)
+        
+        # Filter Selectors
+        context['courses'] = Course.objects.all()
 
         # Breadcrumbs
         context['breadcrumbs_data'] = [
@@ -511,23 +511,25 @@ class EditSubjectPageView(TemplateView):
             },
         ]
 
-        subject_students = subject.students.all()
+        # subject_students = subject.students.all()
+        
+
         
         if 'search_student' in self.request.GET:
             search_query = self.request.GET['search_student']
             subject_students = subject.students.filter(Q(name__icontains=search_query))
 
 
-        students_with_courses = []
-        for student in subject_students:
-            course_name = subject.course.name if subject.course else "Curso não definido"
-            students_with_courses.append({
-                'student': student,
-                'course_name': course_name
-            })
+        # students_with_courses = []
+        # for student in subject_students:
+        #     course_name = subject.course.name if subject.course else "Curso não definido"
+        #     students_with_courses.append({
+        #         'student': student,
+        #         'course_name': course_name
+        #     })
 
         context['subject'] = subject
-        context['subject_students_with_courses'] = students_with_courses
+        # context['subject_students_with_courses'] = students_with_courses
         context['teachers']= Teacher.objects.all()
         context['course_types']=[course[0] for course in COURSE_TYPE]
 

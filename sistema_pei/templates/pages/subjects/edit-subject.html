@@ -4,68 +4,65 @@
 {% block content %}
 <div class="w-full">
     {% include '../../layouts/breadcrumbs.html' with breadcrumb_data=breadcrumbs_data %}
-    <h1 class="text-[32px] font-medium mb-[38px]">Editar Matéria: {{ subject.name }} - {{ subject.subject_type }}</h1>
+    <h1 class="text-[32px] font-medium mb-[38px]">Editar Matéria: {{ subject.name }} - {{ subject.get_subject_type_display }}</h1>
     <form action="{% url 'edit_subject' subject.id %}" method="post" id="edit-form">
         {% csrf_token %}
-        <div class="flex items-center gap-[3%]">
+        <div class="flex-1">
+            <label for="name" class="font-medium text-[18px]">Nome:</label>
+            <input type="text" name="name" placeholder="Digite o nome do curso..."
+                class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+                value="{{ subject.name }}" />
+        </div>
+        <div class="flex items-center gap-[3%] mt-6">
             <div class="flex-1">
-                <label for="name" class="font-medium text-[18px]">Nome:</label>
-                <input type="text" name="name" placeholder="Digite o nome do curso..."
-                    class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
-                    value="{{ subject.name }}" />
+              <label for="teacher" class="font-medium text-[18px]">Cursos:</label>
+              <div class="relative w-full cursor-pointer mt-[16px]">
+                <img
+                  class="absolute top-[12px] right-[10px]"
+                  src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+                  width="24px"
+                  height="24px"
+                />
+                <select
+                  name="courses"
+                  multiple
+                  class="outline-none text-[18px] rounded-lg h-[100px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
+                >
+                {% for course in courses %}
+                  <option value="{{ course.id }}" {% if course in subject.courses.all %}selected{% endif %}>{{ course.name }}</option>
+                {% endfor %}
+                </select>
+              </div>
             </div>
             <div class="flex-1">
-                <label for="period" class="font-medium text-[18px]">Professor:</label>
-                <div class="relative w-full cursor-pointer mt-[16px]">
-                  <img
-                    class="absolute top-[12px] right-[10px]"
-                    src="{% static 'images/icons/icon-updown-arrow.svg' %}"
-                    width="24px"
-                    height="24px"
-                  />
-                  <select
-                    name="teacher"
-                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
-                    required
-                  >
-                    <option value="default" selected disabled>
-                      Selecione o professor...
-                    </option>
-                    {% for teacher in teachers %}
-                      <option value="{{teacher.id}}" {% if subject.teacher == teacher %}selected{% endif %}>{{teacher.name}}</option>
-                    {% endfor %}
-                  </select>
+              <label for="type" class="font-medium text-lg">Duração:</label>
+              <div class="flex gap-[70px] mt-[18px]">
+                <div class="flex items-center space-x-4 mt-2">
+                  <div class="flex items-center gap-[8px]">
+                    <input type="radio" required id="Semestral" {% if subject.subject_type == "SEMESTER" %}checked{% endif %} name="subject_type" value="SEMESTER" class="hidden peer" >
+                    <label for="Semestral" class="flex items-center cursor-pointer w-[20px] h-[20px] rounded-[5px] peer-checked:[&_img]:block bg-slate-300">
+                      <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}" width="20px" height="20px" class="hidden" alt="Checkmark">
+                    </label>
+                    <span>Semestral</span>
+                  </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="mt-6">
-          <label for="type" class="font-medium text-lg">Duração:</label>
-          <div class="flex gap-[70px] mt-[18px]">
-            <div class="flex items-center space-x-4 mt-2">
-              <div class="flex items-center gap-[8px]">
-                <input type="radio" required id="Semestral" {% if subject.subject_type == "Semestral" %}checked{% endif %} name="subject_type" value="Semestral" class="hidden peer">
-                <label for="Semestral" class="flex items-center cursor-pointer w-[20px] h-[20px] rounded-[5px] peer-checked:[&_img]:block bg-slate-300">
-                  <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}" width="20px" height="20px" class="hidden" alt="Checkmark">
-                </label>
-                <span>Semestral</span>
+                <div class="flex items-center space-x-4 mt-2">
+                  <div class="flex items-center gap-[8px]">
+                    <input type="radio" id="Anual" required name="subject_type" {% if subject.subject_type == "YEAR" %}checked{% endif %} value="Anual" class="hidden peer">
+                    <label for="Anual" class="flex items-center cursor-pointer peer-checked:text-white border border-gray-300 w-[20px] h-[20px] rounded-[5px] peer-checked:border-none peer-checked:[&_img]:block bg-slate-300">
+                      <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}" width="20px" height="20px" class="hidden" alt="Checkmark">
+                    </label>
+                    <span>Anual</span>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="flex items-center space-x-4 mt-2">
-              <div class="flex items-center gap-[8px]">
-                <input type="radio" id="Anual" required name="subject_type" {% if subject.subject_type == "Anual" %}checked{% endif %} value="Anual" class="hidden peer">
-                <label for="Anual" class="flex items-center cursor-pointer peer-checked:text-white border border-gray-300 w-[20px] h-[20px] rounded-[5px] peer-checked:border-none peer-checked:[&_img]:block bg-slate-300">
-                  <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}" width="20px" height="20px" class="hidden" alt="Checkmark">
-                </label>
-                <span>Anual</span>
-              </div>
-            </div>
-          </div>
         </div>
+          
 
     </form>
 
-    <form id="search-subject-form" class="mt-[32px]">
+    {% comment %} <form id="search-subject-form" class="mt-[32px]">
         <label for="search_student" class="font-medium text-[18px]">Alunos:</label>
         <div
             class="mb-[26px] mt-[16px] flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
@@ -75,9 +72,9 @@
                 value="{{ request.GET.search_student }}"
                 onkeypress="if(event.keyCode === 13) { event.preventDefault(); document.getElementById('search-subject-form').submit(); }" />
         </div>
-    </form>
+    </form> {% endcomment %}
 
-    <div class="flex flex-col gap-[16px] mt-[40px]">
+    {% comment %} <div class="flex flex-col gap-[16px] mt-[40px]">
         {% for student_with_course in subject_students_with_courses %}
         <div class="flex justify-between items-center h-[44px] border border-slate-300 px-[15px] rounded-lg">
             <span class="text-[18px]"><strong>{{ student_with_course.student.registration }}</strong> - {{ student_with_course.student.name }} |
@@ -90,7 +87,7 @@
             </a>
         </div>
         {% endfor %}
-    </div>
+    </div> {% endcomment %}
 
     <div class="flex mt-[56px] gap-[16px]">
       <button type="submit" onclick="document.getElementById('edit-form').submit()" class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer">
