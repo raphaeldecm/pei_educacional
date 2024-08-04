@@ -30,6 +30,10 @@ from sistema_pei.core.views import (
     ProfilePageView,
     SubjectsPageView,
     UsersPageView,
+    EditHistoricPersonalDataView,
+    EditPersonalDataView,
+    UploadStudentFilesView,
+    DeletePersonalFilesView
 )
 
 urlpatterns = [
@@ -47,6 +51,26 @@ urlpatterns = [
         "profile/<int:student_id>",
         login_required(ProfilePageView.as_view()),
         name="profile",
+    ),
+    path(
+        "profile/<int:student_id>/edit_personal_data/",
+        login_required(EditPersonalDataView.as_view()),
+        name="edit_personal_data",
+    ),
+    path(
+        "profile/<int:student_id>/edit_historic_data/",
+        login_required(EditHistoricPersonalDataView.as_view()),
+        name="edit_personal_historic_data",
+    ),
+    path(
+        "profile/<int:student_id>/upload_files/",
+        login_required(UploadStudentFilesView.as_view()),
+        name='upload_files',
+    ),
+    path(
+        "profile/<int:student_id>/delete_file/",
+        login_required(DeletePersonalFilesView.as_view()),
+        name='delete_personal_file'
     ),
     path(
         "courses/",
