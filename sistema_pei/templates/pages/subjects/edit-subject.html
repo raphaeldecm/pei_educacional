@@ -48,7 +48,7 @@
                 </div>
                 <div class="flex items-center space-x-4 mt-2">
                   <div class="flex items-center gap-[8px]">
-                    <input type="radio" id="Anual" required name="subject_type" {% if subject.subject_type == "YEAR" %}checked{% endif %} value="Anual" class="hidden peer">
+                    <input type="radio" id="Anual" required name="subject_type" {% if subject.subject_type == "YEAR" %}checked{% endif %} value="YEAR" class="hidden peer">
                     <label for="Anual" class="flex items-center cursor-pointer peer-checked:text-white border border-gray-300 w-[20px] h-[20px] rounded-[5px] peer-checked:border-none peer-checked:[&_img]:block bg-slate-300">
                       <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}" width="20px" height="20px" class="hidden" alt="Checkmark">
                     </label>
@@ -58,36 +58,8 @@
               </div>
             </div>
         </div>
-          
-
     </form>
 
-    {% comment %} <form id="search-subject-form" class="mt-[32px]">
-        <label for="search_student" class="font-medium text-[18px]">Alunos:</label>
-        <div
-            class="mb-[26px] mt-[16px] flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
-            <img src="{% static 'images/icons/icon-search.svg' %}" width="18px" height="18px" />
-            <input type="text" name="search_student" placeholder="Buscar aluno..."
-                class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50"
-                value="{{ request.GET.search_student }}"
-                onkeypress="if(event.keyCode === 13) { event.preventDefault(); document.getElementById('search-subject-form').submit(); }" />
-        </div>
-    </form> {% endcomment %}
-
-    {% comment %} <div class="flex flex-col gap-[16px] mt-[40px]">
-        {% for student_with_course in subject_students_with_courses %}
-        <div class="flex justify-between items-center h-[44px] border border-slate-300 px-[15px] rounded-lg">
-            <span class="text-[18px]"><strong>{{ student_with_course.student.registration }}</strong> - {{ student_with_course.student.name }} |
-                <strong>Curso:</strong> {{ student_with_course.course_name }}</span>
-
-            <a href="{% url 'remove_student_from_subject' subject.id student_with_course.student.id %}"
-                onclick="return confirm('Tem certeza que deseja remover o estudante {{student_with_course.student.name}} da matéria {{ subject.name }} ?')">
-                <img src="{% static 'images/icons/icon-remove-element.svg' %}" width="18px" height="20px"
-                    class="cursor-pointer" />
-            </a>
-        </div>
-        {% endfor %}
-    </div> {% endcomment %}
 
     <div class="flex mt-[56px] gap-[16px]">
       <button type="submit" onclick="document.getElementById('edit-form').submit()" class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer">

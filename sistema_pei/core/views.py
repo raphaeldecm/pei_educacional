@@ -1,4 +1,5 @@
 from itertools import count
+from django.db.models import ProtectedError
 from django.core.mail import EmailMessage
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponse, HttpResponseRedirect
@@ -372,8 +373,12 @@ class EditCoursePageView(TemplateView):
 class DeleteSubjectView(View):
     def get(self, request, subject_id):
         subject = get_object_or_404(Subject, id=subject_id)
-        subject.delete()
-        return redirect('courses')
+        try:
+            subject.delete()
+            return redirect('courses')
+        except ProtectedError:
+            return redirect(f'/subjects/edit/{subject.id}?error=protected')
+            
 
 
 class SubjectsPageView(TemplateView):
@@ -492,6 +497,11 @@ class EditSubjectPageView(TemplateView):
         
         # Filter Selectors
         context['courses'] = Course.objects.all()
+        
+        # Protected delete error
+        request = self.request
+        if request.GET.get('error') == "protected":
+            context['messages'] = ["Erro - Você não pode remover matérias com ofertas associadas!"]
 
         # Breadcrumbs
         context['breadcrumbs_data'] = [
@@ -511,26 +521,7 @@ class EditSubjectPageView(TemplateView):
             },
         ]
 
-        # subject_students = subject.students.all()
-        
-
-        
-        if 'search_student' in self.request.GET:
-            search_query = self.request.GET['search_student']
-            subject_students = subject.students.filter(Q(name__icontains=search_query))
-
-
-        # students_with_courses = []
-        # for student in subject_students:
-        #     course_name = subject.course.name if subject.course else "Curso não definido"
-        #     students_with_courses.append({
-        #         'student': student,
-        #         'course_name': course_name
-        #     })
-
         context['subject'] = subject
-        # context['subject_students_with_courses'] = students_with_courses
-        context['teachers']= Teacher.objects.all()
         context['course_types']=[course[0] for course in COURSE_TYPE]
 
         return context
