@@ -165,28 +165,28 @@ class ProfilePageView(TemplateView):
         sub_tab = self.request.GET.get('sub_tab', 'edit_personal_data')
         context['sub_active_tab'] = sub_tab
 
-        ## Tab General
-        student_peis = context['student_peis'] = Pei.objects.filter(student=student)
+        # Tab General
+        student_peis = context['student_peis'] = Pei.objects.filter(enrollment__student=student)
 
-        ### Filters Selectors
+        # Filters Selectors
         context['selector_teachers'] = Teacher.objects.all()
 
-        ### Filters
+        # Filters
         filters = {}
         if 'course' in self.request.GET:
-            filters['subject__course__id'] = self.request.GET['course']
+            filters['enrollment__offer__subject__courses__id'] = self.request.GET['course']
         if 'teacher' in self.request.GET:
-            filters['subject__teacher__id'] = self.request.GET['teacher']
+            filters['enrollment__offer__teacher__id'] = self.request.GET['teacher']
         if 'period' in self.request.GET:
-            filters['subject__course__period'] = self.request.GET['period']
+            filters['enrollment__offer__subject__courses__period'] = self.request.GET['period']
         if 'status' in self.request.GET:
             filters['status'] = self.request.GET['status']
 
         student_peis = student_peis.filter(**filters)
 
         if 'search' in self.request.GET:
-            student_peis = student_peis.filter(Q(subject__name__icontains=self.request.GET['search']))
-        
+            student_peis = student_peis.filter(Q(enrollment__offer__subject__name__icontains=self.request.GET['search']))
+
         student_peis = student_peis.order_by('id')
         paginator = Paginator(student_peis, self.paginate_by)
         page_number = self.request.GET.get('page')
@@ -197,17 +197,15 @@ class ProfilePageView(TemplateView):
             student_peis = paginator.page(1)
 
         context['student_peis'] = student_peis
-        ## Tab Notes
+
+        # Tab Notes
         student_notes = Enrollment.objects.filter(student=student)
         if 'selectedPeriod' in self.request.GET:
             student_notes = student_notes.filter(semester=self.request.GET['selectedPeriod'])
-        
-        
-        
+
         context["student_notes"] = student_notes
-        ## Tab Edit
-        # Formulário condicionado pela sub_tab (enviado na url)
-        # Pega os erros do formulário que estão armazenados na sessão.
+
+        # Tab Edit
         if requested_tab == 'edit_student_data':
             if sub_tab == 'edit_personal_data':
                 form = ViewEditDataStudentForm(instance=student)
@@ -228,22 +226,21 @@ class ProfilePageView(TemplateView):
                     del self.request.session['form_errors']
                 context['form'] = form
 
-        #sub tab Anexos
+        # Sub tab Anexos
         if requested_tab == 'edit_student_data':
             if sub_tab == 'edit_files':
                 context['student_files'] = StudentFile.objects.filter(student=student)
 
-
         # Breadcrumbs
         context['breadcrumbs_data'] = [
             {
-                "icon":"images/icons/icon-home-green.svg",
-                "name":"Home",
-                "url":"home"
+                "icon": "images/icons/icon-home-green.svg",
+                "name": "Home",
+                "url": "home"
             },
             {
-                "icon":"images/icons/icon-courses-green.svg",
-                "name":student.name,
+                "icon": "images/icons/icon-courses-green.svg",
+                "name": student.name,
             }
         ]
         return context
