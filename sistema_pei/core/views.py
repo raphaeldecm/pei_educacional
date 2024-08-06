@@ -199,9 +199,9 @@ class ProfilePageView(TemplateView):
         context['student_peis'] = student_peis
 
         # Tab Notes
-        student_notes = Enrollment.objects.filter(student=student)
+        student_notes = Enrollment.objects.filter(student=student, )
         if 'selectedPeriod' in self.request.GET:
-            student_notes = student_notes.filter(semester=self.request.GET['selectedPeriod'])
+            student_notes = student_notes.filter(YearSemesterReference=self.request.GET['selectedPeriod'])
 
         context["student_notes"] = student_notes
 

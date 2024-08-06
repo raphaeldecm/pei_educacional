@@ -11,49 +11,53 @@
       </a>
     {%endfor%}
   </div>
-  <div class="flex-1">
-    <div class="border border-slate-300 rounded-lg px-[20px] py-[40px]">
-        <div>
-            <canvas id="myChart"></canvas>
-        </div>
-    </div>
+  {% if student_notes %}
+    <div class="flex-1">
+      <div class="border border-slate-300 rounded-lg px-[20px] py-[40px]">
+          <div>
+              <canvas id="myChart"></canvas>
+          </div>
+      </div>
 
-    <div
-      class="mt-[36px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg"
-    >
-      <table
-        class="table-auto w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px]"
+      <div
+        class="mt-[36px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg"
       >
-        <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">
-          <tr>
-            <th class="pl-[76px]">Matéria</th>
-            <th>1° Bimestre</th>
-            <th>2° Bimestre</th>
-            {%if student.course.durationType != "SEMESTER" %}
-              <th>3° Bimestre</th>
-              <th>4° Bimestre</th>
-            {%endif%}
-          </tr>
-        </thead>
-        <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
-          {% for subject_grades in student_notes %}
-          <tr>
-            <td class="pl-[76px]">
-                {{subject_grades.subject.name}}
-            </td>
-            <td>{% if subject_grades.grade1 %}{{subject_grades.grade1}}{%else%}---{%endif%}</td>
-            <td>{% if subject_grades.grade2 %}{{subject_grades.grade2}}{%else%}---{%endif%}</td>
-            {%if student.course.durationType != "SEMESTER" %}
-              <td>{% if subject_grades.grade3 %}{{subject_grades.grade3}}{%else%}---{%endif%}</td>
-              <td>{% if subject_grades.grade4 %}{{subject_grades.grade4}}{%else%}---{%endif%}</td>
-            {%endif%}
-          </tr>
-          {%endfor%}
-        </tbody>
-      </table>
-    </div>
+        <table
+          class="table-auto w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px]"
+        >
+          <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">
+            <tr>
+              <th class="pl-[76px]">Matéria</th>
+              <th>1° Bimestre</th>
+              <th>2° Bimestre</th>
+              {%if student.course.durationType != "SEMESTER" %}
+                <th>3° Bimestre</th>
+                <th>4° Bimestre</th>
+              {%endif%}
+            </tr>
+          </thead>
+          <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
+            {% for subject_grades in student_notes %}
+            <tr>
+              <td class="pl-[76px]">
+                  {{subject_grades.offer.subject.name}}
+              </td>
+              <td>{% if subject_grades.grade1 %}{{subject_grades.grade1}}{%else%}---{%endif%}</td>
+              <td>{% if subject_grades.grade2 %}{{subject_grades.grade2}}{%else%}---{%endif%}</td>
+              {%if student.course.durationType != "SEMESTER" %}
+                <td>{% if subject_grades.grade3 %}{{subject_grades.grade3}}{%else%}---{%endif%}</td>
+                <td>{% if subject_grades.grade4 %}{{subject_grades.grade4}}{%else%}---{%endif%}</td>
+              {%endif%}
+            </tr>
+            {%endfor%}
+          </tbody>
+        </table>
+      </div>
 
-  </div>
+    </div>
+  {%else%}
+    <p>Não há notas registradas para este {%if student.course.durationType == "SEMESTER"%}semestre{%else%}ano{%endif%}.</p>
+  {%endif%}
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -75,7 +79,7 @@
       datasets: [
         {% for subject_grades in student_notes %}
         {
-          label: '{{subject_grades.subject.name}}',
+          label: '{{subject_grades.offer.subject.name}}',
           data: [
             {% if subject_grades.grade1 %}{{subject_grades.grade1}},{%endif%}
             {% if subject_grades.grade2 %}{{subject_grades.grade2}},{%endif%}

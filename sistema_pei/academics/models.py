@@ -153,6 +153,8 @@ class Enrollment(BaseModel):
         null=True,
         blank=True,
     ) 
+    
+    YearSemesterReference = models.IntegerField(_("Semestre/Ano de referência"))
 
     class Meta:
         unique_together = ('offer', 'student')
