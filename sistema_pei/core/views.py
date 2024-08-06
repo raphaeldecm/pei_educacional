@@ -165,13 +165,13 @@ class ProfilePageView(TemplateView):
         sub_tab = self.request.GET.get('sub_tab', 'edit_personal_data')
         context['sub_active_tab'] = sub_tab
 
-        # Tab General
+        ##^ Tab General
         student_peis = context['student_peis'] = Pei.objects.filter(enrollment__student=student)
 
-        # Filters Selectors
+        ### Filters Selectors
         context['selector_teachers'] = Teacher.objects.all()
 
-        # Filters
+        ### Filters
         filters = {}
         if 'course' in self.request.GET:
             filters['enrollment__offer__subject__courses__id'] = self.request.GET['course']
@@ -198,14 +198,14 @@ class ProfilePageView(TemplateView):
 
         context['student_peis'] = student_peis
 
-        # Tab Notes
+        ##^ Tab Notes
         student_notes = Enrollment.objects.filter(student=student, )
         if 'selectedPeriod' in self.request.GET:
             student_notes = student_notes.filter(YearSemesterReference=self.request.GET['selectedPeriod'])
 
         context["student_notes"] = student_notes
-
-        # Tab Edit
+        
+        ##^ Tab Edit
         if requested_tab == 'edit_student_data':
             if sub_tab == 'edit_personal_data':
                 form = ViewEditDataStudentForm(instance=student)
