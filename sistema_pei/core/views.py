@@ -74,7 +74,7 @@ class HomePageView(TemplateView):
             filters["enrollment__offer__subject__id"] = self.request.GET["subject"]
 
         peis_list = Pei.objects.filter(**filters).annotate(
-            subject_count=Count("enrollment__student__course__subjects", distinct=True)
+            subject_count=Count("enrollment__student__course__subjects", distinct=True),
         )
 
         if "search" in self.request.GET:
@@ -83,8 +83,8 @@ class HomePageView(TemplateView):
                 | Q(
                     enrollment__student__registration__icontains=self.request.GET[
                         "search"
-                    ]
-                )
+                    ],
+                ),
             )
 
         paginator = Paginator(peis_list, self.paginate_by)
@@ -126,11 +126,17 @@ class UsersPageView(TemplateView):
 
         try:
             user = User.objects.create_user(
-                email=recipient, name=username, is_active=False, sector=sector
+                email=recipient,
+                name=username,
+                is_active=False,
+                sector=sector,
             )
             group.user_set.add(user)
             EmailAddress.objects.create(
-                user=user, email=recipient, verified=True, primary=True
+                user=user,
+                email=recipient,
+                verified=True,
+                primary=True,
             )
         except IntegrityError:
             return HttpResponseRedirect("?alert=error")
@@ -190,7 +196,7 @@ class ProfilePageView(TemplateView):
 
         ##^ Tab General
         student_peis = context["student_peis"] = Pei.objects.filter(
-            enrollment__student=student
+            enrollment__student=student,
         )
 
         ### Filters Selectors
@@ -218,8 +224,8 @@ class ProfilePageView(TemplateView):
                 Q(
                     enrollment__offer__subject__name__icontains=self.request.GET[
                         "search"
-                    ]
-                )
+                    ],
+                ),
             )
 
         student_peis = student_peis.order_by("id")
@@ -237,7 +243,7 @@ class ProfilePageView(TemplateView):
         student_notes = Enrollment.objects.filter(student=student)
         if "selectedPeriod" in self.request.GET:
             student_notes = student_notes.filter(
-                YearSemesterReference=self.request.GET["selectedPeriod"]
+                YearSemesterReference=self.request.GET["selectedPeriod"],
             )
 
         context["student_notes"] = student_notes
@@ -304,7 +310,7 @@ class EditPersonalDataView(View):
             request.session["form_data"] = request.POST
 
         return redirect(
-            f"/profile/{student.id}?tab=edit_student_data&sub_tab=edit_personal_data#tab"
+            f"/profile/{student.id}?tab=edit_student_data&sub_tab=edit_personal_data#tab",
         )
 
 
@@ -329,7 +335,7 @@ class EditHistoricPersonalDataView(View):
             request.session["form_data"] = request.POST
 
         return redirect(
-            f"/profile/{student.id}?tab=edit_student_data&sub_tab=edit_historic#tab"
+            f"/profile/{student.id}?tab=edit_student_data&sub_tab=edit_historic#tab",
         )
 
 
@@ -353,7 +359,7 @@ class DeletePersonalFilesView(View):
             messages.error(self.request, error_message)
 
         return redirect(
-            f"/profile/{student.id}?tab=edit_student_data&sub_tab=edit_files#tab"
+            f"/profile/{student.id}?tab=edit_student_data&sub_tab=edit_files#tab",
         )
 
 
@@ -378,7 +384,7 @@ class UploadStudentFilesView(View):
             request.session["form_data"] = request.POST
 
         return redirect(
-            f"/profile/{student.id}?tab=edit_student_data&sub_tab=edit_files#tab"
+            f"/profile/{student.id}?tab=edit_student_data&sub_tab=edit_files#tab",
         )
 
 
@@ -416,11 +422,11 @@ class CoursesPageView(TemplateView):
 
         if "search" in self.request.GET:
             courses_list = courses_list.filter(
-                Q(name__icontains=self.request.GET["search"])
+                Q(name__icontains=self.request.GET["search"]),
             )
 
         courses_list = courses_list.annotate(num_subjects=Count("subjects")).order_by(
-            "id"
+            "id",
         )
         paginator = Paginator(courses_list, self.paginate_by)
         page_number = self.request.GET.get("page")
@@ -518,7 +524,7 @@ class EditCoursePageView(TemplateView):
         if "search_subject" in self.request.GET:
             filters["search_subject"] = self.request.GET["search_subject"]
             course_subjects = course_subjects.filter(
-                Q(name__icontains=self.request.GET["search_subject"])
+                Q(name__icontains=self.request.GET["search_subject"]),
             )
 
         context["course"] = course
@@ -587,7 +593,7 @@ class SubjectsPageView(TemplateView):
 
         if "search" in self.request.GET:
             course_subjects = course_subjects.filter(
-                Q(name__icontains=self.request.GET["search"])
+                Q(name__icontains=self.request.GET["search"]),
             )
 
         paginator = Paginator(course_subjects, self.paginate_by)
@@ -647,7 +653,7 @@ class CreateSubjectPageView(TemplateView):
 
         if form.is_valid():
             existing_subject = Subject.objects.filter(
-                name=form.cleaned_data["name"]
+                name=form.cleaned_data["name"],
             ).exists()
 
             if existing_subject:
@@ -675,7 +681,7 @@ class EditSubjectPageView(TemplateView):
         request = self.request
         if request.GET.get("error") == "protected":
             context["messages"] = [
-                "Erro - Você não pode remover matérias com ofertas associadas!"
+                "Erro - Você não pode remover matérias com ofertas associadas!",
             ]
 
         # Breadcrumbs
