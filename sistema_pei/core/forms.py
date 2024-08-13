@@ -9,5 +9,5 @@ class CourseForm(forms.ModelForm):
 class SubjectForm(forms.ModelForm):
     class Meta:
         model = Subject
-        fields = ['name', 'subject_type']
+        fields = ['name', 'subject_type', 'courses']
         
