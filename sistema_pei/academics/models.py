@@ -1,12 +1,12 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.core.validators import MinValueValidator
 
 from sistema_pei.academics.constants import COURSE_TYPE
-from sistema_pei.core.models import BaseModel
-from sistema_pei.people.models import Student
-from sistema_pei.people.models import Teacher
 from sistema_pei.core.constants import SMALL_CHAR_FIELD_NAME_LENGTH
+from sistema_pei.core.models import BaseModel
+from sistema_pei.people.models import Teacher
+
 
 # Create your models here.
 class Course(BaseModel):
@@ -14,7 +14,7 @@ class Course(BaseModel):
         MORNING = "MORNING", _("Matutino")
         AFTERNOON = "AFTERNOON", _("Vespertino")
         NIGHT = "NIGHT", _("Noturno")
-    
+
     class CourseDurationType(models.TextChoices):
         SEMESTER = "SEMESTER", _("Semestral")
         YEAR = "YEAR", _("Anual")
@@ -30,7 +30,7 @@ class Course(BaseModel):
         choices=CoursePeriod.choices,
         verbose_name=_("Turno"),
     )
-    
+
     durationType = models.CharField(
         choices=CourseDurationType.choices,
         verbose_name=_("Tipo de duração"),
@@ -41,7 +41,7 @@ class Course(BaseModel):
         default=1,
         validators=[
             MinValueValidator(1),
-        ]
+        ],
     )
 
     class Meta:
@@ -76,6 +76,7 @@ class Subject(BaseModel):
     def __str__(self):
         return self.name
 
+
 class Offer(BaseModel):
     class OfferStatus(models.TextChoices):
         OPEN = "Aberta", "Aberta"
@@ -104,7 +105,7 @@ class Offer(BaseModel):
     class Meta:
         verbose_name = _("Oferta")
         verbose_name_plural = _("Ofertas")
-    
+
     def student_count(self):
         return self.enrollments.count()
 
@@ -114,17 +115,17 @@ class Offer(BaseModel):
 
 class Enrollment(BaseModel):
     offer = models.ForeignKey(
-        'academics.Offer',
+        "academics.Offer",
         verbose_name=_("Oferta"),
         on_delete=models.PROTECT,
-        related_name="enrollments"
+        related_name="enrollments",
     )
     student = models.ForeignKey(
-        'people.Student',
+        "people.Student",
         verbose_name=_("Aluno"),
         on_delete=models.PROTECT,
     )
-    
+
     grade1 = models.DecimalField(
         verbose_name=_("1 - Bimestre"),
         max_digits=5,
@@ -132,7 +133,7 @@ class Enrollment(BaseModel):
         null=True,
         blank=True,
     )
-    
+
     grade2 = models.DecimalField(
         verbose_name=_("2 - Bimestre"),
         max_digits=5,
@@ -140,7 +141,7 @@ class Enrollment(BaseModel):
         null=True,
         blank=True,
     )
-    
+
     grade3 = models.DecimalField(
         verbose_name=_("3 - Bimestre"),
         max_digits=5,
@@ -148,19 +149,19 @@ class Enrollment(BaseModel):
         null=True,
         blank=True,
     )
-    
+
     grade4 = models.DecimalField(
         verbose_name=_("4 - Bimestre"),
         max_digits=5,
         decimal_places=2,
         null=True,
         blank=True,
-    ) 
-    
+    )
+
     YearSemesterReference = models.IntegerField(_("Semestre/Ano de referência"))
 
     class Meta:
-        unique_together = ('offer', 'student')
+        unique_together = ("offer", "student")
         verbose_name = _("Inscrição")
         verbose_name_plural = _("Inscrições")
 
@@ -168,5 +169,4 @@ class Enrollment(BaseModel):
         pass
 
     def __str__(self):
-        return f'{self.student} - {self.offer.subject.name}'
-
+        return f"{self.student} - {self.offer.subject.name}"

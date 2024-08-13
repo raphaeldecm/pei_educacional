@@ -13,6 +13,7 @@ User = get_user_model()
 
 TEACHERS_CSV = str(settings.APPS_DIR / "people" / "bin" / "DOCENTES_PF_09072024.csv")
 
+
 class Command(BaseCommand):
     help = """
         Create django groups to represent.
@@ -34,7 +35,6 @@ class Command(BaseCommand):
                     campus=Campus.objects.get(abbreviation=row[2].strip()),
                     code=row[1].strip(),
                 )
-
 
     def get_campus(self):
         return [

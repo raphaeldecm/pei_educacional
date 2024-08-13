@@ -1,20 +1,22 @@
-
 from typing import ClassVar
 
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 from django.db.models import CharField
 from django.db.models import EmailField
-from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from .managers import UserManager
+
 
 class Sector(models.Model):
     name = models.CharField(_("Sector Name"), max_length=255)
 
     def __str__(self):
         return self.name
+
+
 class User(AbstractUser):
     """
     Default custom user model for sistema-pei.
@@ -28,7 +30,13 @@ class User(AbstractUser):
     last_name = None  # type: ignore[assignment]
     email = EmailField(_("email address"), unique=True)
     username = None  # type: ignore[assignment]
-    sector = models.ForeignKey("Sector", verbose_name=_("Sector"), on_delete=models.CASCADE, blank=True, null=True)
+    sector = models.ForeignKey(
+        "Sector",
+        verbose_name=_("Sector"),
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 

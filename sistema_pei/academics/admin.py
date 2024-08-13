@@ -14,17 +14,20 @@ class CoursesAdmin(admin.ModelAdmin):
     search_fields = ["iteraction_text"]
     readonly_fields = ["updated_by", "created_at"]
     list_display = ["name", "course_type", "period"]
-    
+
+
 class EnrollmentAdmin(admin.ModelAdmin):
     search_fields = ["iteraction_text"]
     readonly_fields = ["updated_by", "created_at"]
     list_display = ["student", "grade1", "grade2", "grade3", "grade4"]
 
+
 class OfferAdmin(admin.ModelAdmin):
     search_fields = ["iteraction_text"]
     readonly_fields = ["updated_by", "created_at"]
     list_display = ["status", "subject", "year", "teacher"]
-    
+
+
 admin.site.register(models.Subject, SubjectAdmin)
 admin.site.register(models.Course, CoursesAdmin)
 admin.site.register(models.Enrollment, EnrollmentAdmin)
