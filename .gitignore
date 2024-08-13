@@ -163,8 +163,6 @@ typings/
 .devcontainer/bash_history
 
 
-
-
 ### Windows template
 # Windows thumbnail cache files
 Thumbs.db
@@ -279,3 +277,6 @@ sistema_pei/media/
 .env
 .envs/*
 !.envs/.local/
+
+# Tailwind CSS output
+sistema_pei/static/css/output.css

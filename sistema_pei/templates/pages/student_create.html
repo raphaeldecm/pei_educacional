@@ -1,487 +1,422 @@
 <!-- templates/student_create.html -->
-
 {% extends "base.html" %}
+
 {% load static %}
 
 {% block content %}
   <div class="w-10/12 my-10">
     <h2 class="font-sans text-slate-900 text-3xl font-medium">Cadastrar Aluno</h2>
-    <form action="{% url 'student_create' %}" method="post" enctype="multipart/form-data" class="mt-10 grid mini:grid-cols-1 md:grid-cols-2 gap-8">
+    <form action="{% url 'student_create' %}"
+          method="post"
+          enctype="multipart/form-data"
+          class="mt-10 grid mini:grid-cols-1 md:grid-cols-2 gap-8">
       {% csrf_token %}
-
       <!-- Campo image -->
       <div class="mb-4 col-span-2 flex flex-col items-center gap-4">
-
-        <img id="profileImage" src="{% static 'images/img/boy_user-profile.svg' %}" alt="imagem de perfil" class="h-40 w-40 rounded-full bg-transparent border object-cover text-transparent">
-
-        <label for="{{ form.image.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
+        <img id="profileImage"
+             src="{% static 'images/img/boy_user-profile.svg' %}"
+             alt="imagem de perfil"
+             class="h-40 w-40 rounded-full bg-transparent border object-cover text-transparent" />
+        <label for="{{ form.image.id_for_label }}"
+               class="font-sans font-medium text-lg text-ls block mb-4">
           Foto do aluno <span class="text-red-500">*</span>
         </label>
         <input type="file"
-                id="{{ form.image.id_for_label }}"
-                name="{{ form.image.name }}"
-                accept="image/png, image/jpeg"
-                onchange="previewImage(event)"
-                required
-                class="font-sans text-slate-900 block file:cursor-pointer text-sm
-                file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold
-                file:bg-green-200 file:text-green-700 hover:file:bg-green-300"
-              />
-
+               id="{{ form.image.id_for_label }}"
+               name="{{ form.image.name }}"
+               accept="image/png, image/jpeg"
+               onchange="previewImage(event)"
+               required
+               class="font-sans text-slate-900 block file:cursor-pointer text-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-green-200 file:text-green-700 hover:file:bg-green-300" />
         {% comment %} /List Erros {% endcomment %}
         {% if form.image.errors %}
           <ul class="list-disc p-2">
-            {% for error in form.image.errors %}
-              <li class="text-red-500 ml-2" >{{ error }}</li>
-            {% endfor %}
+            {% for error in form.image.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
           </ul>
         {% endif %}
       </div>
-
       <!-- Campo name -->
       <div class="mb-4 mini:col-span-2 md:col-span-1">
-          <label for="{{ form.name.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
-            Nome <span class="text-red-500">*</span>
-          </label>
-          <input type="text"
-                  id="{{ form.name.id_for_label }}"
-                  name="{{ form.name.name }}"
-                  value="{{ form.name.value|default_if_none:'' }}"
-                  placeholder="Jõao doria da silva"
-                  required
-                  class="bg-transparent font-sans appearance-none border rounded-lg w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
-          />
-          {% if form.name.errors %}
-            <ul class="list-disc p-2">
-              {% for error in form.name.errors %}
-                <li class="text-red-500 ml-2" >{{ error }}</li>
-              {% endfor %}
-            </ul>
-          {% endif %}
-      </div>
-
-      <!-- Campo email -->
-      <div class="mb-4 mini:col-span-2 md:col-span-1">
-          <label for="{{ form.email.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
-            E-mail <span class="text-red-500">*</span>
-          </label>
-          <input type="email"
-                  id="{{ form.email.id_for_label }}"
-                  name="{{ form.email.name }}"
-                  value="{{ form.email.value|default_if_none:'' }}"
-                  placeholder="Ex: exemplo@gmail.com"
-                  required
-                  class="bg-transparent font-sans appearance-none border rounded-lg w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
-          />
-          {% if form.email.errors %}
-            <ul class="list-disc p-2">
-              {% for error in form.email.errors %}
-                <li class="text-red-500 ml-2" >{{ error }}</li>
-              {% endfor %}
-            </ul>
+        <label for="{{ form.name.id_for_label }}"
+               class="font-sans font-medium text-lg text-ls block mb-4">
+          Nome <span class="text-red-500">*</span>
+        </label>
+        <input type="text"
+               id="{{ form.name.id_for_label }}"
+               name="{{ form.name.name }}"
+               value="{{ form.name.value|default_if_none:'' }}"
+               placeholder="Jõao doria da silva"
+               required
+               class="bg-transparent font-sans appearance-none border rounded-lg w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500" />
+        {% if form.name.errors %}
+          <ul class="list-disc p-2">
+            {% for error in form.name.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+          </ul>
         {% endif %}
       </div>
-
+      <!-- Campo email -->
+      <div class="mb-4 mini:col-span-2 md:col-span-1">
+        <label for="{{ form.email.id_for_label }}"
+               class="font-sans font-medium text-lg text-ls block mb-4">
+          E-mail <span class="text-red-500">*</span>
+        </label>
+        <input type="email"
+               id="{{ form.email.id_for_label }}"
+               name="{{ form.email.name }}"
+               value="{{ form.email.value|default_if_none:'' }}"
+               placeholder="Ex: exemplo@gmail.com"
+               required
+               class="bg-transparent font-sans appearance-none border rounded-lg w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500" />
+        {% if form.email.errors %}
+          <ul class="list-disc p-2">
+            {% for error in form.email.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+      </div>
       <!-- Campo course -->
       <div class="mb-4 mini:col-span-2 md:col-span-1">
-        <label for="{{ form.course.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
+        <label for="{{ form.course.id_for_label }}"
+               class="font-sans font-medium text-lg text-ls block mb-4">
           Curso <span class="text-red-500">*</span>
         </label>
-
         <div class="relative">
-            <select id="{{ form.course.id_for_label }}"
-                    name="{{ form.course.name }}"
-                    required
-                    class="bg-transparent font-sans appearance-none border rounded-lg h-11 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
-            >
+          <select id="{{ form.course.id_for_label }}"
+                  name="{{ form.course.name }}"
+                  required
+                  class="bg-transparent font-sans appearance-none border rounded-lg h-11 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">
             {% for value, label in form.course.field.choices %}
               {% if forloop.first %}
                 <option value="{{ value }}" disabled selected>{{ label }}</option>
               {% else %}
-                <option value="{{ value }}" {% if value|stringformat:"s" == form.course.value %} selected {% endif %}>{{ label }}</option>
+                <option value="{{ value }}"
+                        {% if value|stringformat:"s" == form.course.value %}selected{% endif %}>{{ label }}</option>
               {% endif %}
             {% endfor %}
-            </select>
-
+          </select>
           <img class="absolute top-[12px] right-[10px]"
-            src="{% static 'images/icons/icon-updown-arrow.svg' %}"
-            width="24px"
-            height="24px"
-          />
-
+               src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+               width="24px"
+               height="24px" />
         </div>
-
         {% if form.course.errors %}
           <ul class="list-disc p-2">
-            {% for error in form.course.errors %}
+            {% for error in form.course.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      <!-- Campo registration -->
+      <div class="mb-4 mini:col-span-2 md:col-span-1">
+        <label for="{{ form.registration.id_for_label }}"
+               class="font-sans font-medium text-lg text-ls block mb-4">
+          Matrícula <span class="text-red-500">*</span>
+        </label>
+        <input type="number"
+               id="{{ form.registration.id_for_label }}"
+               name="{{ form.registration.name }}"
+               value="{{ form.registration.value|default_if_none:'' }}"
+               placeholder="Ex: 2022019505020"
+               min="1"
+               required
+               class="bg-transparent font-sans appearance-none border rounded-lg w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500" />
+        {% if form.registration.errors %}
+          <ul class="list-disc p-2">
+            {% for error in form.registration.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      <div class="mb-4 mini:col-span-2 md:col-span-1">
+        <label for="{{ form.reference_period.id_for_label }}"
+               class="font-sans font-medium text-lg text-ls block mb-4">
+          Período de Referência (Periodo atual do aluno) <span class="text-red-500">*</span>
+        </label>
+        <input type="number"
+               id="{{ form.reference_period.id_for_label }}"
+               name="{{ form.reference_period.name }}"
+               value="{{ form.reference_period.value|default_if_none:'' }}"
+               placeholder="Ex: 4"
+               min="1"
+               required
+               class="bg-transparent font-sans appearance-none border rounded-lg w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500" />
+        {% if form.reference_period.errors %}
+          <ul class="list-disc p-2">
+            {% for error in form.reference_period.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      <!-- Campo responsible_person -->
+      <div class="mb-4 col-span-2">
+        <label for="{{ form.sectors.id_for_label }}"
+               class="font-sans font-medium text-lg text-ls block mb-4">
+          Equipe multe proficional responsavel <span class="text-red-500">*</span>
+        </label>
+        <p class="my-4 font-sans text-slate-400">
+          Selecione uma ou mais opções pressionando 'Ctrl' (ou 'Cmd' no Mac) e clicando nos itens desejados. Você também pode arrastar o mouse para selecionar um grupo de opções consecutivas.
+        </p>
+        <select id="{{ form.sectors.id_for_label }}"
+                name="{{ form.sectors.name }}"
+                multiple
+                required
+                class="indeterminate:bg-gray-300 bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">
+          {% for value, label in form.sectors.field.choices %}
+            <option class="hover:bg-green-100"
+                    value="{{ value }}"
+                    {% if value|stringformat:"s" in form.sectors.value %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+        {% if form.sectors.errors %}
+          <ul class="list-disc p-2">
+            {% for error in form.sectors.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      <hr class="col-span-2" />
+      <!-- Campo educational_necessities -->
+      <div class="mb-4 col-span-2">
+        <label for="{{ form.educational_necessities.id_for_label }}"
+               class="font-sans font-medium text-lg text-ls block mb-4">
+          Necessidades especiais especificas <span class="text-red-500">*</span>
+        </label>
+        <p class="my-4 font-sans text-slate-400">
+          Selecione uma ou mais opções pressionando 'Ctrl' (ou 'Cmd' no Mac) e clicando nos itens desejados. Você também pode arrastar o mouse para selecionar um grupo de opções consecutivas.
+        </p>
+        <select id="{{ form.educational_necessities.id_for_label }}"
+                name="{{ form.educational_necessities.name }}"
+                multiple
+                required
+                class="indeterminate:bg-gray-300 bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">
+          {% for value, label in form.educational_necessities.field.choices %}
+            <option class="hover:bg-green-100"
+                    value="{{ value }}"
+                    {% if value|stringformat:"s" in form.educational_necessities.value %}selected{% endif %}>
+              {{ label }}
+            </option>
+          {% endfor %}
+        </select>
+        {% if form.educational_necessities.errors %}
+          <ul class="list-disc p-2">
+            {% for error in form.educational_necessities.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      <hr class="col-span-2" />
+      <div class="col-span-2">
+        <label class="font-sans font-medium text-lg text-ls block mb-4">Anexos</label>
+        <div class="w-full">
+          <div id="file-list" class="my-4 space-y-2"></div>
+          <div>
+            <input id="{{ form.files.id_for_label }}"
+                   name="{{ form.files.name }}"
+                   type="file"
+                   accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls"
+                   multiple
+                   class="hidden" />
+            <button type="button"
+                    id="add-files-button"
+                    class="flex gap-2 bg-transparent font-sans appearance-none border rounded w-full py-6 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">
+              <img src="{% static 'images/icons/clip_icon.svg' %}"
+                   alt="icone de clip de papel, representa um arquivo anexado" />
+              Escolha o anexo
+            </button>
+          </div>
+        </div>
+        {% if form.files.errors %}
+          <ul class="list-disc p-2">
+            {% for error in form.files.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      <hr class="col-span-2" />
+      <!-- Campo personal_history -->
+      <div class="mb-4 col-span-2">
+        <label for="{{ form.personal_history.id_for_label }}"
+               class="font-sans font-medium text-lg text-ls block mb-4">
+          Histórico <span class="text-red-500">*</span>
+        </label>
+        <textarea id="{{ form.personal_history.id_for_label }}"
+                  name="{{ form.personal_history.name }}"
+                  placeholder="Escreva aqui!"
+                  required
+                  class="bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.personal_history.value|default_if_none:'' }}</textarea>
+        {% if form.personal_history.errors %}
+          <ul class="list-disc p-2">
+            {% for error in form.personal_history.errors %}
               <li class="text-red-500 ml-2">{{ error }}</li>
             {% endfor %}
           </ul>
         {% endif %}
       </div>
-
-      <!-- Campo registration -->
-      <div class="mb-4 mini:col-span-2 md:col-span-1">
-          <label for="{{ form.registration.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
-            Matrícula <span class="text-red-500">*</span>
-          </label>
-          <input type="number"
-                  id="{{ form.registration.id_for_label }}"
-                  name="{{ form.registration.name }}"
-                  value="{{ form.registration.value|default_if_none:'' }}"
-                  placeholder="Ex: 2022019505020"
-                  min="1"
-                  required
-                  class="bg-transparent font-sans appearance-none border rounded-lg w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
-                  />
-          {% if form.registration.errors %}
-            <ul class="list-disc p-2">
-              {% for error in form.registration.errors %}
-                <li class="text-red-500 ml-2" >{{ error }}</li>
-              {% endfor %}
-                  </ul>
-          {% endif %}
-      </div>
-
-      <div class="mb-4 mini:col-span-2 md:col-span-1">
-        <label for="{{ form.reference_period.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
-          Período de Referência (Periodo atual do aluno) <span class="text-red-500">*</span>
-        </label>
-        <input type="number"
-                id="{{ form.reference_period.id_for_label }}"
-                name="{{ form.reference_period.name }}"
-                value="{{ form.reference_period.value|default_if_none:'' }}"
-                placeholder="Ex: 4"
-                min="1"
-                required
-                class="bg-transparent font-sans appearance-none border rounded-lg w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
-                />
-        {% if form.reference_period.errors %}
-          <ul class="list-disc p-2">
-            {% for error in form.reference_period.errors %}
-              <li class="text-red-500 ml-2" >{{ error }}</li>
-            {% endfor %}
-                </ul>
-        {% endif %}
-      </div>
-
-      <!-- Campo responsible_person -->
-      <div class="mb-4 col-span-2">
-        <label for="{{ form.sectors.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
-          Equipe multe proficional responsavel <span class="text-red-500">*</span>
-        </label>
-
-        <p class="my-4 font-sans text-slate-400">
-          Selecione uma ou mais opções pressionando 'Ctrl' (ou 'Cmd' no Mac) e clicando nos itens desejados. Você também pode arrastar o mouse para selecionar um grupo de opções consecutivas.
-        </p>
-
-        <select id="{{ form.sectors.id_for_label }}"
-                name="{{ form.sectors.name }}"
-                multiple
-                required
-                class="indeterminate:bg-gray-300 bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
-        >
-          {% for value, label in form.sectors.field.choices %}
-              <option class="hover:bg-green-100" value="{{ value }}" {% if value|stringformat:"s" in form.sectors.value %}selected{% endif %}>{{ label }}</option>
-          {% endfor %}
-        </select>
-
-
-        {% if form.sectors.errors %}
-            <ul class="list-disc p-2">
-              {% for error in form.sectors.errors %}
-                <li class="text-red-500 ml-2" >{{ error }}</li>
-              {% endfor %}
-            </ul>
-        {% endif %}
-      </div>
-
-      <hr class="col-span-2">
-
-      <!-- Campo educational_necessities -->
-      <div class="mb-4 col-span-2">
-        <label for="{{ form.educational_necessities.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
-          Necessidades especiais especificas <span class="text-red-500">*</span>
-        </label>
-
-        <p class="my-4 font-sans text-slate-400">
-          Selecione uma ou mais opções pressionando 'Ctrl' (ou 'Cmd' no Mac) e clicando nos itens desejados. Você também pode arrastar o mouse para selecionar um grupo de opções consecutivas.
-        </p>
-
-        <select id="{{ form.educational_necessities.id_for_label }}"
-                name="{{ form.educational_necessities.name }}"
-                multiple
-                required
-                class="indeterminate:bg-gray-300 bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
-        >
-          {% for value, label in form.educational_necessities.field.choices %}
-              <option class="hover:bg-green-100" value="{{ value }}" {% if value|stringformat:"s" in form.educational_necessities.value %}selected{% endif %}>{{ label }}</option>
-          {% endfor %}
-
-        </select>
-
-        {% if form.educational_necessities.errors %}
-          <ul class="list-disc p-2">
-            {% for error in form.educational_necessities.errors %}
-              <li class="text-red-500 ml-2" >{{ error }}</li>
-            {% endfor %}
-          </ul>
-        {% endif %}
-      </div>
-
-      <hr class="col-span-2">
-
-      <div class="col-span-2">
-        <label class="font-sans font-medium text-lg text-ls block mb-4">
-          Anexos
-        </label>
-
-        <div class="w-full">
-            <div id="file-list" class="my-4 space-y-2"></div>
-
-            <div>
-                <input id="{{ form.files.id_for_label }}"
-                      name="{{ form.files.name }}"
-                      type="file"
-                      accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls"
-                      multiple
-                      class="hidden"
-                >
-
-                <button type="button" id="add-files-button"
-                        class="flex gap-2 bg-transparent font-sans appearance-none border rounded w-full py-6 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
-                >
-                  <img src="{% static 'images/icons/clip_icon.svg' %}" alt="icone de clip de papel, representa um arquivo anexado">
-                  Escolha o anexo
-                </button>
-            </div>
-        </div>
-
-        {% if form.files.errors %}
-        <ul class="list-disc p-2">
-          {% for error in form.files.errors %}
-            <li class="text-red-500 ml-2" >{{ error }}</li>
-          {% endfor %}
-        </ul>
-        {% endif %}
-    </div>
-
-    <hr class="col-span-2">
-      <!-- Campo personal_history -->
-      <div class="mb-4 col-span-2">
-          <label for="{{ form.personal_history.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
-            Histórico <span class="text-red-500">*</span>
-          </label>
-          <textarea id="{{ form.personal_history.id_for_label }}"
-                    name="{{ form.personal_history.name }}"
-                    placeholder="Escreva aqui!"
-                    required
-                    class="bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
-          >{{ form.personal_history.value|default_if_none:'' }}</textarea>
-          {% if form.personal_history.errors %}
-            <ul class="list-disc p-2">
-              {% for error in form.personal_history.errors %}
-                <li class="text-red-500 ml-2" >{{ error }}</li>
-              {% endfor %}
-            </ul>
-        {% endif %}
-      </div>
-
       <!-- Campo specific_necessities -->
       <div class="mb-4 col-span-2">
-        <label for="{{ form.specific_necessities.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
-          Necessidades Educacionais Especificas
-        </label>
+        <label for="{{ form.specific_necessities.id_for_label }}"
+               class="font-sans font-medium text-lg text-ls block mb-4">Necessidades Educacionais Especificas</label>
         <textarea id="{{ form.specific_necessities.id_for_label }}"
                   name="{{ form.specific_necessities.name }}"
                   placeholder="Escreva aqui!"
-                  class="bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
-                  >{{ form.specific_necessities.value|default_if_none:'' }}</textarea>
-
+                  class="bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.specific_necessities.value|default_if_none:'' }}</textarea>
         {% if form.specific_necessities.errors %}
           <ul class="list-disc p-2">
             {% for error in form.specific_necessities.errors %}
-              <li class="text-red-500 ml-2" >{{ error }}</li>
+              <li class="text-red-500 ml-2">{{ error }}</li>
             {% endfor %}
           </ul>
         {% endif %}
       </div>
-
       <div class="col-span-2">
-        <p class="font-sans font-medium text-lg text-ls block mb-4">
-          Aptidão e dificuldades Apresentadas
-        </p>
-
+        <p class="font-sans font-medium text-lg text-ls block mb-4">Aptidão e dificuldades Apresentadas</p>
         <!-- Campo abilities -->
         <div class="mb-4">
-          <label for="{{ form.abilities.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4 text-slate-400">
+          <label for="{{ form.abilities.id_for_label }}"
+                 class="font-sans font-medium text-lg text-ls block mb-4 text-slate-400">
             Conhecimentos, Habilidades, Capacidades e Interesses
           </label>
           <textarea id="{{ form.abilities.id_for_label }}"
                     name="{{ form.abilities.name }}"
                     placeholder="Escreva aqui!"
-                    class="bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
-                    >{{ form.abilities.value|default_if_none:'' }}</textarea>
-
+                    class="bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.abilities.value|default_if_none:'' }}</textarea>
           {% if form.abilities.errors %}
             <ul class="list-disc p-2">
               {% for error in form.abilities.errors %}
-                <li class="text-red-500 ml-2" >{{ error }}</li>
+                <li class="text-red-500 ml-2">{{ error }}</li>
               {% endfor %}
             </ul>
           {% endif %}
         </div>
-
         <!-- Campo dificulties -->
         <div>
-          <label for="{{ form.dificulties.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4 text-slate-400">
-            Dificuldades
-          </label>
+          <label for="{{ form.dificulties.id_for_label }}"
+                 class="font-sans font-medium text-lg text-ls block mb-4 text-slate-400">Dificuldades</label>
           <textarea id="{{ form.dificulties.id_for_label }}"
                     name="{{ form.dificulties.name }}"
                     placeholder="Escreva aqui!"
-                    class="bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
-                    >{{ form.dificulties.value|default_if_none:'' }}</textarea>
-
+                    class="bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.dificulties.value|default_if_none:'' }}</textarea>
           {% if form.dificulties.errors %}
             <ul class="list-disc p-2">
-              {% for error in form.dificulties.errors %}
-                <li class="text-red-500 ml-2" >{{ error }}</li>
-              {% endfor %}
+              {% for error in form.dificulties.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
             </ul>
           {% endif %}
         </div>
       </div>
-
       <!-- Campo general_necessitie -->
       <div class="mb-4 col-span-2">
-          <label for="{{ form.general_necessitie.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
-            Outras necessidades educacionais especificas do(a) estudante
-          </label>
-          <textarea id="{{ form.general_necessitie.id_for_label }}"
-                    name="{{ form.general_necessitie.name }}"
-                    placeholder="Escreva aqui!"
-                    class="bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
-          >{{ form.general_necessitie.value|default_if_none:'' }}</textarea>
-          {% if form.general_necessitie.errors %}
-            <ul class="list-disc p-2">
-              {% for error in form.general_necessitie.errors %}
-                <li class="text-red-500 ml-2" >{{ error }}</li>
-              {% endfor %}
-            </ul>
+        <label for="{{ form.general_necessitie.id_for_label }}"
+               class="font-sans font-medium text-lg text-ls block mb-4">
+          Outras necessidades educacionais especificas do(a) estudante
+        </label>
+        <textarea id="{{ form.general_necessitie.id_for_label }}"
+                  name="{{ form.general_necessitie.name }}"
+                  placeholder="Escreva aqui!"
+                  class="bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.general_necessitie.value|default_if_none:'' }}</textarea>
+        {% if form.general_necessitie.errors %}
+          <ul class="list-disc p-2">
+            {% for error in form.general_necessitie.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+          </ul>
         {% endif %}
       </div>
-
-        <!-- Campo creation_reasons -->
+      <!-- Campo creation_reasons -->
       <div class="mb-4 col-span-2">
-        <label for="{{ form.creation_reasons.id_for_label }}" class="font-sans font-medium text-lg text-ls block mb-4">
+        <label for="{{ form.creation_reasons.id_for_label }}"
+               class="font-sans font-medium text-lg text-ls block mb-4">
           Questões Geradoras para criação do pei/Adaptações
         </label>
         <textarea id="{{ form.creation_reasons.id_for_label }}"
                   name="{{ form.creation_reasons.name }}"
                   placeholder="Escreva aqui!"
-                  class="bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
-                  >{{ form.creation_reasons.value|default_if_none:'' }}</textarea>
-
+                  class="bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.creation_reasons.value|default_if_none:'' }}</textarea>
         {% if form.creation_reasons.errors %}
           <ul class="list-disc p-2">
-            {% for error in form.creation_reasons.errors %}
-              <li class="text-red-500 ml-2" >{{ error }}</li>
-            {% endfor %}
+            {% for error in form.creation_reasons.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
           </ul>
         {% endif %}
       </div>
-
-
-      <button type="submit" class="col-span-2 font-sans bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded transition duration-300 ease-in-out">
+      <button type="submit"
+              class="col-span-2 font-sans bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded transition duration-300 ease-in-out">
         Salvar
       </button>
     </form>
   </div>
 {% endblock content %}
-
 {% block inline_javascript %}
-<script>
-  function previewImage(event) {
+  <script>
+    function previewImage(event) {
 
-    /*
-    Preview da imagen de perfil
-    */
+      /*
+      Preview da imagen de perfil
+      */
 
-    const input = event.target;
-    const file = input.files[0];
-    const reader = new FileReader();
+      const input = event.target;
+      const file = input.files[0];
+      const reader = new FileReader();
 
-    reader.onload = function(e) {
-      const preview = document.getElementById('profileImage');
-      preview.src = e.target.result;
-    };
+      reader.onload = function(e) {
+        const preview = document.getElementById('profileImage');
+        preview.src = e.target.result;
+      };
 
-    if (file) {
-      reader.readAsDataURL(file);
+      if (file) {
+        reader.readAsDataURL(file);
+      }
     }
-  }
 
-  document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
 
-    /*
-    Comportamento dos campos de anexo.
-    Lista os arquivos selecionados e os adicionam ao input oculto.
-    */
+      /*
+      Comportamento dos campos de anexo.
+      Lista os arquivos selecionados e os adicionam ao input oculto.
+      */
 
-    const fileUpload = {
-      fileList: document.getElementById('file-list'),
-      inputElement: document.getElementById('{{ form.files.id_for_label }}'),
-      files: [],
+      const fileUpload = {
+        fileList: document.getElementById('file-list'),
+        inputElement: document.getElementById('{{ form.files.id_for_label }}'),
+        files: [],
 
-      init() {
+        init() {
           document.getElementById('add-files-button').addEventListener('click', () => {
-              this.inputElement.click();
+            this.inputElement.click();
           });
 
           this.inputElement.addEventListener('change', (event) => {
-              this.handleFileSelect(event);
+            this.handleFileSelect(event);
           });
-      },
+        },
 
-      handleFileSelect(event) {
+        handleFileSelect(event) {
           const newFiles = Array.from(event.target.files);
           this.files = this.files.concat(newFiles);
           this.updateFileList();
           this.updateInputFiles();
-      },
+        },
 
-      removeFile(index) {
+        removeFile(index) {
           this.files.splice(index, 1);
           this.updateFileList();
           this.updateInputFiles();
-      },
+        },
 
-      updateFileList() {
+        updateFileList() {
           this.fileList.innerHTML = '';
           this.files.forEach((file, index) => {
-              const fileItem = document.createElement('div');
-              fileItem.className = 'flex justify-between gap-2 bg-transparent font-sans appearance-none border rounded w-full py-6 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500';
-              fileItem.innerHTML = `
+            const fileItem = document.createElement('div');
+            fileItem.className = 'flex justify-between gap-2 bg-transparent font-sans appearance-none border rounded w-full py-6 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500';
+            fileItem.innerHTML = `
                   <span class="flex gap-2 text-gray-700">
-                    <img src="{% static 'images/icons/clip_icon.svg' %}" alt="icone de clip de papel, representa um arquivo anexado">
+                    <img src="{% static 'images/icons/clip_icon.svg' %}" alt="icone de clip de papel, representa um arquivo anexado" />
                     ${file.name}
                   </span>
                   <button class="ml-4 text-red-500 cursor-pointer hover:underline" onclick="fileUpload.removeFile(${index})">Remover</button>
               `;
-              this.fileList.appendChild(fileItem);
+            this.fileList.appendChild(fileItem);
           });
-      },
+        },
 
-      updateInputFiles() {
+        updateInputFiles() {
           const dataTransfer = new DataTransfer();
           this.files.forEach(file => dataTransfer.items.add(file));
           this.inputElement.files = dataTransfer.files;
-      }
-    };
+        }
+      };
 
-    fileUpload.init();
-    window.fileUpload = fileUpload;
-  });
-</script>
+      fileUpload.init();
+      window.fileUpload = fileUpload;
+    });
+  </script>
 {% endblock inline_javascript %}

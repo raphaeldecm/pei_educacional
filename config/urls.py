@@ -33,7 +33,7 @@ from sistema_pei.core.views import (
     EditHistoricPersonalDataView,
     EditPersonalDataView,
     UploadStudentFilesView,
-    DeletePersonalFilesView
+    DeletePersonalFilesView,
 )
 
 urlpatterns = [
@@ -65,12 +65,12 @@ urlpatterns = [
     path(
         "profile/<int:student_id>/upload_files/",
         login_required(UploadStudentFilesView.as_view()),
-        name='upload_files',
+        name="upload_files",
     ),
     path(
         "profile/<int:student_id>/delete_file/",
         login_required(DeletePersonalFilesView.as_view()),
-        name='delete_personal_file'
+        name="delete_personal_file",
     ),
     path(
         "courses/",
@@ -127,11 +127,12 @@ urlpatterns = [
     # User management
     path("users/", include("sistema_pei.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
-    path('activate/<uidb64>/<token>/', activate_account, name='activate'),
+    path("activate/<uidb64>/<token>/", activate_account, name="activate"),
     path(
-        'student/create/',
+        "student/create/",
         login_required(StudentCreateView.as_view()),
-        name='student_create'),
+        name="student_create",
+    ),
     # JWT
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
@@ -140,8 +141,8 @@ urlpatterns = [
     path("__reload__/", include("django_browser_reload.urls")),
     # Your stuff: custom urls includes go here
     # ...
-    path('social/', include('social_django.urls', namespace='social')),
-    path('suap_backend/', include('suap_backend.urls', namespace='suap_login')),
+    path("social/", include("social_django.urls", namespace="social")),
+    path("suap_backend/", include("suap_backend.urls", namespace="suap_login")),
     # Media files
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
 ]

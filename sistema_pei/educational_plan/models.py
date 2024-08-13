@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from sistema_pei.academics.models import Enrollment, Offer
+from sistema_pei.academics.models import Enrollment
 from sistema_pei.core.models import BaseModel
 
 

@@ -14,7 +14,6 @@ class Command(BaseCommand):
     help = "Adding superuser..."
 
     def handle(self, *args, **options):
-
         if User.objects.filter(is_superuser=True).exists():
             self.stdout.write("The superuser already exists")
         else:

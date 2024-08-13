@@ -1,13 +1,10 @@
 from django.contrib.auth import get_user_model
-from django.core import validators
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from sistema_pei.core import constants
 from sistema_pei.core.models import BaseModel
 from sistema_pei.core.models import get_sentinel_user
-from django.core.exceptions import ValidationError
-
 
 User = get_user_model()
 
@@ -20,7 +17,9 @@ class Campus(BaseModel):
         unique=True,
     )
     abbreviation = models.CharField(
-        verbose_name=_("Abreviação"), max_length=4, unique=True,
+        verbose_name=_("Abreviação"),
+        max_length=4,
+        unique=True,
     )
 
     class Meta:
@@ -29,6 +28,7 @@ class Campus(BaseModel):
 
     def __str__(self):
         return self.name
+
 
 class Person(BaseModel):
     name = models.CharField(
@@ -49,8 +49,8 @@ class Person(BaseModel):
     def __str__(self):
         return self.name
 
-class Teacher(Person):
 
+class Teacher(Person):
     campus = models.ForeignKey(
         Campus,
         on_delete=models.SET_NULL,
@@ -69,6 +69,7 @@ class Teacher(Person):
         blank=True,
         unique=True,
     )
+
     class Meta:
         verbose_name = _("Professor")
         verbose_name_plural = _("Professores")
@@ -141,7 +142,7 @@ class Student(Person):
     )
 
     course = models.ForeignKey(
-        'academics.Course',
+        "academics.Course",
         on_delete=models.PROTECT,
         verbose_name=_("Curso"),
         related_name="students",
@@ -152,9 +153,10 @@ class Student(Person):
     )
 
     sectors = models.ManyToManyField(
-        'users.Sector',
+        "users.Sector",
         verbose_name=_("Setores"),
     )
+
     class Meta:
         verbose_name = _("Discente")
         verbose_name_plural = _("Discentes")
@@ -162,13 +164,14 @@ class Student(Person):
     def __str__(self):
         return self.name
 
+
 class StudentFile(models.Model):
     student = models.ForeignKey(
-        'Student',
+        "Student",
         on_delete=models.CASCADE,
-        related_name='files'
+        related_name="files",
     )
-    file = models.FileField(upload_to='student_files/')
+    file = models.FileField(upload_to="student_files/")
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -177,6 +180,7 @@ class StudentFile(models.Model):
 
     def __str__(self):
         return f"Anexo de {self.student.name}"
+
 
 class Notification(BaseModel):
     class Type(models.TextChoices):
@@ -202,4 +206,3 @@ class Notification(BaseModel):
 
     def __str__(self) -> str:
         return super().__str__()
-
