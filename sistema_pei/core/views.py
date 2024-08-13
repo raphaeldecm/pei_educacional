@@ -1,8 +1,10 @@
 from itertools import count
+from django.db.models import ProtectedError
 from django.core.mail import EmailMessage
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
 from django.views.generic import TemplateView
 from django.core.paginator import Paginator, PageNotAnInteger
 from django.template.loader import render_to_string
@@ -19,14 +21,16 @@ import re
 
 from django.conf import settings
 from sistema_pei.academics.constants import COURSE_TYPE
-from sistema_pei.academics.models import Course, Enrollment, Subject
+from sistema_pei.academics.models import Course, Enrollment, Offer, Subject
 from sistema_pei.core.forms import CourseForm, SubjectForm
 from sistema_pei.educational_plan.models import Pei
+from sistema_pei.people.forms import StudentFilesForm, ViewEditDataStudentForm, ViewEdithistoricStudentForm, ViewStudentForm
 from sistema_pei.people.models import Student, StudentFile, Teacher, User
 from django.contrib.auth.models import Group
 
 from sistema_pei.users.models import Sector
 
+from django.contrib import messages
 
 class HomePageView(TemplateView):
     template_name = "pages/home.html"
@@ -159,9 +163,11 @@ class ProfilePageView(TemplateView):
         else:
             context['active_tab'] = 'general'
 
+        sub_tab = self.request.GET.get('sub_tab', 'edit_personal_data')
+        context['sub_active_tab'] = sub_tab
 
-        ## Tab General
-        student_peis = context['student_peis'] = Pei.objects.filter(student=student)
+        ##^ Tab General
+        student_peis = context['student_peis'] = Pei.objects.filter(enrollment__student=student)
 
         ### Filters Selectors
         context['selector_teachers'] = Teacher.objects.all()
@@ -169,19 +175,19 @@ class ProfilePageView(TemplateView):
         ### Filters
         filters = {}
         if 'course' in self.request.GET:
-            filters['subject__course__id'] = self.request.GET['course']
+            filters['enrollment__offer__subject__courses__id'] = self.request.GET['course']
         if 'teacher' in self.request.GET:
-            filters['subject__teacher__id'] = self.request.GET['teacher']
+            filters['enrollment__offer__teacher__id'] = self.request.GET['teacher']
         if 'period' in self.request.GET:
-            filters['subject__course__period'] = self.request.GET['period']
+            filters['enrollment__offer__subject__courses__period'] = self.request.GET['period']
         if 'status' in self.request.GET:
             filters['status'] = self.request.GET['status']
 
         student_peis = student_peis.filter(**filters)
 
         if 'search' in self.request.GET:
-            student_peis = student_peis.filter(Q(subject__name__icontains=self.request.GET['search']))
-        
+            student_peis = student_peis.filter(Q(enrollment__offer__subject__name__icontains=self.request.GET['search']))
+
         student_peis = student_peis.order_by('id')
         paginator = Paginator(student_peis, self.paginate_by)
         page_number = self.request.GET.get('page')
@@ -192,35 +198,138 @@ class ProfilePageView(TemplateView):
             student_peis = paginator.page(1)
 
         context['student_peis'] = student_peis
-        ## Tab Notes
-        if (student.course.durationType == "SEMESTER"):
-            student_notes = EnrollmentSemester.objects.filter(student=student)
-            if 'selectedPeriod' in self.request.GET:
-                student_notes = student_notes.filter(semester=self.request.GET['selectedPeriod'])
-        else:
-            student_notes = EnrollmentYearly.objects.filter(student=student)
-            if 'selectedPeriod' in self.request.GET:
-                student_notes = student_notes.filter(year=self.request.GET['selectedPeriod'])
-        
-        
-        
-        context["student_notes"] = student_notes
-        ## Tab Edit
 
+        ##^ Tab Notes
+        student_notes = Enrollment.objects.filter(student=student, )
+        if 'selectedPeriod' in self.request.GET:
+            student_notes = student_notes.filter(YearSemesterReference=self.request.GET['selectedPeriod'])
+
+        context["student_notes"] = student_notes
+        
+        ##^ Tab Edit
+        if requested_tab == 'edit_student_data':
+            if sub_tab == 'edit_personal_data':
+                form = ViewEditDataStudentForm(instance=student)
+                if 'form_errors' in self.request.session:
+                    form.errors.update(self.request.session['form_errors'])
+                    del self.request.session['form_errors']
+                context['form'] = form
+            elif sub_tab == 'edit_historic':
+                form = ViewEdithistoricStudentForm(instance=student)
+                if 'form_errors' in self.request.session:
+                    form.errors.update(self.request.session['form_errors'])
+                    del self.request.session['form_errors']
+                context['form'] = form
+            elif sub_tab == 'edit_files':
+                form = StudentFilesForm()
+                if 'form_errors' in self.request.session:
+                    form.errors.update(self.request.session['form_errors'])
+                    del self.request.session['form_errors']
+                context['form'] = form
+
+        # Sub tab Anexos
+        if requested_tab == 'edit_student_data':
+            if sub_tab == 'edit_files':
+                context['student_files'] = StudentFile.objects.filter(student=student)
 
         # Breadcrumbs
         context['breadcrumbs_data'] = [
             {
-                "icon":"images/icons/icon-home-green.svg",
-                "name":"Home",
-                "url":"home"
+                "icon": "images/icons/icon-home-green.svg",
+                "name": "Home",
+                "url": "home"
             },
             {
-                "icon":"images/icons/icon-courses-green.svg",
-                "name":student.name,
+                "icon": "images/icons/icon-courses-green.svg",
+                "name": student.name,
             }
         ]
         return context
+
+
+class EditPersonalDataView(View):
+    """
+    View para editar os dados pessoais de um aluno.
+    """
+    def post(self, request, *args, **kwargs):
+        student_id = kwargs.get('student_id')
+        student = get_object_or_404(Student, id=student_id)
+        form = ViewEditDataStudentForm(request.POST, request.FILES, instance=student)
+
+        if form.is_valid():
+            form.save()
+            success_message = f'Atulizações salvas com sucesso!'
+            messages.success(self.request, success_message)
+        else:
+            success_message = f'Erro ao atualizar dados!'
+            messages.error(self.request, success_message)
+            request.session['form_errors'] = form.errors
+            request.session['form_data'] = request.POST
+
+        return redirect(f'/profile/{student.id}?tab=edit_student_data&sub_tab=edit_personal_data#tab')
+
+class EditHistoricPersonalDataView(View):
+    """
+    View para editar o histórico pessoal de um aluno.
+    """
+    def post(self, request, *args, **kwargs):
+        student_id = kwargs.get('student_id')
+        student = get_object_or_404(Student, id=student_id)
+        form = ViewEdithistoricStudentForm(request.POST, instance=student)
+
+        if form.is_valid():
+            form.save()
+            success_message = f'Atulizações salvas com sucesso!'
+            messages.success(self.request, success_message)
+        else:
+            success_message = f'Erro ao atualizar dados!'
+            messages.error(self.request, success_message)
+            request.session['form_errors'] = form.errors
+            request.session['form_data'] = request.POST
+
+        return redirect(f'/profile/{student.id}?tab=edit_student_data&sub_tab=edit_historic#tab')
+
+class DeletePersonalFilesView(View):
+    """
+    View para deletar arquivos pessoais de um aluno.
+    """
+    def post(self, request, *args, **kwargs):
+        student_id = kwargs.get('student_id')
+        file_id = request.POST.get('file_id')
+        student = get_object_or_404(Student, id=student_id)
+        file = get_object_or_404(StudentFile, id=file_id, student=student)
+
+        try:
+            file.delete()
+            success_message = 'Arquivo deletado com sucesso!'
+            messages.success(self.request, success_message)
+        except Exception as e:
+            error_message = f'Erro ao deletar arquivo: {str(e)}'
+            messages.error(self.request, error_message)
+
+        return redirect(f'/profile/{student.id}?tab=edit_student_data&sub_tab=edit_files#tab')
+
+class UploadStudentFilesView(View):
+    """
+    View para fazer upload de arquivos para um aluno.
+    """
+    def post(self, request, *args, **kwargs):
+        student_id = kwargs.get('student_id')
+        student = get_object_or_404(Student, id=student_id)
+        form = StudentFilesForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            files = form.cleaned_data['files']
+            for file in files:
+                StudentFile.objects.create(student=student, file=file)
+            messages.success(request, 'Arquivos carregados com sucesso!')
+        else:
+            messages.error(request, 'Erro ao carregar arquivos!')
+            request.session['form_errors'] = form.errors
+            request.session['form_data'] = request.POST
+
+        return redirect(f'/profile/{student.id}?tab=edit_student_data&sub_tab=edit_files#tab')
+
 
 
 class CoursesPageView(TemplateView):
@@ -374,8 +483,12 @@ class EditCoursePageView(TemplateView):
 class DeleteSubjectView(View):
     def get(self, request, subject_id):
         subject = get_object_or_404(Subject, id=subject_id)
-        subject.delete()
-        return redirect('courses')
+        try:
+            subject.delete()
+            return redirect('courses')
+        except ProtectedError:
+            return redirect(f'/subjects/edit/{subject.id}?error=protected')
+            
 
 
 class SubjectsPageView(TemplateView):
@@ -407,15 +520,10 @@ class SubjectsPageView(TemplateView):
             },
         ]
 
-        # Filter Selectors
-        context['teachers'] = Teacher.objects.all()
-
         # Table
         filters = {}
         if 'duration' in self.request.GET:
             filters['subject_type'] = self.request.GET['duration']
-        if 'teacher' in self.request.GET:
-            filters['teacher'] = self.request.GET['teacher']
 
         course_subjects = course_subjects.filter(**filters)
 
@@ -435,7 +543,6 @@ class SubjectsPageView(TemplateView):
 
         context['course_subjects'] = all_course_subjects
 
-
         return context
 
 class CreateSubjectPageView(TemplateView):
@@ -445,7 +552,7 @@ class CreateSubjectPageView(TemplateView):
         context = super().get_context_data(**kwargs)
         course_id = self.kwargs.get('course_id')
         course = get_object_or_404(Course, id=course_id)
-        context['course'] = course
+        context['current_course'] = course
 
         # Breadcrumbs
         context['breadcrumbs_data'] = [
@@ -465,7 +572,7 @@ class CreateSubjectPageView(TemplateView):
             },
         ]
         context['course_types']=[course[0] for course in COURSE_TYPE]
-        context['teachers']= Teacher.objects.all()
+        context['courses']= Course.objects.all()
 
         request = self.request
         if request.GET.get('alert') == "error":
@@ -497,6 +604,14 @@ class EditSubjectPageView(TemplateView):
         context = super().get_context_data(**kwargs)
         subject_id = self.kwargs.get('subject_id')
         subject = get_object_or_404(Subject, id=subject_id)
+        
+        # Filter Selectors
+        context['courses'] = Course.objects.all()
+        
+        # Protected delete error
+        request = self.request
+        if request.GET.get('error') == "protected":
+            context['messages'] = ["Erro - Você não pode remover matérias com ofertas associadas!"]
 
         # Breadcrumbs
         context['breadcrumbs_data'] = [
@@ -516,24 +631,7 @@ class EditSubjectPageView(TemplateView):
             },
         ]
 
-        subject_students = subject.students.all()
-        
-        if 'search_student' in self.request.GET:
-            search_query = self.request.GET['search_student']
-            subject_students = subject.students.filter(Q(name__icontains=search_query))
-
-
-        students_with_courses = []
-        for student in subject_students:
-            course_name = subject.course.name if subject.course else "Curso não definido"
-            students_with_courses.append({
-                'student': student,
-                'course_name': course_name
-            })
-
         context['subject'] = subject
-        context['subject_students_with_courses'] = students_with_courses
-        context['teachers']= Teacher.objects.all()
         context['course_types']=[course[0] for course in COURSE_TYPE]
 
         return context

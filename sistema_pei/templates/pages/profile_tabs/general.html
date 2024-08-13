@@ -35,7 +35,9 @@
             Selecione o professor...
           </option>
           {% for teacher in selector_teachers %}
-          <option value="{{teacher.id}}">{{teacher.name}}</option>
+            <option value="{{ teacher.id }}" {% if request.GET.teacher == teacher.id|stringformat:"s" %}selected{% endif %}>
+              {{ teacher.name }}
+            </option>
           {% endfor %}
         </select>
       </div>
@@ -54,9 +56,9 @@
           <option value="default" selected disabled>
             Selecione o turno...
           </option>
-          <option value="Matutino">Matutino</option>
-          <option value="Vespertino">Vespertino</option>
-          <option value="Noturno">Noturno</option>
+          <option value="MORNING" {% if request.GET.period == 'MORNING' %}selected{% endif %}>Matutino</option>
+          <option value="AFTERNOON" {% if request.GET.period == 'AFTERNOON' %}selected{% endif %}>Vespertino</option>
+          <option value="NIGHT" {% if request.GET.period == 'NIGHT' %}selected{% endif %}>Noturno</option>
         </select>
       </div>
 
@@ -74,10 +76,10 @@
           <option value="default" selected disabled>
             Selecione o status...
           </option>
-          <option value="NOT_START">Não iniciado</option>
-          <option value="IN_PROGRESS">Em andamento</option>
-          <option value="FEEDBACK">Com Parecer</option>
-          <option value="COMPLETED">Finalizado</option>
+          <option value="NOT_START" {% if request.GET.status == 'NOT_START' %}selected{% endif %}>Não iniciado</option>
+          <option value="IN_PROGRESS" {% if request.GET.status == 'IN_PROGRESS' %}selected{% endif %}>Em andamento</option>
+          <option value="FEEDBACK" {% if request.GET.status == 'FEEDBACK' %}selected{% endif %}>Com Parecer</option>
+          <option value="COMPLETED" {% if request.GET.status == 'COMPLETED' %}selected{% endif %}>Finalizado</option>
         </select>
       </div>
       <button
@@ -113,8 +115,8 @@
     <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
       {%for pei in student_peis %}
       <tr>
-        <td class="pl-[76px]">{{ pei.subject.name }}</td>
-        <td>{{ pei.subject.teacher.name }}</td>
+        <td class="pl-[76px]">{{ pei.enrollment.offer.subject }}</td>
+        <td>{{ pei.enrollment.offer.teacher }}</td>
         <td>
           {%if pei.status == 'NOT_START' %}
           <div
@@ -142,7 +144,7 @@
           </div>
           {%endif%}
         </td>
-        <td>{{pei.subject.course}}</td>
+        <td>{{student.course.name}}</td>
         <td class="min-w-[40px] !px-[0px]">
           <img
             src="{% static 'images/icons/icon-edit-element.svg' %}"

@@ -29,34 +29,14 @@
           height="24px"
         />
         <select
-          name="teacher"
-          class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
-          required
-        >
-          <option value="default" selected disabled>
-            Selecione o Professor...
-          </option>
-          {% for teacher in teachers %}
-            <option value="{{teacher.id}}">{{teacher.name}}</option>
-          {% endfor %}
-        </select>
-      </div>
-      <div class="relative w-[322px] cursor-pointer">
-        <img
-          class="absolute top-[12px] right-[10px]"
-          src="{% static 'images/icons/icon-updown-arrow.svg' %}"
-          width="24px"
-          height="24px"
-        />
-        <select
           name="duration"
           class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
         >
           <option value="default" selected disabled>
             Selecione a duração...
           </option>
-          <option value="Semestral">Semestral</option>
-          <option value="Anual">Anual</option>
+          <option value="SEMESTER">Semestral</option>
+          <option value="YEAR">Anual</option>
         </select>
       </div>
 
@@ -75,9 +55,7 @@
       <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">
         <tr>
           <th class="pl-[76px]">Nome da Matéria</th>
-          <th>Professor</th>
           <th>Duração</th>
-          <th>Qtd. Alunos</th>
           <th></th>
         </tr>
       </thead>
@@ -85,18 +63,36 @@
         {%for subject in course_subjects %}
           <tr>
             <td class="pl-[76px]">{{subject.name}}</td>
-            <td>{{subject.teacher}}</td>
-            <td>{{subject.subject_type}}</td>
-            <td>{{subject.students.all|length}}</td>
+            <td>{{subject.get_subject_type_display}}</td>
             <td class="min-w-[40px] !px-[0px]">
-              <a href="{% url 'edit_subject' subject.id %}">
-                <img
-                  src="{% static 'images/icons/icon-edit-element.svg' %}"
-                  width="24px"
-                  height="24px"
-                  class="cursor-pointer"
-                />
-              </a>
+              <div class="flex items-center justify-end gap-[50px] mr-[44px]">
+                <a href="{% url 'edit_subject' subject.id %}">
+                  <img
+                    src="{% static 'images/icons/icon-edit-element.svg' %}"
+                    width="24px"
+                    height="24px"
+                    class="cursor-pointer"
+                  />
+                </a>
+  
+                <a href="{% url 'delete_subject' subject.id %}" onclick="return confirm('Tem certeza que deseja excluir a matéria {{ subject.name }}?')">
+                  <img
+                    src="{% static 'images/icons/icon-remove-element.svg' %}"
+                    width="24px"
+                    height="24px"
+                    class="cursor-pointer"
+                  />
+                </a>
+  
+                <a href="{% url 'subjects' course.id %}" >
+                  <img
+                    src="{% static 'images/icons/icon-eye.svg' %}"
+                    width="24px"
+                    height="24px"
+                    class="cursor-pointer"
+                  />
+                </a>
+              </div>
             </td>
           </tr>
         {%endfor%}
@@ -108,13 +104,13 @@
     <span class="font-semibold">Página {{ course_subjects.number }} de {{ course_subjects.paginator.num_pages }}</span>
     <div class="flex gap-[36px]">
       {% if course_subjects.has_previous %}
-        <a href="?{% if request.GET.duration %}duration={{ request.GET.duration }}&{% endif %}{% if request.GET.teacher %}teacher={{ request.GET.teacher }}&{% endif %}page={{ course_subjects.previous_page_number }}">
+        <a href="?{% if request.GET.duration %}duration={{ request.GET.duration }}&{% endif %}page={{ course_subjects.previous_page_number }}">
           <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-400 border border-slate-400 rounded-lg">Anterior</div>
         </a>
       {% endif %}
 
       {% if course_subjects.has_next %}
-        <a href="?{% if request.GET.duration %}duration={{ request.GET.duration }}&{% endif %}{% if request.GET.teacher %}teacher={{ request.GET.teacher }}&{% endif %}page={{ course_subjects.next_page_number }}">
+        <a href="?{% if request.GET.duration %}duration={{ request.GET.duration }}&{% endif %}page={{ course_subjects.next_page_number }}">
           <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-400 border border-slate-400 rounded-lg">Próximo</div>
         </a>
       {% endif %}

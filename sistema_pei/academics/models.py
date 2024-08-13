@@ -104,6 +104,9 @@ class Offer(BaseModel):
     class Meta:
         verbose_name = _("Oferta")
         verbose_name_plural = _("Ofertas")
+    
+    def student_count(self):
+        return self.enrollments.count()
 
     def __str__(self):
         return self.subject.name + " - " + self.teacher.name
@@ -153,6 +156,8 @@ class Enrollment(BaseModel):
         null=True,
         blank=True,
     ) 
+    
+    YearSemesterReference = models.IntegerField(_("Semestre/Ano de referência"))
 
     class Meta:
         unique_together = ('offer', 'student')
