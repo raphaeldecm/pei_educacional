@@ -1,5 +1,5 @@
 from django import forms
-from .models import Student
+from .models import Student, StudentFile
 from django.core.exceptions import ValidationError
 
 class MultipleFileInput(forms.FileInput):
@@ -64,6 +64,68 @@ class ViewStudentForm(AdminStudentForm):
             if not any(file.name.lower().endswith(ext) for ext in allowed_extensions):
                 raise ValidationError(
                     f"Arquivo {file.name} possuia uma extensão não suportada. As extensões suportadas são: {', '.join(allowed_extensions)}"
+                )
+
+        return files
+
+
+class ViewEditDataStudentForm(AdminStudentForm):
+
+    class Meta(AdminStudentForm.Meta):
+        exclude = (
+            'created_by',
+            'updated_by',
+            'personal_history',
+            'creation_reasons',
+            'abilities',
+            'dificulties',
+            'general_necessitie',
+            'specific_necessities',
+        )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['educational_necessities'].required = False
+        self.fields['course'].required = False
+        self.fields['sectors'].required = False
+
+
+class ViewEdithistoricStudentForm(forms.ModelForm):
+
+    class Meta:
+        model = Student
+        exclude = (
+            'created_by',
+            'updated_by',
+            'name',
+            'email',
+            'image',
+            'registration',
+            'educational_necessities',
+            'course',
+            'reference_period',
+            'sectors',
+        )
+
+class StudentFilesForm(forms.ModelForm):
+    files = MultipleFileField(required=False)
+
+    class Meta:
+        model = StudentFile
+        fields = ['files']
+
+    def __init__(self, *args, **kwargs):
+        super(StudentFilesForm, self).__init__(*args, **kwargs)
+        self.fields['files'].required = False
+
+    def clean_files(self):
+        files = self.cleaned_data.get('files', [])
+        allowed_extensions = ['.pdf', '.doc', '.docx', '.jpg', '.jpeg', '.png', '.xlsx', '.xls']
+
+        for file in files:
+            if not any(file.name.lower().endswith(ext) for ext in allowed_extensions):
+                raise ValidationError(
+                    f"Arquivo {file.name} possui uma extensão não suportada. As extensões suportadas são: {', '.join(allowed_extensions)}"
                 )
 
         return files
