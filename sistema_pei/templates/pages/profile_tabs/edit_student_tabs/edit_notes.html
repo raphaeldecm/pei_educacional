@@ -1,1 +1,102 @@
-<p>Página de editar notas em contrução!</p>
+<div class="h-full border border-transparent border-l-slate-300 flex gap-10">
+  <div class="flex flex-col gap-4">
+    <li
+      class="font-poppins rounded-lg py-2 px-1 {% if sub_active_tab == 'edit_personal_data' %} text-white bg-green-500 {% else %} text-slate-300 {% endif %} cursor-pointer hover:bg-green-500 hover:text-white transition duration-300 ease-in-out list-none w-[218px] ml-[30px]"
+    >
+      <a
+        href="?tab=edit_student_data&sub_tab=edit_personal_data#tab"
+        class="block max-w-xs truncate"
+      >
+        5° semestre
+      </a>
+    </li>
+    <li
+      class="font-poppins rounded-lg py-2 px-1 {% if sub_active_tab == 'edit_personal_data' %} text-white bg-green-500 {% else %} text-slate-300 {% endif %} cursor-pointer hover:bg-green-500 hover:text-white transition duration-300 ease-in-out list-none w-[218px] ml-[30px]"
+    >
+      <a
+        href="?tab=edit_student_data&sub_tab=edit_personal_data#tab"
+        class="block max-w-xs truncate"
+      >
+        4° semestre
+      </a>
+    </li>
+    <li
+      class="font-poppins rounded-lg py-2 px-1 {% if sub_active_tab == 'edit_personal_data' %} text-white bg-green-500 {% else %} text-slate-300 {% endif %} cursor-pointer hover:bg-green-500 hover:text-white transition duration-300 ease-in-out list-none w-[218px] ml-[30px]"
+    >
+      <a
+        href="?tab=edit_student_data&sub_tab=edit_personal_data#tab"
+        class="block max-w-xs truncate"
+      >
+        3° semestre
+      </a>
+    </li>
+    <li
+      class="font-poppins rounded-lg py-2 px-1 {% if sub_active_tab == 'edit_personal_data' %} text-white bg-green-500 {% else %} text-slate-300 {% endif %} cursor-pointer hover:bg-green-500 hover:text-white transition duration-300 ease-in-out list-none w-[218px] ml-[30px]"
+    >
+      <a
+        href="?tab=edit_student_data&sub_tab=edit_personal_data#tab"
+        class="block max-w-xs truncate"
+      >
+        2° semestre
+      </a>
+    </li>
+    <li
+      class="font-poppins rounded-lg py-2 px-1 {% if sub_active_tab == 'edit_personal_data' %} text-white bg-green-500 {% else %} text-slate-300 {% endif %} cursor-pointer hover:bg-green-500 hover:text-white transition duration-300 ease-in-out list-none w-[218px] ml-[30px]"
+    >
+      <a
+        href="?tab=edit_student_data&sub_tab=edit_personal_data#tab"
+        class="block max-w-xs truncate"
+      >
+        1° semestre
+      </a>
+    </li>
+  </div>
+  <div class="flex-1">
+    <h2 class="uppercase font-semibold">Todas as disciplinas do semetre</h2>
+
+    <div class="mt-[32px]">
+      <p class="font-light text-slate-900">Matemática</p>
+      <div class="flex gap-[40px]">
+        <div class="text-slate-400 mt-[20px] flex-1">
+          <label class="block">1° Bimestre</label>
+          <input
+            type="number"
+            class="mt-[16px] border border-slate-300 rounded-lg bg-transparent p-[10px] w-full"
+            value="100"
+          />
+        </div>
+        <div class="text-slate-400 mt-[20px] flex-1">
+          <label class="block">2° Bimestre</label>
+          <input
+            type="number"
+            class="mt-[16px] border border-slate-300 rounded-lg bg-transparent p-[10px] w-full"
+            value="100"
+          />
+        </div>
+        <div class="text-slate-400 mt-[20px] flex-1">
+          <label class="block">3° Bimestre</label>
+          <input
+            type="number"
+            class="mt-[16px] border border-slate-300 rounded-lg bg-transparent p-[10px] w-full"
+            value="100"
+          />
+        </div>
+        <div class="text-slate-400 mt-[20px] flex-1">
+          <label class="block">4° Bimestre</label>
+          <input
+            type="number"
+            class="mt-[16px] border border-slate-300 rounded-lg bg-transparent p-[10px] w-full"
+            value="100"
+          />
+        </div>
+      </div>
+
+    </div>
+
+    <button
+      class="border border-slate-300 rounded-lg h-[53px] mt-[60px] w-full text-slate-300 hover:bg-green-500 hover:text-white transition-all"
+    >
+      Atualizar Dados
+    </button>
+  </div>
+</div>
