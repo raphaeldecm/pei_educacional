@@ -29,7 +29,8 @@ from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.academics.models import Course
 from sistema_pei.academics.models import Enrollment
 from sistema_pei.academics.models import Subject
-from sistema_pei.core.forms import CourseForm, EnrollmentForm
+from sistema_pei.core.forms import CourseForm
+from sistema_pei.core.forms import EnrollmentForm
 from sistema_pei.core.forms import SubjectForm
 from sistema_pei.educational_plan.models import Pei
 from sistema_pei.people.forms import StudentFilesForm
@@ -110,9 +111,9 @@ class UsersPageView(TemplateView):
 
         request = self.request
         if request.GET.get("alert") == "success":
-            context["messages"] = ["Convite enviado!"]
+            messages.success(request, "Convite enviado!")
         elif request.GET.get("alert") == "error":
-            context["messages"] = ["Usuário já cadastrado!"]
+            messages.error(request, "Usuário já cadastrado!")
 
         return context
 
@@ -297,20 +298,23 @@ class UpdateStudentGradesView(View):
     """
 
     def post(self, request, *args, **kwargs):
-        enrollment_id = kwargs.get('enrollment_id')
+        enrollment_id = kwargs.get("enrollment_id")
         enrollment = get_object_or_404(Enrollment, id=enrollment_id)
-        
+
         form = EnrollmentForm(request.POST, instance=enrollment)
         if form.is_valid():
             form.save()
             selected_period = request.POST.get("selectedPeriod", 1)
             messages.success(request, "Dados da disciplina atualizados!")
             return redirect(
-                f"/profile/{enrollment.student.id}?tab=edit_student_data&sub_tab=edit_notes&selectedPeriod={selected_period}"
+                f"/profile/{enrollment.student.id}?tab=edit_student_data&sub_tab=edit_notes&selectedPeriod={selected_period}",
             )
         else:
-            messages.error(request, "Erro ao atualizar dados. Verifique os valores inseridos.")
-            return redirect(request.META.get('HTTP_REFERER'))
+            messages.error(
+                request,
+                "Erro ao atualizar dados. Verifique os valores inseridos.",
+            )
+            return redirect(request.headers.get("referer"))
 
 
 class EditPersonalDataView(View):
@@ -666,7 +670,7 @@ class CreateSubjectPageView(TemplateView):
 
         request = self.request
         if request.GET.get("alert") == "error":
-            context["messages"] = ["Erro - Matéria já foi cadastrada!"]
+            messages.error(request, "Erro - Matéria já foi cadastrada!")
 
         return context
 
@@ -704,9 +708,10 @@ class EditSubjectPageView(TemplateView):
         # Protected delete error
         request = self.request
         if request.GET.get("error") == "protected":
-            context["messages"] = [
+            messages.error(
+                request,
                 "Erro - Você não pode remover matérias com ofertas associadas!",
-            ]
+            )
 
         # Breadcrumbs
         context["breadcrumbs_data"] = [

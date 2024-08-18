@@ -89,6 +89,7 @@
   {% endif %}
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% comment %} Pre-commit can break this graph {% endcomment %}
 <script>
   const ctx = document.getElementById('myChart');
 
@@ -97,68 +98,29 @@
     data: {
       labels: [
         '1° Bimestre',
-        '2° Bimestre', {
-          %
-          if student.course.durationType != "SEMESTER" %
-        }
-        '3° Bimestre',
-        '4° Bimestre' {
-          %
-          endif %
-        }
+        '2° Bimestre',
+        {% if student.course.durationType != "SEMESTER" %}
+          '3° Bimestre',
+          '4° Bimestre'
+        {% endif %}
       ],
-      datasets: [{
-        %
-        for subject_grades in student_notes %
-      } {
-        label: '{{subject_grades.offer.subject.name}}',
-        data: [{
-          %
-          if subject_grades.grade1 %
-        } {
-          {
-            subject_grades.grade1
-          }
-        }, {
-          %
-          endif %
-        } {
-          %
-          if subject_grades.grade2 %
-        } {
-          {
-            subject_grades.grade2
-          }
-        }, {
-          %
-          endif %
-        } {
-          %
-          if subject_grades.grade3 %
-        } {
-          {
-            subject_grades.grade3
-          }
-        }, {
-          %
-          endif %
-        } {
-          %
-          if subject_grades.grade4 %
-        } {
-          {
-            subject_grades.grade4
-          }
-        }, {
-          %
-          endif %
-        }].filter((p) => p != 0),
-        borderWidth: 2,
-        tension: 0.2,
-      }, {
-        %
-        endfor %
-      }]
+      datasets: [
+        {% for subject_grades in student_notes %}
+        {
+          label: '{{ subject_grades.offer.subject.name }}',
+          data: [
+            {% if subject_grades.grade1 %} {{ subject_grades.grade1|floatformat:2 }} {% else %} null {% endif %},
+            {% if subject_grades.grade2 %} {{ subject_grades.grade2|floatformat:2 }} {% else %} null {% endif %},
+            {% if student.course.durationType != "SEMESTER" %}
+              {% if subject_grades.grade3 %} {{ subject_grades.grade3|floatformat:2 }} {% else %} null {% endif %},
+              {% if subject_grades.grade4 %} {{ subject_grades.grade4|floatformat:2 }} {% else %} null {% endif %}
+            {% endif %}
+          ],
+          borderWidth: 2,
+          tension: 0.2,
+        },
+        {% endfor %}
+      ]
     },
     options: {
       scales: {
