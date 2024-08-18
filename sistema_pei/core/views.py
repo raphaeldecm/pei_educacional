@@ -248,7 +248,6 @@ class ProfilePageView(TemplateView):
             )
 
         context["student_notes"] = student_notes
-        print(context["student_notes"])
 
         ##^ Tab Edit
         if requested_tab == "edit_student_data":
@@ -568,8 +567,6 @@ class EditCoursePageView(TemplateView):
         if form.is_valid():
             form.save()
             return redirect("courses")
-        else:
-            print(form.errors)
         return self.render_to_response(self.get_context_data(form=form))
 
 
