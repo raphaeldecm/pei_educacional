@@ -291,6 +291,36 @@ class ProfilePageView(TemplateView):
         return context
 
 
+class UpdateStudentGradesView(View):
+    """
+    View para editar as notas de um Enrollment específico.
+    """
+
+    def post(self, request, *args, **kwargs):
+        enrollment_id = kwargs.get("enrollment_id")
+        enrollment = get_object_or_404(Enrollment, id=enrollment_id)
+
+        print("Request POST data:", request.POST)  # Debugging
+
+        # Atualizar as notas do Enrollment
+        fields = ["grade1", "grade2", "grade3", "grade4"]
+        for field in fields:
+            value = request.POST.get(field)
+            print(f"{field}: {value}")  # Debugging
+            if value:
+                setattr(enrollment, field, value)
+
+        enrollment.save()
+
+        selected_period = request.POST.get(
+            "selectedPeriod", 1
+        )  # Default to 1 if not provided
+
+        return redirect(
+            f"/profile/{enrollment.student.id}?tab=edit_student_data&sub_tab=edit_notes&selectedPeriod={selected_period}",
+        )
+
+
 class EditPersonalDataView(View):
     """
     View para editar os dados pessoais de um aluno.
