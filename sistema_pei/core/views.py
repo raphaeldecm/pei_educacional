@@ -247,6 +247,7 @@ class ProfilePageView(TemplateView):
             )
 
         context["student_notes"] = student_notes
+        print(context["student_notes"])
 
         ##^ Tab Edit
         if requested_tab == "edit_student_data":
@@ -262,7 +263,7 @@ class ProfilePageView(TemplateView):
                     form.errors.update(self.request.session["form_errors"])
                     del self.request.session["form_errors"]
                 context["form"] = form
-            elif sub_tab == "edit_files":
+            elif sub_tab == "edit_files" or sub_tab == "edit_notes":
                 form = StudentFilesForm()
                 if "form_errors" in self.request.session:
                     form.errors.update(self.request.session["form_errors"])
@@ -286,6 +287,7 @@ class ProfilePageView(TemplateView):
                 "name": student.name,
             },
         ]
+
         return context
 
 
