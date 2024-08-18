@@ -3,7 +3,7 @@
 <div class="flex gap-[5%]">
   <div class="flex flex-col gap-[16px] text-[18px] text-slate-300 w-full max-w-[218px]">
     {% for i in "x"|rjust:student.course.number_of_periods %}
-      <li class="font-poppins rounded-lg py-2 px-1 {% if request.GET.period == forloop.counter %} text-white bg-green-500 {% else %} text-slate-300 {% endif %} hover:bg-green-500 hover:text-white transition duration-300 ease-in-out list-none w-[218px] ml-[30px] p-[10px] rounded-lg cursor-pointer {% if request.GET.selectedPeriod == forloop.counter|stringformat:"s" or forloop.first and request.GET.selectedPeriod is null %} bg-green-500 text-slate-50{% endif %}">
+      <li class="font-poppins rounded-lg py-2 px-3 {% if request.GET.period == forloop.counter %} text-white bg-green-500 {% else %} text-slate-300 {% endif %} hover:bg-green-500 hover:text-white transition duration-300 ease-in-out list-none w-[218px] ml-[30px] p-[10px] rounded-lg cursor-pointer {% if request.GET.selectedPeriod == forloop.counter|stringformat:"s" or forloop.first and request.GET.selectedPeriod is null %} bg-green-500 text-slate-50{% endif %}">
         <a href="{% url 'profile' student.id %}?tab=edit_student_data&sub_tab=edit_notes&period={{ forloop.counter }}"
            class="">
           {{ forloop.counter }}°
