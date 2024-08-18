@@ -91,6 +91,41 @@
 <script>
   const ctx = document.getElementById('myChart');
 
+
+  const jsonData = `
+    [
+      {% for subject_grades in student_notes %}
+      {
+        "label": "{{ subject_grades.offer.subject.name|escapejs }}",
+        "data": [
+          {% if subject_grades.grade1 %}{{ subject_grades.grade1|floatformat:2|slice:":-1" }}{% else %}0,0{% endif %},
+          {% if subject_grades.grade2 %}{{ subject_grades.grade2|floatformat:2|slice:":-1" }}{% else %}0,0{% endif %},
+          {% if student.course.durationType != "SEMESTER" %}
+            {% if subject_grades.grade3 %}{{ subject_grades.grade3|floatformat:2|slice:":-1" }}{% else %}0,0{% endif %},
+            {% if subject_grades.grade4 %}{{ subject_grades.grade4|floatformat:2|slice:":-1" }}{% else %}0,0{% endif %}
+          {% endif %}
+        ],
+        "borderWidth": 2,
+        "tension": 0.2
+      }
+      {% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ]
+  `.trim(); 
+
+  const data = JSON.parse(jsonData).map((grades) => {
+    const fixedGrade = {
+      ...grades,
+      data: [
+      ...grades.data
+      .map((grade, i) => i % 2 == 0 ? grade : null)
+      .filter((grade) => grade != null)
+      ]
+    }
+
+    return fixedGrade;
+  })
+
   new Chart(ctx, {
     type: 'line',
     data: {
@@ -102,23 +137,7 @@
           '4° Bimestre'
         {% endif %}
       ],
-      datasets: [
-        {% for subject_grades in student_notes %}
-        {
-          label: '{{ subject_grades.offer.subject.name }}',
-          data: [
-            {% if subject_grades.grade1 %} {{ subject_grades.grade1|floatformat:2 }} {% else %} null {% endif %},
-            {% if subject_grades.grade2 %} {{ subject_grades.grade2|floatformat:2 }} {% else %} null {% endif %},
-            {% if student.course.durationType != "SEMESTER" %}
-              {% if subject_grades.grade3 %} {{ subject_grades.grade3|floatformat:2 }} {% else %} null {% endif %},
-              {% if subject_grades.grade4 %} {{ subject_grades.grade4|floatformat:2 }} {% else %} null {% endif %}
-            {% endif %}
-          ].filter((p) => p != 0),
-          borderWidth: 2,
-          tension: 0.2,
-        },
-        {% endfor %}
-      ]
+      datasets: [...data]
     },
     options: {
       scales: {
