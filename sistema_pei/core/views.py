@@ -29,7 +29,7 @@ from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.academics.models import Course
 from sistema_pei.academics.models import Enrollment
 from sistema_pei.academics.models import Subject
-from sistema_pei.core.forms import CourseForm
+from sistema_pei.core.forms import CourseForm, EnrollmentForm
 from sistema_pei.core.forms import SubjectForm
 from sistema_pei.educational_plan.models import Pei
 from sistema_pei.people.forms import StudentFilesForm
@@ -297,28 +297,20 @@ class UpdateStudentGradesView(View):
     """
 
     def post(self, request, *args, **kwargs):
-        enrollment_id = kwargs.get("enrollment_id")
+        enrollment_id = kwargs.get('enrollment_id')
         enrollment = get_object_or_404(Enrollment, id=enrollment_id)
-
-        print("Request POST data:", request.POST)  # Debugging
-
-        # Atualizar as notas do Enrollment
-        fields = ["grade1", "grade2", "grade3", "grade4"]
-        for field in fields:
-            value = request.POST.get(field)
-            print(f"{field}: {value}")  # Debugging
-            if value:
-                setattr(enrollment, field, value)
-
-        enrollment.save()
-
-        selected_period = request.POST.get(
-            "selectedPeriod", 1
-        )  # Default to 1 if not provided
-
-        return redirect(
-            f"/profile/{enrollment.student.id}?tab=edit_student_data&sub_tab=edit_notes&selectedPeriod={selected_period}",
-        )
+        
+        form = EnrollmentForm(request.POST, instance=enrollment)
+        if form.is_valid():
+            form.save()
+            selected_period = request.POST.get("selectedPeriod", 1)
+            messages.success(request, "Dados da disciplina atualizados!")
+            return redirect(
+                f"/profile/{enrollment.student.id}?tab=edit_student_data&sub_tab=edit_notes&selectedPeriod={selected_period}"
+            )
+        else:
+            messages.error(request, "Erro ao atualizar dados. Verifique os valores inseridos.")
+            return redirect(request.META.get('HTTP_REFERER'))
 
 
 class EditPersonalDataView(View):

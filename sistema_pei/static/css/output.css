@@ -873,6 +873,10 @@ video {
   margin-top: 1.25rem;
 }
 
+.mt-\[42px\] {
+  margin-top: 42px;
+}
+
 .block {
   display: block;
 }
@@ -1001,6 +1005,14 @@ video {
 
 .h-screen {
   height: 100vh;
+}
+
+.h-\[46px\] {
+  height: 46px;
+}
+
+.h-\[50px\] {
+  height: 50px;
 }
 
 .min-h-40 {
