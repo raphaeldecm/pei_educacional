@@ -682,7 +682,7 @@ class EditSubjectPageView(TemplateView):
         request = self.request
         if request.GET.get("error") == "protected":
             messages.error(
-                "Erro - Você não pode remover matérias com ofertas associadas!"
+                "Erro - Você não pode remover matérias com ofertas associadas!",
             )
 
         # Breadcrumbs
@@ -733,14 +733,24 @@ class OffersPageView(TemplateView):
                 "url": "home",
             },
             {
-                "icon": "images/icons/green-highlighter.svg",
+                "icon": "images/icons/highlighter-green.svg",
                 "name": "Ofertas",
                 "url": "offers",
             },
         ]
 
+        # Filter Selectors
+        context["selector_teachers"] = Teacher.objects.all()
+        context["selector_subjects"] = Subject.objects.all()
+
         # Table
-        offers = Offer.objects.all()
+        filters = {}
+        if "teacher" in self.request.GET:
+            filters["teacher__id"] = self.request.GET["teacher"]
+        if "subject" in self.request.GET:
+            filters["subject__id"] = self.request.GET["subject"]
+
+        offers = Offer.objects.filter(**filters)
 
         if "search" in self.request.GET:
             offers = offers.filter(
