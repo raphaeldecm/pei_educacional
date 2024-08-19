@@ -26,8 +26,9 @@ from django.views.generic import TemplateView
 from django.views.generic import View
 
 from sistema_pei.academics.constants import COURSE_TYPE
-from sistema_pei.academics.models import Course, Offer
+from sistema_pei.academics.models import Course
 from sistema_pei.academics.models import Enrollment
+from sistema_pei.academics.models import Offer
 from sistema_pei.academics.models import Subject
 from sistema_pei.core.forms import CourseForm
 from sistema_pei.core.forms import SubjectForm
@@ -680,7 +681,9 @@ class EditSubjectPageView(TemplateView):
         # Protected delete error
         request = self.request
         if request.GET.get("error") == "protected":
-            messages.error("Erro - Você não pode remover matérias com ofertas associadas!")
+            messages.error(
+                "Erro - Você não pode remover matérias com ofertas associadas!"
+            )
 
         # Breadcrumbs
         context["breadcrumbs_data"] = [
@@ -735,19 +738,13 @@ class OffersPageView(TemplateView):
                 "url": "offers",
             },
         ]
-        
+
         # Table
         offers = Offer.objects.all()
-        
-        filters = {}
-        if "duration" in self.request.GET:
-            filters["subject_type"] = self.request.GET["duration"]
-
-        offers = offers.filter(**filters)
 
         if "search" in self.request.GET:
             offers = offers.filter(
-                Q(name__icontains=self.request.GET["search"]),
+                Q(subject__name__icontains=self.request.GET["search"]),
             )
 
         paginator = Paginator(offers, self.paginate_by)
@@ -761,6 +758,5 @@ class OffersPageView(TemplateView):
             all_offers = paginator.page(paginator.num_pages)
 
         context["offers"] = all_offers
-
 
         return context
