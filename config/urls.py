@@ -22,6 +22,7 @@ from sistema_pei.core.views import (
     CreateCoursesPageView,
     CreateSubjectPageView,
     DeleteCourseView,
+    DeleteOfferView,
     DeleteSubjectView,
     EditCoursePageView,
     EditSubjectPageView,
@@ -97,6 +98,11 @@ urlpatterns = [
         "subjects/delete/<int:subject_id>",
         login_required(DeleteSubjectView.as_view()),
         name="delete_subject",
+    ),
+    path(
+        "offers/delete/<int:offer_id>",
+        login_required(DeleteOfferView.as_view()),
+        name="delete_offer",
     ),
     path(
         "subjects/<int:course_id>",

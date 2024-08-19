@@ -109,12 +109,6 @@ class UsersPageView(TemplateView):
         context["groups"] = Group.objects.all()
         context["sectors"] = Sector.objects.all()
 
-        request = self.request
-        if request.GET.get("alert") == "success":
-            context["messages"] = ["Convite enviado!"]
-        elif request.GET.get("alert") == "error":
-            context["messages"] = ["Usuário já cadastrado!"]
-
         return context
 
     def post(self, request, *args, **kwargs):
@@ -140,7 +134,8 @@ class UsersPageView(TemplateView):
                 primary=True,
             )
         except IntegrityError:
-            return HttpResponseRedirect("?alert=error")
+            messages.error(request, "Usuário já cadastrado!")
+            return redirect('users')
 
         token = default_token_generator.make_token(user)
         uid = urlsafe_base64_encode(force_bytes(user.pk))
@@ -166,7 +161,7 @@ class UsersPageView(TemplateView):
 
         try:
             email.send()
-            return HttpResponseRedirect("?alert=success")
+            messages.success(request, "Convite enviado!")
         except Exception as e:
             return HttpResponse(f"Erro ao enviar o e-mail: {e}")
 
@@ -641,10 +636,6 @@ class CreateSubjectPageView(TemplateView):
         context["course_types"] = [course[0] for course in COURSE_TYPE]
         context["courses"] = Course.objects.all()
 
-        request = self.request
-        if request.GET.get("alert") == "error":
-            context["messages"] = ["Erro - Matéria já foi cadastrada!"]
-
         return context
 
     def post(self, request, *args, **kwargs):
@@ -658,7 +649,8 @@ class CreateSubjectPageView(TemplateView):
             ).exists()
 
             if existing_subject:
-                return redirect(f"{request.path}?alert=error")
+                messages.error(request, "Erro - Matéria já foi cadastrada!")
+                return redirect(f"{request.path}")
 
             form.instance.course = course
             form.instance.year = datetime.datetime.now().year
@@ -770,3 +762,15 @@ class OffersPageView(TemplateView):
         context["offers"] = all_offers
 
         return context
+
+class DeleteOfferView(View):
+    def get(self, request, offer_id):
+        offer = get_object_or_404(Offer, id=offer_id)
+        try:
+            offer.delete()
+            return redirect("offers")
+        except ProtectedError:
+            messages.error(request,
+                "Erro - Você não pode remover ofertas com alunos associados!",
+            )
+            return redirect("offers")
