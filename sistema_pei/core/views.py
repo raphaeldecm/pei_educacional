@@ -26,7 +26,7 @@ from django.views.generic import TemplateView
 from django.views.generic import View
 
 from sistema_pei.academics.constants import COURSE_TYPE
-from sistema_pei.academics.models import Course
+from sistema_pei.academics.models import Course, Offer
 from sistema_pei.academics.models import Enrollment
 from sistema_pei.academics.models import Subject
 from sistema_pei.core.forms import CourseForm
@@ -680,9 +680,7 @@ class EditSubjectPageView(TemplateView):
         # Protected delete error
         request = self.request
         if request.GET.get("error") == "protected":
-            context["messages"] = [
-                "Erro - Você não pode remover matérias com ofertas associadas!",
-            ]
+            messages.error("Erro - Você não pode remover matérias com ofertas associadas!")
 
         # Breadcrumbs
         context["breadcrumbs_data"] = [
@@ -715,3 +713,54 @@ class EditSubjectPageView(TemplateView):
             form.save()
             return redirect("courses")
         return self.render_to_response(self.get_context_data(form=form))
+
+
+class OffersPageView(TemplateView):
+    template_name = "pages/offers/offers.html"
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Breadcrumbs
+        context["breadcrumbs_data"] = [
+            {
+                "icon": "images/icons/icon-home-green.svg",
+                "name": "Home",
+                "url": "home",
+            },
+            {
+                "icon": "images/icons/green-highlighter.svg",
+                "name": "Ofertas",
+                "url": "offers",
+            },
+        ]
+        
+        # Table
+        offers = Offer.objects.all()
+        
+        filters = {}
+        if "duration" in self.request.GET:
+            filters["subject_type"] = self.request.GET["duration"]
+
+        offers = offers.filter(**filters)
+
+        if "search" in self.request.GET:
+            offers = offers.filter(
+                Q(name__icontains=self.request.GET["search"]),
+            )
+
+        paginator = Paginator(offers, self.paginate_by)
+        page_number = self.request.GET.get("page")
+
+        try:
+            all_offers = paginator.page(page_number)
+        except PageNotAnInteger:
+            all_offers = paginator.page(1)
+        except EmptyPage:
+            all_offers = paginator.page(paginator.num_pages)
+
+        context["offers"] = all_offers
+
+
+        return context

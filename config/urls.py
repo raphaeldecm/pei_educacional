@@ -26,6 +26,7 @@ from sistema_pei.core.views import (
     EditCoursePageView,
     EditSubjectPageView,
     HomePageView,
+    OffersPageView,
     RemoveStudentFromSubjectView,
     ProfilePageView,
     SubjectsPageView,
@@ -121,6 +122,11 @@ urlpatterns = [
         "about/",
         TemplateView.as_view(template_name="pages/about.html"),
         name="about",
+    ),
+    path(
+        "offers/",
+        login_required(OffersPageView.as_view()),
+        name="offers",
     ),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
