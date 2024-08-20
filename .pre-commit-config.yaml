@@ -1,4 +1,4 @@
-exclude: '^docs/|/migrations/|devcontainer.json'
+exclude: '^docs/|/migrations/|devcontainer.json|templates/pages/profile_tabs/student_grades.html'
 default_stages: [commit]
 
 default_language_version:
@@ -9,7 +9,9 @@ repos:
     rev: v4.6.0
     hooks:
       - id: trailing-whitespace
+        exclude: 'templates/pages/profile_tabs/student_grades.html'
       - id: end-of-file-fixer
+        exclude: 'templates/pages/profile_tabs/student_grades.html'
       - id: check-json
       - id: check-toml
       - id: check-xml
@@ -33,14 +35,19 @@ repos:
       # Linter
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
+        # Pre-commit breaks the graph rendering in this template
+        exclude: 'templates/pages/profile_tabs/student_grades.html'
       # Formatter
       - id: ruff-format
+        exclude: 'templates/pages/profile_tabs/student_grades.html'
 
   - repo: https://github.com/Riverside-Healthcare/djLint
     rev: v1.34.1
     hooks:
       - id: djlint-reformat-django
+        exclude: 'templates/pages/profile_tabs/student_grades.html'
       - id: djlint-django
+        exclude: 'templates/pages/profile_tabs/student_grades.html'
 
 # sets up .pre-commit-ci.yaml to ensure pre-commit dependencies stay up to date
 ci:

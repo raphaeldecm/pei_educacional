@@ -29,6 +29,7 @@ from sistema_pei.core.views import (
     RemoveStudentFromSubjectView,
     ProfilePageView,
     SubjectsPageView,
+    UpdateStudentGradesView,
     UsersPageView,
     EditHistoricPersonalDataView,
     EditPersonalDataView,
@@ -56,6 +57,11 @@ urlpatterns = [
         "profile/<int:student_id>/edit_personal_data/",
         login_required(EditPersonalDataView.as_view()),
         name="edit_personal_data",
+    ),
+    path(
+        "profile/<int:student_id>/update_student_grades/<int:enrollment_id>",
+        login_required(UpdateStudentGradesView.as_view()),
+        name="update_student_grades",
     ),
     path(
         "profile/<int:student_id>/edit_historic_data/",
