@@ -4,7 +4,7 @@
   <div class="flex flex-col gap-[16px] text-[18px] text-slate-300 w-full max-w-[218px]">
     {% for i in "x"|rjust:student.course.number_of_periods %}
       <a href="{% url 'profile' student.id %}?tab=grades&selectedPeriod={{ forloop.counter }}"
-         class="p-[10px] rounded-lg cursor-pointer {% if request.GET.selectedPeriod == forloop.counter|slugify or forloop.first and request.GET.selectedPeriod is null %} bg-green-500 text-slate-50{% endif %}">
+      class="p-[10px] rounded-lg cursor-pointer hover:bg-green-500 hover:text-white transition duration-300 ease-in-out {% if request.GET.selectedPeriod == forloop.counter|slugify or forloop.first and request.GET.selectedPeriod is null %} bg-green-500 text-slate-50{% endif %}">
         {{ forloop.counter }}°
         {% if student.course.durationType == "SEMESTER" %}
           semestre
@@ -87,76 +87,57 @@
   {% endif %}
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% comment %} Pre-commit can break this graph {% endcomment %}
 <script>
   const ctx = document.getElementById('myChart');
+
+
+  const jsonData = `
+    [
+      {% for subject_grades in student_notes %}
+      {
+        "label": "{{ subject_grades.offer.subject.name|escapejs }}",
+        "data": [
+          {% if subject_grades.grade1 %}{{ subject_grades.grade1|floatformat:2|slice:":-1" }}{% else %}0,0{% endif %},
+          {% if subject_grades.grade2 %}{{ subject_grades.grade2|floatformat:2|slice:":-1" }}{% else %}0,0{% endif %},
+          {% if student.course.durationType != "SEMESTER" %}
+            {% if subject_grades.grade3 %}{{ subject_grades.grade3|floatformat:2|slice:":-1" }}{% else %}0,0{% endif %},
+            {% if subject_grades.grade4 %}{{ subject_grades.grade4|floatformat:2|slice:":-1" }}{% else %}0,0{% endif %}
+          {% endif %}
+        ],
+        "borderWidth": 2,
+        "tension": 0.2
+      }
+      {% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ]
+  `.trim(); 
+
+  const data = JSON.parse(jsonData).map((grades) => {
+    const fixedGrade = {
+      ...grades,
+      data: [
+      ...grades.data
+      .map((grade, i) => i % 2 == 0 ? grade : null)
+      .filter((grade) => grade != null)
+      ]
+    }
+
+    return fixedGrade;
+  })
 
   new Chart(ctx, {
     type: 'line',
     data: {
       labels: [
         '1° Bimestre',
-        '2° Bimestre', {
-          %
-          if student.course.durationType != "SEMESTER" %
-        }
-        '3° Bimestre',
-        '4° Bimestre' {
-          %
-          endif %
-        }
+        '2° Bimestre',
+        {% if student.course.durationType != "SEMESTER" %}
+          '3° Bimestre',
+          '4° Bimestre'
+        {% endif %}
       ],
-      datasets: [{
-        %
-        for subject_grades in student_notes %
-      } {
-        label: '{{subject_grades.offer.subject.name}}',
-        data: [{
-          %
-          if subject_grades.grade1 %
-        } {
-          {
-            subject_grades.grade1
-          }
-        }, {
-          %
-          endif %
-        } {
-          %
-          if subject_grades.grade2 %
-        } {
-          {
-            subject_grades.grade2
-          }
-        }, {
-          %
-          endif %
-        } {
-          %
-          if subject_grades.grade3 %
-        } {
-          {
-            subject_grades.grade3
-          }
-        }, {
-          %
-          endif %
-        } {
-          %
-          if subject_grades.grade4 %
-        } {
-          {
-            subject_grades.grade4
-          }
-        }, {
-          %
-          endif %
-        }].filter((p) => p != 0),
-        borderWidth: 2,
-        tension: 0.2,
-      }, {
-        %
-        endfor %
-      }]
+      datasets: [...data]
     },
     options: {
       scales: {

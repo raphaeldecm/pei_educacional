@@ -31,6 +31,9 @@ jobs:
           python-version: '3.12'
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.1
+        with:
+          # Pre-commit breaks the graph rendering in this template
+          paths-ignore: 'templates/pages/profile_tabs/student_grades.html'
 
   # With no caching at all the entire ci process takes 3m to complete!
   pytest:

@@ -31,6 +31,7 @@ from sistema_pei.academics.models import Enrollment
 from sistema_pei.academics.models import Offer
 from sistema_pei.academics.models import Subject
 from sistema_pei.core.forms import CourseForm
+from sistema_pei.core.forms import EnrollmentForm
 from sistema_pei.core.forms import SubjectForm
 from sistema_pei.educational_plan.models import Pei
 from sistema_pei.people.forms import StudentFilesForm
@@ -108,6 +109,12 @@ class UsersPageView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["groups"] = Group.objects.all()
         context["sectors"] = Sector.objects.all()
+
+        request = self.request
+        if request.GET.get("alert") == "success":
+            messages.success(request, "Convite enviado!")
+        elif request.GET.get("alert") == "error":
+            messages.error(request, "Usuário já cadastrado!")
 
         return context
 
@@ -258,7 +265,7 @@ class ProfilePageView(TemplateView):
                     form.errors.update(self.request.session["form_errors"])
                     del self.request.session["form_errors"]
                 context["form"] = form
-            elif sub_tab == "edit_files":
+            elif sub_tab == "edit_files" or sub_tab == "edit_notes":
                 form = StudentFilesForm()
                 if "form_errors" in self.request.session:
                     form.errors.update(self.request.session["form_errors"])
@@ -282,7 +289,33 @@ class ProfilePageView(TemplateView):
                 "name": student.name,
             },
         ]
+
         return context
+
+
+class UpdateStudentGradesView(View):
+    """
+    View para editar as notas de um Enrollment específico.
+    """
+
+    def post(self, request, *args, **kwargs):
+        enrollment_id = kwargs.get("enrollment_id")
+        enrollment = get_object_or_404(Enrollment, id=enrollment_id)
+
+        form = EnrollmentForm(request.POST, instance=enrollment)
+        if form.is_valid():
+            form.save()
+            selected_period = request.POST.get("selectedPeriod", 1)
+            messages.success(request, "Dados da disciplina atualizados!")
+            return redirect(
+                f"/profile/{enrollment.student.id}?tab=edit_student_data&sub_tab=edit_notes&selectedPeriod={selected_period}",
+            )
+        else:
+            messages.error(
+                request,
+                "Erro ao atualizar dados. Verifique os valores inseridos.",
+            )
+            return redirect(request.headers.get("referer"))
 
 
 class EditPersonalDataView(View):
@@ -536,8 +569,6 @@ class EditCoursePageView(TemplateView):
         if form.is_valid():
             form.save()
             return redirect("courses")
-        else:
-            print(form.errors)
         return self.render_to_response(self.get_context_data(form=form))
 
 
@@ -636,6 +667,10 @@ class CreateSubjectPageView(TemplateView):
         context["course_types"] = [course[0] for course in COURSE_TYPE]
         context["courses"] = Course.objects.all()
 
+        request = self.request
+        if request.GET.get("alert") == "error":
+            messages.error(request, "Erro - Matéria já foi cadastrada!")
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -674,6 +709,7 @@ class EditSubjectPageView(TemplateView):
         request = self.request
         if request.GET.get("error") == "protected":
             messages.error(
+                request,
                 "Erro - Você não pode remover matérias com ofertas associadas!",
             )
 
