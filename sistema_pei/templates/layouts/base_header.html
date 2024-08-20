@@ -14,26 +14,42 @@
   <nav class="hidden md:flex flex-col">
     <ul class="flex justify-center items-center gap-[28px] text-slate-400 text-base">
       <li>
-        <a href="{% url 'home' %}" class="flex gap-[10px]">
-          <img src="{% static 'images/icons/icon-home.svg' %}" alt="" />
+        <a href="{% url 'home' %}"
+           class="flex gap-[10px] py-[10px] {% if request.resolver_match.url_name == 'home' %}text-green-500 border border-transparent border-b-green-500{% endif %}">
+          <img src="{% if request.resolver_match.url_name == 'home' %}{% static 'images/icons/icon-home-green.svg' %}{% else %}{% static 'images/icons/icon-home.svg' %}{% endif %}"
+               alt="" />
           <span>Home</span>
         </a>
       </li>
       <li>
-        <a href="{% url 'courses' %}" class="flex gap-[10px]">
-          <img src="{% static 'images/icons/icon-courses.svg' %}" alt="" />
+        <a href="{% url 'courses' %}"
+           class="flex gap-[10px] py-[10px] {% if request.resolver_match.url_name == 'courses' %}text-green-500 border border-transparent border-b-green-500{% endif %}">
+          <img src="{% if request.resolver_match.url_name == 'courses' %}{% static 'images/icons/icon-courses-green.svg' %}{% else %}{% static 'images/icons/icon-courses.svg' %}{% endif %}"
+               alt="" />
           <span>Cursos</span>
         </a>
       </li>
       <li>
-        <a href="{% url 'users' %}" class="flex gap-[10px]">
-          <img src="{% static 'images/icons/icon-users.svg' %}" alt="" />
+        <a href="{% url 'offers' %}"
+           class="flex gap-[10px] py-[10px] {% if request.resolver_match.url_name == 'offers' %}text-green-500 border border-transparent border-b-green-500{% endif %}">
+          <img src="{% if request.resolver_match.url_name == 'offers' %}{% static 'images/icons/highlighter-green.svg' %}{% else %}{% static 'images/icons/highlighter.svg' %}{% endif %}"
+               alt="" />
+          <span>Ofertas</span>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'users' %}"
+           class="flex gap-[10px] py-[10px] {% if request.resolver_match.url_name == 'users' %}text-green-500 border border-transparent border-b-green-500{% endif %}">
+          <img src="{% if request.resolver_match.url_name == 'users' %}{% static 'images/icons/icon-users-green.svg' %}{% else %}{% static 'images/icons/icon-users.svg' %}{% endif %}"
+               alt="" />
           <span>Usuários</span>
         </a>
       </li>
       <li>
-        <a href="{% url 'student_create' %}" class="flex gap-[10px]">
-          <img src="{% static 'images/icons/icon-register-student.svg' %}" alt="" />
+        <a href="{% url 'student_create' %}"
+           class="flex gap-[10px] py-[10px] {% if request.resolver_match.url_name == 'student_create' %}text-green-500 border border-transparent border-b-green-500{% endif %}">
+          <img src="{% if request.resolver_match.url_name == 'student_create' %}{% static 'images/icons/icon-register-student-green.svg' %}{% else %}{% static 'images/icons/icon-register-student.svg' %}{% endif %}"
+               alt="" />
           <span>Cadastrar Aluno</span>
         </a>
       </li>
@@ -42,7 +58,7 @@
 </div>
 {% if user.is_authenticated %}
   <div class="flex items-center relative text-left gap-6">
-    <div class="flex w-[400px] h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
+    <div class="flex w-full max-w-[400px] h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
       <img src="{% static 'images/icons/icon-search.svg' %}"
            width="18px"
            height="18px" />
