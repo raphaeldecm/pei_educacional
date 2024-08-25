@@ -5,35 +5,48 @@
 {% block content %}
   <div class="w-full">
     {% include '../../layouts/breadcrumbs.html' with breadcrumb_data=breadcrumb_data %}
-    <h1 class="text-[32px] font-medium mb-[38px]">Ofertas</h1>
-    <form>
+    <h1 class="text-[32px] font-medium mb-[38px]">Oferta: {{offer.subject.name}}</h1>
+
+    {% comment %} Adicionar a oferta {% endcomment %}
+    <form action="">
+      <p class="text-[22px] uppercase font-medium mb-[25px]"> Incluir Discente:</p>
+      <div class="flex items-center gap-4">
+        <div class="flex-1">
+          <div class="relative w-full cursor-pointer">
+            <img class="absolute top-[12px] right-[10px]"
+                 src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+                 width="24px"
+                 height="24px" />
+            <select name="durationType"
+                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
+                    required>
+              <option value="default" selected disabled>Selecione o discente...</option>
+            </select>
+          </div>
+        </div>
+        <button class="flex items-center justify-center gap-[10px] min-w-[181px] h-[48px] bg-green-500 rounded-[6px] text-neutral-50 px-[35px]">
+          <img src="{% static 'images/icons/icon-arrow.svg' %}"
+               width="24px"
+               height="24px" />
+          <span>Cadastrar</span>
+        </button>
+      </div>
+    </form>
+
+    {% comment %} Filtros {% endcomment %}
+    <form class="mt-[43px]">
+      <p class="text-[22px] uppercase font-medium mb-[25px]">Discentes:</p>
       <div class="mb-[26px] flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
         <img src="{% static 'images/icons/icon-search.svg' %}"
              width="18px"
              height="18px" />
         <input type="text"
                name="search"
-               placeholder="Pesquisar..."
+               placeholder="Pesquisar alunos..."
                class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50"
                value="{{ request.GET.search }}" />
       </div>
       <div class="flex gap-[8px]">
-        <div class="relative w-[362px] cursor-pointer">
-          <img class="absolute top-[12px] right-[10px]"
-               src="{% static 'images/icons/icon-updown-arrow.svg' %}"
-               width="24px"
-               height="24px" />
-          <select name="subject"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
-            <option value="default" selected disabled>Selecione a disciplina...</option>
-            {% for subject in selector_subjects %}
-              <option value="{{ subject.id }}"
-                      {% if request.GET.subject == subject.id|stringformat:'s' %}selected{% endif %}>
-                {{ subject.name }}
-              </option>
-            {% endfor %}
-          </select>
-        </div>
         <div class="relative min-w-[322px] w-max cursor-pointer">
           <img class="absolute top-[12px] right-[10px]"
                src="{% static 'images/icons/icon-updown-arrow.svg' %}"
@@ -41,7 +54,7 @@
                height="24px" />
           <select name="teacher"
                   class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
-            <option value="default" selected disabled>Selecione o professor...</option>
+            <option value="default" selected disabled>Selecione a duração...</option>
             {% for teacher in selector_teachers %}
               <option value="{{ teacher.id }}"
                       {% if request.GET.teacher == teacher.id|stringformat:'s' %}selected{% endif %}>
@@ -62,10 +75,10 @@
       <table class="table-auto w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px]">
         <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">
           <tr>
-            <th class="pl-[76px]">Nome da Matéria</th>
-            <th>Professor</th>
-            <th>Ano de referência</th>
-            <th>Situação</th>
+            <th class="pl-[76px]">Perfil</th>
+            <th>Email</th>
+            <th>Matricula</th>
+            <th>Nome</th>
             <th></th>
           </tr>
         </thead>
@@ -91,7 +104,7 @@
                          height="24px"
                          class="cursor-pointer" />
                   </a>
-                  <a href="{% url 'offer_details' offer.id %}">
+                  <a href="">
                     <img src="{% static 'images/icons/icon-eye.svg' %}"
                          width="24px"
                          height="24px"
@@ -126,7 +139,11 @@
     <div class="flex mt-[56px] gap-[16px]">
       <a href="{% url 'create_offer' %}"
          class=" text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer">
-        Cadastrar Nova Oferta
+        Fechar Oferta
+      </a>
+      <a href="{% url 'create_offer' %}"
+      class=" text-[18px] py-[11px] px-[44px] border border-red-500 rounded-lg font-medium cursor-pointer">
+        Excluir Oferta
       </a>
     </div>
   </div>

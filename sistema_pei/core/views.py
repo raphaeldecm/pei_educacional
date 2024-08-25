@@ -841,10 +841,6 @@ class CreateOfferPageView(TemplateView):
         context["selector_teachers"] = Teacher.objects.all()
         context["selector_subjects"] = Subject.objects.all()
 
-        # request = self.request
-        # if request.GET.get("alert") == "error":
-        #     messages.error(request, "Erro - Matéria já foi cadastrada!")
-
         return context
 
     def post(self, request, *args, **kwargs):
@@ -874,7 +870,7 @@ class EditOfferPageView(TemplateView):
             },
             {
                 "icon": "images/icons/highlighter-green.svg",
-                "name": "Oferta",
+                "name": "Ofertas",
                 "url": "offers",
             },
             {
@@ -897,3 +893,32 @@ class EditOfferPageView(TemplateView):
             form.save()
             return redirect("offers")
         return self.render_to_response(self.get_context_data(form=form))
+
+class OfferDetailsPageView(TemplateView):
+    template_name = "pages/offers/offer-details.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        offer_id = self.kwargs.get("offer_id")
+        offer = get_object_or_404(Offer, id=offer_id)
+        
+        # Breadcrumbs
+        context["breadcrumbs_data"] = [
+            {
+                "icon": "images/icons/icon-home-green.svg",
+                "name": "Home",
+                "url": "home",
+            },
+            {
+                "icon": "images/icons/highlighter-green.svg",
+                "name": "Ofertas",
+                "url": "offers",
+            },
+            {
+                "icon": "images/icons/highlighter-green.svg",
+                "name": offer.subject.name,
+            },
+        ]
+        
+        context["offer"] = offer
+        return context
