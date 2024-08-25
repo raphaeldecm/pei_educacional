@@ -26,6 +26,7 @@ from sistema_pei.core.views import (
     DeleteOfferView,
     DeleteSubjectView,
     EditCoursePageView,
+    EditOfferPageView,
     EditSubjectPageView,
     HomePageView,
     OffersPageView,
@@ -145,6 +146,11 @@ urlpatterns = [
         "offers/create",
         login_required(CreateOfferPageView.as_view()),
         name="create_offer",
+    ),
+    path(
+        "offers/edit/<int:offer_id>",
+        login_required(EditOfferPageView.as_view()),
+        name="edit_offer",
     ),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),

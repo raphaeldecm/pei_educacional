@@ -16,7 +16,6 @@ from django.db.models import Count
 from django.db.models import ProtectedError
 from django.db.models import Q
 from django.http import HttpResponse
-from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
@@ -30,8 +29,9 @@ from sistema_pei.academics.models import Course
 from sistema_pei.academics.models import Enrollment
 from sistema_pei.academics.models import Offer
 from sistema_pei.academics.models import Subject
-from sistema_pei.core.forms import CourseForm, OfferForm
+from sistema_pei.core.forms import CourseForm
 from sistema_pei.core.forms import EnrollmentForm
+from sistema_pei.core.forms import OfferForm
 from sistema_pei.core.forms import SubjectForm
 from sistema_pei.educational_plan.models import Pei
 from sistema_pei.people.forms import StudentFilesForm
@@ -54,7 +54,7 @@ class HomePageView(TemplateView):
         # Filter Selectors
         context["selector_courses"] = Course.objects.all()
         context["selector_teachers"] = Teacher.objects.all()
-        context["selector_Subjects"] = Subject.objects.all()
+        context["selector_offers"] = Subject.objects.all()
 
         # Cards
         context["pending_peis"] = Pei.objects.filter(status="NOT_START").count()
@@ -142,7 +142,7 @@ class UsersPageView(TemplateView):
             )
         except IntegrityError:
             messages.error(request, "Usuário já cadastrado!")
-            return redirect('users')
+            return redirect("users")
 
         token = default_token_generator.make_token(user)
         uid = urlsafe_base64_encode(force_bytes(user.pk))
@@ -799,6 +799,7 @@ class OffersPageView(TemplateView):
 
         return context
 
+
 class DeleteOfferView(View):
     def get(self, request, offer_id):
         offer = get_object_or_404(Offer, id=offer_id)
@@ -806,19 +807,18 @@ class DeleteOfferView(View):
             offer.delete()
             return redirect("offers")
         except ProtectedError:
-            messages.error(request,
+            messages.error(
+                request,
                 "Erro - Você não pode remover ofertas com alunos associados!",
             )
             return redirect("offers")
-        
+
+
 class CreateOfferPageView(TemplateView):
     template_name = "pages/offers/create-offer.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # course_id = self.kwargs.get("course_id")
-        # course = get_object_or_404(Course, id=course_id)
-        # context["current_course"] = course
 
         # Breadcrumbs
         context["breadcrumbs_data"] = [
@@ -837,7 +837,7 @@ class CreateOfferPageView(TemplateView):
                 "name": "Criar Oferta",
             },
         ]
-        
+
         context["selector_teachers"] = Teacher.objects.all()
         context["selector_subjects"] = Subject.objects.all()
 
@@ -846,7 +846,7 @@ class CreateOfferPageView(TemplateView):
         #     messages.error(request, "Erro - Matéria já foi cadastrada!")
 
         return context
-    
+
     def post(self, request, *args, **kwargs):
         form = OfferForm(request.POST)
         if form.is_valid():
@@ -854,4 +854,46 @@ class CreateOfferPageView(TemplateView):
             return redirect("offers")
         else:
             print(form.errors)
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+class EditOfferPageView(TemplateView):
+    template_name = "pages/offers/edit-offer.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        offer_id = self.kwargs.get("offer_id")
+        offer = get_object_or_404(Offer, id=offer_id)
+
+        # Breadcrumbs
+        context["breadcrumbs_data"] = [
+            {
+                "icon": "images/icons/icon-home-green.svg",
+                "name": "Home",
+                "url": "home",
+            },
+            {
+                "icon": "images/icons/highlighter-green.svg",
+                "name": "Oferta",
+                "url": "offers",
+            },
+            {
+                "icon": "images/icons/icon-edit-green.svg",
+                "name": "Editar Oferta",
+            },
+        ]
+
+        context["offer"] = offer
+        context["selector_teachers"] = Teacher.objects.all()
+        context["selector_subjects"] = Subject.objects.all()
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        offer_id = self.kwargs.get("offer_id")
+        offer = get_object_or_404(Offer, id=offer_id)
+        form = OfferForm(request.POST, instance=offer)
+        if form.is_valid():
+            form.save()
+            return redirect("offers")
         return self.render_to_response(self.get_context_data(form=form))
