@@ -20,6 +20,7 @@ from rest_framework_simplejwt.views import (
 from sistema_pei.core.views import (
     CoursesPageView,
     CreateCoursesPageView,
+    CreateOfferPageView,
     CreateSubjectPageView,
     DeleteCourseView,
     DeleteOfferView,
@@ -139,6 +140,11 @@ urlpatterns = [
         "offers/",
         login_required(OffersPageView.as_view()),
         name="offers",
+    ),
+    path(
+        "offers/create",
+        login_required(CreateOfferPageView.as_view()),
+        name="create_offer",
     ),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),

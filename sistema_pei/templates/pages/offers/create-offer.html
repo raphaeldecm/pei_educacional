@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% load static i18n %}
+
+{% block content %}
+  <div class="w-full">
+    {% include '../../layouts/breadcrumbs.html' with breadcrumb_data=breadcrumb_data %}
+    <h1 class="text-[32px] font-medium mb-[38px]">Criar Oferta</h1>
+    <form action="{% url 'create_offer' %}" method="post">
+      {% csrf_token %}
+      <div class="mt-[24px]">
+        <label for="subject" class="font-medium text-[18px]">Disciplina:</label>
+        <div class="relative w-full cursor-pointer mt-[16px]">
+          <img class="absolute top-[12px] right-[10px]"
+               src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+               width="24px"
+               height="24px" />
+          <select name="subject"
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
+                  required>
+            <option value="default" selected disabled>Selecione o tipo...</option>
+            {% for subject in selector_subjects %}<option value="{{ subject.id }}">{{ subject }}</option>{% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="mt-[24px]">
+        <label for="teacher" class="font-medium text-[18px]">Professor:</label>
+        <div class="relative w-full cursor-pointer mt-[16px]">
+          <img class="absolute top-[12px] right-[10px]"
+               src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+               width="24px"
+               height="24px" />
+          <select name="teacher"
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
+                  required>
+            <option value="default" selected disabled>Selecione o tipo...</option>
+            {% for teacher in selector_teachers %}<option value="{{ teacher.id }}">{{ teacher }}</option>{% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="flex gap-8">
+        <div class="mt-[24px] flex-1">
+          <label for="status" class="font-medium text-[18px]">Situação:</label>
+          <div class="relative w-full cursor-pointer mt-[16px]">
+            <img class="absolute top-[12px] right-[10px]"
+                 src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+                 width="24px"
+                 height="24px" />
+            <select name="status"
+                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
+                    required>
+              <option value="default" selected disabled>Selecione o tipo...</option>
+              <option value="Aberta">Aberto</option>
+              <option value="Fechada">Fechado</option>
+              {% for type in course_types %}<option value="{{ type }}">{{ type }}</option>{% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="mt-[24px] flex-1">
+          <label for="year" class="font-medium text-[18px]">Ano referência:</label>
+          <input type="number"
+                 name="year"
+                 min="1"
+                 placeholder="Digite o ano..."
+                 required
+                 class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]" />
+        </div>
+      </div>
+
+      <button class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer mt-[56px]">
+        Cadastrar
+      </button>
+    </form>
+  </div>
+{% endblock content %}
