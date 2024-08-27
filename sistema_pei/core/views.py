@@ -894,14 +894,15 @@ class EditOfferPageView(TemplateView):
             return redirect("offers")
         return self.render_to_response(self.get_context_data(form=form))
 
+
 class OfferDetailsPageView(TemplateView):
     template_name = "pages/offers/offer-details.html"
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         offer_id = self.kwargs.get("offer_id")
         offer = get_object_or_404(Offer, id=offer_id)
-        
+
         # Breadcrumbs
         context["breadcrumbs_data"] = [
             {
@@ -919,6 +920,7 @@ class OfferDetailsPageView(TemplateView):
                 "name": offer.subject.name,
             },
         ]
-        
+
         context["offer"] = offer
+
         return context

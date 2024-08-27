@@ -19,15 +19,13 @@
                   class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
                   required>
             <option value="default" selected disabled>Selecione o tipo...</option>
-
             {% for subject in selector_subjects %}
-            <option value="{{ subject.id }}"
-                    {% if offer.subject == subject %}selected{% endif %}>{{ subject }}</option>
+              <option value="{{ subject.id }}"
+                      {% if offer.subject == subject %}selected{% endif %}>{{ subject }}</option>
             {% endfor %}
           </select>
         </div>
       </div>
-
       <div class="mt-[24px]">
         <label for="teacher" class="font-medium text-[18px]">Professor:</label>
         <div class="relative w-full cursor-pointer mt-[16px]">
@@ -40,13 +38,12 @@
                   required>
             <option value="default" selected disabled>Selecione o tipo...</option>
             {% for teacher in selector_teachers %}
-            <option value="{{ teacher.id }}"
-                    {% if offer.teacher == teacher %}selected{% endif %}>{{ teacher }}</option>
+              <option value="{{ teacher.id }}"
+                      {% if offer.teacher == teacher %}selected{% endif %}>{{ teacher }}</option>
             {% endfor %}
           </select>
         </div>
       </div>
-
       <div class="flex gap-8">
         <div class="mt-[24px] flex-1">
           <label for="status" class="font-medium text-[18px]">Situação:</label>
@@ -59,10 +56,8 @@
                     class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
                     required>
               <option value="default" selected disabled>Selecione o tipo...</option>
-              <option value="Aberta"
-                      {% if offer.status == "Aberta" %}selected{% endif %}>Aberto</option>
-              <option value="Fechada"
-                      {% if offer.status == "Fechada" %}selected{% endif %}>Fechado</option>
+              <option value="Aberta" {% if offer.status == "Aberta" %}selected{% endif %}>Aberto</option>
+              <option value="Fechada" {% if offer.status == "Fechada" %}selected{% endif %}>Fechado</option>
             </select>
           </div>
         </div>
@@ -73,11 +68,10 @@
                  min="1"
                  placeholder="Digite o ano..."
                  required
-                 value="{{offer.year}}"
+                 value="{{ offer.year }}"
                  class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]" />
         </div>
       </div>
-
       <button class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer mt-[56px]">
         Editar
       </button>

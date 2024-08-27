@@ -5,11 +5,10 @@
 {% block content %}
   <div class="w-full">
     {% include '../../layouts/breadcrumbs.html' with breadcrumb_data=breadcrumb_data %}
-    <h1 class="text-[32px] font-medium mb-[38px]">Oferta: {{offer.subject.name}}</h1>
-
+    <h1 class="text-[32px] font-medium mb-[38px]">Oferta: {{ offer.subject.name }}</h1>
     {% comment %} Adicionar a oferta {% endcomment %}
     <form action="">
-      <p class="text-[22px] uppercase font-medium mb-[25px]"> Incluir Discente:</p>
+      <p class="text-[22px] uppercase font-medium mb-[25px]">Incluir Discente:</p>
       <div class="flex items-center gap-4">
         <div class="flex-1">
           <div class="relative w-full cursor-pointer">
@@ -32,7 +31,6 @@
         </button>
       </div>
     </form>
-
     {% comment %} Filtros {% endcomment %}
     <form class="mt-[43px]">
       <p class="text-[22px] uppercase font-medium mb-[25px]">Discentes:</p>
@@ -83,15 +81,21 @@
           </tr>
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
-          {% for offer in offers %}
+          {% for enrollment in offer.enrollments.all %}
             <tr>
-              <td class="pl-[76px]">{{ offer.subject.name }}</td>
-              <td>{{ offer.teacher }}</td>
-              <td>{{ offer.year }}</td>
-              <td>{{ offer.status }}</td>
+              <td class="pl-[76px]">
+                <div class="relative w-[67px] h-[67px] rounded-full overflow-hidden">
+                  <img src="{{ enrollment.student.image.url }}"
+                       class="w-full h-full object-cover relative"
+                       alt="Student Image" />
+                </div>
+              </td>
+              <td>{{ enrollment.student.email }}</td>
+              <td>{{ enrollment.student.registration }}</td>
+              <td>{{ enrollment.student.name }}</td>
               <td class="min-w-[40px] !px-[0px]">
                 <div class="flex items-center justify-end gap-[50px] mr-[44px]">
-                  <a href="{% url 'edit_offer' offer.id %}">
+                  <a href="{% url 'profile' enrollment.student.id %}?tab=edit_student_data#tab">
                     <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                          width="24px"
                          height="24px"
@@ -104,7 +108,7 @@
                          height="24px"
                          class="cursor-pointer" />
                   </a>
-                  <a href="">
+                  <a href="{% url 'profile' enrollment.student.id %}?tab=edit_student_data#tab">
                     <img src="{% static 'images/icons/icon-eye.svg' %}"
                          width="24px"
                          height="24px"
@@ -137,12 +141,9 @@
       </div>
     </div>
     <div class="flex mt-[56px] gap-[16px]">
-      <a href="{% url 'create_offer' %}"
-         class=" text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer">
-        Fechar Oferta
-      </a>
-      <a href="{% url 'create_offer' %}"
-      class=" text-[18px] py-[11px] px-[44px] border border-red-500 rounded-lg font-medium cursor-pointer">
+      <a href="{% url 'delete_offer' offer.id %}"
+         onclick="return confirm('Tem certeza que deseja excluir esta oferta?')"
+         class=" text-[18px] py-[11px] px-[44px] border border-red-500 rounded-lg font-medium cursor-pointer">
         Excluir Oferta
       </a>
     </div>
