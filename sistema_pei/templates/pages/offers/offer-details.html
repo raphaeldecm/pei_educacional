@@ -101,8 +101,8 @@
                          height="24px"
                          class="cursor-pointer" />
                   </a>
-                  <a href="{% url 'delete_offer' offer.id %}"
-                     onclick="return confirm('Tem certeza que deseja excluir a oferta?')">
+                  <a href="{% url 'remove_student_from_offer' offer.id enrollment.student.id %}"
+                     onclick="return confirm('Tem certeza que deseja remover o aluno desta oferta?')">
                     <img src="{% static 'images/icons/icon-remove-element.svg' %}"
                          width="24px"
                          height="24px"

@@ -520,7 +520,23 @@ class RemoveStudentFromSubjectView(View):
         student = get_object_or_404(Student, id=student_id)
         subject.students.remove(student)
         return redirect(f"/subjects/edit/{subject.id}")
-
+    
+class RemoveStudentFromOfferView(View):
+    def get(self, request, offer_id, student_id):
+        offer = get_object_or_404(Offer, id=offer_id)
+        student = get_object_or_404(Student, id=student_id)
+        
+        try:
+            enrollment = get_object_or_404(Enrollment, offer=offer, student=student)
+            enrollment.delete()
+            messages.success(request, "Aluno removido com sucesso da oferta.")
+        except ProtectedError:
+            messages.error(
+                request, 
+                "Não é possível remover o aluno desta oferta porque existem PEIs associados."
+            )
+        
+        return redirect(f"/offers/details/{offer.id}")
 
 class EditCoursePageView(TemplateView):
     template_name = "pages/courses/edit-course.html"
