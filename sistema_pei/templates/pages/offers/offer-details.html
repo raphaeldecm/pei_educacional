@@ -7,7 +7,8 @@
     {% include '../../layouts/breadcrumbs.html' with breadcrumb_data=breadcrumb_data %}
     <h1 class="text-[32px] font-medium mb-[38px]">Oferta: {{ offer.subject.name }}</h1>
     {% comment %} Adicionar a oferta {% endcomment %}
-    <form action="">
+    <form action="{% url 'add_student_to_offer' offer.id %}" method="post">
+      {% csrf_token %}
       <p class="text-[22px] uppercase font-medium mb-[25px]">Incluir Discente:</p>
       <div class="flex items-center gap-4">
         <div class="flex-1">
@@ -16,10 +17,13 @@
                  src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                  width="24px"
                  height="24px" />
-            <select name="durationType"
+            <select name="student"
                     class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
                     required>
               <option value="default" selected disabled>Selecione o discente...</option>
+              {% for student in selector_students %}
+                <option value="{{ student.id }}">{{ student }}</option>
+              {% endfor %}
             </select>
           </div>
         </div>

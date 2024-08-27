@@ -18,6 +18,7 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 from sistema_pei.core.views import (
+    AddStudentToOfferView,
     CoursesPageView,
     CreateCoursesPageView,
     CreateOfferPageView,
@@ -163,6 +164,11 @@ urlpatterns = [
         "offers/remove_student_from_offer/<int:offer_id>/<int:student_id>",
         login_required(RemoveStudentFromOfferView.as_view()),
         name="remove_student_from_offer",
+    ),
+    path(
+        "offers/add_student_to_offer/<int:offer_id>",
+        login_required(AddStudentToOfferView.as_view()),
+        name="add_student_to_offer",
     ),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),

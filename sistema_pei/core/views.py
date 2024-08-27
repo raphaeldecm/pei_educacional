@@ -959,5 +959,18 @@ class OfferDetailsPageView(TemplateView):
             enrolments = paginator.page(paginator.num_pages)
 
         context["enrollments"] = enrolments
+        
+        context["selector_students"] = Student.objects.filter(course__in=offer.subject.courses.all()).exclude(id__in=offer.enrollments.values_list('student_id', flat=True))
 
         return context
+
+class AddStudentToOfferView(View):
+    def post(self, request, offer_id):
+        offer = get_object_or_404(Offer, id=offer_id)
+        student_id = request.POST.get('student')
+        student = get_object_or_404(Student, id=student_id)
+        
+        if not Enrollment.objects.filter(offer=offer, student=student).exists():
+            Enrollment.objects.create(offer=offer, student=student, YearSemesterReference=student.reference_period)
+        
+        return redirect(f'/offers/details/{offer.id}')
