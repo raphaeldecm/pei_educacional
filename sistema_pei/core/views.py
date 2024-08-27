@@ -913,6 +913,7 @@ class EditOfferPageView(TemplateView):
 
 class OfferDetailsPageView(TemplateView):
     template_name = "pages/offers/offer-details.html"
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -936,7 +937,27 @@ class OfferDetailsPageView(TemplateView):
                 "name": offer.subject.name,
             },
         ]
+        
+        enrolments = offer.enrollments.all()
+        
+        if "search" in self.request.GET:
+            enrolments = enrolments.filter(
+                Q(student__name__icontains=self.request.GET["search"]),
+            )
 
         context["offer"] = offer
+        
+        
+        paginator = Paginator(enrolments, self.paginate_by)
+        page_number = self.request.GET.get("page")
+
+        try:
+            enrolments = paginator.page(page_number)
+        except PageNotAnInteger:
+            enrolments = paginator.page(1)
+        except EmptyPage:
+            enrolments = paginator.page(paginator.num_pages)
+
+        context["enrollments"] = enrolments
 
         return context

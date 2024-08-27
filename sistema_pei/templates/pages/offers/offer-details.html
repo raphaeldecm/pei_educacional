@@ -34,32 +34,16 @@
     {% comment %} Filtros {% endcomment %}
     <form class="mt-[43px]">
       <p class="text-[22px] uppercase font-medium mb-[25px]">Discentes:</p>
-      <div class="mb-[26px] flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
-        <img src="{% static 'images/icons/icon-search.svg' %}"
-             width="18px"
-             height="18px" />
-        <input type="text"
-               name="search"
-               placeholder="Pesquisar alunos..."
-               class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50"
-               value="{{ request.GET.search }}" />
-      </div>
       <div class="flex gap-[8px]">
-        <div class="relative min-w-[322px] w-max cursor-pointer">
-          <img class="absolute top-[12px] right-[10px]"
-               src="{% static 'images/icons/icon-updown-arrow.svg' %}"
-               width="24px"
-               height="24px" />
-          <select name="teacher"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
-            <option value="default" selected disabled>Selecione a duração...</option>
-            {% for teacher in selector_teachers %}
-              <option value="{{ teacher.id }}"
-                      {% if request.GET.teacher == teacher.id|stringformat:'s' %}selected{% endif %}>
-                {{ teacher.name }}
-              </option>
-            {% endfor %}
-          </select>
+        <div class="flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
+          <img src="{% static 'images/icons/icon-search.svg' %}"
+               width="18px"
+               height="18px" />
+          <input type="text"
+                 name="search"
+                 placeholder="Pesquisar alunos..."
+                 class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50"
+                 value="{{ request.GET.search }}" />
         </div>
         <button class="flex items-center justify-center gap-[10px] min-w-[100px] h-[48px] bg-green-500 rounded-[6px] text-neutral-50">
           <img src="{% static 'images/icons/icon-filter.svg' %}"
@@ -74,14 +58,14 @@
         <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">
           <tr>
             <th class="pl-[76px]">Perfil</th>
+            <th>Nome</th>
             <th>Email</th>
             <th>Matricula</th>
-            <th>Nome</th>
             <th></th>
           </tr>
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
-          {% for enrollment in offer.enrollments.all %}
+          {% for enrollment in enrollments %}
             <tr>
               <td class="pl-[76px]">
                 <div class="relative w-[67px] h-[67px] rounded-full overflow-hidden">
@@ -90,9 +74,9 @@
                        alt="Student Image" />
                 </div>
               </td>
+              <td>{{ enrollment.student.name }}</td>
               <td>{{ enrollment.student.email }}</td>
               <td>{{ enrollment.student.registration }}</td>
-              <td>{{ enrollment.student.name }}</td>
               <td class="min-w-[40px] !px-[0px]">
                 <div class="flex items-center justify-end gap-[50px] mr-[44px]">
                   <a href="{% url 'profile' enrollment.student.id %}?tab=edit_student_data#tab">
@@ -108,7 +92,7 @@
                          height="24px"
                          class="cursor-pointer" />
                   </a>
-                  <a href="{% url 'profile' enrollment.student.id %}?tab=edit_student_data#tab">
+                  <a href="{% url 'profile' enrollment.student.id %}">
                     <img src="{% static 'images/icons/icon-eye.svg' %}"
                          width="24px"
                          height="24px"
@@ -122,16 +106,16 @@
       </table>
     </div>
     <div class="mt-[50px] mb-[78px] w-full flex items-center justify-between text-[18px]">
-      <span class="font-semibold">Página {{ offers.number }} de {{ offers.paginator.num_pages }}</span>
+      <span class="font-semibold">Página {{ enrollments.number }} de {{ enrollments.paginator.num_pages }}</span>
       <div class="flex gap-[36px]">
-        {% if offers.has_previous %}
+        {% if enrollments.has_previous %}
           <a href="?{% if request.GET.duration %}duration={{ request.GET.duration }}&{% endif %}page={{ offers.previous_page_number }}">
             <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-400 border border-slate-400 rounded-lg">
               Anterior
             </div>
           </a>
         {% endif %}
-        {% if offers.has_next %}
+        {% if enrollments.has_next %}
           <a href="?{% if request.GET.duration %}duration={{ request.GET.duration }}&{% endif %}page={{ offers.next_page_number }}">
             <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-400 border border-slate-400 rounded-lg">
               Próximo
