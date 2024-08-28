@@ -41,6 +41,10 @@ from sistema_pei.core.views import (
 
 urlpatterns = [
     path(
+        "people/",
+        include("sistema_pei.people.urls", namespace="people"),
+    ),
+    path(
         "",
         login_required(HomePageView.as_view()),
         name="home",
