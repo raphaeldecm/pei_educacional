@@ -141,7 +141,7 @@ urlpatterns = [
         name="about",
     ),
     path(
-        "offers/",
+        "offers/<int:course_id>",
         login_required(OffersPageView.as_view()),
         name="offers",
     ),
@@ -156,7 +156,7 @@ urlpatterns = [
         name="edit_offer",
     ),
     path(
-        "offers/details/<int:offer_id>",
+        "offers/details/<int:course_id>/<int:offer_id>",
         login_required(OfferDetailsPageView.as_view()),
         name="offer_details",
     ),

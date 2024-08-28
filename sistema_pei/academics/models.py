@@ -94,13 +94,19 @@ class Offer(BaseModel):
         on_delete=models.PROTECT,
         related_name="offers",
     )
-    year = models.PositiveSmallIntegerField(verbose_name=_("Ano referência"))
+    course = models.ForeignKey(
+        Course,
+        verbose_name=_("Curso"),
+        on_delete=models.PROTECT,
+        related_name="courses",
+    )
     teacher = models.ForeignKey(
         Teacher,
         verbose_name=_("Professor"),
         on_delete=models.PROTECT,
         related_name="offers",
     )
+    year = models.PositiveSmallIntegerField(verbose_name=_("Ano referência"))
 
     class Meta:
         verbose_name = _("Oferta")

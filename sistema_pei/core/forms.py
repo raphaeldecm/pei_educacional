@@ -27,4 +27,4 @@ class EnrollmentForm(forms.ModelForm):
 class OfferForm(forms.ModelForm):
     class Meta:
         model = Offer
-        fields = ["status", "subject", "year", "teacher"]
+        fields = ["status", "subject", "year", "teacher", "course"]

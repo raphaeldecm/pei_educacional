@@ -15,7 +15,7 @@ from django.db import IntegrityError
 from django.db.models import Count
 from django.db.models import ProtectedError
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
@@ -768,7 +768,10 @@ class OffersPageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
+        course_id = self.kwargs.get("course_id")
+        course = get_object_or_404(Course, id=course_id)
+        context["course"] = course
+       
         # Breadcrumbs
         context["breadcrumbs_data"] = [
             {
@@ -777,9 +780,17 @@ class OffersPageView(TemplateView):
                 "url": "home",
             },
             {
+                "icon": "images/icons/icon-courses-green.svg",
+                "name": "Cursos",
+                "url": "courses",
+            },
+            {
+                "icon": "images/icons/icon-courses-green.svg",
+                "name": "Matérias",
+            },
+            {
                 "icon": "images/icons/highlighter-green.svg",
-                "name": "Ofertas",
-                "url": "offers",
+                "name": f"Ofertas de {course.name}",
             },
         ]
 
@@ -846,7 +857,6 @@ class CreateOfferPageView(TemplateView):
             {
                 "icon": "images/icons/highlighter-green.svg",
                 "name": "Oferta",
-                "url": "offers",
             },
             {
                 "icon": "images/icons/icon-edit-green.svg",
@@ -856,6 +866,7 @@ class CreateOfferPageView(TemplateView):
 
         context["selector_teachers"] = Teacher.objects.all()
         context["selector_subjects"] = Subject.objects.all()
+        context["selector_courses"] = Course.objects.all()
 
         return context
 
@@ -863,7 +874,7 @@ class CreateOfferPageView(TemplateView):
         form = OfferForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("offers")
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
         else:
             print(form.errors)
         return self.render_to_response(self.get_context_data(form=form))
@@ -887,7 +898,6 @@ class EditOfferPageView(TemplateView):
             {
                 "icon": "images/icons/highlighter-green.svg",
                 "name": "Ofertas",
-                "url": "offers",
             },
             {
                 "icon": "images/icons/icon-edit-green.svg",
@@ -917,8 +927,13 @@ class OfferDetailsPageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        
         offer_id = self.kwargs.get("offer_id")
         offer = get_object_or_404(Offer, id=offer_id)
+        
+        course_id = self.kwargs.get("course_id")
+        course = get_object_or_404(Course, id=course_id)
+        context["course"] = course
 
         # Breadcrumbs
         context["breadcrumbs_data"] = [
@@ -930,24 +945,23 @@ class OfferDetailsPageView(TemplateView):
             {
                 "icon": "images/icons/highlighter-green.svg",
                 "name": "Ofertas",
-                "url": "offers",
             },
             {
                 "icon": "images/icons/highlighter-green.svg",
                 "name": offer.subject.name,
             },
         ]
-        
+
         enrolments = offer.enrollments.all()
-        
+
         if "search" in self.request.GET:
             enrolments = enrolments.filter(
                 Q(student__name__icontains=self.request.GET["search"]),
             )
 
         context["offer"] = offer
-        
-        
+
+
         paginator = Paginator(enrolments, self.paginate_by)
         page_number = self.request.GET.get("page")
 
@@ -959,8 +973,8 @@ class OfferDetailsPageView(TemplateView):
             enrolments = paginator.page(paginator.num_pages)
 
         context["enrollments"] = enrolments
-        
-        context["selector_students"] = Student.objects.filter(course__in=offer.subject.courses.all()).exclude(id__in=offer.enrollments.values_list('student_id', flat=True))
+
+        context["selector_students"] = Student.objects.filter(course=offer.course).exclude(id__in=offer.enrollments.values_list('student_id', flat=True))
 
         return context
 
@@ -969,8 +983,8 @@ class AddStudentToOfferView(View):
         offer = get_object_or_404(Offer, id=offer_id)
         student_id = request.POST.get('student')
         student = get_object_or_404(Student, id=student_id)
-        
+
         if not Enrollment.objects.filter(offer=offer, student=student).exists():
             Enrollment.objects.create(offer=offer, student=student, YearSemesterReference=student.reference_period)
-        
+
         return redirect(f'/offers/details/{offer.id}')

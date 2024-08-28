@@ -5,7 +5,7 @@
 {% block content %}
   <div class="w-full">
     {% include '../../layouts/breadcrumbs.html' with breadcrumb_data=breadcrumb_data %}
-    <h1 class="text-[32px] font-medium mb-[38px]">Oferta: {{ offer.subject.name }}</h1>
+    <h1 class="text-[32px] font-medium mb-[38px]">Oferta: {{course.name}} - {{ offer.subject.name }}</h1>
     {% comment %} Adicionar a oferta {% endcomment %}
     <form action="{% url 'add_student_to_offer' offer.id %}" method="post">
       {% csrf_token %}
