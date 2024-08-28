@@ -7,6 +7,8 @@ from django.db.models import EmailField
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
+from sistema_pei.core import constants
+
 from .managers import UserManager
 
 
@@ -18,6 +20,9 @@ class Sector(models.Model):
 
 
 class User(AbstractUser):
+    class Sector(models.TextChoices):
+        NAPNE = "NAPNE", _("NAPNE")
+
     """
     Default custom user model for sistema-pei.
     If adding fields that need to be filled at user signup,
@@ -30,12 +35,10 @@ class User(AbstractUser):
     last_name = None  # type: ignore[assignment]
     email = EmailField(_("email address"), unique=True)
     username = None  # type: ignore[assignment]
-    sector = models.ForeignKey(
-        "Sector",
-        verbose_name=_("Sector"),
-        on_delete=models.CASCADE,
-        blank=True,
-        null=True,
+    sector = models.CharField(
+        verbose_name=_("Setor"),
+        choices=Sector.choices,
+        max_length=constants.SMALL_CHAR_FIELD_NAME_LENGTH,
     )
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
