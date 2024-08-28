@@ -536,7 +536,7 @@ class RemoveStudentFromOfferView(View):
                 "Não é possível remover o aluno desta oferta porque existem PEIs associados."
             )
         
-        return redirect(f"/offers/details/{offer.id}")
+        return redirect(f"/offers/details/{student.course.id}/{offer.id}")
 
 class EditCoursePageView(TemplateView):
     template_name = "pages/courses/edit-course.html"
@@ -771,7 +771,7 @@ class OffersPageView(TemplateView):
         course_id = self.kwargs.get("course_id")
         course = get_object_or_404(Course, id=course_id)
         context["course"] = course
-       
+    
         # Breadcrumbs
         context["breadcrumbs_data"] = [
             {
@@ -987,4 +987,4 @@ class AddStudentToOfferView(View):
         if not Enrollment.objects.filter(offer=offer, student=student).exists():
             Enrollment.objects.create(offer=offer, student=student, YearSemesterReference=student.reference_period)
 
-        return redirect(f'/offers/details/{offer.id}')
+        return redirect(f'/offers/details/{student.course.id}/{offer.id}')
