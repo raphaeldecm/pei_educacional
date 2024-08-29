@@ -22,9 +22,3 @@ class EnrollmentForm(forms.ModelForm):
     class Meta:
         model = Enrollment
         fields = ["grade1", "grade2", "grade3", "grade4"]
-
-
-class OfferForm(forms.ModelForm):
-    class Meta:
-        model = Offer
-        fields = ["status", "subject", "year", "teacher", "course"]

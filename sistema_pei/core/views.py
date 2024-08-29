@@ -23,19 +23,14 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.views.generic import TemplateView
 from django.views.generic import View
-from django_filters.views import FilterView
-from django.views import generic
 
-from sistema_pei.core import constants
 from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.academics.models import Course
 from sistema_pei.academics.models import Enrollment
 from sistema_pei.academics.models import Offer
 from sistema_pei.academics.models import Subject
-from sistema_pei.core.filters import OfferFilter
 from sistema_pei.core.forms import CourseForm
 from sistema_pei.core.forms import EnrollmentForm
-from sistema_pei.core.forms import OfferForm
 from sistema_pei.core.forms import SubjectForm
 from sistema_pei.educational_plan.models import Pei
 from sistema_pei.people.forms import StudentFilesForm
@@ -524,23 +519,6 @@ class RemoveStudentFromSubjectView(View):
         student = get_object_or_404(Student, id=student_id)
         subject.students.remove(student)
         return redirect(f"/subjects/edit/{subject.id}")
-    
-class RemoveStudentFromOfferView(View):
-    def get(self, request, offer_id, student_id):
-        offer = get_object_or_404(Offer, id=offer_id)
-        student = get_object_or_404(Student, id=student_id)
-        
-        try:
-            enrollment = get_object_or_404(Enrollment, offer=offer, student=student)
-            enrollment.delete()
-            messages.success(request, "Aluno removido com sucesso da oferta.")
-        except ProtectedError:
-            messages.error(
-                request, 
-                "Não é possível remover o aluno desta oferta porque existem PEIs associados."
-            )
-        
-        return redirect(f"/offers/details/{student.course.id}/{offer.id}")
 
 class EditCoursePageView(TemplateView):
     template_name = "pages/courses/edit-course.html"
@@ -764,202 +742,6 @@ class EditSubjectPageView(TemplateView):
             form.save()
             return redirect("courses")
         return self.render_to_response(self.get_context_data(form=form))
-
-
-class OffersPageView(FilterView, generic.ListView):
-    model = Offer
-    template_name = "pages/offers/offers.html"
-    paginate_by = constants.DEFAULT_PAGE_SIZE
-    filterset_class = OfferFilter
-
-    def get_queryset(self):
-        #Listar somente ofertas do curso
-        course_id = self.kwargs.get('course_id')
-        queryset = Offer.objects.filter(course_id=course_id)
-        filterset = OfferFilter(self.request.GET, queryset=queryset)
-        return filterset.qs
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        course_id = self.kwargs.get("course_id")
-        course = get_object_or_404(Course, id=course_id)
-        context["course"] = course
-
-        # Breadcrumbs
-        context["breadcrumbs_data"] = [
-            {
-                "icon": "images/icons/icon-home-green.svg",
-                "name": "Home",
-                "url": "home",
-            },
-            {
-                "icon": "images/icons/icon-courses-green.svg",
-                "name": "Cursos",
-                "url": "courses",
-            },
-            {
-                "icon": "images/icons/icon-courses-green.svg",
-                "name": "Matérias",
-            },
-            {
-                "icon": "images/icons/highlighter-green.svg",
-                "name": f"Ofertas de {course.name}",
-            },
-        ]
-
-        return context
-
-
-class DeleteOfferView(View):
-    def get(self, request, offer_id):
-        offer = get_object_or_404(Offer, id=offer_id)
-        try:
-            offer.delete()
-            return redirect("offers")
-        except ProtectedError:
-            messages.error(
-                request,
-                "Erro - Você não pode remover ofertas com alunos associados!",
-            )
-            return redirect("offers")
-
-
-class CreateOfferPageView(TemplateView):
-    template_name = "pages/offers/create-offer.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        # Breadcrumbs
-        context["breadcrumbs_data"] = [
-            {
-                "icon": "images/icons/icon-home-green.svg",
-                "name": "Home",
-                "url": "home",
-            },
-            {
-                "icon": "images/icons/highlighter-green.svg",
-                "name": "Oferta",
-            },
-            {
-                "icon": "images/icons/icon-edit-green.svg",
-                "name": "Criar Oferta",
-            },
-        ]
-
-        context["selector_teachers"] = Teacher.objects.all()
-        context["selector_subjects"] = Subject.objects.all()
-        context["selector_courses"] = Course.objects.all()
-
-        return context
-
-    def post(self, request, *args, **kwargs):
-        form = OfferForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-        else:
-            print(form.errors)
-        return self.render_to_response(self.get_context_data(form=form))
-
-
-class EditOfferPageView(TemplateView):
-    template_name = "pages/offers/edit-offer.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        offer_id = self.kwargs.get("offer_id")
-        offer = get_object_or_404(Offer, id=offer_id)
-
-        # Breadcrumbs
-        context["breadcrumbs_data"] = [
-            {
-                "icon": "images/icons/icon-home-green.svg",
-                "name": "Home",
-                "url": "home",
-            },
-            {
-                "icon": "images/icons/highlighter-green.svg",
-                "name": "Ofertas",
-            },
-            {
-                "icon": "images/icons/icon-edit-green.svg",
-                "name": "Editar Oferta",
-            },
-        ]
-
-        context["offer"] = offer
-        context["selector_teachers"] = Teacher.objects.all()
-        context["selector_subjects"] = Subject.objects.all()
-
-        return context
-
-    def post(self, request, *args, **kwargs):
-        offer_id = self.kwargs.get("offer_id")
-        offer = get_object_or_404(Offer, id=offer_id)
-        form = OfferForm(request.POST, instance=offer)
-        if form.is_valid():
-            form.save()
-            return redirect("offers")
-        return self.render_to_response(self.get_context_data(form=form))
-
-
-class OfferDetailsPageView(TemplateView):
-    template_name = "pages/offers/offer-details.html"
-    paginate_by = 10
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        
-        offer_id = self.kwargs.get("offer_id")
-        offer = get_object_or_404(Offer, id=offer_id)
-        
-        course_id = self.kwargs.get("course_id")
-        course = get_object_or_404(Course, id=course_id)
-        context["course"] = course
-
-        # Breadcrumbs
-        context["breadcrumbs_data"] = [
-            {
-                "icon": "images/icons/icon-home-green.svg",
-                "name": "Home",
-                "url": "home",
-            },
-            {
-                "icon": "images/icons/highlighter-green.svg",
-                "name": "Ofertas",
-            },
-            {
-                "icon": "images/icons/highlighter-green.svg",
-                "name": offer.subject.name,
-            },
-        ]
-
-        enrolments = offer.enrollments.all()
-
-        if "search" in self.request.GET:
-            enrolments = enrolments.filter(
-                Q(student__name__icontains=self.request.GET["search"]),
-            )
-
-        context["offer"] = offer
-
-
-        paginator = Paginator(enrolments, self.paginate_by)
-        page_number = self.request.GET.get("page")
-
-        try:
-            enrolments = paginator.page(page_number)
-        except PageNotAnInteger:
-            enrolments = paginator.page(1)
-        except EmptyPage:
-            enrolments = paginator.page(paginator.num_pages)
-
-        context["enrollments"] = enrolments
-
-        context["selector_students"] = Student.objects.filter(course=offer.course).exclude(id__in=offer.enrollments.values_list('student_id', flat=True))
-
-        return context
 
 class AddStudentToOfferView(View):
     def post(self, request, offer_id):

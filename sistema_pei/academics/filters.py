@@ -10,7 +10,6 @@ class OfferFilter(django_filters.FilterSet):
         fields = {
             'teacher': ['exact'],
             'subject': ['exact'],
-            'year': ['exact'],
         }
 
     def filter_by_search(self, queryset, name, value):

@@ -4,7 +4,7 @@
 
 {% block content %}
   <div class="w-full">
-    {% include '../../layouts/breadcrumbs.html' with breadcrumb_data=breadcrumb_data %}
+    {% include 'layouts/breadcrumbs.html' with breadcrumb_data=breadcrumb_data %}
     <h1 class="text-[32px] font-medium mb-[38px]">Ofertas</h1>
     <form>
       <div class="mb-[26px] flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
@@ -78,20 +78,20 @@
               <td>{{ offer.status }}</td>
               <td class="min-w-[40px] !px-[0px]">
                 <div class="flex items-center justify-end gap-[50px] mr-[44px]">
-                  <a href="{% url 'edit_offer' offer.id %}">
+                  <a href="{% url 'academics:edit_offer' offer.id %}">
                     <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                          width="24px"
                          height="24px"
                          class="cursor-pointer" />
                   </a>
-                  <a href="{% url 'delete_offer' offer.id %}"
+                  <a href="{% url 'academics:delete_offer' offer.id %}"
                      onclick="return confirm('Tem certeza que deseja excluir a oferta?')">
                     <img src="{% static 'images/icons/icon-remove-element.svg' %}"
                          width="24px"
                          height="24px"
                          class="cursor-pointer" />
                   </a>
-                  <a href="{% url 'offer_details' course.id offer.id %}">
+                  <a href="{% url 'academics:offer_details' course.id offer.id %}">
                     <img src="{% static 'images/icons/icon-eye.svg' %}"
                          width="24px"
                          height="24px"
@@ -124,7 +124,7 @@
       </div>
     </div>
     <div class="flex mt-[56px] gap-[16px]">
-      <a href="{% url 'create_offer' %}"
+      <a href="{% url 'academics:create_offer' %}"
          class=" text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer">
         Cadastrar Nova Oferta
       </a>

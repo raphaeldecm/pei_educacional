@@ -18,21 +18,14 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 from sistema_pei.core.views import (
-    AddStudentToOfferView,
     CoursesPageView,
     CreateCoursesPageView,
-    CreateOfferPageView,
     CreateSubjectPageView,
     DeleteCourseView,
-    DeleteOfferView,
     DeleteSubjectView,
     EditCoursePageView,
-    EditOfferPageView,
     EditSubjectPageView,
     HomePageView,
-    OfferDetailsPageView,
-    OffersPageView,
-    RemoveStudentFromOfferView,
     RemoveStudentFromSubjectView,
     ProfilePageView,
     SubjectsPageView,
@@ -49,6 +42,10 @@ urlpatterns = [
         "",
         login_required(HomePageView.as_view()),
         name="home",
+    ),
+    path(
+        "academics/",
+        include("sistema_pei.academics.urls", namespace="academics"),
     ),
     path(
         "users/",
@@ -111,11 +108,6 @@ urlpatterns = [
         name="delete_subject",
     ),
     path(
-        "offers/delete/<int:offer_id>",
-        login_required(DeleteOfferView.as_view()),
-        name="delete_offer",
-    ),
-    path(
         "subjects/<int:course_id>",
         login_required(SubjectsPageView.as_view()),
         name="subjects",
@@ -139,36 +131,6 @@ urlpatterns = [
         "about/",
         TemplateView.as_view(template_name="pages/about.html"),
         name="about",
-    ),
-    path(
-        "offers/<int:course_id>",
-        login_required(OffersPageView.as_view()),
-        name="offers",
-    ),
-    path(
-        "offers/create",
-        login_required(CreateOfferPageView.as_view()),
-        name="create_offer",
-    ),
-    path(
-        "offers/edit/<int:offer_id>",
-        login_required(EditOfferPageView.as_view()),
-        name="edit_offer",
-    ),
-    path(
-        "offers/details/<int:course_id>/<int:offer_id>",
-        login_required(OfferDetailsPageView.as_view()),
-        name="offer_details",
-    ),
-    path(
-        "offers/remove_student_from_offer/<int:offer_id>/<int:student_id>",
-        login_required(RemoveStudentFromOfferView.as_view()),
-        name="remove_student_from_offer",
-    ),
-    path(
-        "offers/add_student_to_offer/<int:offer_id>",
-        login_required(AddStudentToOfferView.as_view()),
-        name="add_student_to_offer",
     ),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
