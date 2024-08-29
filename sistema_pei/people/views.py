@@ -5,11 +5,13 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.http import urlsafe_base64_decode
+from django.utils.translation import gettext_lazy as _
 from django.views import generic
 from django.views.generic.edit import CreateView
 from django_filters.views import FilterView
 
 from sistema_pei.core import constants
+from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.people.filters import TeacherFilter
 from sistema_pei.people.models import Student
 from sistema_pei.people.models import StudentFile
@@ -37,8 +39,9 @@ def activate_account(request, uidb64, token):
     else:
         return render(request, "403.html")
 
-class TeacherListView(FilterView, generic.ListView):
+class TeacherListView(TitleViewMixin, FilterView, generic.ListView):
     model = Teacher
+    title = _("Docentes")
     paginate_by = constants.DEFAULT_PAGE_SIZE
     filterset_class = TeacherFilter
     template_name = "people/teacher_list.html"

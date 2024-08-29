@@ -5,7 +5,7 @@
 {% block content %}
   <div class="w-full">
     {% comment %} {% include '../../layouts/breadcrumbs.html' with breadcrumb_data=breadcrumb_data %} {% endcomment %}
-    <h1 class="text-[32px] font-medium mb-[38px]">Docentes</h1>
+    <h1 class="text-[32px] font-medium mb-[38px]">{{title}}</h1>
     <form mathod="get">
       <div class="flex gap-[8px]">
         <div class="mb-[26px] flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
@@ -113,6 +113,10 @@
                        class="cursor-pointer" />
                 </a>
               </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="7" class="text-center">Nenhum docente cadastrado.</td>
             </tr>
           {% endfor %}
         </tbody>
