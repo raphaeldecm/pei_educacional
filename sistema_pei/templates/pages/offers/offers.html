@@ -26,7 +26,7 @@
           <select name="subject"
                   class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
             <option value="default" selected disabled>Selecione a disciplina...</option>
-            {% for subject in selector_subjects %}
+            {% for subject in filter.form.subject.field.queryset %}
               <option value="{{ subject.id }}"
                       {% if request.GET.subject == subject.id|stringformat:'s' %}selected{% endif %}>
                 {{ subject.name }}
@@ -42,7 +42,7 @@
           <select name="teacher"
                   class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
             <option value="default" selected disabled>Selecione o professor...</option>
-            {% for teacher in selector_teachers %}
+            {% for teacher in filter.form.teacher.field.queryset %}
               <option value="{{ teacher.id }}"
                       {% if request.GET.teacher == teacher.id|stringformat:'s' %}selected{% endif %}>
                 {{ teacher.name }}
@@ -70,7 +70,7 @@
           </tr>
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
-          {% for offer in offers %}
+          {% for offer in object_list %}
             <tr>
               <td class="pl-[76px]">{{ offer.subject.name }}</td>
               <td>{{ offer.teacher }}</td>
@@ -105,17 +105,17 @@
       </table>
     </div>
     <div class="mt-[50px] mb-[78px] w-full flex items-center justify-between text-[18px]">
-      <span class="font-semibold">Página {{ offers.number }} de {{ offers.paginator.num_pages }}</span>
+      <span class="font-semibold">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
       <div class="flex gap-[36px]">
-        {% if offers.has_previous %}
-          <a href="?{% if request.GET.duration %}duration={{ request.GET.duration }}&{% endif %}page={{ offers.previous_page_number }}">
+        {% if page_obj.has_previous %}
+          <a href="?{% if request.GET.duration %}duration={{ request.GET.duration }}&{% endif %}page={{ page_obj.previous_page_number }}">
             <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-400 border border-slate-400 rounded-lg">
               Anterior
             </div>
           </a>
         {% endif %}
-        {% if offers.has_next %}
-          <a href="?{% if request.GET.duration %}duration={{ request.GET.duration }}&{% endif %}page={{ offers.next_page_number }}">
+        {% if page_obj.has_next %}
+          <a href="?{% if request.GET.duration %}duration={{ request.GET.duration }}&{% endif %}page={{ page_obj.next_page_number }}">
             <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-400 border border-slate-400 rounded-lg">
               Próximo
             </div>

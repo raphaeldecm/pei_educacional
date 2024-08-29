@@ -23,12 +23,16 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.views.generic import TemplateView
 from django.views.generic import View
+from django_filters.views import FilterView
+from django.views import generic
 
+from sistema_pei.core import constants
 from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.academics.models import Course
 from sistema_pei.academics.models import Enrollment
 from sistema_pei.academics.models import Offer
 from sistema_pei.academics.models import Subject
+from sistema_pei.core.filters import OfferFilter
 from sistema_pei.core.forms import CourseForm
 from sistema_pei.core.forms import EnrollmentForm
 from sistema_pei.core.forms import OfferForm
@@ -762,16 +766,25 @@ class EditSubjectPageView(TemplateView):
         return self.render_to_response(self.get_context_data(form=form))
 
 
-class OffersPageView(TemplateView):
+class OffersPageView(FilterView, generic.ListView):
+    model = Offer
     template_name = "pages/offers/offers.html"
-    paginate_by = 10
+    paginate_by = constants.DEFAULT_PAGE_SIZE
+    filterset_class = OfferFilter
+
+    def get_queryset(self):
+        #Listar somente ofertas do curso
+        course_id = self.kwargs.get('course_id')
+        queryset = Offer.objects.filter(course_id=course_id)
+        filterset = OfferFilter(self.request.GET, queryset=queryset)
+        return filterset.qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         course_id = self.kwargs.get("course_id")
         course = get_object_or_404(Course, id=course_id)
         context["course"] = course
-    
+
         # Breadcrumbs
         context["breadcrumbs_data"] = [
             {
@@ -793,36 +806,6 @@ class OffersPageView(TemplateView):
                 "name": f"Ofertas de {course.name}",
             },
         ]
-
-        # Filter Selectors
-        context["selector_teachers"] = Teacher.objects.all()
-        context["selector_subjects"] = Subject.objects.all()
-
-        # Table
-        filters = {}
-        if "teacher" in self.request.GET:
-            filters["teacher__id"] = self.request.GET["teacher"]
-        if "subject" in self.request.GET:
-            filters["subject__id"] = self.request.GET["subject"]
-
-        offers = Offer.objects.filter(**filters)
-
-        if "search" in self.request.GET:
-            offers = offers.filter(
-                Q(subject__name__icontains=self.request.GET["search"]),
-            )
-
-        paginator = Paginator(offers, self.paginate_by)
-        page_number = self.request.GET.get("page")
-
-        try:
-            all_offers = paginator.page(page_number)
-        except PageNotAnInteger:
-            all_offers = paginator.page(1)
-        except EmptyPage:
-            all_offers = paginator.page(paginator.num_pages)
-
-        context["offers"] = all_offers
 
         return context
 
