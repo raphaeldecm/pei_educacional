@@ -92,7 +92,7 @@ class CreateOfferPageView(CreateView):
         self.object = form.save()
         form = self.get_form_class()()
         messages.success(self.request, "Oferta criada com sucesso!")
-        return redirect(self.request.META.get('HTTP_REFERER', '/'))
+        return redirect(f'/academics/offers/{self.object.course.id}')
 
     def form_invalid(self, form):
         context = self.get_context_data(form=form)
@@ -139,7 +139,7 @@ class EditOfferPageView(TemplateView):
         form = OfferForm(request.POST, instance=offer)
         if form.is_valid():
             form.save()
-        return self.render_to_response(self.get_context_data(form=form))
+        return redirect(f'/academics/offers/{offer.course_id}')
       
 class OfferDetailsPageView(TemplateView):
     template_name = "offers/offer-details.html"
