@@ -6,7 +6,7 @@
   <div class="w-full">
     {% include 'layouts/breadcrumbs.html' with breadcrumb_data=breadcrumb_data %}
     <h1 class="text-[32px] font-medium mb-[38px]">Criar Oferta</h1>
-    <form action="{% url 'create_offer' %}" method="post">
+    <form action="{% url 'academics:create_offer' %}" method="post">
       {% csrf_token %}
       <div class="mt-[24px]">
         <label for="subject" class="font-medium text-[18px]">Disciplina:</label>
@@ -19,12 +19,12 @@
                   class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
                   required>
             <option value="default" selected disabled>Selecione o tipo...</option>
-            {% for subject in selector_subjects %}<option value="{{ subject.id }}">{{ subject }}</option>{% endfor %}
+            {% for subject in form.subject.field.queryset %}<option value="{{ subject.id }}">{{ subject }}</option>{% endfor %}
           </select>
         </div>
       </div>
       <div class="mt-[24px]">
-        <label for="subject" class="font-medium text-[18px]">Curso:</label>
+        <label for="course" class="font-medium text-[18px]">Curso:</label>
         <div class="relative w-full cursor-pointer mt-[16px]">
           <img class="absolute top-[12px] right-[10px]"
                src="{% static 'images/icons/icon-updown-arrow.svg' %}"
@@ -34,7 +34,7 @@
                   class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
                   required>
             <option value="default" selected disabled>Selecione o tipo...</option>
-            {% for course in selector_courses %}<option value="{{ course.id }}">{{ course.name }} - {{course.get_period_display}}</option>{% endfor %}
+            {% for course in form.course.field.queryset %}<option value="{{ course.id }}">{{ course.name }} - {{ course.get_period_display }}</option>{% endfor %}
           </select>
         </div>
       </div>
@@ -49,7 +49,7 @@
                   class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
                   required>
             <option value="default" selected disabled>Selecione o tipo...</option>
-            {% for teacher in selector_teachers %}<option value="{{ teacher.id }}">{{ teacher }}</option>{% endfor %}
+            {% for teacher in form.teacher.field.queryset %}<option value="{{ teacher.id }}">{{ teacher }}</option>{% endfor %}
           </select>
         </div>
       </div>

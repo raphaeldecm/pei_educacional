@@ -1,7 +1,9 @@
 # Create your views here.
 from django.contrib import messages
 from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
 from django_filters.views import FilterView
+from django.views.generic.edit import CreateView
 from django.core.paginator import PageNotAnInteger
 from django.shortcuts import get_object_or_404, redirect
 from django.core.paginator import Paginator
@@ -61,12 +63,12 @@ class OffersPageView(FilterView, generic.ListView):
         ]
 
         return context
-class CreateOfferPageView(TemplateView):
+class CreateOfferPageView(CreateView):
     template_name = "offers/create-offer.html"
+    form_class = OfferForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         # Breadcrumbs
         context["breadcrumbs_data"] = [
             {
@@ -84,21 +86,21 @@ class CreateOfferPageView(TemplateView):
             },
         ]
 
-        context["selector_teachers"] = Teacher.objects.all()
-        context["selector_subjects"] = Subject.objects.all()
-        context["selector_courses"] = Course.objects.all()
-
         return context
 
-    def post(self, request, *args, **kwargs):
-        form = OfferForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-        else:
-            print(form.errors)
-        return self.render_to_response(self.get_context_data(form=form))
-      
+    def form_valid(self, form):
+        self.object = form.save()
+        form = self.get_form_class()()
+        messages.success(self.request, "Oferta criada com sucesso!")
+        return redirect(self.request.META.get('HTTP_REFERER', '/'))
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        messages.error(self.request, "Erro ao criar oferta")
+        return redirect(self.request.META.get('HTTP_REFERER', '/'))
+
+    def get_success_url(self):
+        return self.request.path
       
 class EditOfferPageView(TemplateView):
     template_name = "offers/edit-offer.html"
@@ -137,7 +139,6 @@ class EditOfferPageView(TemplateView):
         form = OfferForm(request.POST, instance=offer)
         if form.is_valid():
             form.save()
-            return redirect("offers")
         return self.render_to_response(self.get_context_data(form=form))
       
 class OfferDetailsPageView(TemplateView):
@@ -203,13 +204,14 @@ class DeleteOfferView(View):
         offer = get_object_or_404(Offer, id=offer_id)
         try:
             offer.delete()
-            return redirect("offers")
+            messages.success(request, "Oferta removida com sucesso!")
+            return redirect(request.META.get('HTTP_REFERER', '/'))
         except ProtectedError:
             messages.error(
                 request,
                 "Erro - Você não pode remover ofertas com alunos associados!",
             )
-            return redirect("offers")
+            return redirect(request.META.get('HTTP_REFERER', '/'))
           
 class RemoveStudentFromOfferView(View):
     def get(self, request, offer_id, student_id):
