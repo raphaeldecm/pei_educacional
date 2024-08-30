@@ -86,9 +86,7 @@
             <th>Matrícula</th>
             <th>Email</th>
             <th>Campi</th>
-            <th></th>
-            <th></th>
-            <th></th>
+            <th colspan="3" style="text-align: center;">Ações</th>
           </tr>
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
@@ -100,19 +98,19 @@
               <td>{{ object.campus.abbreviation }}</td>
 
               <td class="min-w-[40px] !px-[0px]">
-                <a href="{% url 'people:teacher_update' object.pk %}">
-                  <img src="{% static 'images/icons/icon-edit-element.svg' %}"
-                       width="24px"
-                       height="24px"
-                       class="cursor-pointer" />
-                </a>
-              </td>
-              <td class="min-w-[40px] !px-[0px]">
                 <a href="{% url 'people:teacher_detail' object.pk %}">
                   <img src="{% static 'images/icons/icon-eye.svg' %}"
                   width="24px"
                   height="24px"
                   class="cursor-pointer" />
+                </a>
+              </td>
+              <td class="min-w-[40px] !px-[0px]">
+                <a href="{% url 'people:teacher_update' object.pk %}">
+                  <img src="{% static 'images/icons/icon-edit-element.svg' %}"
+                       width="24px"
+                       height="24px"
+                       class="cursor-pointer" />
                 </a>
               </td>
               <td class="min-w-[40px] !px-[0px]">

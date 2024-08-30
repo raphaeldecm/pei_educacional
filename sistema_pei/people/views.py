@@ -81,10 +81,10 @@ class TeacherDeleteView(LoginRequiredMixin, SuccessMessageMixin, generic.DeleteV
     success_url = reverse_lazy("people:teacher_list")
     success_message=_("O professor foi excluído com sucesso.")
 
-class TeacherDetailView(generic.DetailView):
+class TeacherDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
     model = Teacher
-    template_name = "people/teacher_detail.html"
     context_object_name = "teacher"
+    title = _("Detalhes do Docente")
 
 
 class StudentCreateView(CreateView):
