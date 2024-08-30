@@ -10,7 +10,7 @@ from django.core.paginator import Paginator
 from django.views import View
 from django.core.paginator import EmptyPage
 from sistema_pei.academics import constants
-from sistema_pei.academics.filters import OfferFilter
+from sistema_pei.academics.filters import EnrollmentFilter, OfferFilter
 from sistema_pei.academics.forms import OfferForm
 from sistema_pei.academics.models import Course, Enrollment, Offer, Subject
 from django.views.generic import TemplateView
@@ -142,9 +142,15 @@ class EditOfferPageView(UpdateView):
         return context
 
       
-class OfferDetailsPageView(TemplateView):
+class OfferDetailsPageView(FilterView):
     template_name = "offers/offer-details.html"
     paginate_by = 10
+    filterset_class = EnrollmentFilter
+
+    def get_queryset(self):
+        offer_id = self.kwargs.get("offer_id")
+        offer = get_object_or_404(Offer, id=offer_id)
+        return offer.enrollments.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -173,31 +179,10 @@ class OfferDetailsPageView(TemplateView):
             },
         ]
 
-        enrolments = offer.enrollments.all()
-
-        if "search" in self.request.GET:
-            enrolments = enrolments.filter(
-                Q(student__name__icontains=self.request.GET["search"]),
-            )
-
         context["offer"] = offer
-
-
-        paginator = Paginator(enrolments, self.paginate_by)
-        page_number = self.request.GET.get("page")
-
-        try:
-            enrolments = paginator.page(page_number)
-        except PageNotAnInteger:
-            enrolments = paginator.page(1)
-        except EmptyPage:
-            enrolments = paginator.page(paginator.num_pages)
-
-        context["enrollments"] = enrolments
 
         context["selector_students"] = Student.objects.filter(course=offer.course).exclude(id__in=offer.enrollments.values_list('student_id', flat=True))
       
-
         return context
       
 class DeleteOfferView(View):
@@ -229,4 +214,15 @@ class RemoveStudentFromOfferView(View):
                 "Não é possível remover o aluno desta oferta porque existem PEIs associados."
             )
         
-        return redirect(f"/offers/details/{student.course.id}/{offer.id}")
+        return redirect(f"/academics/offers/details/{student.course.id}/{offer.id}")
+
+class AddStudentToOfferView(View):
+    def post(self, request, offer_id):
+        offer = get_object_or_404(Offer, id=offer_id)
+        student_id = request.POST.get('student')
+        student = get_object_or_404(Student, id=student_id)
+
+        if not Enrollment.objects.filter(offer=offer, student=student).exists():
+            Enrollment.objects.create(offer=offer, student=student, YearSemesterReference=student.reference_period)
+
+        return redirect(f'/academics/offers/details/{student.course.id}/{offer.id}')

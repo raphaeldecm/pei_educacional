@@ -1,9 +1,7 @@
 from django.urls import path
 from django.contrib.auth.decorators import login_required
 
-from sistema_pei.academics.views import CreateOfferPageView, DeleteOfferView, EditOfferPageView, OfferDetailsPageView, OffersPageView, RemoveStudentFromOfferView
-from sistema_pei.core.views import AddStudentToOfferView
-from sistema_pei.people import views
+from sistema_pei.academics.views import AddStudentToOfferView, CreateOfferPageView, DeleteOfferView, EditOfferPageView, OfferDetailsPageView, OffersPageView, RemoveStudentFromOfferView
 
 app_name = "academics"
 urlpatterns = [

@@ -742,14 +742,3 @@ class EditSubjectPageView(TemplateView):
             form.save()
             return redirect("courses")
         return self.render_to_response(self.get_context_data(form=form))
-
-class AddStudentToOfferView(View):
-    def post(self, request, offer_id):
-        offer = get_object_or_404(Offer, id=offer_id)
-        student_id = request.POST.get('student')
-        student = get_object_or_404(Student, id=student_id)
-
-        if not Enrollment.objects.filter(offer=offer, student=student).exists():
-            Enrollment.objects.create(offer=offer, student=student, YearSemesterReference=student.reference_period)
-
-        return redirect(f'/offers/details/{student.course.id}/{offer.id}')

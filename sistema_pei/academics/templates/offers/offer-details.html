@@ -69,7 +69,7 @@
           </tr>
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
-          {% for enrollment in enrollments %}
+          {% for enrollment in object_list %}
             <tr>
               <td class="pl-[76px]">
                 <div class="relative w-[67px] h-[67px] rounded-full overflow-hidden">
@@ -110,17 +110,17 @@
       </table>
     </div>
     <div class="mt-[50px] mb-[78px] w-full flex items-center justify-between text-[18px]">
-      <span class="font-semibold">Página {{ enrollments.number }} de {{ enrollments.paginator.num_pages }}</span>
+      <span class="font-semibold">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
       <div class="flex gap-[36px]">
-        {% if enrollments.has_previous %}
-          <a href="?{% if request.GET.duration %}duration={{ request.GET.duration }}&{% endif %}page={{ offers.previous_page_number }}">
+        {% if page_obj.has_previous %}
+          <a href="?{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}page={{ page_obj.previous_page_number }}">
             <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-400 border border-slate-400 rounded-lg">
               Anterior
             </div>
           </a>
         {% endif %}
-        {% if enrollments.has_next %}
-          <a href="?{% if request.GET.duration %}duration={{ request.GET.duration }}&{% endif %}page={{ offers.next_page_number }}">
+        {% if page_obj.has_next %}
+          <a href="?{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}page={{ page_obj.next_page_number }}">
             <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-400 border border-slate-400 rounded-lg">
               Próximo
             </div>
@@ -128,10 +128,11 @@
         {% endif %}
       </div>
     </div>
+    
     <div class="flex mt-[56px] gap-[16px]">
       <a href="{% url 'academics:delete_offer' offer.id %}"
          onclick="return confirm('Tem certeza que deseja excluir esta oferta?')"
-         class=" text-[18px] py-[11px] px-[44px] border border-red-500 rounded-lg font-medium cursor-pointer">
+         class="text-[18px] py-[11px] px-[44px] border border-red-500 rounded-lg font-medium cursor-pointer">
         Excluir Oferta
       </a>
     </div>
