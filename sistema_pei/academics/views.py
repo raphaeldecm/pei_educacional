@@ -114,6 +114,14 @@ class EditOfferPageView(UpdateView):
     def get_success_url(self):
         return reverse_lazy('academics:offers', kwargs={'course_id': self.object.course_id})
 
+    def form_valid(self, form):
+        messages.success(self.request, "Oferta editada com sucesso!")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, "Erro ao editar a oferta")
+        return super().form_invalid(form)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["breadcrumbs_data"] = [
@@ -131,9 +139,6 @@ class EditOfferPageView(UpdateView):
                 "name": "Editar Oferta",
             },
         ]
-        context["selector_teachers"] = Teacher.objects.all()
-        context["selector_subjects"] = Subject.objects.all()
-        context["selector_courses"] = Course.objects.all()
         return context
 
       
