@@ -76,20 +76,10 @@ class TeacherUpdateView(
         form.instance.updated_by = self.request.user
         return super().form_valid(form)
 
-class TeacherDeleteView(generic.DeleteView):
+class TeacherDeleteView(LoginRequiredMixin, SuccessMessageMixin, generic.DeleteView):
     model = Teacher
-    template_name = "people/teacher_delete.html"
     success_url = reverse_lazy("people:teacher_list")
-
-    def delete(self, request, *args, **kwargs):
-        teacher = self.get_object()
-        teacher.delete()
-
-        name_value = teacher.name
-        success_message = f"Professor {name_value} deletado com sucesso"
-        messages.success(self.request, success_message)
-
-        return redirect(self.success_url)
+    success_message=_("O professor foi excluído com sucesso.")
 
 class TeacherDetailView(generic.DetailView):
     model = Teacher

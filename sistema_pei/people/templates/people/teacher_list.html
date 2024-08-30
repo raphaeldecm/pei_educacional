@@ -92,15 +92,15 @@
           </tr>
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
-          {% for teacher in object_list %}
+          {% for object in object_list %}
             <tr>
-              <td class="pl-[76px]">{{ teacher.name }}</td>
-              <td>{{ teacher.code }}</td>
-              <td>{{ teacher.email }}</td>
-              <td>{{ teacher.campus.abbreviation }}</td>
+              <td class="pl-[76px]">{{ object.name }}</td>
+              <td>{{ object.code }}</td>
+              <td>{{ object.email }}</td>
+              <td>{{ object.campus.abbreviation }}</td>
 
               <td class="min-w-[40px] !px-[0px]">
-                <a href="{% url 'people:teacher_update' teacher.pk %}">
+                <a href="{% url 'people:teacher_update' object.pk %}">
                   <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                        width="24px"
                        height="24px"
@@ -108,22 +108,23 @@
                 </a>
               </td>
               <td class="min-w-[40px] !px-[0px]">
-                <a href="{% url 'people:teacher_delete' teacher.pk %}"
-                   onclick="return confirm('Tem certeza que deseja excluir o curso {{ course.name }}?')">
+                <a href="{% url 'people:teacher_detail' object.pk %}">
+                  <img src="{% static 'images/icons/icon-eye.svg' %}"
+                  width="24px"
+                  height="24px"
+                  class="cursor-pointer" />
+                </a>
+              </td>
+              <td class="min-w-[40px] !px-[0px]">
+                <button type="button"
+                  id="openModal">
                   <img src="{% static 'images/icons/icon-remove-element.svg' %}"
                        width="24px"
                        height="24px"
                        class="cursor-pointer" />
-                </a>
+              </button>
               </td>
-              <td class="min-w-[40px] !px-[0px]">
-                <a href="{% url 'people:teacher_detail' teacher.pk %}">
-                  <img src="{% static 'images/icons/icon-eye.svg' %}"
-                       width="24px"
-                       height="24px"
-                       class="cursor-pointer" />
-                </a>
-              </td>
+              {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão de Docente" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="people:teacher_delete" %}
             </tr>
           {% empty %}
             <tr>

@@ -16,6 +16,7 @@
 {% endblock alerts %}
 
 {% block content %}
+
   <div class="w-full">
     <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
     <form method="post" enctype="multipart/form-data" autocomplete="off">
@@ -66,12 +67,14 @@
         </div>
       </div>
 
-      <a href="{% url 'people:teacher_list' %}" class="text-[18px] py-[11px] px-[44px] border border-orange-500 rounded-lg font-medium cursor-pointer mt-[56px]">
-        Voltar
-      </a>
-      <button class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer mt-[56px]">
-        Salvar
-      </button>
+      <div class="flex items-center justify-start gap-5">
+        <a href="{% url 'people:teacher_list' %}" class="mr-2 text-[18px] py-[11px] px-[44px] border border-orange-400 rounded-lg font-medium cursor-pointer mt-[56px] hover:bg-orange-500 transition-colors duration-300">
+          Voltar
+        </a>
+        <button class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer mt-[56px] hover:bg-green-500 hover:text-white transition-colors duration-300">
+          Salvar
+        </button>
+      </div>
     </form>
   </div>
 {% endblock content %}
