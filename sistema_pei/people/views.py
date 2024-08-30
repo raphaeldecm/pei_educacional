@@ -50,7 +50,7 @@ class TeacherListView(TitleViewMixin, FilterView, generic.ListView):
     template_name = "people/teacher_list.html"
 
 class TeacherCreateView(
-    LoginRequiredMixin, TitleViewMixin, SuccessMessageMixin, CreateView
+    LoginRequiredMixin, TitleViewMixin, SuccessMessageMixin, generic.CreateView,
 ):
     model = Teacher
     title = _("Cadastrar Docente")
@@ -58,28 +58,23 @@ class TeacherCreateView(
     success_url = reverse_lazy("people:teacher_list")
     success_message = _("O professor foi cadastrado com sucesso.")
 
-class TeacherEditView(generic.UpdateView):
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        form.instance.updated_by = self.request.user
+        return super().form_valid(form)
+
+class TeacherUpdateView(
+    LoginRequiredMixin, TitleViewMixin, SuccessMessageMixin, generic.UpdateView
+):
     model = Teacher
-    fields = ["name", "email", "campus"]
-    template_name = "people/teacher_edit.html"
+    title = _("Atualizar Docente")
+    form_class = TeacherForm
     success_url = reverse_lazy("people:teacher_list")
+    success_message = _("O professor foi atualizado com sucesso.")
 
     def form_valid(self, form):
-        response = super().form_valid(form)
-
-        name_value = form.cleaned_data["name"]
-        success_message = f"Professor {name_value} alterado com sucesso"
-        messages.success(self.request, success_message)
-
-        return response
-
-    def form_invalid(self, form):
-        response = super().form_invalid(form)
-
-        error_message = "Erro ao alterar professor!"
-        messages.error(self.request, error_message)
-
-        return response
+        form.instance.updated_by = self.request.user
+        return super().form_valid(form)
 
 class TeacherDeleteView(generic.DeleteView):
     model = Teacher

@@ -100,7 +100,7 @@
               <td>{{ teacher.campus.abbreviation }}</td>
 
               <td class="min-w-[40px] !px-[0px]">
-                <a href="{% url 'people:teacher_edit' teacher.pk %}">
+                <a href="{% url 'people:teacher_update' teacher.pk %}">
                   <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                        width="24px"
                        height="24px"

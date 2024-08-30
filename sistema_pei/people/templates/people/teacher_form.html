@@ -18,14 +18,14 @@
 {% block content %}
   <div class="w-full">
     <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
-    <form method="post" autocomplete="off">
+    <form method="post" enctype="multipart/form-data" autocomplete="off">
       {% csrf_token %}
       <div class="mb-4 col-span-2 flex flex-col items-center gap-4">
         <img id="profileImage"
-             src="{% static 'images/img/boy_user-profile.svg' %}"
+             src="{% if form.instance.photo %}{{ form.instance.photo.url }}{% else %}{% static 'images/img/boy_user-profile.svg' %}{% endif %}"
              alt="imagem de perfil"
              class="h-40 w-40 rounded-full bg-transparent border object-cover text-transparent" />
-        <label for="{{ form.image.id_for_label }}"
+        <label for="{{ form.photo.id_for_label }}"
                class="font-sans font-medium text-lg text-ls block mb-4">
                Foto do docente <span class="text-red-500">*</span>
         </label>
@@ -66,11 +66,11 @@
         </div>
       </div>
 
-      <div>
-        {% for subject in course.subjects %}<h1>{{ subject.name }}</h1>{% endfor %}
-      </div>
+      <a href="{% url 'people:teacher_list' %}" class="text-[18px] py-[11px] px-[44px] border border-orange-500 rounded-lg font-medium cursor-pointer mt-[56px]">
+        Voltar
+      </a>
       <button class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer mt-[56px]">
-        Cadastrar
+        Salvar
       </button>
     </form>
   </div>
