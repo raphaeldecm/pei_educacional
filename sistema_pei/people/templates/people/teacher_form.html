@@ -9,6 +9,12 @@
   {% breadcrumb_item text="Cadastrar Docente" icon="images/icons/icon-register-student-green.svg" %}
 {% endblock breadcrumb %}
 
+{% block alerts %}
+<div class="fixed p-4 top-20 flex flex-col gap-4">
+    {% include "layouts/alerts.html" %}
+    </div>
+{% endblock alerts %}
+
 {% block content %}
   <div class="w-full">
     <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
@@ -24,6 +30,7 @@
                Foto do docente <span class="text-red-500">*</span>
         </label>
         {{ form.photo }}
+
         {% comment %} /List Erros {% endcomment %}
         {% if form.image.errors %}
           <ul class="list-disc p-2">
@@ -68,3 +75,27 @@
     </form>
   </div>
 {% endblock content %}
+
+{% block inline_javascript %}
+  <script>
+    function previewImage(event) {
+
+      /*
+      Preview da imagen de perfil
+      */
+
+      const input = event.target;
+      const file = input.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        const preview = document.getElementById('profileImage');
+        preview.src = e.target.result;
+      };
+
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    }
+  </script>
+{% endblock inline_javascript %}

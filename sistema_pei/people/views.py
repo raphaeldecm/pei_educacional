@@ -55,25 +55,8 @@ class TeacherCreateView(
     model = Teacher
     title = _("Cadastrar Docente")
     form_class = TeacherForm
-    success_url = reverse_lazy("people:teacher_create")
-    success_message = _("A unidade curricular foi cadastrada com sucesso.")
-
-    def form_valid(self, form):
-        response = super().form_valid(form)
-
-        name_value = form.cleaned_data["name"]
-        success_message = f"Professor {name_value} cadastrado com sucesso"
-        messages.success(self.request, success_message)
-
-        return response
-
-    def form_invalid(self, form):
-        response = super().form_invalid(form)
-
-        error_message = "Erro ao cadastrar professor!"
-        messages.error(self.request, error_message)
-
-        return response
+    success_url = reverse_lazy("people:teacher_list")
+    success_message = _("O professor foi cadastrado com sucesso.")
 
 class TeacherEditView(generic.UpdateView):
     model = Teacher
