@@ -15,7 +15,7 @@ from django.db import IntegrityError
 from django.db.models import Count
 from django.db.models import ProtectedError
 from django.db.models import Q
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
@@ -27,7 +27,6 @@ from django.views.generic import View
 from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.academics.models import Course
 from sistema_pei.academics.models import Enrollment
-from sistema_pei.academics.models import Offer
 from sistema_pei.academics.models import Subject
 from sistema_pei.core.forms import CourseForm
 from sistema_pei.core.forms import EnrollmentForm
@@ -519,6 +518,7 @@ class RemoveStudentFromSubjectView(View):
         student = get_object_or_404(Student, id=student_id)
         subject.students.remove(student)
         return redirect(f"/subjects/edit/{subject.id}")
+
 
 class EditCoursePageView(TemplateView):
     template_name = "pages/courses/edit-course.html"

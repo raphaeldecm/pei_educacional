@@ -30,10 +30,8 @@
         </a>
       </li>
       {% comment %} <li>
-        <a href="{% url 'offers' %}"
-           class="flex gap-[10px] py-[10px] {% if request.resolver_match.url_name == 'offers' %}text-green-500 border border-transparent border-b-green-500{% endif %}">
-          <img src="{% if request.resolver_match.url_name == 'offers' %}{% static 'images/icons/highlighter-green.svg' %}{% else %}{% static 'images/icons/highlighter.svg' %}{% endif %}"
-               alt="" />
+        <a href="{% url 'offers' %}" class="flex gap-[10px] py-[10px] {% if request.resolver_match.url_name == 'offers' %}text-green-500 border border-transparent border-b-green-500{% endif %}">
+          <img src="{% if request.resolver_match.url_name == 'offers' %}{% static 'images/icons/highlighter-green.svg' %}{% else %}{% static 'images/icons/highlighter.svg' %}{% endif %}" alt="" />
           <span>Ofertas</span>
         </a>
       </li> {% endcomment %}

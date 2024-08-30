@@ -2,7 +2,6 @@ from django import forms
 
 from sistema_pei.academics.models import Course
 from sistema_pei.academics.models import Enrollment
-from sistema_pei.academics.models import Offer
 from sistema_pei.academics.models import Subject
 
 

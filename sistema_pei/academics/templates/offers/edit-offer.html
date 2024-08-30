@@ -37,8 +37,12 @@
                   class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
                   required>
             <option value="default" selected disabled>Selecione o curso...</option>
-            {% for course in form.course.field.queryset %}<option value="{{ course.id }}"
-            {% if offer.course == course %}selected{% endif %}>{{ course.name }} - {{ course.get_period_display }}</option>{% endfor %}
+            {% for course in form.course.field.queryset %}
+              <option value="{{ course.id }}"
+                      {% if offer.course == course %}selected{% endif %}>
+                {{ course.name }} - {{ course.get_period_display }}
+              </option>
+            {% endfor %}
           </select>
         </div>
       </div>

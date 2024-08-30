@@ -1,24 +1,23 @@
 # Create your views here.
 from django.contrib import messages
-from django.http import HttpResponseRedirect
-from django.urls import reverse_lazy
-from django_filters.views import FilterView
-from django.views.generic.edit import CreateView, UpdateView
-from django.core.paginator import PageNotAnInteger
-from django.shortcuts import get_object_or_404, redirect
-from django.core.paginator import Paginator
-from django.views import View
-from django.core.paginator import EmptyPage
-from sistema_pei.academics import constants
-from sistema_pei.academics.filters import EnrollmentFilter, OfferFilter
-from sistema_pei.academics.forms import OfferForm
-from sistema_pei.academics.models import Course, Enrollment, Offer, Subject
-from django.views.generic import TemplateView
-from django.views import generic
 from django.db.models import ProtectedError
-from django.db.models import Q
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
+from django.views import View
+from django.views import generic
+from django.views.generic.edit import CreateView
+from django.views.generic.edit import UpdateView
+from django_filters.views import FilterView
 
-from sistema_pei.people.models import Student, Teacher
+from sistema_pei.academics import constants
+from sistema_pei.academics.filters import EnrollmentFilter
+from sistema_pei.academics.filters import OfferFilter
+from sistema_pei.academics.forms import OfferForm
+from sistema_pei.academics.models import Course
+from sistema_pei.academics.models import Enrollment
+from sistema_pei.academics.models import Offer
+from sistema_pei.people.models import Student
 
 
 class OffersPageView(FilterView, generic.ListView):
@@ -28,8 +27,8 @@ class OffersPageView(FilterView, generic.ListView):
     filterset_class = OfferFilter
 
     def get_queryset(self):
-        #Listar somente ofertas do curso
-        course_id = self.kwargs.get('course_id')
+        # Listar somente ofertas do curso
+        course_id = self.kwargs.get("course_id")
         queryset = Offer.objects.filter(course_id=course_id)
         filterset = OfferFilter(self.request.GET, queryset=queryset)
         return filterset.qs
@@ -63,6 +62,8 @@ class OffersPageView(FilterView, generic.ListView):
         ]
 
         return context
+
+
 class CreateOfferPageView(CreateView):
     template_name = "offers/create-offer.html"
     form_class = OfferForm
@@ -92,27 +93,30 @@ class CreateOfferPageView(CreateView):
         self.object = form.save()
         form = self.get_form_class()()
         messages.success(self.request, "Oferta criada com sucesso!")
-        return redirect(f'/academics/offers/{self.object.course.id}')
+        return redirect(f"/academics/offers/{self.object.course.id}")
 
     def form_invalid(self, form):
         context = self.get_context_data(form=form)
         messages.error(self.request, "Erro ao criar oferta")
-        return redirect(self.request.META.get('HTTP_REFERER', '/'))
+        return redirect(self.request.headers.get("referer", "/"))
 
     def get_success_url(self):
         return self.request.path
-      
+
+
 class EditOfferPageView(UpdateView):
     model = Offer
     form_class = OfferForm
     template_name = "offers/edit-offer.html"
-    context_object_name = 'offer'
+    context_object_name = "offer"
 
     def get_object(self, queryset=None):
-        return get_object_or_404(Offer, id=self.kwargs['offer_id'])
+        return get_object_or_404(Offer, id=self.kwargs["offer_id"])
 
     def get_success_url(self):
-        return reverse_lazy('academics:offers', kwargs={'course_id': self.object.course_id})
+        return reverse_lazy(
+            "academics:offers", kwargs={"course_id": self.object.course_id}
+        )
 
     def form_valid(self, form):
         messages.success(self.request, "Oferta editada com sucesso!")
@@ -141,7 +145,7 @@ class EditOfferPageView(UpdateView):
         ]
         return context
 
-      
+
 class OfferDetailsPageView(FilterView):
     template_name = "offers/offer-details.html"
     paginate_by = 10
@@ -154,10 +158,10 @@ class OfferDetailsPageView(FilterView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
+
         offer_id = self.kwargs.get("offer_id")
         offer = get_object_or_404(Offer, id=offer_id)
-        
+
         course_id = self.kwargs.get("course_id")
         course = get_object_or_404(Course, id=course_id)
         context["course"] = course
@@ -181,48 +185,57 @@ class OfferDetailsPageView(FilterView):
 
         context["offer"] = offer
 
-        context["selector_students"] = Student.objects.filter(course=offer.course).exclude(id__in=offer.enrollments.values_list('student_id', flat=True))
-      
+        context["selector_students"] = Student.objects.filter(
+            course=offer.course
+        ).exclude(id__in=offer.enrollments.values_list("student_id", flat=True))
+
         return context
-      
+
+
 class DeleteOfferView(View):
     def get(self, request, offer_id):
         offer = get_object_or_404(Offer, id=offer_id)
         try:
             offer.delete()
             messages.success(request, "Oferta removida com sucesso!")
-            return redirect(request.META.get('HTTP_REFERER', '/'))
+            return redirect(request.headers.get("referer", "/"))
         except ProtectedError:
             messages.error(
                 request,
                 "Erro - Você não pode remover ofertas com alunos associados!",
             )
-            return redirect(request.META.get('HTTP_REFERER', '/'))
-          
+            return redirect(request.headers.get("referer", "/"))
+
+
 class RemoveStudentFromOfferView(View):
     def get(self, request, offer_id, student_id):
         offer = get_object_or_404(Offer, id=offer_id)
         student = get_object_or_404(Student, id=student_id)
-        
+
         try:
             enrollment = get_object_or_404(Enrollment, offer=offer, student=student)
             enrollment.delete()
             messages.success(request, "Aluno removido com sucesso da oferta.")
         except ProtectedError:
             messages.error(
-                request, 
-                "Não é possível remover o aluno desta oferta porque existem PEIs associados."
+                request,
+                "Não é possível remover o aluno desta oferta porque existem PEIs associados.",
             )
-        
+
         return redirect(f"/academics/offers/details/{student.course.id}/{offer.id}")
+
 
 class AddStudentToOfferView(View):
     def post(self, request, offer_id):
         offer = get_object_or_404(Offer, id=offer_id)
-        student_id = request.POST.get('student')
+        student_id = request.POST.get("student")
         student = get_object_or_404(Student, id=student_id)
 
         if not Enrollment.objects.filter(offer=offer, student=student).exists():
-            Enrollment.objects.create(offer=offer, student=student, YearSemesterReference=student.reference_period)
+            Enrollment.objects.create(
+                offer=offer,
+                student=student,
+                YearSemesterReference=student.reference_period,
+            )
 
-        return redirect(f'/academics/offers/details/{student.course.id}/{offer.id}')
+        return redirect(f"/academics/offers/details/{student.course.id}/{offer.id}")
