@@ -1,6 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth import login
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -18,6 +20,7 @@ from sistema_pei.people.models import StudentFile
 from sistema_pei.people.models import Teacher
 from sistema_pei.people.models import User
 
+from .forms import TeacherForm
 from .forms import ViewStudentForm
 
 
@@ -46,11 +49,14 @@ class TeacherListView(TitleViewMixin, FilterView, generic.ListView):
     filterset_class = TeacherFilter
     template_name = "people/teacher_list.html"
 
-class TeacherCreateView(CreateView):
+class TeacherCreateView(
+    LoginRequiredMixin, TitleViewMixin, SuccessMessageMixin, CreateView
+):
     model = Teacher
-    fields = ["name", "email", "campus"]
-    template_name = "people/teacher_create.html"
+    title = _("Cadastrar Docente")
+    form_class = TeacherForm
     success_url = reverse_lazy("people:teacher_create")
+    success_message = _("A unidade curricular foi cadastrada com sucesso.")
 
     def form_valid(self, form):
         response = super().form_valid(form)
