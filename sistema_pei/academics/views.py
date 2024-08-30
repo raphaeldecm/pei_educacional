@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django_filters.views import FilterView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.core.paginator import PageNotAnInteger
 from django.shortcuts import get_object_or_404, redirect
 from django.core.paginator import Paginator
@@ -102,15 +102,20 @@ class CreateOfferPageView(CreateView):
     def get_success_url(self):
         return self.request.path
       
-class EditOfferPageView(TemplateView):
+class EditOfferPageView(UpdateView):
+    model = Offer
+    form_class = OfferForm
     template_name = "offers/edit-offer.html"
+    context_object_name = 'offer'
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(Offer, id=self.kwargs['offer_id'])
+
+    def get_success_url(self):
+        return reverse_lazy('academics:offers', kwargs={'course_id': self.object.course_id})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        offer_id = self.kwargs.get("offer_id")
-        offer = get_object_or_404(Offer, id=offer_id)
-
-        # Breadcrumbs
         context["breadcrumbs_data"] = [
             {
                 "icon": "images/icons/icon-home-green.svg",
@@ -126,20 +131,11 @@ class EditOfferPageView(TemplateView):
                 "name": "Editar Oferta",
             },
         ]
-
-        context["offer"] = offer
         context["selector_teachers"] = Teacher.objects.all()
         context["selector_subjects"] = Subject.objects.all()
-
+        context["selector_courses"] = Course.objects.all()
         return context
 
-    def post(self, request, *args, **kwargs):
-        offer_id = self.kwargs.get("offer_id")
-        offer = get_object_or_404(Offer, id=offer_id)
-        form = OfferForm(request.POST, instance=offer)
-        if form.is_valid():
-            form.save()
-        return redirect(f'/academics/offers/{offer.course_id}')
       
 class OfferDetailsPageView(TemplateView):
     template_name = "offers/offer-details.html"

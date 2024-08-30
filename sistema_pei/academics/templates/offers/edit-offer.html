@@ -27,6 +27,22 @@
         </div>
       </div>
       <div class="mt-[24px]">
+        <label for="course" class="font-medium text-[18px]">Curso:</label>
+        <div class="relative w-full cursor-pointer mt-[16px]">
+          <img class="absolute top-[12px] right-[10px]"
+               src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+               width="24px"
+               height="24px" />
+          <select name="course"
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
+                  required>
+            <option value="default" selected disabled>Selecione o tipo...</option>
+            {% for course in form.course.field.queryset %}<option value="{{ course.id }}"
+            {% if offer.course == course %}selected{% endif %}>{{ course.name }} - {{ course.get_period_display }}</option>{% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="mt-[24px]">
         <label for="teacher" class="font-medium text-[18px]">Professor:</label>
         <div class="relative w-full cursor-pointer mt-[16px]">
           <img class="absolute top-[12px] right-[10px]"
