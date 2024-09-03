@@ -1,0 +1,15 @@
+{% load static i18n %}
+{% if not first %}
+  <img
+    src="{% static 'images/icons/icon-breadcrumbs-arrow.svg' %}"
+    width="10px"
+    height="20px"
+  />
+{% endif %}
+<a
+  href="{% if url %}{{ url }}{% else %}#{% endif %}"
+  class="flex gap-[10px] font-medium text-[16px] text-green-500"
+>
+  <img src="{% static icon %}" width="19px" height="19px" />
+  <p>{{ text }}</p>
+</a>

@@ -6,26 +6,38 @@
   </button>
   <h1>
     <a href="{% url 'home' %}">
-      <img src="{% static 'images/icons/green-logo.svg' %}"
-           width="85px"
-           height="30px" />
+      <img
+        src="{% static 'images/icons/green-logo.svg' %}"
+        width="85px"
+        height="30px"
+      />
     </a>
   </h1>
   <nav class="hidden md:flex flex-col">
-    <ul class="flex justify-center items-center gap-[28px] text-slate-400 text-base">
+    <ul
+      class="flex justify-center items-center gap-[28px] text-slate-400 text-base"
+    >
       <li>
-        <a href="{% url 'home' %}"
-           class="flex gap-[10px] py-[10px] {% if request.resolver_match.url_name == 'home' %}text-green-500 border border-transparent border-b-green-500{% endif %}">
-          <img src="{% if request.resolver_match.url_name == 'home' %}{% static 'images/icons/icon-home-green.svg' %}{% else %}{% static 'images/icons/icon-home.svg' %}{% endif %}"
-               alt="" />
+        <a
+          href="{% url 'home' %}"
+          class="flex gap-[10px] py-[10px] {% if request.resolver_match.url_name == 'home' %}text-green-500 border border-transparent border-b-green-500{% endif %}"
+        >
+          <img
+            src="{% if request.resolver_match.url_name == 'home' %}{% static 'images/icons/icon-home-green.svg' %}{% else %}{% static 'images/icons/icon-home.svg' %}{% endif %}"
+            alt=""
+          />
           <span>Home</span>
         </a>
       </li>
       <li>
-        <a href="{% url 'courses' %}"
-           class="flex gap-[10px] py-[10px] {% if request.resolver_match.url_name == 'courses' %}text-green-500 border border-transparent border-b-green-500{% endif %}">
-          <img src="{% if request.resolver_match.url_name == 'courses' %}{% static 'images/icons/icon-courses-green.svg' %}{% else %}{% static 'images/icons/icon-courses.svg' %}{% endif %}"
-               alt="" />
+        <a
+          href="{% url 'courses' %}"
+          class="flex gap-[10px] py-[10px] {% if request.resolver_match.url_name == 'courses' %}text-green-500 border border-transparent border-b-green-500{% endif %}"
+        >
+          <img
+            src="{% if request.resolver_match.url_name == 'courses' %}{% static 'images/icons/icon-courses-green.svg' %}{% else %}{% static 'images/icons/icon-courses.svg' %}{% endif %}"
+            alt=""
+          />
           <span>Cursos</span>
         </a>
       </li>
@@ -44,106 +56,139 @@
         </a>
       </li>
       <li>
-        <a href="{% url 'student_create' %}"
-           class="flex gap-[10px] py-[10px] {% if request.resolver_match.url_name == 'student_create' %}text-green-500 border border-transparent border-b-green-500{% endif %}">
-          <img src="{% if request.resolver_match.url_name == 'student_create' %}{% static 'images/icons/icon-register-student-green.svg' %}{% else %}{% static 'images/icons/icon-register-student.svg' %}{% endif %}"
-               alt="" />
+        <a
+          href="{% url 'student_create' %}"
+          class="flex gap-[10px] py-[10px] {% if request.resolver_match.url_name == 'student_create' %}text-green-500 border border-transparent border-b-green-500{% endif %}"
+        >
+          <img
+            src="{% if request.resolver_match.url_name == 'student_create' %}{% static 'images/icons/icon-register-student-green.svg' %}{% else %}{% static 'images/icons/icon-register-student.svg' %}{% endif %}"
+            alt=""
+          />
           <span>Cadastrar Aluno</span>
+        </a>
+      </li>
+      <li>
+        <a
+          href="{% url 'people:teacher_list' %}"
+          class="flex gap-[10px] py-[10px] {% if request.resolver_match.url_name == 'teacher_list' %}text-green-500 border border-transparent border-b-green-500{% endif %}"
+        >
+          <img
+            src="{% if request.resolver_match.url_name == 'teacher_list' %}{% static 'images/icons/icon-multiple-users-green.svg' %}{% else %}{% static 'images/icons/icon-multiple-users.svg' %}{% endif %}"
+            alt=""
+          />
+          <span>Docentes</span>
         </a>
       </li>
     </ul>
   </nav>
 </div>
 {% if user.is_authenticated %}
-  <div class="flex items-center relative text-left gap-6">
-    <div class="flex w-full max-w-[400px] h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
-      <img src="{% static 'images/icons/icon-search.svg' %}"
-           width="18px"
-           height="18px" />
-      <input type="text"
-             placeholder="Pesquisar..."
-             class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50" />
-    </div>
-    <div class="cursor-pointer">
-      <img src="{% static 'images/icons/icon-notification.svg' %}" alt="" />
-    </div>
-    <div>
-      <a onclick="toggleDropdown"
-         type="button"
-         class="inline-flex w-full justify-center items-center gap-x-1.5 rounded-md py-2 text-sm font-semibold hover:cursor-pointer hover:bg-zinc-200/10"
-         id="menu-button"
-         aria-expanded="true"
-         aria-haspopup="true">
-        <div class="bg-green-500/50 py-2.5 px-3 rounded-full">
-          <i class="fas fa-solid fa-user fa-lg"></i>
-        </div>
-        <div class="ml-2 text-zinc-50">
-          <i class="fas fa-solid fa-angle-down"></i>
-        </div>
-      </a>
-    </div>
-    <div id="dropdown"
-         class="hidden absolute right-0 z-10 mt-28 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-         role="menu"
-         aria-orientation="vertical"
-         aria-labelledby="menu-button"
-         tabindex="-1">
-      <div class="py-1 cursor-pointer" role="none">
-        <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-        <a id="logoutButton"
-           class="text-slate-900-700 block w-full px-4 py-2 text-left text-sm cursor-pointer font-sans align-baseline font-light hover:text-green-700"
-           role="menuitem"
-           aria-haspopup="true"
-           tabindex="-1"
-           id="menu-item-0">{% trans "Sign Out" %}</a>
+<div class="flex items-center relative text-left gap-6">
+  <div
+    class="flex w-full max-w-[400px] h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2"
+  >
+    <img
+      src="{% static 'images/icons/icon-search.svg' %}"
+      width="18px"
+      height="18px"
+    />
+    <input
+      type="text"
+      placeholder="Pesquisar..."
+      class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50"
+    />
+  </div>
+  <div class="cursor-pointer">
+    <img src="{% static 'images/icons/icon-notification.svg' %}" alt="" />
+  </div>
+  <div>
+    <a
+      onclick="toggleDropdown"
+      type="button"
+      class="inline-flex w-full justify-center items-center gap-x-1.5 rounded-md py-2 text-sm font-semibold hover:cursor-pointer hover:bg-zinc-200/10"
+      id="menu-button"
+      aria-expanded="true"
+      aria-haspopup="true"
+    >
+      <div class="bg-green-500/50 py-2.5 px-3 rounded-full">
+        <i class="fas fa-solid fa-user fa-lg"></i>
       </div>
+      <div class="ml-2 text-zinc-50">
+        <i class="fas fa-solid fa-angle-down"></i>
+      </div>
+    </a>
+  </div>
+  <div
+    id="dropdown"
+    class="hidden absolute right-0 z-10 mt-28 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+    role="menu"
+    aria-orientation="vertical"
+    aria-labelledby="menu-button"
+    tabindex="-1"
+  >
+    <div class="py-1 cursor-pointer" role="none">
+      <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+      <a
+        id="logoutButton"
+        class="text-slate-900-700 block w-full px-4 py-2 text-left text-sm cursor-pointer font-sans align-baseline font-light hover:text-green-700"
+        role="menuitem"
+        aria-haspopup="true"
+        tabindex="-1"
+        id="menu-item-0"
+        >{% trans "Sign Out" %}</a
+      >
     </div>
   </div>
+</div>
 {% endif %}
 <!-- Modal de Logout -->
 {% include "../account/logout.html" %}
 <script>
   function toggleDropdown() {
-    const dropdown = document.getElementById('dropdown')
-    dropdown.classList.toggle('hidden')
+    const dropdown = document.getElementById("dropdown");
+    dropdown.classList.toggle("hidden");
   }
 
-  document.addEventListener('click', function(event) {
+  document.addEventListener("click", function (event) {
     /**
      * Lida com interações com um modal de logout.
      * Mostra e oculta o modal com base nas ações do usuário.
      **/
 
-    const dropdown = document.getElementById('dropdown');
-    const menuButton = document.getElementById('menu-button');
+    const dropdown = document.getElementById("dropdown");
+    const menuButton = document.getElementById("menu-button");
 
-    if (!dropdown.classList.contains('hidden') && !dropdown.contains(event.target) && !menuButton.contains(event.target)) {
-      dropdown.classList.add('hidden');
+    if (
+      !dropdown.classList.contains("hidden") &&
+      !dropdown.contains(event.target) &&
+      !menuButton.contains(event.target)
+    ) {
+      dropdown.classList.add("hidden");
     }
   });
 
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener("DOMContentLoaded", function () {
     /**
      * Lida com interações com um modal de logout.
      * Mostra e oculta o modal com base nas ações do usuário.
      **/
 
-    var logoutButton = document.getElementById('logoutButton');
-    var logoutModal = document.getElementById('logoutModal');
-    var closeModalButton = document.getElementById('closeModalButton');
+    var logoutButton = document.getElementById("logoutButton");
+    var logoutModal = document.getElementById("logoutModal");
+    var closeModalButton = document.getElementById("closeModalButton");
 
-    logoutButton.addEventListener('click', function() {
-      logoutModal.classList.remove('hidden');
+    logoutButton.addEventListener("click", function () {
+      logoutModal.classList.remove("hidden");
     });
 
-    closeModalButton.addEventListener('click', function() {
-      logoutModal.classList.add('hidden');
+    closeModalButton.addEventListener("click", function () {
+      logoutModal.classList.add("hidden");
     });
 
     // Caso o ususario click fora do modal vai fechar.
-    window.addEventListener('click', function(event) {
+    window.addEventListener("click", function (event) {
       if (event.target == logoutModal) {
-        logoutModal.classList.add('hidden');
+        logoutModal.classList.add("hidden");
       }
     });
   });
