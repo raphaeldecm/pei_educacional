@@ -10,7 +10,7 @@ from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
 from django_filters.views import FilterView
 
-from sistema_pei.academics import constants
+from sistema_pei.core import constants
 from sistema_pei.academics.filters import EnrollmentFilter
 from sistema_pei.academics.filters import OfferFilter
 from sistema_pei.academics.forms import OfferForm

@@ -8,4 +8,3 @@ COURSE_TYPE = [
     ("Engenharia", "Engenharia"),
     ("Outros", "Outros"),
 ]
-DEFAULT_PAGE_SIZE = 10
