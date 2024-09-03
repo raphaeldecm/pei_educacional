@@ -279,4 +279,4 @@ sistema_pei/media/
 !.envs/.local/
 
 # Tailwind CSS output
-sistema_pei/static/css/output.css
+/sistema_pei/static/css/output.css

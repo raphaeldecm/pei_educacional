@@ -8,8 +8,8 @@ class Command(BaseCommand):
     ADMIN_NAME = "admin"
     ADMIN_EMAIL = "raphael.muniz@ifrn.edu.br"
     ADMIN_PASSWORD = (
-        "argon2$argon2id$v=19$m=102400,t=2,p=8$MHFqc3lkdkIzTEhqMWs"
-        "3QlNlZ0JmVA$0x4Kwnmi6EeXjaKLl9Tn+HPXF5wphUU4/i1ZxdxooDg"
+        "argon2$argon2id$v=19$m=102400,t=2,p=8$S09uUzdDRDFPSWlDN2R3O"  # noqa: S105
+        "GJ6cWFvWQ$dCZshwPCs0FDEET8dc+KznlGxkZhwLMTtKGoWiB2JYo"
     )
     help = "Adding superuser..."
 
