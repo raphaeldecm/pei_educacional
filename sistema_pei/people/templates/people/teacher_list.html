@@ -5,7 +5,7 @@
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
-  {% breadcrumb_item text="Docentes" icon="images/icons/icon-register-student-green.svg" url="people:teacher_list" %}
+  {% breadcrumb_item text="Docentes" icon="images/icons/icon-multiple-users-green.svg" url="people:teacher_list" %}
 {% endblock breadcrumb %}
 
 {% block content %}
@@ -75,7 +75,7 @@
       </div>
     </form>
     <a href="{% url 'people:teacher_create' %}"
-      class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer hover:bg-green-500 hover:text-white transition-colors duration-300">
+      class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer hover:bg-green-500 hover:text-white transition-colors duration-300 mt-[2px]">
       Cadastrar Docente
     </a>
     <div class="mt-[53px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg">
@@ -86,7 +86,7 @@
             <th>Matrícula</th>
             <th>Email</th>
             <th>Campi</th>
-            <th colspan="3" style="text-align: center;">Ações</th>
+            <th colspan="3" style="text-align: center" class='pr-[26px]'>Ações</th>
           </tr>
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
@@ -97,30 +97,27 @@
               <td>{{ object.email }}</td>
               <td>{{ object.campus.abbreviation }}</td>
 
-              <td class="min-w-[40px] !px-[0px]">
+              <td class="flex justify-center h-full gap-[30px] !mt-[32px] pr-[26px]">
                 <a href="{% url 'people:teacher_detail' object.pk %}">
                   <img src="{% static 'images/icons/icon-eye.svg' %}"
                   width="24px"
                   height="24px"
                   class="cursor-pointer" />
                 </a>
-              </td>
-              <td class="min-w-[40px] !px-[0px]">
+
                 <a href="{% url 'people:teacher_update' object.pk %}">
                   <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                        width="24px"
                        height="24px"
                        class="cursor-pointer" />
                 </a>
-              </td>
-              <td class="min-w-[40px] !px-[0px]">
                 <button type="button"
-                  id="openModal">
-                  <img src="{% static 'images/icons/icon-remove-element.svg' %}"
-                       width="24px"
-                       height="24px"
-                       class="cursor-pointer" />
-              </button>
+                    id="openModal">
+                    <img src="{% static 'images/icons/icon-remove-element.svg' %}"
+                        width="24px"
+                        height="24px"
+                        class="cursor-pointer" />
+                </button>
               </td>
               {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão de Docente" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="people:teacher_delete" %}
             </tr>
