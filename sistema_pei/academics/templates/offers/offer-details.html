@@ -1,10 +1,19 @@
 {% extends "base.html" %}
 
 {% load static i18n %}
+{% load breadcrumb_item %}
+
+{% block breadcrumb %}
+  {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
+  {% breadcrumb_item text="Cursos" icon="images/icons/icon-courses-green.svg" url="courses" %}
+  {% breadcrumb_item text="Matérias" icon="images/icons/icon-courses-green.svg" %}
+  {% breadcrumb_item text="Ofertas" icon="images/icons/icon-courses-green.svg" %}
+  {% breadcrumb_item text="Detalhes da Oferta" icon="images/icons/highlighter-green.svg" %}
+{% endblock breadcrumb %}
+
 
 {% block content %}
   <div class="w-full">
-    {% include 'layouts/breadcrumbs.html' with breadcrumb_data=breadcrumb_data %}
     <h1 class="text-[32px] font-medium mb-[38px]">Oferta: {{ course.name }} - {{ offer.subject.name }}</h1>
     {% comment %} Adicionar a oferta {% endcomment %}
     <form action="{% url 'academics:add_student_to_offer' offer.id %}"

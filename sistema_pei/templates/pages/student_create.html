@@ -2,6 +2,12 @@
 {% extends "base.html" %}
 
 {% load static %}
+{% load breadcrumb_item %}
+
+{% block breadcrumb %}
+  {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
+  {% breadcrumb_item text="Cadastrar Aluno" icon="images/icons/icon-edit-green.svg" %}
+{% endblock breadcrumb %}
 
 {% block content %}
   <div class="w-10/12 my-10">

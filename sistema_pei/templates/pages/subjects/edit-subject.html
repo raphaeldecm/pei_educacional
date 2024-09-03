@@ -1,10 +1,17 @@
 {% extends "base.html" %}
 
+
 {% load static i18n %}
+{% load breadcrumb_item %}
+
+{% block breadcrumb %}
+  {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
+  {% breadcrumb_item text="Cursos" icon="images/icons/icon-courses-green.svg" url="courses" %}
+  {% breadcrumb_item text="Editar Matéria" icon="images/icons/icon-edit-green.svg" %}
+{% endblock breadcrumb %}
 
 {% block content %}
   <div class="w-full">
-    {% include '../../layouts/breadcrumbs.html' with breadcrumb_data=breadcrumbs_data %}
     <h1 class="text-[32px] font-medium mb-[38px]">
       Editar Matéria: {{ subject.name }} - {{ subject.get_subject_type_display }}
     </h1>

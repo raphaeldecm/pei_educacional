@@ -1,10 +1,15 @@
 {% extends "base.html" %}
 
 {% load static i18n %}
+{% load breadcrumb_item %}
+
+{% block breadcrumb %}
+  {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
+  {% breadcrumb_item text="Perfil do aluno" icon="images/icons/icon-user-green.svg"%}
+{% endblock breadcrumb %}
 
 {% block content %}
   <div class="w-full">
-    {% include '../layouts/breadcrumbs.html' with breadcrumb_data=breadcrumb_data %}
     <div>
       <h1 class="font-semibold text-[30px] mb-[33px]">Perfil do Aluno</h1>
       <div class="bg-amber-100 rounded-lg  p-[20px] flex gap-[16px]">

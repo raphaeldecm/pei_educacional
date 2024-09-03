@@ -1,10 +1,15 @@
 {% extends "base.html" %}
 
 {% load static i18n %}
+{% load breadcrumb_item %}
+
+{% block breadcrumb %}
+  {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
+  {% breadcrumb_item text="Cursos" icon="images/icons/icon-courses-green.svg" url="courses" %}
+{% endblock breadcrumb %}
 
 {% block content %}
   <div class="w-full">
-    {% include '../../layouts/breadcrumbs.html' with breadcrumb_data=breadcrumb_data %}
     <h1 class="text-[32px] font-medium mb-[38px]">Cursos</h1>
     <form>
       <div class="mb-[26px] flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">

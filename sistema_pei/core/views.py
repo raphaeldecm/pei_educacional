@@ -275,19 +275,6 @@ class ProfilePageView(TemplateView):
             if sub_tab == "edit_files":
                 context["student_files"] = StudentFile.objects.filter(student=student)
 
-        # Breadcrumbs
-        context["breadcrumbs_data"] = [
-            {
-                "icon": "images/icons/icon-home-green.svg",
-                "name": "Home",
-                "url": "home",
-            },
-            {
-                "icon": "images/icons/icon-courses-green.svg",
-                "name": student.name,
-            },
-        ]
-
         return context
 
 
@@ -422,19 +409,6 @@ class CoursesPageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Breadcrumbs
-        context["breadcrumbs_data"] = [
-            {
-                "icon": "images/icons/icon-home-green.svg",
-                "name": "Home",
-                "url": "home",
-            },
-            {
-                "icon": "images/icons/icon-courses-green.svg",
-                "name": "Cursos",
-            },
-        ]
-
         # Filter Selectors
         context["course_types"] = [course[0] for course in COURSE_TYPE]
 
@@ -476,24 +450,6 @@ class CreateCoursesPageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Breadcrumbs
-        context["breadcrumbs_data"] = [
-            {
-                "icon": "images/icons/icon-home-green.svg",
-                "name": "Home",
-                "url": "home",
-            },
-            {
-                "icon": "images/icons/icon-courses-green.svg",
-                "name": "Cursos",
-                "url": "courses",
-            },
-            {
-                "icon": "images/icons/icon-edit-green.svg",
-                "name": "Criar Curso",
-            },
-        ]
-
         context["course_types"] = [course[0] for course in COURSE_TYPE]
         return context
 
@@ -528,24 +484,6 @@ class EditCoursePageView(TemplateView):
         course_id = self.kwargs.get("course_id")
         course = get_object_or_404(Course, id=course_id)
         course_subjects = course.subjects.all()
-
-        # Breadcrumbs
-        context["breadcrumbs_data"] = [
-            {
-                "icon": "images/icons/icon-home-green.svg",
-                "name": "Home",
-                "url": "home",
-            },
-            {
-                "icon": "images/icons/icon-courses-green.svg",
-                "name": "Cursos",
-                "url": "courses",
-            },
-            {
-                "icon": "images/icons/icon-edit-green.svg",
-                "name": "Editar Curso",
-            },
-        ]
 
         filters = {}
         if "search_subject" in self.request.GET:
@@ -591,24 +529,6 @@ class SubjectsPageView(TemplateView):
         course_subjects = course.subjects.all()
         context["course"] = course
 
-        # Breadcrumbs
-        context["breadcrumbs_data"] = [
-            {
-                "icon": "images/icons/icon-home-green.svg",
-                "name": "Home",
-                "url": "home",
-            },
-            {
-                "icon": "images/icons/icon-courses-green.svg",
-                "name": "Cursos",
-                "url": "courses",
-            },
-            {
-                "icon": "images/icons/icon-courses-green.svg",
-                "name": "Matérias",
-            },
-        ]
-
         # Table
         filters = {}
         if "duration" in self.request.GET:
@@ -645,23 +565,6 @@ class CreateSubjectPageView(TemplateView):
         course = get_object_or_404(Course, id=course_id)
         context["current_course"] = course
 
-        # Breadcrumbs
-        context["breadcrumbs_data"] = [
-            {
-                "icon": "images/icons/icon-home-green.svg",
-                "name": "Home",
-                "url": "home",
-            },
-            {
-                "icon": "images/icons/icon-courses-green.svg",
-                "name": "Cursos",
-                "url": "courses",
-            },
-            {
-                "icon": "images/icons/icon-edit-green.svg",
-                "name": "Criar Matéria",
-            },
-        ]
         context["course_types"] = [course[0] for course in COURSE_TYPE]
         context["courses"] = Course.objects.all()
 
@@ -710,24 +613,6 @@ class EditSubjectPageView(TemplateView):
                 request,
                 "Erro - Você não pode remover matérias com ofertas associadas!",
             )
-
-        # Breadcrumbs
-        context["breadcrumbs_data"] = [
-            {
-                "icon": "images/icons/icon-home-green.svg",
-                "name": "Home",
-                "url": "home",
-            },
-            {
-                "icon": "images/icons/icon-courses-green.svg",
-                "name": "Cursos",
-                "url": "courses",
-            },
-            {
-                "icon": "images/icons/icon-edit-green.svg",
-                "name": "Editar Matéria",
-            },
-        ]
 
         context["subject"] = subject
         context["course_types"] = [course[0] for course in COURSE_TYPE]

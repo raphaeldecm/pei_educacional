@@ -1,10 +1,16 @@
 {% extends "base.html" %}
 
 {% load static i18n %}
+{% load breadcrumb_item %}
+
+{% block breadcrumb %}
+  {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
+  {% breadcrumb_item text="Cursos" icon="images/icons/icon-courses-green.svg" url="courses" %}
+  {% breadcrumb_item text="Criar Materia" icon="images/icons/icon-edit-green.svg" %}
+{% endblock breadcrumb %}
 
 {% block content %}
   <div class="w-full">
-    {% include '../../layouts/breadcrumbs.html' with breadcrumb_data=breadcrumb_data %}
     <h1 class="text-[32px] font-medium mb-[38px]">Criar Matéria</h1>
     <form action="{% url 'create_subject' current_course.id %}" method="post">
       {% csrf_token %}

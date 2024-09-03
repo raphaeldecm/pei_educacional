@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 
 {% load static i18n %}
+{% load breadcrumb_item %}
+
+{% block breadcrumb %}
+  {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
+  {% breadcrumb_item text="Usuários" icon="images/icons/icon-courses-green.svg" url="courses" %}
+{% endblock breadcrumb %}
+
 
 {% block content %}
   <div class="w-full">
