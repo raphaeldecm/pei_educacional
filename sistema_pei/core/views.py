@@ -16,7 +16,6 @@ from django.db.models import Count
 from django.db.models import ProtectedError
 from django.db.models import Q
 from django.http import HttpResponse
-from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
@@ -28,7 +27,6 @@ from django.views.generic import View
 from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.academics.models import Course
 from sistema_pei.academics.models import Enrollment
-from sistema_pei.academics.models import Offer
 from sistema_pei.academics.models import Subject
 from sistema_pei.core.forms import CourseForm
 from sistema_pei.core.forms import EnrollmentForm
@@ -54,7 +52,7 @@ class HomePageView(TemplateView):
         # Filter Selectors
         context["selector_courses"] = Course.objects.all()
         context["selector_teachers"] = Teacher.objects.all()
-        context["selector_Subjects"] = Subject.objects.all()
+        context["selector_offers"] = Subject.objects.all()
 
         # Cards
         context["pending_peis"] = Pei.objects.filter(status="NOT_START").count()
@@ -142,7 +140,7 @@ class UsersPageView(TemplateView):
             )
         except IntegrityError:
             messages.error(request, "Usuário já cadastrado!")
-            return redirect('users')
+            return redirect("users")
 
         token = default_token_generator.make_token(user)
         uid = urlsafe_base64_encode(force_bytes(user.pk))
@@ -276,19 +274,6 @@ class ProfilePageView(TemplateView):
         if requested_tab == "edit_student_data":
             if sub_tab == "edit_files":
                 context["student_files"] = StudentFile.objects.filter(student=student)
-
-        # Breadcrumbs
-        context["breadcrumbs_data"] = [
-            {
-                "icon": "images/icons/icon-home-green.svg",
-                "name": "Home",
-                "url": "home",
-            },
-            {
-                "icon": "images/icons/icon-courses-green.svg",
-                "name": student.name,
-            },
-        ]
 
         return context
 
@@ -424,19 +409,6 @@ class CoursesPageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Breadcrumbs
-        context["breadcrumbs_data"] = [
-            {
-                "icon": "images/icons/icon-home-green.svg",
-                "name": "Home",
-                "url": "home",
-            },
-            {
-                "icon": "images/icons/icon-courses-green.svg",
-                "name": "Cursos",
-            },
-        ]
-
         # Filter Selectors
         context["course_types"] = [course[0] for course in COURSE_TYPE]
 
@@ -478,24 +450,6 @@ class CreateCoursesPageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Breadcrumbs
-        context["breadcrumbs_data"] = [
-            {
-                "icon": "images/icons/icon-home-green.svg",
-                "name": "Home",
-                "url": "home",
-            },
-            {
-                "icon": "images/icons/icon-courses-green.svg",
-                "name": "Cursos",
-                "url": "courses",
-            },
-            {
-                "icon": "images/icons/icon-edit-green.svg",
-                "name": "Criar Curso",
-            },
-        ]
-
         context["course_types"] = [course[0] for course in COURSE_TYPE]
         return context
 
@@ -530,24 +484,6 @@ class EditCoursePageView(TemplateView):
         course_id = self.kwargs.get("course_id")
         course = get_object_or_404(Course, id=course_id)
         course_subjects = course.subjects.all()
-
-        # Breadcrumbs
-        context["breadcrumbs_data"] = [
-            {
-                "icon": "images/icons/icon-home-green.svg",
-                "name": "Home",
-                "url": "home",
-            },
-            {
-                "icon": "images/icons/icon-courses-green.svg",
-                "name": "Cursos",
-                "url": "courses",
-            },
-            {
-                "icon": "images/icons/icon-edit-green.svg",
-                "name": "Editar Curso",
-            },
-        ]
 
         filters = {}
         if "search_subject" in self.request.GET:
@@ -593,24 +529,6 @@ class SubjectsPageView(TemplateView):
         course_subjects = course.subjects.all()
         context["course"] = course
 
-        # Breadcrumbs
-        context["breadcrumbs_data"] = [
-            {
-                "icon": "images/icons/icon-home-green.svg",
-                "name": "Home",
-                "url": "home",
-            },
-            {
-                "icon": "images/icons/icon-courses-green.svg",
-                "name": "Cursos",
-                "url": "courses",
-            },
-            {
-                "icon": "images/icons/icon-courses-green.svg",
-                "name": "Matérias",
-            },
-        ]
-
         # Table
         filters = {}
         if "duration" in self.request.GET:
@@ -647,23 +565,6 @@ class CreateSubjectPageView(TemplateView):
         course = get_object_or_404(Course, id=course_id)
         context["current_course"] = course
 
-        # Breadcrumbs
-        context["breadcrumbs_data"] = [
-            {
-                "icon": "images/icons/icon-home-green.svg",
-                "name": "Home",
-                "url": "home",
-            },
-            {
-                "icon": "images/icons/icon-courses-green.svg",
-                "name": "Cursos",
-                "url": "courses",
-            },
-            {
-                "icon": "images/icons/icon-edit-green.svg",
-                "name": "Criar Matéria",
-            },
-        ]
         context["course_types"] = [course[0] for course in COURSE_TYPE]
         context["courses"] = Course.objects.all()
 
@@ -713,24 +614,6 @@ class EditSubjectPageView(TemplateView):
                 "Erro - Você não pode remover matérias com ofertas associadas!",
             )
 
-        # Breadcrumbs
-        context["breadcrumbs_data"] = [
-            {
-                "icon": "images/icons/icon-home-green.svg",
-                "name": "Home",
-                "url": "home",
-            },
-            {
-                "icon": "images/icons/icon-courses-green.svg",
-                "name": "Cursos",
-                "url": "courses",
-            },
-            {
-                "icon": "images/icons/icon-edit-green.svg",
-                "name": "Editar Matéria",
-            },
-        ]
-
         context["subject"] = subject
         context["course_types"] = [course[0] for course in COURSE_TYPE]
 
@@ -744,69 +627,3 @@ class EditSubjectPageView(TemplateView):
             form.save()
             return redirect("courses")
         return self.render_to_response(self.get_context_data(form=form))
-
-
-class OffersPageView(TemplateView):
-    template_name = "pages/offers/offers.html"
-    paginate_by = 10
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        # Breadcrumbs
-        context["breadcrumbs_data"] = [
-            {
-                "icon": "images/icons/icon-home-green.svg",
-                "name": "Home",
-                "url": "home",
-            },
-            {
-                "icon": "images/icons/highlighter-green.svg",
-                "name": "Ofertas",
-                "url": "offers",
-            },
-        ]
-
-        # Filter Selectors
-        context["selector_teachers"] = Teacher.objects.all()
-        context["selector_subjects"] = Subject.objects.all()
-
-        # Table
-        filters = {}
-        if "teacher" in self.request.GET:
-            filters["teacher__id"] = self.request.GET["teacher"]
-        if "subject" in self.request.GET:
-            filters["subject__id"] = self.request.GET["subject"]
-
-        offers = Offer.objects.filter(**filters)
-
-        if "search" in self.request.GET:
-            offers = offers.filter(
-                Q(subject__name__icontains=self.request.GET["search"]),
-            )
-
-        paginator = Paginator(offers, self.paginate_by)
-        page_number = self.request.GET.get("page")
-
-        try:
-            all_offers = paginator.page(page_number)
-        except PageNotAnInteger:
-            all_offers = paginator.page(1)
-        except EmptyPage:
-            all_offers = paginator.page(paginator.num_pages)
-
-        context["offers"] = all_offers
-
-        return context
-
-class DeleteOfferView(View):
-    def get(self, request, offer_id):
-        offer = get_object_or_404(Offer, id=offer_id)
-        try:
-            offer.delete()
-            return redirect("offers")
-        except ProtectedError:
-            messages.error(request,
-                "Erro - Você não pode remover ofertas com alunos associados!",
-            )
-            return redirect("offers")

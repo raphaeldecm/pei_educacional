@@ -8,14 +8,10 @@
   {% breadcrumb_item text="Docentes" icon="images/icons/icon-multiple-users-green.svg" url="people:teacher_list" %}
   {% breadcrumb_item text="Cadastrar Docente" icon="images/icons/icon-register-student-green.svg" %}
 {% endblock breadcrumb %}
-
 {% block alerts %}
-<div class="fixed p-4 top-20 flex flex-col gap-4">
-    {% include "layouts/alerts.html" %}
-    </div>
+  <div class="fixed p-4 top-20 flex flex-col gap-4">{% include "layouts/alerts.html" %}</div>
 {% endblock alerts %}
-
-
+{% block content %}
   <div class="w-full">
     <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
     <form method="post" enctype="multipart/form-data" autocomplete="off">
@@ -27,10 +23,9 @@
              class="h-40 w-40 rounded-full bg-transparent border object-cover text-transparent" />
         <label for="{{ form.photo.id_for_label }}"
                class="font-sans font-medium text-lg text-ls block mb-4">
-               Foto do docente <span class="text-red-500">*</span>
+          Foto do docente <span class="text-red-500">*</span>
         </label>
         {{ form.photo }}
-
         {% comment %} /List Erros {% endcomment %}
         {% if form.image.errors %}
           <ul class="list-disc p-2">
@@ -53,21 +48,20 @@
           <label for="{{ form.campus.id_for_label }}" class="font-medium text-[18px]">{{ form.campus.label }}</label>
           <div class="relative w-full cursor-pointer mt-[16px]">
             <img class="absolute top-[12px] right-[10px]"
-                  src="{% static 'images/icons/icon-updown-arrow.svg' %}"
-                  width="24px"
-                  height="24px" />
+                 src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+                 width="24px"
+                 height="24px" />
             {{ form.campus }}
           </div>
-
         </div>
         <div class="flex-1">
           <label for="{{ form.email.id_for_label }}" class="font-medium text-[18px]">{{ form.email.label }}</label>
           {{ form.email }}
         </div>
       </div>
-
       <div class="flex items-center justify-start gap-5">
-        <a href="{% url 'people:teacher_list' %}" class="mr-2 text-[18px] py-[11px] px-[44px] border border-orange-400 rounded-lg font-medium cursor-pointer mt-[56px] hover:bg-orange-500 transition-colors duration-300">
+        <a href="{% url 'people:teacher_list' %}"
+           class="mr-2 text-[18px] py-[11px] px-[44px] border border-orange-400 rounded-lg font-medium cursor-pointer mt-[56px] hover:bg-orange-500 transition-colors duration-300">
           Voltar
         </a>
         <button class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer mt-[56px] hover:bg-green-500 hover:text-white transition-colors duration-300">
@@ -77,7 +71,6 @@
     </form>
   </div>
 {% endblock content %}
-
 {% block inline_javascript %}
   <script>
     function previewImage(event) {

@@ -22,12 +22,10 @@ from sistema_pei.core.views import (
     CreateCoursesPageView,
     CreateSubjectPageView,
     DeleteCourseView,
-    DeleteOfferView,
     DeleteSubjectView,
     EditCoursePageView,
     EditSubjectPageView,
     HomePageView,
-    OffersPageView,
     RemoveStudentFromSubjectView,
     ProfilePageView,
     SubjectsPageView,
@@ -48,6 +46,10 @@ urlpatterns = [
         "",
         login_required(HomePageView.as_view()),
         name="home",
+    ),
+    path(
+        "academics/",
+        include("sistema_pei.academics.urls", namespace="academics"),
     ),
     path(
         "users/",
@@ -110,11 +112,6 @@ urlpatterns = [
         name="delete_subject",
     ),
     path(
-        "offers/delete/<int:offer_id>",
-        login_required(DeleteOfferView.as_view()),
-        name="delete_offer",
-    ),
-    path(
         "subjects/<int:course_id>",
         login_required(SubjectsPageView.as_view()),
         name="subjects",
@@ -138,11 +135,6 @@ urlpatterns = [
         "about/",
         TemplateView.as_view(template_name="pages/about.html"),
         name="about",
-    ),
-    path(
-        "offers/",
-        login_required(OffersPageView.as_view()),
-        name="offers",
     ),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),

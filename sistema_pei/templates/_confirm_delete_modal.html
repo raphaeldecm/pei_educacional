@@ -1,32 +1,35 @@
 <form action="{% url delete_url object.pk %}" method="post">
   {% csrf_token %}
-<div id="confirmationModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
-  <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm mx-auto">
+  <div id="confirmationModal"
+       class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm mx-auto">
       <h2 class="text-xl font-semibold mb-4">{{ title }}</h2>
       <p class="mb-6">{{ body_text }}</p>
       <div class="flex justify-end gap-4">
-        <button id="cancelDelete" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400">Cancelar</button>
-        <button id="confirmDelete" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Confirmar</button>
+        <button id="cancelDelete"
+                class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400">Cancelar</button>
+        <button id="confirmDelete"
+                class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Confirmar</button>
       </div>
+    </div>
   </div>
-</div>
 </form>
 {% block inline_javascript %}
-<script>
-  const openModalButton = document.getElementById('openModal');
-  const confirmationModal = document.getElementById('confirmationModal');
-  const cancelButton = document.getElementById('cancelDelete');
-  const confirmButton = document.getElementById('confirmDelete');
+  <script>
+    const openModalButton = document.getElementById('openModal');
+    const confirmationModal = document.getElementById('confirmationModal');
+    const cancelButton = document.getElementById('cancelDelete');
+    const confirmButton = document.getElementById('confirmDelete');
 
-  function openModal() {
+    function openModal() {
       confirmationModal.classList.remove('hidden');
-  }
+    }
 
-  function closeModal() {
+    function closeModal() {
       confirmationModal.classList.add('hidden');
-  }
+    }
 
-  openModalButton.addEventListener('click', openModal);
-  cancelButton.addEventListener('click', closeModal);
-</script>
+    openModalButton.addEventListener('click', openModal);
+    cancelButton.addEventListener('click', closeModal);
+  </script>
 {% endblock inline_javascript %}

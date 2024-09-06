@@ -7,12 +7,9 @@
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
   {% breadcrumb_item text="Docentes" icon="images/icons/icon-multiple-users-green.svg" url="people:teacher_list" %}
 {% endblock breadcrumb %}
-
 {% block content %}
   <div class="w-full">
-
-
-    <h1 class="text-[32px] font-medium mb-[38px]">{{title}}</h1>
+    <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
     <form mathod="get">
       <div class="flex gap-[8px]">
         <div class="mb-[26px] flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
@@ -34,7 +31,7 @@
                  name="code"
                  id="id_code"
                  placeholder="Matrícula"
-                value="{{ request.GET.code }}"
+                 value="{{ request.GET.code }}"
                  class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50" />
         </div>
       </div>
@@ -53,19 +50,20 @@
         <div class="relative w-[322px] cursor-pointer">
           <img class="absolute top-[12px] right-[10px]"
                src="{% static 'images/icons/icon-updown-arrow.svg' %}"
-               width="24px" height="24px" />
+               width="24px"
+               height="24px" />
           <select name="campus"
                   id="campus"
                   class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
-              <option value="" selected disabled>Selecione o campus...</option>
-              {% for campus in filter.form.campus.field.queryset %}
-                  <option value="{{ campus.id }}"
-                          {% if campus.id|stringformat:"s" == request.GET.campus %}selected{% endif %}>
-                      {{ campus.name }}
-                  </option>
-              {% endfor %}
+            <option value="" selected disabled>Selecione o campus...</option>
+            {% for campus in filter.form.campus.field.queryset %}
+              <option value="{{ campus.id }}"
+                      {% if campus.id|stringformat:"s" == request.GET.campus %}selected{% endif %}>
+                {{ campus.name }}
+              </option>
+            {% endfor %}
           </select>
-      </div>
+        </div>
         <button class="flex items-center justify-center gap-[10px] min-w-[100px] h-[48px] bg-green-500 hover:bg-green-400 rounded-[6px] text-neutral-50">
           <img src="{% static 'images/icons/icon-filter.svg' %}"
                width="24px"
@@ -75,7 +73,7 @@
       </div>
     </form>
     <a href="{% url 'people:teacher_create' %}"
-      class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer hover:bg-green-500 hover:text-white transition-colors duration-300 mt-[2px]">
+       class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer hover:bg-green-500 hover:text-white transition-colors duration-300 mt-[2px]">
       Cadastrar Docente
     </a>
     <div class="mt-[53px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg">
@@ -96,27 +94,24 @@
               <td>{{ object.code }}</td>
               <td>{{ object.email }}</td>
               <td>{{ object.campus.abbreviation }}</td>
-
               <td class="flex justify-center h-full gap-[30px] !mt-[32px] pr-[26px]">
                 <a href="{% url 'people:teacher_detail' object.pk %}">
                   <img src="{% static 'images/icons/icon-eye.svg' %}"
-                  width="24px"
-                  height="24px"
-                  class="cursor-pointer" />
+                       width="24px"
+                       height="24px"
+                       class="cursor-pointer" />
                 </a>
-
                 <a href="{% url 'people:teacher_update' object.pk %}">
                   <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                        width="24px"
                        height="24px"
                        class="cursor-pointer" />
                 </a>
-                <button type="button"
-                    id="openModal">
-                    <img src="{% static 'images/icons/icon-remove-element.svg' %}"
-                        width="24px"
-                        height="24px"
-                        class="cursor-pointer" />
+                <button type="button" id="openModal">
+                  <img src="{% static 'images/icons/icon-remove-element.svg' %}"
+                       width="24px"
+                       height="24px"
+                       class="cursor-pointer" />
                 </button>
               </td>
               {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão de Docente" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="people:teacher_delete" %}
@@ -129,9 +124,7 @@
         </tbody>
       </table>
     </div>
-
     {% include "_table_pagination.html" %}
   </div>
-
-  </div>
+</div>
 {% endblock content %}

@@ -25,17 +25,20 @@ class MultipleFileField(forms.FileField):
             result = [single_file_clean(data, initial)]
         return result
 
-class TeacherForm(forms.ModelForm):
 
+class TeacherForm(forms.ModelForm):
     campus = forms.ModelChoiceField(
         queryset=Campus.objects.all(),
         label="Campus",
         required=True,
         empty_label=_("Selecione um campus..."),
-        widget=forms.Select(attrs={
-            "class": "outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-300 appearance-none bg-neutral-50",  # noqa: E501
-        }),
+        widget=forms.Select(
+            attrs={
+                "class": "outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-300 appearance-none bg-neutral-50",  # noqa: E501
+            }
+        ),
     )
+
     class Meta:
         model = Teacher
         fields = (
@@ -46,24 +49,32 @@ class TeacherForm(forms.ModelForm):
             "code",
         )
         widgets = {
-            "name": forms.TextInput(attrs={
-                "class": "outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]",  # noqa: E501
-                "placeholder": "Digite o nome do docente..."
-            }),
-            "email": forms.EmailInput(attrs={
-                "class": "outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]",  # noqa: E501
-                "placeholder": "Digite o email do docente..."
-            }),
-            "photo": forms.FileInput(attrs={
-                "class": "font-sans text-slate-900 block file:cursor-pointer text-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-green-200 file:text-green-700 hover:file:bg-green-300",  # noqa: E501
-                "id": "photo",
-                "accept": "image/png, image/jpeg",
-                "onchange": "previewImage(event)",
-            }),
-            "code": forms.TextInput(attrs={
-                "class": "outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]",  # noqa: E501
-                "placeholder": "Digite a matrícula...",
-            }),
+            "name": forms.TextInput(
+                attrs={
+                    "class": "outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]",  # noqa: E501
+                    "placeholder": "Digite o nome do docente...",
+                }
+            ),
+            "email": forms.EmailInput(
+                attrs={
+                    "class": "outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]",  # noqa: E501
+                    "placeholder": "Digite o email do docente...",
+                }
+            ),
+            "photo": forms.FileInput(
+                attrs={
+                    "class": "font-sans text-slate-900 block file:cursor-pointer text-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-green-200 file:text-green-700 hover:file:bg-green-300",  # noqa: E501
+                    "id": "photo",
+                    "accept": "image/png, image/jpeg",
+                    "onchange": "previewImage(event)",
+                }
+            ),
+            "code": forms.TextInput(
+                attrs={
+                    "class": "outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]",  # noqa: E501
+                    "placeholder": "Digite a matrícula...",
+                }
+            ),
         }
 
 
