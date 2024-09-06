@@ -18,7 +18,7 @@
 {% block content %}
   <div class="w-full">
     <h1 class="text-[32px] font-medium mb-[38px]">{% if isEditing %}Editar{% else %}Criar{% endif %} Oferta</h1>
-    <form>
+    <form method='post'>
       {% csrf_token %}
       <div class="mt-[24px]">
         <label for="subject" class="font-medium text-[18px]">Disciplina:</label>

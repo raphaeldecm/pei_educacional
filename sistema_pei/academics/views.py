@@ -21,10 +21,9 @@ from sistema_pei.people.models import Student
 
 
 class OffersPageView(FilterView, generic.ListView):
-    model = Offer
-    template_name = "offers/offers.html"
     paginate_by = constants.DEFAULT_PAGE_SIZE
     filterset_class = OfferFilter
+    template_name = "academics/offer_list.html"
 
     def get_queryset(self):
         # Listar somente ofertas do curso
@@ -43,7 +42,7 @@ class OffersPageView(FilterView, generic.ListView):
 
 
 class CreateOfferPageView(CreateView):
-    template_name = "offers/create-edit-offer.html"
+    model = Offer
     form_class = OfferForm
 
     def form_valid(self, form):
@@ -64,7 +63,6 @@ class CreateOfferPageView(CreateView):
 class EditOfferPageView(UpdateView):
     model = Offer
     form_class = OfferForm
-    template_name = "offers/create-edit-offer.html"
     context_object_name = "offer"
     
     def get_context_data(self, **kwargs):
@@ -89,10 +87,10 @@ class EditOfferPageView(UpdateView):
         return super().form_invalid(form)
 
 
-class OfferDetailsPageView(FilterView):
-    template_name = "offers/offer-details.html"
+class OfferDetailsPageView(FilterView, generic.ListView):
     paginate_by = 10
     filterset_class = EnrollmentFilter
+    template_name = "academics/offer_detail.html"
 
     def get_queryset(self):
         offer_id = self.kwargs.get("offer_id")

@@ -47,3 +47,4 @@ urlpatterns = [
         name="add_student_to_offer",
     ),
 ]
+
