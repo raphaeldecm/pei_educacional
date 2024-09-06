@@ -8,16 +8,13 @@
   {% breadcrumb_item text="Cursos" icon="images/icons/icon-courses-green.svg" url="courses" %}
   {% breadcrumb_item text="Matérias" icon="images/icons/icon-courses-green.svg" %}
   {% breadcrumb_item text="Ofertas" icon="images/icons/icon-courses-green.svg" %}
-  {% if isEditing %}
-    {% breadcrumb_item text="Editar Oferta" icon="images/icons/icon-courses-green.svg" %}
-  {% else %}
-    {% breadcrumb_item text="Criar Oferta" icon="images/icons/icon-courses-green.svg" %}
-  {% endif %}
+  {% breadcrumb_item text=title icon="images/icons/icon-courses-green.svg" %}
+
 {% endblock breadcrumb %}
 
 {% block content %}
   <div class="w-full">
-    <h1 class="text-[32px] font-medium mb-[38px]">{% if isEditing %}Editar{% else %}Criar{% endif %} Oferta</h1>
+    <h1 class="text-[32px] font-medium mb-[38px]">{{title}}</h1>
     <form method='post'>
       {% csrf_token %}
       <div class="mt-[24px]">

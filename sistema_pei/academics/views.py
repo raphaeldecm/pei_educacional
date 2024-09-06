@@ -18,9 +18,12 @@ from sistema_pei.academics.models import Course
 from sistema_pei.academics.models import Enrollment
 from sistema_pei.academics.models import Offer
 from sistema_pei.people.models import Student
+from sistema_pei.core.mixins import TitleViewMixin
+from django.utils.translation import gettext_lazy as _
 
 
-class OffersPageView(FilterView, generic.ListView):
+class OffersPageView(TitleViewMixin, FilterView, generic.ListView):
+    title = _("Ofertas")
     paginate_by = constants.DEFAULT_PAGE_SIZE
     filterset_class = OfferFilter
     template_name = "academics/offer_list.html"
@@ -41,7 +44,8 @@ class OffersPageView(FilterView, generic.ListView):
         return context
 
 
-class CreateOfferPageView(CreateView):
+class CreateOfferPageView(TitleViewMixin, CreateView):
+    title = _("Criar Oferta")
     model = Offer
     form_class = OfferForm
 
@@ -60,7 +64,8 @@ class CreateOfferPageView(CreateView):
         return self.request.path
 
 
-class EditOfferPageView(UpdateView):
+class EditOfferPageView(TitleViewMixin, UpdateView):
+    title = _("Editar Oferta")
     model = Offer
     form_class = OfferForm
     context_object_name = "offer"
