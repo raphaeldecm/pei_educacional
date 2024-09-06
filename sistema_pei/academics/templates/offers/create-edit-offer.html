@@ -8,14 +8,17 @@
   {% breadcrumb_item text="Cursos" icon="images/icons/icon-courses-green.svg" url="courses" %}
   {% breadcrumb_item text="Matérias" icon="images/icons/icon-courses-green.svg" %}
   {% breadcrumb_item text="Ofertas" icon="images/icons/icon-courses-green.svg" %}
-  {% breadcrumb_item text="Criar Oferta" icon="images/icons/icon-courses-green.svg" %}
+  {% if isEditing %}
+    {% breadcrumb_item text="Editar Oferta" icon="images/icons/icon-courses-green.svg" %}
+  {% else %}
+    {% breadcrumb_item text="Criar Oferta" icon="images/icons/icon-courses-green.svg" %}
+  {% endif %}
 {% endblock breadcrumb %}
 
 {% block content %}
   <div class="w-full">
-    {% include 'layouts/breadcrumbs.html' with breadcrumb_data=breadcrumb_data %}
-    <h1 class="text-[32px] font-medium mb-[38px]">Criar Oferta</h1>
-    <form method="post">
+    <h1 class="text-[32px] font-medium mb-[38px]">{% if isEditing %}Editar{% else %}Criar{% endif %} Oferta</h1>
+    <form>
       {% csrf_token %}
       <div class="mt-[24px]">
         <label for="subject" class="font-medium text-[18px]">Disciplina:</label>
@@ -28,7 +31,10 @@
                   class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
                   required>
             <option value="default" selected disabled>Selecione a disciplina...</option>
-            {% for subject in form.subject.field.queryset %}<option value="{{ subject.id }}">{{ subject }}</option>{% endfor %}
+            {% for subject in form.subject.field.queryset %}
+              <option value="{{ subject.id }}"
+                      {% if offer.subject == subject %}selected{% endif %}>{{ subject }}</option>
+            {% endfor %}
           </select>
         </div>
       </div>
@@ -44,7 +50,10 @@
                   required>
             <option value="default" selected disabled>Selecione o curso...</option>
             {% for course in form.course.field.queryset %}
-              <option value="{{ course.id }}">{{ course.name }} - {{ course.get_period_display }}</option>
+              <option value="{{ course.id }}"
+                      {% if offer.course == course %}selected{% endif %}>
+                {{ course.name }} - {{ course.get_period_display }}
+              </option>
             {% endfor %}
           </select>
         </div>
@@ -60,7 +69,10 @@
                   class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
                   required>
             <option value="default" selected disabled>Selecione o professor...</option>
-            {% for teacher in form.teacher.field.queryset %}<option value="{{ teacher.id }}">{{ teacher }}</option>{% endfor %}
+            {% for teacher in form.teacher.field.queryset %}
+              <option value="{{ teacher.id }}"
+                      {% if offer.teacher == teacher %}selected{% endif %}>{{ teacher }}</option>
+            {% endfor %}
           </select>
         </div>
       </div>
@@ -76,9 +88,8 @@
                     class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
                     required>
               <option value="default" selected disabled>Selecione o tipo...</option>
-              <option value="Aberta">Aberto</option>
-              <option value="Fechada">Fechado</option>
-              {% for type in course_types %}<option value="{{ type }}">{{ type }}</option>{% endfor %}
+              <option value="Aberta" {% if offer.status == "Aberta" %}selected{% endif %}>Aberto</option>
+              <option value="Fechada" {% if offer.status == "Fechada" %}selected{% endif %}>Fechado</option>
             </select>
           </div>
         </div>
@@ -89,11 +100,16 @@
                  min="1"
                  placeholder="Digite o ano..."
                  required
+                 value="{{ offer.year }}"
                  class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]" />
         </div>
       </div>
       <button class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer mt-[56px]">
-        Cadastrar
+        {%if isEditing%}
+          Editar
+        {% else %}
+          Cadastrar
+        {% endif %}
       </button>
     </form>
   </div>

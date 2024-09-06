@@ -39,55 +39,12 @@ class OffersPageView(FilterView, generic.ListView):
         course = get_object_or_404(Course, id=course_id)
         context["course"] = course
 
-        # Breadcrumbs
-        context["breadcrumbs_data"] = [
-            {
-                "icon": "images/icons/icon-home-green.svg",
-                "name": "Home",
-                "url": "home",
-            },
-            {
-                "icon": "images/icons/icon-courses-green.svg",
-                "name": "Cursos",
-                "url": "courses",
-            },
-            {
-                "icon": "images/icons/icon-courses-green.svg",
-                "name": "Matérias",
-            },
-            {
-                "icon": "images/icons/highlighter-green.svg",
-                "name": f"Ofertas de {course.name}",
-            },
-        ]
-
         return context
 
 
 class CreateOfferPageView(CreateView):
-    template_name = "offers/create-offer.html"
+    template_name = "offers/create-edit-offer.html"
     form_class = OfferForm
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Breadcrumbs
-        context["breadcrumbs_data"] = [
-            {
-                "icon": "images/icons/icon-home-green.svg",
-                "name": "Home",
-                "url": "home",
-            },
-            {
-                "icon": "images/icons/highlighter-green.svg",
-                "name": "Oferta",
-            },
-            {
-                "icon": "images/icons/icon-edit-green.svg",
-                "name": "Criar Oferta",
-            },
-        ]
-
-        return context
 
     def form_valid(self, form):
         self.object = form.save()
@@ -107,8 +64,13 @@ class CreateOfferPageView(CreateView):
 class EditOfferPageView(UpdateView):
     model = Offer
     form_class = OfferForm
-    template_name = "offers/edit-offer.html"
+    template_name = "offers/create-edit-offer.html"
     context_object_name = "offer"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["isEditing"] = True
+        return context
 
     def get_object(self, queryset=None):
         return get_object_or_404(Offer, id=self.kwargs["offer_id"])
@@ -125,25 +87,6 @@ class EditOfferPageView(UpdateView):
     def form_invalid(self, form):
         messages.error(self.request, "Erro ao editar a oferta")
         return super().form_invalid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["breadcrumbs_data"] = [
-            {
-                "icon": "images/icons/icon-home-green.svg",
-                "name": "Home",
-                "url": "home",
-            },
-            {
-                "icon": "images/icons/highlighter-green.svg",
-                "name": "Ofertas",
-            },
-            {
-                "icon": "images/icons/icon-edit-green.svg",
-                "name": "Editar Oferta",
-            },
-        ]
-        return context
 
 
 class OfferDetailsPageView(FilterView):
@@ -165,24 +108,6 @@ class OfferDetailsPageView(FilterView):
         course_id = self.kwargs.get("course_id")
         course = get_object_or_404(Course, id=course_id)
         context["course"] = course
-
-        # Breadcrumbs
-        context["breadcrumbs_data"] = [
-            {
-                "icon": "images/icons/icon-home-green.svg",
-                "name": "Home",
-                "url": "home",
-            },
-            {
-                "icon": "images/icons/highlighter-green.svg",
-                "name": "Ofertas",
-            },
-            {
-                "icon": "images/icons/highlighter-green.svg",
-                "name": offer.subject.name,
-            },
-        ]
-
         context["offer"] = offer
 
         context["selector_students"] = Student.objects.filter(
