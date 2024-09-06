@@ -23,7 +23,9 @@ class OfferFilter(django_filters.FilterSet):
 
 class EnrollmentFilter(django_filters.FilterSet):
     search = django_filters.CharFilter(
-        field_name="student__name", lookup_expr="icontains", label="Search"
+        field_name="student__name",
+        lookup_expr="icontains",
+        label="Search",
     )
 
     class Meta:

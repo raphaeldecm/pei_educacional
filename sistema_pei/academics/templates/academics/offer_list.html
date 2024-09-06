@@ -9,10 +9,9 @@
   {% breadcrumb_item text="Matérias" icon="images/icons/icon-courses-green.svg" %}
   {% breadcrumb_item text=title icon="images/icons/icon-courses-green.svg" %}
 {% endblock breadcrumb %}
-
 {% block content %}
   <div class="w-full">
-    <h1 class="text-[32px] font-medium mb-[38px]">{{title}}</h1>
+    <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
     <form>
       <div class="mb-[26px] flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
         <img src="{% static 'images/icons/icon-search.svg' %}"

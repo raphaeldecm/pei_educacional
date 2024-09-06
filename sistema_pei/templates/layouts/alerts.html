@@ -7,9 +7,7 @@
          alt="Ícone de um i em volta de um círculo representando informação."
          class="w-5 h-5" />
     <section class="text-base font-light">
-      {% for error in form.non_field_errors %}
-        <p>{{error}}</p>
-      {% endfor %}
+      {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
       {% include "_form_field_error.html" %}
     </section>
   </article>
@@ -30,4 +28,3 @@
     }, 4000);
   </script>
 {% endblock inline_javascript %}
-

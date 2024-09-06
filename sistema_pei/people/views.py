@@ -42,6 +42,7 @@ def activate_account(request, uidb64, token):
     else:
         return render(request, "403.html")
 
+
 class TeacherListView(TitleViewMixin, FilterView, generic.ListView):
     model = Teacher
     title = _("Docentes")
@@ -49,8 +50,12 @@ class TeacherListView(TitleViewMixin, FilterView, generic.ListView):
     filterset_class = TeacherFilter
     template_name = "people/teacher_list.html"
 
+
 class TeacherCreateView(
-    LoginRequiredMixin, TitleViewMixin, SuccessMessageMixin, generic.CreateView,
+    LoginRequiredMixin,
+    TitleViewMixin,
+    SuccessMessageMixin,
+    generic.CreateView,
 ):
     model = Teacher
     title = _("Cadastrar Docente")
@@ -63,8 +68,12 @@ class TeacherCreateView(
         form.instance.updated_by = self.request.user
         return super().form_valid(form)
 
+
 class TeacherUpdateView(
-    LoginRequiredMixin, TitleViewMixin, SuccessMessageMixin, generic.UpdateView
+    LoginRequiredMixin,
+    TitleViewMixin,
+    SuccessMessageMixin,
+    generic.UpdateView,
 ):
     model = Teacher
     title = _("Atualizar Docente")
@@ -76,10 +85,12 @@ class TeacherUpdateView(
         form.instance.updated_by = self.request.user
         return super().form_valid(form)
 
+
 class TeacherDeleteView(LoginRequiredMixin, SuccessMessageMixin, generic.DeleteView):
     model = Teacher
     success_url = reverse_lazy("people:teacher_list")
-    success_message=_("O professor foi excluído com sucesso.")
+    success_message = _("O professor foi excluído com sucesso.")
+
 
 class TeacherDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
     model = Teacher

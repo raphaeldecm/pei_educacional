@@ -4,22 +4,22 @@ from django.db.models import ProtectedError
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views import generic
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
 from django_filters.views import FilterView
 
-from sistema_pei.core import constants
 from sistema_pei.academics.filters import EnrollmentFilter
 from sistema_pei.academics.filters import OfferFilter
 from sistema_pei.academics.forms import OfferForm
 from sistema_pei.academics.models import Course
 from sistema_pei.academics.models import Enrollment
 from sistema_pei.academics.models import Offer
-from sistema_pei.people.models import Student
+from sistema_pei.core import constants
 from sistema_pei.core.mixins import TitleViewMixin
-from django.utils.translation import gettext_lazy as _
+from sistema_pei.people.models import Student
 
 
 class OffersPageView(TitleViewMixin, FilterView, generic.ListView):
@@ -69,7 +69,7 @@ class EditOfferPageView(TitleViewMixin, UpdateView):
     model = Offer
     form_class = OfferForm
     context_object_name = "offer"
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["isEditing"] = True
@@ -80,7 +80,8 @@ class EditOfferPageView(TitleViewMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy(
-            "academics:offers", kwargs={"course_id": self.object.course_id}
+            "academics:offers",
+            kwargs={"course_id": self.object.course_id},
         )
 
     def form_valid(self, form):
@@ -114,7 +115,7 @@ class OfferDetailsPageView(FilterView, generic.ListView):
         context["offer"] = offer
 
         context["selector_students"] = Student.objects.filter(
-            course=offer.course
+            course=offer.course,
         ).exclude(id__in=offer.enrollments.values_list("student_id", flat=True))
 
         return context
