@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% load static i18n %}
+{% load breadcrumb_item %}
+
+{% block breadcrumb %}
+  {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
+  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" url="courses" %}
+{% endblock breadcrumb %}
+{% block content %}
+  <div class="w-full">
+    <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
+
+    <div class="flex gap-[28px] w-[calc(100vw-100px)] max-w-[1693px] overflow-x-auto shadow-2xl">
+
+      {% include "_dashboard_card.html" with link_to="courses" path_icon="images/icons/icon-courses-green.svg" text="Cursos" %}
+
+    </div>
+
+  </div>
+{% endblock content %}

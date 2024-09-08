@@ -1,5 +1,6 @@
 # Create your views here.
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import ProtectedError
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
@@ -20,6 +21,11 @@ from sistema_pei.academics.models import Offer
 from sistema_pei.core import constants
 from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.people.models import Student
+
+
+class AcademicsIndexView(LoginRequiredMixin, TitleViewMixin, generic.TemplateView):
+    template_name = "academics/index.html"
+    title = _("Dashboard")
 
 
 class OffersPageView(TitleViewMixin, FilterView, generic.ListView):
