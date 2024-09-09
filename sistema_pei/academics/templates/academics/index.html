@@ -5,15 +5,24 @@
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
-  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" url="courses" %}
+  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" %}
 {% endblock breadcrumb %}
 {% block content %}
   <div class="w-full">
     <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
 
-    <div class="flex gap-[28px] w-[calc(100vw-100px)] max-w-[1693px] overflow-x-auto shadow-2xl">
-
-      {% include "_dashboard_card.html" with link_to="courses" path_icon="images/icons/icon-courses-green.svg" text="Cursos" %}
+    <div class="flex flex-col my-4">
+      <p class="font-semibold">Subjects</p>
+      <div class="flex flex-wrap items-center gap-8 py-6">
+        {% include "_dashboard_card.html" with link_to="academics:courses" path_icon="images/icons/icon-courses-green.svg" text="Cursos" %}
+        {% include "_dashboard_card.html" with link_to="academics:courses" path_icon="images/icons/icon-courses-green.svg" text="Disciplinas" %}
+        {% include "_dashboard_card.html" with link_to="academics:courses" path_icon="images/icons/icon-courses-green.svg" text="Ofertas" %}
+      </div>
+      <p class="font-semibold">Participantes</p>
+      <div class="flex flex-wrap items-center gap-8 py-6">
+        {% include "_dashboard_card.html" with link_to="people:teacher_list" path_icon="images/icons/icon-multiple-users-green.svg" text="Doscentes" %}
+        {% include "_dashboard_card.html" with link_to="academics:courses" path_icon="images/icons/icon-register-student-green.svg" text="Alunos" %}
+      </div>
 
     </div>
 

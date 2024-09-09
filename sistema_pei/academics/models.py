@@ -31,7 +31,7 @@ class Course(BaseModel):
         verbose_name=_("Turno"),
     )
 
-    durationType = models.CharField(
+    duration_type = models.CharField(
         choices=CourseDurationType.choices,
         verbose_name=_("Tipo de duração"),
     )

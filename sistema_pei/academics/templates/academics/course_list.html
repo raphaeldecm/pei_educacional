@@ -5,7 +5,8 @@
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
-  {% breadcrumb_item text="Cursos" icon="images/icons/icon-courses-green.svg" url="courses" %}
+  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-home-green.svg" url="academics:dashboard" %}
+  {% breadcrumb_item text="Cursos" icon="images/icons/icon-courses-green.svg" url="academics:courses" %}
 {% endblock breadcrumb %}
 {% block content %}
   <div class="w-full">
@@ -82,7 +83,7 @@
               <td>{{ course.get_period_display }}</td>
               <td>{{ course.course_type }}</td>
               <td class="min-w-[40px] !px-[0px]">
-                <a href="{% url 'edit_course' course.id %}">
+                <a href="{% url 'academics:edit_course' course.id %}">
                   <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                        width="24px"
                        height="24px"

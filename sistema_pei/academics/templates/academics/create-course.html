@@ -5,7 +5,8 @@
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
-  {% breadcrumb_item text="Cursos" icon="images/icons/icon-courses-green.svg" url="courses" %}
+  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-home-green.svg" url="academics:dashboard" %}
+  {% breadcrumb_item text="Cursos" icon="images/icons/icon-courses-green.svg" url="academics:courses" %}
   {% breadcrumb_item text="Criar Curso" icon="images/icons/icon-courses-green.svg" %}
 {% endblock breadcrumb %}
 {% block content %}
@@ -47,7 +48,7 @@
                  src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                  width="24px"
                  height="24px" />
-            <select name="durationType"
+            <select name="duration_type"
                     class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
                     required>
               <option value="default" selected disabled>Selecione a duração...</option>

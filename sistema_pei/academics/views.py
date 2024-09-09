@@ -2,6 +2,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import ProtectedError
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -12,12 +13,10 @@ from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
 from django_filters.views import FilterView
 
-from sistema_pei.academics.filters import EnrollmentFilter
-from sistema_pei.academics.filters import OfferFilter
-from sistema_pei.academics.forms import OfferForm
-from sistema_pei.academics.models import Course
-from sistema_pei.academics.models import Enrollment
-from sistema_pei.academics.models import Offer
+from sistema_pei.academics import filters
+from sistema_pei.academics import forms
+from sistema_pei.academics import models
+from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.core import constants
 from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.people.models import Student
@@ -25,26 +24,86 @@ from sistema_pei.people.models import Student
 
 class AcademicsIndexView(LoginRequiredMixin, TitleViewMixin, generic.TemplateView):
     template_name = "academics/index.html"
-    title = _("Dashboard")
+    title = _("Acadêmico")
 
+class CoursesPageView(LoginRequiredMixin, TitleViewMixin, generic.ListView):
+    model = models.Course
+    title = _("Cursos")
+    paginate_by = constants.DEFAULT_PAGE_SIZE
+    filterset_class = filters.CourseFilter
+    template_name = "academics/course_list.html"
+
+
+class CreateCoursesPageView(generic.TemplateView):
+    template_name = "pages/courses/create-course.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["course_types"] = [course[0] for course in COURSE_TYPE]
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = forms.CourseForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("academics:courses")
+        return self.render_to_response(self.get_context_data(form=form))
+
+class EditCoursePageView(generic.TemplateView):
+    template_name = "pages/courses/edit-course.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        course_id = self.kwargs.get("course_id")
+        course = get_object_or_404(models.Course, id=course_id)
+        course_subjects = course.subjects.all()
+
+        filters = {}
+        if "search_subject" in self.request.GET:
+            filters["search_subject"] = self.request.GET["search_subject"]
+            course_subjects = course_subjects.filter(
+                Q(name__icontains=self.request.GET["search_subject"]),
+            )
+
+        context["course"] = course
+        context["course_subjects"] = course_subjects
+        context["course_types"] = [course[0] for course in COURSE_TYPE]
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        course_id = self.kwargs.get("course_id")
+        course = get_object_or_404(models.Course, id=course_id)
+        form = forms.CourseForm(request.POST, instance=course)
+        if form.is_valid():
+            form.save()
+            return redirect("courses")
+        return self.render_to_response(self.get_context_data(form=form))
+
+class DeleteCourseView(View):
+    def get(self, request, course_id):
+        course = get_object_or_404(models.Course, id=course_id)
+        course.delete()
+        return redirect("courses")
 
 class OffersPageView(TitleViewMixin, FilterView, generic.ListView):
     title = _("Ofertas")
     paginate_by = constants.DEFAULT_PAGE_SIZE
-    filterset_class = OfferFilter
+    filterset_class = filters.OfferFilter
     template_name = "academics/offer_list.html"
 
     def get_queryset(self):
         # Listar somente ofertas do curso
         course_id = self.kwargs.get("course_id")
-        queryset = Offer.objects.filter(course_id=course_id)
-        filterset = OfferFilter(self.request.GET, queryset=queryset)
+        queryset = models.Offer.objects.filter(course_id=course_id)
+        filterset = filters.OfferFilter(self.request.GET, queryset=queryset)
         return filterset.qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         course_id = self.kwargs.get("course_id")
-        course = get_object_or_404(Course, id=course_id)
+        course = get_object_or_404(models.Course, id=course_id)
         context["course"] = course
 
         return context
@@ -52,8 +111,8 @@ class OffersPageView(TitleViewMixin, FilterView, generic.ListView):
 
 class CreateOfferPageView(TitleViewMixin, CreateView):
     title = _("Criar Oferta")
-    model = Offer
-    form_class = OfferForm
+    model = models.Offer
+    form_class = forms.OfferForm
 
     def form_valid(self, form):
         self.object = form.save()
@@ -72,8 +131,8 @@ class CreateOfferPageView(TitleViewMixin, CreateView):
 
 class EditOfferPageView(TitleViewMixin, UpdateView):
     title = _("Editar Oferta")
-    model = Offer
-    form_class = OfferForm
+    model = models.Offer
+    form_class = forms.OfferForm
     context_object_name = "offer"
 
     def get_context_data(self, **kwargs):
@@ -82,7 +141,7 @@ class EditOfferPageView(TitleViewMixin, UpdateView):
         return context
 
     def get_object(self, queryset=None):
-        return get_object_or_404(Offer, id=self.kwargs["offer_id"])
+        return get_object_or_404(models.Offer, id=self.kwargs["offer_id"])
 
     def get_success_url(self):
         return reverse_lazy(
@@ -101,22 +160,22 @@ class EditOfferPageView(TitleViewMixin, UpdateView):
 
 class OfferDetailsPageView(FilterView, generic.ListView):
     paginate_by = 10
-    filterset_class = EnrollmentFilter
+    filterset_class = filters.EnrollmentFilter
     template_name = "academics/offer_detail.html"
 
     def get_queryset(self):
         offer_id = self.kwargs.get("offer_id")
-        offer = get_object_or_404(Offer, id=offer_id)
+        offer = get_object_or_404(models.Offer, id=offer_id)
         return offer.enrollments.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         offer_id = self.kwargs.get("offer_id")
-        offer = get_object_or_404(Offer, id=offer_id)
+        offer = get_object_or_404(models.Offer, id=offer_id)
 
         course_id = self.kwargs.get("course_id")
-        course = get_object_or_404(Course, id=course_id)
+        course = get_object_or_404(models.Course, id=course_id)
         context["course"] = course
         context["offer"] = offer
 
@@ -129,7 +188,7 @@ class OfferDetailsPageView(FilterView, generic.ListView):
 
 class DeleteOfferView(View):
     def get(self, request, offer_id):
-        offer = get_object_or_404(Offer, id=offer_id)
+        offer = get_object_or_404(models.Offer, id=offer_id)
         try:
             offer.delete()
             messages.success(request, "Oferta removida com sucesso!")
@@ -144,11 +203,11 @@ class DeleteOfferView(View):
 
 class RemoveStudentFromOfferView(View):
     def get(self, request, offer_id, student_id):
-        offer = get_object_or_404(Offer, id=offer_id)
+        offer = get_object_or_404(models.Offer, id=offer_id)
         student = get_object_or_404(Student, id=student_id)
 
         try:
-            enrollment = get_object_or_404(Enrollment, offer=offer, student=student)
+            enrollment = get_object_or_404(models.Enrollment, offer=offer, student=student)
             enrollment.delete()
             messages.success(request, "Aluno removido com sucesso da oferta.")
         except ProtectedError:
@@ -162,12 +221,12 @@ class RemoveStudentFromOfferView(View):
 
 class AddStudentToOfferView(View):
     def post(self, request, offer_id):
-        offer = get_object_or_404(Offer, id=offer_id)
+        offer = get_object_or_404(models.Offer, id=offer_id)
         student_id = request.POST.get("student")
         student = get_object_or_404(Student, id=student_id)
 
-        if not Enrollment.objects.filter(offer=offer, student=student).exists():
-            Enrollment.objects.create(
+        if not models.Enrollment.objects.filter(offer=offer, student=student).exists():
+            models.Enrollment.objects.create(
                 offer=offer,
                 student=student,
                 YearSemesterReference=student.reference_period,
