@@ -6,7 +6,7 @@ from sistema_pei.academics.models import Offer
 class OfferForm(forms.ModelForm):
     class Meta:
         model = Offer
-        fields = ["status", "subject", "year", "teacher", "course"]
+        fields = ["status", "subject", "year", "teacher", "course", "semester"]
 
         widgets = {
             "subject": forms.Select(
@@ -30,6 +30,12 @@ class OfferForm(forms.ModelForm):
                     "placeholder": "Digite o ano...",
                 }
             ),
+            "semester": forms.Select(
+                attrs={
+                    "class": "outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50 mt-[16px]",
+                    "placeholder": "Digite o ano...",
+                }
+            ),
             "status": forms.Select(
                 attrs={
                     "class": "outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50",
@@ -43,3 +49,4 @@ class OfferForm(forms.ModelForm):
         self.fields["teacher"].empty_label = "Selecione o professor..."
         self.fields["course"].empty_label = "Selecione o curso..."
         self.fields["status"].empty_label = "Selecione o status..."
+        self.fields["semester"].empty_label = "Selecione o semestre..."
