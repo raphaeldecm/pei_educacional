@@ -14,14 +14,14 @@
     <div class="flex flex-col my-4">
       <p class="font-semibold">Subjects</p>
       <div class="flex flex-wrap items-center gap-8 py-6">
-        {% include "_dashboard_card.html" with link_to="academics:courses" path_icon="images/icons/icon-courses-green.svg" text="Cursos" %}
-        {% include "_dashboard_card.html" with link_to="academics:courses" path_icon="images/icons/icon-courses-green.svg" text="Disciplinas" %}
-        {% include "_dashboard_card.html" with link_to="academics:courses" path_icon="images/icons/icon-courses-green.svg" text="Ofertas" %}
+        {% include "_dashboard_card.html" with link_to="academics:course_list" path_icon="images/icons/icon-courses-green.svg" text="Cursos" %}
+        {% include "_dashboard_card.html" with link_to="academics:course_list" path_icon="images/icons/icon-courses-green.svg" text="Disciplinas" %}
+        {% include "_dashboard_card.html" with link_to="academics:course_list" path_icon="images/icons/icon-courses-green.svg" text="Ofertas" %}
       </div>
       <p class="font-semibold">Participantes</p>
       <div class="flex flex-wrap items-center gap-8 py-6">
         {% include "_dashboard_card.html" with link_to="people:teacher_list" path_icon="images/icons/icon-multiple-users-green.svg" text="Doscentes" %}
-        {% include "_dashboard_card.html" with link_to="academics:courses" path_icon="images/icons/icon-register-student-green.svg" text="Alunos" %}
+        {% include "_dashboard_card.html" with link_to="academics:course_list" path_icon="images/icons/icon-register-student-green.svg" text="Alunos" %}
       </div>
 
     </div>

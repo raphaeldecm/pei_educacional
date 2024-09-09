@@ -7,24 +7,24 @@ app_name = "academics"
 urlpatterns = [
     path("dashboard/", views.AcademicsIndexView.as_view(), name="dashboard"),
     path(
-        "courses/",
-        views.CoursesPageView.as_view(),
-        name="courses",
+        "course/list/",
+        views.CourseListView.as_view(),
+        name="course_list",
     ),
     path(
-        "courses/create",
-        login_required(views.CreateCoursesPageView.as_view()),
-        name="create_course",
+        "course/create/",
+        login_required(views.CourseCreateView.as_view()),
+        name="course_create",
     ),
     path(
-        "courses/edit/<int:course_id>",
-        login_required(views.EditCoursePageView.as_view()),
-        name="edit_course",
+        "course/update/<int:pk>/",
+        login_required(views.CourseUpdateView.as_view()),
+        name="course_update",
     ),
     path(
-        "courses/delete/<int:course_id>",
-        login_required(views.DeleteCourseView.as_view()),
-        name="delete_course",
+        "course/delete/<int:pk>/",
+        login_required(views.CourseDeleteView.as_view()),
+        name="course_delete",
     ),
     path(
         "offers/<int:course_id>",

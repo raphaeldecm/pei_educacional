@@ -1,6 +1,7 @@
 # Create your views here.
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import ProtectedError
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
@@ -26,7 +27,7 @@ class AcademicsIndexView(LoginRequiredMixin, TitleViewMixin, generic.TemplateVie
     template_name = "academics/index.html"
     title = _("Acadêmico")
 
-class CoursesPageView(LoginRequiredMixin, TitleViewMixin, generic.ListView):
+class CourseListView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.ListView):
     model = models.Course
     title = _("Cursos")
     paginate_by = constants.DEFAULT_PAGE_SIZE
@@ -34,23 +35,25 @@ class CoursesPageView(LoginRequiredMixin, TitleViewMixin, generic.ListView):
     template_name = "academics/course_list.html"
 
 
-class CreateCoursesPageView(generic.TemplateView):
-    template_name = "pages/courses/create-course.html"
+class CourseCreateView(
+    LoginRequiredMixin,
+    TitleViewMixin,
+    generic.CreateView,
+    SuccessMessageMixin,
+):
+    model = models.Course
+    form_class = forms.CourseForm
+    title = _("Criar Curso")
+    template_name = "academics/course_form.html"
+    success_url = reverse_lazy("academics:course_list")
+    success_message = _("O curso foi cadastrado com sucesso.")
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        form.instance.updated_by = self.request.user
+        return super().form_valid(form)
 
-        context["course_types"] = [course[0] for course in COURSE_TYPE]
-        return context
-
-    def post(self, request, *args, **kwargs):
-        form = forms.CourseForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("academics:courses")
-        return self.render_to_response(self.get_context_data(form=form))
-
-class EditCoursePageView(generic.TemplateView):
+class CourseUpdateView(generic.TemplateView):
     template_name = "pages/courses/edit-course.html"
 
     def get_context_data(self, **kwargs):
@@ -81,7 +84,7 @@ class EditCoursePageView(generic.TemplateView):
             return redirect("courses")
         return self.render_to_response(self.get_context_data(form=form))
 
-class DeleteCourseView(View):
+class CourseDeleteView(View):
     def get(self, request, course_id):
         course = get_object_or_404(models.Course, id=course_id)
         course.delete()

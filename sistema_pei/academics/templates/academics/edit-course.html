@@ -12,7 +12,7 @@
 {% block content %}
   <div class="w-full">
     <h1 class="text-[32px] font-medium mb-[38px]">Editar Curso: {{ course.name }} - {{ course.get_period_display }}</h1>
-    <form action="{% url 'academics:edit_course' course.id %}"
+    <form action="{% url 'academics:course_update' course.id %}"
           method="post"
           id="edit-form">
       {% csrf_token %}
