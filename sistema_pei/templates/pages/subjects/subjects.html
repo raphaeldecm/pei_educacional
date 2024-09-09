@@ -72,7 +72,10 @@
                          height="24px"
                          class="cursor-pointer" />
                   </a>
-                  <a href="#" class="offers-link" data-subject-id="{{ subject.id }}" title="Ofertas associadas">
+                  <a href="#"
+                     class="offers-link"
+                     data-subject-id="{{ subject.id }}"
+                     title="Ofertas associadas">
                     <img src="{% static 'images/icons/icon-eye.svg' %}"
                          width="24px"
                          height="24px"
@@ -116,8 +119,8 @@
       </a>
     </div>
   </div>
-
   <script>
+    {% comment %} Script para redirecionar as ofertas aplicando filtros de ano e semestre {% endcomment %}
     document.addEventListener('DOMContentLoaded', function() {
       function getCurrentYear() {
         return new Date().getFullYear();
@@ -140,4 +143,3 @@
     });
   </script>
 {% endblock content %}
-

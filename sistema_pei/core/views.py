@@ -528,8 +528,6 @@ class SubjectsPageView(TemplateView):
         course = get_object_or_404(Course, id=course_id)
         course_subjects = course.subjects.all()
         context["course"] = course
-        
-        
 
         # Table
         filters = {}

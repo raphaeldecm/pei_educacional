@@ -1,5 +1,4 @@
 import django_filters
-from django.utils import timezone
 from django.db.models import Q
 
 from sistema_pei.academics.models import Enrollment
@@ -14,7 +13,7 @@ class OfferFilter(django_filters.FilterSet):
         lookup_expr="exact",
         label="Ano",
     )
-    
+
     semester = django_filters.ChoiceFilter(
         field_name="semester",
         choices=Offer.Semester.choices,
@@ -29,6 +28,7 @@ class OfferFilter(django_filters.FilterSet):
         return queryset.filter(
             Q(subject__name__icontains=value) | Q(teacher__name__icontains=value),
         )
+
 
 class EnrollmentFilter(django_filters.FilterSet):
     search = django_filters.CharFilter(

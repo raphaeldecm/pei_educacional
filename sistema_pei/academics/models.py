@@ -110,7 +110,7 @@ class Offer(BaseModel):
         on_delete=models.PROTECT,
         related_name="offers",
     )
-    
+
     year = models.PositiveSmallIntegerField(verbose_name=_("Ano referência"))
     semester = models.PositiveSmallIntegerField(
         verbose_name=_("Semestre referência"),
