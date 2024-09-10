@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% load static i18n %}
+{% load breadcrumb_item %}
+
+{% block breadcrumb %}
+  {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
+  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-home-green.svg" url="academics:dashboard" %}
+  {% breadcrumb_item text="Cursos" icon="images/icons/icon-courses-green.svg" url="academics:course_list" %}
+  {% breadcrumb_item text=title icon="images/icons/icon-courses-green.svg" %}
+{% endblock breadcrumb %}
+
+{% block content %}
+  <div class="w-full">
+
+    <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}: {{ course.name }}</h1>
+
+    <div class="flex items-center m-8 gap-6 p-2 [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px] border border-slate-300">
+      <div class="flex flex-col">
+        <div class="flex gap-4">
+          <p class="font-semibold text-[18px]">Nome:</p>
+          {{ object.name }}
+        </div>
+        <div class="flex gap-4">
+          <p class="font-semibold text-[18px]">Turno:</p>
+          {{ object.get_period_display }}
+        </div>
+        <div class="flex gap-4">
+          <p class="font-semibold text-[18px]">Duração:</p>
+          {{ object.get_duration_type_display }}
+        </div>
+        <div class="flex gap-4">
+          <p class="font-semibold text-[18px]">Períodos:</p>
+          {{ object.number_of_periods }}
+        </div>
+      </div>
+    </div>
+
+    <p class="font-semibold m-[38px]">Disciplinas</p>
+  </div>
+{% endblock content %}

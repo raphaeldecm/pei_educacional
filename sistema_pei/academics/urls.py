@@ -27,6 +27,11 @@ urlpatterns = [
         name="course_delete",
     ),
     path(
+        "course/detail/<int:pk>/",
+        views.CourseDetailView.as_view(),
+        name="course_detail",
+    ),
+    path(
         "offers/<int:course_id>",
         login_required(views.OffersPageView.as_view()),
         name="offers",

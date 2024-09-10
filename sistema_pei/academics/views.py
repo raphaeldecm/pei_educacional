@@ -17,7 +17,8 @@ from sistema_pei.academics import filters
 from sistema_pei.academics import forms
 from sistema_pei.academics import models
 from sistema_pei.core import constants
-from sistema_pei.core.mixins import ProtectedErrorMessageMixin, TitleViewMixin
+from sistema_pei.core.mixins import ProtectedErrorMessageMixin
+from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.people.models import Student
 
 
@@ -30,7 +31,7 @@ class CourseListView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.Lis
     title = _("Cursos")
     paginate_by = constants.DEFAULT_PAGE_SIZE
     filterset_class = filters.CourseFilter
-    template_name = "academics/course_list.html"
+    template_name = "academics/course/course_list.html"
 
 
 class CourseCreateView(
@@ -42,7 +43,7 @@ class CourseCreateView(
     model = models.Course
     form_class = forms.CourseForm
     title = _("Criar Curso")
-    template_name = "academics/course_form.html"
+    template_name = "academics/course/course_form.html"
     success_url = reverse_lazy("academics:course_list")
     success_message = _("O curso foi cadastrado com sucesso.")
 
@@ -60,9 +61,15 @@ class CourseUpdateView(
     model = models.Course
     form_class = forms.CourseForm
     title = _("Editar Curso")
-    template_name = "academics/course_form.html"
+    template_name = "academics/course/course_form.html"
     success_url = reverse_lazy("academics:course_list")
     success_message = _("O curso foi cadastrado com sucesso.")
+
+class CourseDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
+    model = models.Course
+    context_object_name = "course"
+    title = _("Detalhes do Curso")
+    template_name = "academics/course/course_detail.html"
 
 class CourseDeleteView(
     LoginRequiredMixin,
