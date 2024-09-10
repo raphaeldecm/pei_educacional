@@ -11,6 +11,7 @@ class TitleViewMixin:
         context["title"] = self.title
         return context
 
+
 class ProtectedErrorMessageMixin:
     protected_warning_message = ""
 
@@ -19,4 +20,4 @@ class ProtectedErrorMessageMixin:
             return super().form_valid(form)
         except ProtectedError:
             messages.warning(self.request, self.protected_warning_message)
-            return redirect(self.request.META.get("HTTP_REFERER"))
+            return redirect(self.request.headers.get("referer"))

@@ -26,6 +26,7 @@ class AcademicsIndexView(LoginRequiredMixin, TitleViewMixin, generic.TemplateVie
     template_name = "academics/index.html"
     title = _("Acadêmico")
 
+
 class CourseListView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.ListView):
     model = models.Course
     title = _("Cursos")
@@ -52,6 +53,7 @@ class CourseCreateView(
         form.instance.updated_by = self.request.user
         return super().form_valid(form)
 
+
 class CourseUpdateView(
     LoginRequiredMixin,
     TitleViewMixin,
@@ -65,11 +67,13 @@ class CourseUpdateView(
     success_url = reverse_lazy("academics:course_list")
     success_message = _("O curso foi cadastrado com sucesso.")
 
+
 class CourseDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
     model = models.Course
     context_object_name = "course"
     title = _("Detalhes do Curso")
     template_name = "academics/course/course_detail.html"
+
 
 class CourseDeleteView(
     LoginRequiredMixin,
@@ -84,6 +88,7 @@ class CourseDeleteView(
         "Não é possível excluir o curso, pois ele possui"
         "uma ou mais disciplinas associadas.",
     )
+
 
 class OffersPageView(TitleViewMixin, FilterView, generic.ListView):
     title = _("Ofertas")
@@ -205,7 +210,9 @@ class RemoveStudentFromOfferView(View):
         student = get_object_or_404(Student, id=student_id)
 
         try:
-            enrollment = get_object_or_404(models.Enrollment, offer=offer, student=student)
+            enrollment = get_object_or_404(
+                models.Enrollment, offer=offer, student=student
+            )
             enrollment.delete()
             messages.success(request, "Aluno removido com sucesso da oferta.")
         except ProtectedError:

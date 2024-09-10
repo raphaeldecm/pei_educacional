@@ -25,6 +25,7 @@ class CourseFilter(django_filters.FilterSet):
         model = models.Course
         fields = ["name", "course_type", "period", "duration_type", "number_of_periods"]
 
+
 class OfferFilter(django_filters.FilterSet):
     search = django_filters.CharFilter(method="filter_by_search", label="Search")
 

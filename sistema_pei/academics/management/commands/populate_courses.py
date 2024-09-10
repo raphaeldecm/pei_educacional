@@ -11,22 +11,24 @@ COURSES_CSV = "{}{}".format(
     "/academics/management/commands/course_list.csv",
 )
 
+
 class Command(BaseCommand):
     help = "Popula o banco de dados com cursos"
 
     def handle(self, *args, **kwargs):
-
         with open(COURSES_CSV, newline="", encoding="utf-8") as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 course_type = row["type"].strip()
                 name = row["name"].strip() + " " + row["type"].strip()
                 duracao = row["duracao"].strip()
-                period = random.choice([  # noqa: S311
-                    Course.CoursePeriod.MORNING,
-                    Course.CoursePeriod.AFTERNOON,
-                    Course.CoursePeriod.NIGHT
-                ])
+                period = random.choice(
+                    [  # noqa: S311
+                        Course.CoursePeriod.MORNING,
+                        Course.CoursePeriod.AFTERNOON,
+                        Course.CoursePeriod.NIGHT,
+                    ]
+                )
 
                 course_type_normalized = self.normalize_course_type(course_type)
 
@@ -47,7 +49,9 @@ class Command(BaseCommand):
                     },
                 )
                 if created:
-                    self.stdout.write(self.style.SUCCESS(f"Curso '{name}' criado com sucesso."))
+                    self.stdout.write(
+                        self.style.SUCCESS(f"Curso '{name}' criado com sucesso.")
+                    )
                 else:
                     self.stdout.write(self.style.WARNING(f"Curso '{name}' já existe."))
 
@@ -64,7 +68,7 @@ class Command(BaseCommand):
             "Especialização": "Pós-Graduação",
             "Doutorado": "Pós-Graduação",
             "Técnico Integrado EJA": "Técnico Integrado EJA",
-            "FIC": "Outros"
+            "FIC": "Outros",
             # Adicione outras mapeações conforme necessário
         }
         return course_type_map.get(course_type.strip(), None)

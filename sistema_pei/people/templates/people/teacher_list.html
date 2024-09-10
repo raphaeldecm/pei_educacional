@@ -90,24 +90,38 @@
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
           {% for object in object_list %}
-          <tr class="hover:bg-slate-200">
-            <td class="pl-[76px]">{{ object.name }}</td>
-            <td>{{ object.code }}</td>
-            <td>{{ object.email }}</td>
-            <td>{{ object.campus.abbreviation }}</td>
-            <td class="flex justify-center items-center h-full gap-[30px]">
-              <a class="hover:bg-slate-100 p-2 rounded-full" href="{% url 'people:teacher_detail' object.pk %}">
-                <img src="{% static 'images/icons/icon-eye.svg' %}" width="24px" height="24px" class="cursor-pointer" />
-              </a>
-              <a class="hover:bg-slate-100 p-2 rounded-full" href="{% url 'people:teacher_update' object.pk %}">
-                <img src="{% static 'images/icons/icon-edit-element.svg' %}" width="24px" height="24px" class="cursor-pointer" />
-              </a>
-              <button class="hover:bg-slate-100 p-2 rounded-full" type="button" id="openModal{{ object.pk }}" data-modal-id="confirmationModal{{ object.pk }}">
-                <img src="{% static 'images/icons/icon-remove-element.svg' %}" width="24px" height="24px" class="cursor-pointer" />
-              </button>
-            </td>
-            {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão de Docente" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="people:teacher_delete" %}
-          </tr>
+            <tr class="hover:bg-slate-200">
+              <td class="pl-[76px]">{{ object.name }}</td>
+              <td>{{ object.code }}</td>
+              <td>{{ object.email }}</td>
+              <td>{{ object.campus.abbreviation }}</td>
+              <td class="flex justify-center items-center h-full gap-[30px]">
+                <a class="hover:bg-slate-100 p-2 rounded-full"
+                   href="{% url 'people:teacher_detail' object.pk %}">
+                  <img src="{% static 'images/icons/icon-eye.svg' %}"
+                       width="24px"
+                       height="24px"
+                       class="cursor-pointer" />
+                </a>
+                <a class="hover:bg-slate-100 p-2 rounded-full"
+                   href="{% url 'people:teacher_update' object.pk %}">
+                  <img src="{% static 'images/icons/icon-edit-element.svg' %}"
+                       width="24px"
+                       height="24px"
+                       class="cursor-pointer" />
+                </a>
+                <button class="hover:bg-slate-100 p-2 rounded-full"
+                        type="button"
+                        id="openModal{{ object.pk }}"
+                        data-modal-id="confirmationModal{{ object.pk }}">
+                  <img src="{% static 'images/icons/icon-remove-element.svg' %}"
+                       width="24px"
+                       height="24px"
+                       class="cursor-pointer" />
+                </button>
+              </td>
+              {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão de Docente" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="people:teacher_delete" %}
+            </tr>
           {% empty %}
             <tr>
               <td colspan="7" class="text-center">Nenhum docente cadastrado.</td>
