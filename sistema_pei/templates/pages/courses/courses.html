@@ -69,9 +69,7 @@
             <th>Matérias</th>
             <th>Turno</th>
             <th>Tipo</th>
-            <th></th>
-            <th></th>
-            <th></th>
+            <th colspan="3" style="text-align: center" class='pr-[30px]'>Ações</th>
           </tr>
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
@@ -81,26 +79,22 @@
               <td>{{ course.num_subjects }}</td>
               <td>{{ course.get_period_display }}</td>
               <td>{{ course.course_type }}</td>
-              <td class="min-w-[40px] !px-[0px]">
+              <td class="flex justify-center h-full gap-[30px] !mt-[32px] pr-[26px]">
+                <a href="{% url 'subjects' course.id %}">
+                  <img src="{% static 'images/icons/icon-eye.svg' %}"
+                       width="24px"
+                       height="24px"
+                       class="cursor-pointer" />
+                </a>
                 <a href="{% url 'edit_course' course.id %}">
                   <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                        width="24px"
                        height="24px"
                        class="cursor-pointer" />
                 </a>
-              </td>
-              <td class="min-w-[40px] !px-[0px]">
                 <a href="{% url 'delete_course' course.id %}"
                    onclick="return confirm('Tem certeza que deseja excluir o curso {{ course.name }}?')">
                   <img src="{% static 'images/icons/icon-remove-element.svg' %}"
-                       width="24px"
-                       height="24px"
-                       class="cursor-pointer" />
-                </a>
-              </td>
-              <td class="min-w-[40px] !px-[0px]">
-                <a href="{% url 'subjects' course.id %}">
-                  <img src="{% static 'images/icons/icon-eye.svg' %}"
                        width="24px"
                        height="24px"
                        class="cursor-pointer" />
