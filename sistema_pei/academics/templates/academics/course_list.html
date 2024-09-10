@@ -25,23 +25,6 @@
       <div class="flex gap-[8px]">
         <div class="relative w-[322px] cursor-pointer mb-4">
           <img class="absolute top-[12px] right-[10px]"
-               src="{% static 'images/icons/icon-updown-arrow.svg' %}"
-               width="24px"
-               height="24px" />
-          <select name="course_type"
-                  id="course_type"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
-              <option value="" selected disabled>Selecione o tipo de curso...</option>
-              {% for key, value in filter.form.course_type.field.choices %}
-                  <option value="{{ key }}"
-                      {% if key == request.GET.course_type %}selected{% endif %}>
-                      {{ value }}
-                  </option>
-              {% endfor %}
-          </select>
-        </div>
-        <div class="relative w-[322px] cursor-pointer mb-4">
-          <img class="absolute top-[12px] right-[10px]"
                 src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                 width="24px"
                 height="24px" />
@@ -52,6 +35,23 @@
               {% for key, value in filter.form.period.field.choices %}
                   <option value="{{ key }}"
                     {% if key == request.GET.period %}selected{% endif %}>
+                      {{ value }}
+                  </option>
+              {% endfor %}
+          </select>
+        </div>
+        <div class="relative w-[322px] cursor-pointer mb-4">
+          <img class="absolute top-[12px] right-[10px]"
+               src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+               width="24px"
+               height="24px" />
+          <select name="course_type"
+                  id="course_type"
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
+              <option value="" selected disabled>Selecione o tipo de curso...</option>
+              {% for key, value in filter.form.course_type.field.choices %}
+                  <option value="{{ key }}"
+                      {% if key == request.GET.course_type %}selected{% endif %}>
                       {{ value }}
                   </option>
               {% endfor %}
@@ -68,7 +68,7 @@
 
     <div class="mt-[53px]">
       <a href="{% url 'academics:course_create' %}"
-       class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer">
+      class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer hover:bg-green-500 hover:text-white transition-colors duration-300 mt-[2px]">
       Cadastrar Novo Curso
     </a>
     </div>
@@ -84,30 +84,26 @@
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
           {% for object in object_list %}
-            <tr>
+            <tr class="hover:bg-slate-200">
               <td class="pl-[76px]">{{ object.name }}</td>
               <td>{{ object.get_period_display }}</td>
               <td>{{ object.course_type }}</td>
-              <td class="min-w-[40px] !px-[0px]">
-                <a href="{% url 'academics:course_update' object.pk %}">
+              <td class="flex justify-center items-center h-full gap-[30px]">
+                <a class="hover:bg-slate-100 p-2 rounded-full" href="{% url 'subjects' object.pk %}">
+                  <img src="{% static 'images/icons/icon-eye.svg' %}"
+                       width="24px"
+                       height="24px"
+                       class="cursor-pointer" />
+                </a>
+                <a class="hover:bg-slate-100 p-2 rounded-full" href="{% url 'academics:course_update' object.pk %}">
                   <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                        width="24px"
                        height="24px"
                        class="cursor-pointer" />
                 </a>
-              </td>
-              <td class="min-w-[40px] !px-[0px]">
-                <a href="{% url 'academics:course_delete' object.pk %}"
+                <a class="hover:bg-slate-100 p-2 rounded-full" href="{% url 'academics:course_delete' object.pk %}"
                    onclick="return confirm('Tem certeza que deseja excluir o curso {{ object.name }}?')">
                   <img src="{% static 'images/icons/icon-remove-element.svg' %}"
-                       width="24px"
-                       height="24px"
-                       class="cursor-pointer" />
-                </a>
-              </td>
-              <td class="min-w-[40px] !px-[0px]">
-                <a href="{% url 'subjects' object.pk %}">
-                  <img src="{% static 'images/icons/icon-eye.svg' %}"
                        width="24px"
                        height="24px"
                        class="cursor-pointer" />

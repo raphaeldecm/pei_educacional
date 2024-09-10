@@ -53,27 +53,37 @@ class CourseCreateView(
         form.instance.updated_by = self.request.user
         return super().form_valid(form)
 
-class CourseUpdateView(generic.TemplateView):
-    template_name = "pages/courses/edit-course.html"
+class CourseUpdateView(
+    LoginRequiredMixin,
+    TitleViewMixin,
+    generic.CreateView,
+    SuccessMessageMixin,
+):
+    model = models.Course
+    form_class = forms.CourseForm
+    title = _("Editar Curso")
+    template_name = "academics/course_form.html"
+    success_url = reverse_lazy("academics:course_list")
+    success_message = _("O curso foi cadastrado com sucesso.")
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        course_id = self.kwargs.get("course_id")
-        course = get_object_or_404(models.Course, id=course_id)
-        course_subjects = course.subjects.all()
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     course_id = self.kwargs.get("course_id")
+    #     course = get_object_or_404(models.Course, id=course_id)
+    #     course_subjects = course.subjects.all()
 
-        filters = {}
-        if "search_subject" in self.request.GET:
-            filters["search_subject"] = self.request.GET["search_subject"]
-            course_subjects = course_subjects.filter(
-                Q(name__icontains=self.request.GET["search_subject"]),
-            )
+    #     filters = {}
+    #     if "search_subject" in self.request.GET:
+    #         filters["search_subject"] = self.request.GET["search_subject"]
+    #         course_subjects = course_subjects.filter(
+    #             Q(name__icontains=self.request.GET["search_subject"]),
+    #         )
 
-        context["course"] = course
-        context["course_subjects"] = course_subjects
-        context["course_types"] = [course[0] for course in COURSE_TYPE]
+    #     context["course"] = course
+    #     context["course_subjects"] = course_subjects
+    #     context["course_types"] = [course[0] for course in COURSE_TYPE]
 
-        return context
+    #     return context
 
     def post(self, request, *args, **kwargs):
         course_id = self.kwargs.get("course_id")
