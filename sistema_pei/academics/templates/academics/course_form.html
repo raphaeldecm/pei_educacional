@@ -21,25 +21,27 @@
         <div class="flex-1">
           <label for="{{ form.name.id_for_label }}" class="font-medium text-[18px]">Nome:</label>
           <input type="text"
-                 name="name"
+                 name="{{ form.name.name }}"
+                  id="{{ form.name.id_for_label }}"
                  placeholder="Digite o nome do curso..."
                  class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
-                 value="{{ request.GET.name }}" />
+                 value="{{ form.name.value|default_if_none:'' }}" />
         </div>
       </div>
       <div class="flex items-center gap-[3%] mt-[24px]">
         <div class="flex-1">
-          <label for="period" class="font-medium text-[18px]">Turno:</label>
+          <label for="{{ form.period.id_for_label }}" class="font-medium text-[18px]">Turno:</label>
           <div class="relative w-full cursor-pointer mt-[16px]">
             <img class="absolute top-[12px] right-[10px]"
                  src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                  width="24px"
                  height="24px" />
-            <select name="period"
+            <select name="{{ form.period.name }}"
+                    id="{{ form.period.id_for_label }}"
                     class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
               <option value="default" selected disabled>Selecione o turno...</option>
               {% for key, value in form.period.field.choices %}
-                <option value="{{ key }}" {% if key == request.GET.period %}selected{% endif %}>
+                <option value="{{ key }}" {% if key == form.period.value %}selected{% endif %}>
                   {{ value }}
                 </option>
               {% endfor %}
@@ -47,18 +49,19 @@
           </div>
         </div>
         <div class="flex-1">
-          <label for="type" class="font-medium text-[18px]">Duração:</label>
+          <label for="{{ form.duration_type.id_for_label }}" class="font-medium text-[18px]">Duração:</label>
           <div class="relative w-full cursor-pointer mt-[16px]">
             <img class="absolute top-[12px] right-[10px]"
                  src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                  width="24px"
                  height="24px" />
-            <select name="duration_type"
+            <select name="{{ form.duration_type.name }}"
+                    id="{{ form.duration_type.id_for_label }}"
                     class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
                     required>
               <option value="default" selected disabled>Selecione a duração...</option>
               {% for key, value in form.duration_type.field.choices %}
-                <option value="{{ key }}" {% if key == request.GET.duration_type %}selected{% endif %}>
+                <option value="{{ key }}" {% if key == form.duration_type.value %}selected{% endif %}>
                   {{ value }}
                 </option>
               {% endfor %}
@@ -68,37 +71,43 @@
       </div>
       <div class="flex items-center gap-[3%] mt-[24px]">
         <div class="flex-1">
-          <label for="name" class="font-medium text-[18px]">Qtd. Periodos:</label>
+          <div class="flex">
+            <label for="{{ form.number_of_periods.id_for_label }}" class="font-medium text-[18px]">Qtd. Períodos:</label>
+            <img class="ml-[10px] stroke-orange-400"
+                alt="Informação"
+               src="{% static 'images/icons/icon_information.svg' %}"
+               width="24px"
+               height="24px" />
+          </div>
           <input type="number"
-                 name="number_of_periods"
-                 min="1"
-                 placeholder="Digite o nome do curso..."
-                 required
-                 class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]" />
-        </div>
+                 name="{{ form.number_of_periods.name }}"
+                 id="{{ form.number_of_periods.id_for_label }}"
+                 class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+                 value="{{ form.number_of_periods.value|default_if_none:'' }}"
+                 placeholder="Digite a quantidade de períodos..."
+                 min="1">
+      </div>
         <div class="flex-1">
-        <label for="type" class="font-medium text-[18px]">Tipo:</label>
+        <label for="{{ form.course_type.id_for_label }}" class="font-medium text-[18px]">Tipo:</label>
         <div class="relative w-full cursor-pointer mt-[16px]">
           <img class="absolute top-[12px] right-[10px]"
                src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                width="24px"
                height="24px" />
-          <select name="course_type"
+          <select name="{{ form.course_type.name }}"
+                  id="{{ form.course_type.id_for_label }}"
                   class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
                   required>
             <option value="default" selected disabled>Selecione o tipo...</option>
             {% for key, value in form.course_type.field.choices %}
                   <option value="{{ key }}"
-                      {% if key == request.GET.course_type %}selected{% endif %}>
+                      {% if key == form.course_type.value %}selected{% endif %}>
                       {{ value }}
                   </option>
               {% endfor %}
           </select>
         </div>
       </div>
-      </div>
-      <div>
-        {% for subject in course.subjects %}<h1>{{ subject.name }}</h1>{% endfor %}
       </div>
 
       {% include "_save_back_buttons.html" with link_to_back='academics:course_list' %}

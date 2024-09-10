@@ -3,7 +3,6 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import ProtectedError
-from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -17,9 +16,8 @@ from django_filters.views import FilterView
 from sistema_pei.academics import filters
 from sistema_pei.academics import forms
 from sistema_pei.academics import models
-from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.core import constants
-from sistema_pei.core.mixins import TitleViewMixin
+from sistema_pei.core.mixins import ProtectedErrorMessageMixin, TitleViewMixin
 from sistema_pei.people.models import Student
 
 
@@ -56,7 +54,7 @@ class CourseCreateView(
 class CourseUpdateView(
     LoginRequiredMixin,
     TitleViewMixin,
-    generic.CreateView,
+    generic.UpdateView,
     SuccessMessageMixin,
 ):
     model = models.Course
@@ -66,39 +64,19 @@ class CourseUpdateView(
     success_url = reverse_lazy("academics:course_list")
     success_message = _("O curso foi cadastrado com sucesso.")
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     course_id = self.kwargs.get("course_id")
-    #     course = get_object_or_404(models.Course, id=course_id)
-    #     course_subjects = course.subjects.all()
-
-    #     filters = {}
-    #     if "search_subject" in self.request.GET:
-    #         filters["search_subject"] = self.request.GET["search_subject"]
-    #         course_subjects = course_subjects.filter(
-    #             Q(name__icontains=self.request.GET["search_subject"]),
-    #         )
-
-    #     context["course"] = course
-    #     context["course_subjects"] = course_subjects
-    #     context["course_types"] = [course[0] for course in COURSE_TYPE]
-
-    #     return context
-
-    def post(self, request, *args, **kwargs):
-        course_id = self.kwargs.get("course_id")
-        course = get_object_or_404(models.Course, id=course_id)
-        form = forms.CourseForm(request.POST, instance=course)
-        if form.is_valid():
-            form.save()
-            return redirect("courses")
-        return self.render_to_response(self.get_context_data(form=form))
-
-class CourseDeleteView(View):
-    def get(self, request, course_id):
-        course = get_object_or_404(models.Course, id=course_id)
-        course.delete()
-        return redirect("courses")
+class CourseDeleteView(
+    LoginRequiredMixin,
+    ProtectedErrorMessageMixin,
+    SuccessMessageMixin,
+    generic.DeleteView,
+):
+    model = models.Course
+    success_url = reverse_lazy("academics:course_list")
+    success_message = _("O curso foi excluído com sucesso.")
+    protected_warning_message = _(
+        "Não é possível excluir o curso, pois ele possui"
+        "uma ou mais disciplinas associadas.",
+    )
 
 class OffersPageView(TitleViewMixin, FilterView, generic.ListView):
     title = _("Ofertas")

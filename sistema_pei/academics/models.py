@@ -38,7 +38,6 @@ class Course(BaseModel):
 
     number_of_periods = models.PositiveSmallIntegerField(
         verbose_name=_("Número de períodos/Anos"),
-        default=1,
         validators=[
             MinValueValidator(1),
         ],

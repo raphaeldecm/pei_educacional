@@ -101,14 +101,14 @@
                        height="24px"
                        class="cursor-pointer" />
                 </a>
-                <a class="hover:bg-slate-100 p-2 rounded-full" href="{% url 'academics:course_delete' object.pk %}"
-                   onclick="return confirm('Tem certeza que deseja excluir o curso {{ object.name }}?')">
+                <button class="hover:bg-slate-100 p-2 rounded-full" type="button" id="openModal{{ object.pk }}" data-modal-id="confirmationModal{{ object.pk }}">
                   <img src="{% static 'images/icons/icon-remove-element.svg' %}"
                        width="24px"
                        height="24px"
                        class="cursor-pointer" />
-                </a>
+                </button>
               </td>
+              {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão do Curso" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="academics:course_delete" %}
             </tr>
           {% endfor %}
         </tbody>
