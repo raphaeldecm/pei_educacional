@@ -43,7 +43,7 @@ def activate_account(request, uidb64, token):
         return render(request, "403.html")
 
 
-class TeacherListView(TitleViewMixin, FilterView, generic.ListView):
+class TeacherListView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.ListView):
     model = Teacher
     title = _("Docentes")
     paginate_by = constants.DEFAULT_PAGE_SIZE

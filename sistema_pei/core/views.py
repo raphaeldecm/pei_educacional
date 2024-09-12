@@ -28,7 +28,6 @@ from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.academics.models import Course
 from sistema_pei.academics.models import Enrollment
 from sistema_pei.academics.models import Subject
-from sistema_pei.core.forms import CourseForm
 from sistema_pei.core.forms import EnrollmentForm
 from sistema_pei.core.forms import SubjectForm
 from sistema_pei.educational_plan.models import Pei
@@ -444,68 +443,12 @@ class CoursesPageView(TemplateView):
         return context
 
 
-class CreateCoursesPageView(TemplateView):
-    template_name = "pages/courses/create-course.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        context["course_types"] = [course[0] for course in COURSE_TYPE]
-        return context
-
-    def post(self, request, *args, **kwargs):
-        form = CourseForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("courses")
-        return self.render_to_response(self.get_context_data(form=form))
-
-
-class DeleteCourseView(View):
-    def get(self, request, course_id):
-        course = get_object_or_404(Course, id=course_id)
-        course.delete()
-        return redirect("courses")
-
-
 class RemoveStudentFromSubjectView(View):
     def get(self, request, subject_id, student_id):
         subject = get_object_or_404(Subject, id=subject_id)
         student = get_object_or_404(Student, id=student_id)
         subject.students.remove(student)
         return redirect(f"/subjects/edit/{subject.id}")
-
-
-class EditCoursePageView(TemplateView):
-    template_name = "pages/courses/edit-course.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        course_id = self.kwargs.get("course_id")
-        course = get_object_or_404(Course, id=course_id)
-        course_subjects = course.subjects.all()
-
-        filters = {}
-        if "search_subject" in self.request.GET:
-            filters["search_subject"] = self.request.GET["search_subject"]
-            course_subjects = course_subjects.filter(
-                Q(name__icontains=self.request.GET["search_subject"]),
-            )
-
-        context["course"] = course
-        context["course_subjects"] = course_subjects
-        context["course_types"] = [course[0] for course in COURSE_TYPE]
-
-        return context
-
-    def post(self, request, *args, **kwargs):
-        course_id = self.kwargs.get("course_id")
-        course = get_object_or_404(Course, id=course_id)
-        form = CourseForm(request.POST, instance=course)
-        if form.is_valid():
-            form.save()
-            return redirect("courses")
-        return self.render_to_response(self.get_context_data(form=form))
 
 
 class DeleteSubjectView(View):

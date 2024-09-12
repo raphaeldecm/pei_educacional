@@ -1,5 +1,7 @@
 # Create your views here.
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import ProtectedError
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
@@ -11,34 +13,100 @@ from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
 from django_filters.views import FilterView
 
-from sistema_pei.academics.filters import EnrollmentFilter
-from sistema_pei.academics.filters import OfferFilter
-from sistema_pei.academics.forms import OfferForm
-from sistema_pei.academics.models import Course
-from sistema_pei.academics.models import Enrollment
-from sistema_pei.academics.models import Offer
+from sistema_pei.academics import filters
+from sistema_pei.academics import forms
+from sistema_pei.academics import models
 from sistema_pei.core import constants
+from sistema_pei.core.mixins import ProtectedErrorMessageMixin
 from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.people.models import Student
+
+
+class AcademicsIndexView(LoginRequiredMixin, TitleViewMixin, generic.TemplateView):
+    template_name = "academics/index.html"
+    title = _("Acadêmico")
+
+
+class CourseListView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.ListView):
+    model = models.Course
+    title = _("Cursos")
+    paginate_by = constants.DEFAULT_PAGE_SIZE
+    filterset_class = filters.CourseFilter
+    template_name = "academics/course/course_list.html"
+
+
+class CourseCreateView(
+    LoginRequiredMixin,
+    TitleViewMixin,
+    generic.CreateView,
+    SuccessMessageMixin,
+):
+    model = models.Course
+    form_class = forms.CourseForm
+    title = _("Criar Curso")
+    template_name = "academics/course/course_form.html"
+    success_url = reverse_lazy("academics:course_list")
+    success_message = _("O curso foi cadastrado com sucesso.")
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        form.instance.updated_by = self.request.user
+        return super().form_valid(form)
+
+
+class CourseUpdateView(
+    LoginRequiredMixin,
+    TitleViewMixin,
+    generic.UpdateView,
+    SuccessMessageMixin,
+):
+    model = models.Course
+    form_class = forms.CourseForm
+    title = _("Editar Curso")
+    template_name = "academics/course/course_form.html"
+    success_url = reverse_lazy("academics:course_list")
+    success_message = _("O curso foi cadastrado com sucesso.")
+
+
+class CourseDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
+    model = models.Course
+    context_object_name = "course"
+    title = _("Detalhes do Curso")
+    template_name = "academics/course/course_detail.html"
+
+
+class CourseDeleteView(
+    LoginRequiredMixin,
+    ProtectedErrorMessageMixin,
+    SuccessMessageMixin,
+    generic.DeleteView,
+):
+    model = models.Course
+    success_url = reverse_lazy("academics:course_list")
+    success_message = _("O curso foi excluído com sucesso.")
+    protected_warning_message = _(
+        "Não é possível excluir o curso, pois ele possui"
+        "uma ou mais disciplinas associadas.",
+    )
 
 
 class OffersPageView(TitleViewMixin, FilterView, generic.ListView):
     title = _("Ofertas")
     paginate_by = constants.DEFAULT_PAGE_SIZE
-    filterset_class = OfferFilter
+    filterset_class = filters.OfferFilter
     template_name = "academics/offer_list.html"
 
     def get_queryset(self):
         # Listar somente ofertas do curso
         course_id = self.kwargs.get("course_id")
-        queryset = Offer.objects.filter(course_id=course_id)
-        filterset = OfferFilter(self.request.GET, queryset=queryset)
+        queryset = models.Offer.objects.filter(course_id=course_id)
+        filterset = filters.OfferFilter(self.request.GET, queryset=queryset)
         return filterset.qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         course_id = self.kwargs.get("course_id")
-        course = get_object_or_404(Course, id=course_id)
+        course = get_object_or_404(models.Course, id=course_id)
         context["course"] = course
 
         return context
@@ -46,8 +114,8 @@ class OffersPageView(TitleViewMixin, FilterView, generic.ListView):
 
 class CreateOfferPageView(TitleViewMixin, CreateView):
     title = _("Criar Oferta")
-    model = Offer
-    form_class = OfferForm
+    model = models.Offer
+    form_class = forms.OfferForm
 
     def form_valid(self, form):
         self.object = form.save()
@@ -66,8 +134,8 @@ class CreateOfferPageView(TitleViewMixin, CreateView):
 
 class EditOfferPageView(TitleViewMixin, UpdateView):
     title = _("Editar Oferta")
-    model = Offer
-    form_class = OfferForm
+    model = models.Offer
+    form_class = forms.OfferForm
     context_object_name = "offer"
 
     def get_context_data(self, **kwargs):
@@ -76,7 +144,7 @@ class EditOfferPageView(TitleViewMixin, UpdateView):
         return context
 
     def get_object(self, queryset=None):
-        return get_object_or_404(Offer, id=self.kwargs["offer_id"])
+        return get_object_or_404(models.Offer, id=self.kwargs["offer_id"])
 
     def get_success_url(self):
         return reverse_lazy(
@@ -95,22 +163,22 @@ class EditOfferPageView(TitleViewMixin, UpdateView):
 
 class OfferDetailsPageView(FilterView, generic.ListView):
     paginate_by = 10
-    filterset_class = EnrollmentFilter
+    filterset_class = filters.EnrollmentFilter
     template_name = "academics/offer_detail.html"
 
     def get_queryset(self):
         offer_id = self.kwargs.get("offer_id")
-        offer = get_object_or_404(Offer, id=offer_id)
+        offer = get_object_or_404(models.Offer, id=offer_id)
         return offer.enrollments.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         offer_id = self.kwargs.get("offer_id")
-        offer = get_object_or_404(Offer, id=offer_id)
+        offer = get_object_or_404(models.Offer, id=offer_id)
 
         course_id = self.kwargs.get("course_id")
-        course = get_object_or_404(Course, id=course_id)
+        course = get_object_or_404(models.Course, id=course_id)
         context["course"] = course
         context["offer"] = offer
 
@@ -123,7 +191,7 @@ class OfferDetailsPageView(FilterView, generic.ListView):
 
 class DeleteOfferView(View):
     def get(self, request, offer_id):
-        offer = get_object_or_404(Offer, id=offer_id)
+        offer = get_object_or_404(models.Offer, id=offer_id)
         try:
             offer.delete()
             messages.success(request, "Oferta removida com sucesso!")
@@ -138,11 +206,13 @@ class DeleteOfferView(View):
 
 class RemoveStudentFromOfferView(View):
     def get(self, request, offer_id, student_id):
-        offer = get_object_or_404(Offer, id=offer_id)
+        offer = get_object_or_404(models.Offer, id=offer_id)
         student = get_object_or_404(Student, id=student_id)
 
         try:
-            enrollment = get_object_or_404(Enrollment, offer=offer, student=student)
+            enrollment = get_object_or_404(
+                models.Enrollment, offer=offer, student=student
+            )
             enrollment.delete()
             messages.success(request, "Aluno removido com sucesso da oferta.")
         except ProtectedError:
@@ -156,12 +226,12 @@ class RemoveStudentFromOfferView(View):
 
 class AddStudentToOfferView(View):
     def post(self, request, offer_id):
-        offer = get_object_or_404(Offer, id=offer_id)
+        offer = get_object_or_404(models.Offer, id=offer_id)
         student_id = request.POST.get("student")
         student = get_object_or_404(Student, id=student_id)
 
-        if not Enrollment.objects.filter(offer=offer, student=student).exists():
-            Enrollment.objects.create(
+        if not models.Enrollment.objects.filter(offer=offer, student=student).exists():
+            models.Enrollment.objects.create(
                 offer=offer,
                 student=student,
                 YearSemesterReference=student.reference_period,

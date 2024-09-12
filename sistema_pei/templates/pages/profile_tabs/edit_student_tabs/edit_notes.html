@@ -4,7 +4,7 @@
       <a href="{% url 'profile' student.id %}?tab=edit_student_data&sub_tab=edit_notes&selectedPeriod={{ forloop.counter }}"
          class="font-poppins rounded-lg py-2 px-5 {% if sub_active_tab == 'edit_personal_data' %} text-white bg-green-500 {% else %} text-slate-300 {% endif %} hover:bg-green-500 hover:text-white transition duration-300 ease-in-out w-[218px] ml-[30px] p-[10px] rounded-lg cursor-pointer {% if request.GET.selectedPeriod == forloop.counter|slugify or forloop.first and request.GET.selectedPeriod is null %} bg-green-500 text-slate-50{% endif %}">
         {{ forloop.counter }}°
-        {% if student.course.durationType == "SEMESTER" %}
+        {% if student.course.duration_type == "SEMESTER" %}
           semestre
         {% else %}
           ano
@@ -15,7 +15,7 @@
   <div class="flex-1">
     <h2 class="uppercase font-semibold">
       Todas as disciplinas do
-      {% if student.course.durationType == "SEMESTER" %}
+      {% if student.course.duration_type == "SEMESTER" %}
         semestre
       {% else %}
         ano
@@ -49,7 +49,7 @@
                      class="mt-[16px] border border-slate-300 rounded-lg bg-transparent p-[10px] w-full"
                      value="{{ subject_grades.grade2 }}" />
             </div>
-            {% if student.course.durationType != "SEMESTER" %}
+            {% if student.course.duration_type != "SEMESTER" %}
               <div class="text-slate-400 mt-[20px] flex-1">
                 <label class="block">3° Bimestre</label>
                 <input type="number"
@@ -82,7 +82,7 @@
       <div class="mt-5">
         <p class="font-light text-slate-900">
           Não há notas para este
-          {% if student.course.durationType == "SEMESTER" %}
+          {% if student.course.duration_type == "SEMESTER" %}
             semestre.
           {% else %}
             ano.

@@ -31,14 +31,13 @@ class Course(BaseModel):
         verbose_name=_("Turno"),
     )
 
-    durationType = models.CharField(
+    duration_type = models.CharField(
         choices=CourseDurationType.choices,
         verbose_name=_("Tipo de duração"),
     )
 
     number_of_periods = models.PositiveSmallIntegerField(
         verbose_name=_("Número de períodos/Anos"),
-        default=1,
         validators=[
             MinValueValidator(1),
         ],

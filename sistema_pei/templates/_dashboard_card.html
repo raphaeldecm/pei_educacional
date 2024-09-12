@@ -1,0 +1,11 @@
+{% load static %}
+
+<a class="flex items-center justify-between rounded-lg cursor-pointer w-[365px] min-w-[365px] border border-slate-300 py-6 px-3 hover:bg-green-200 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out"
+   href="{% url link_to %}">
+  <img src="{% static path_icon %}"
+       width="60px"
+       height="60px"
+       alt="{{ text }}"
+       class="mr-4" />
+  <p class="text-[30px] text-green-600">{{ text }}</p>
+</a>
