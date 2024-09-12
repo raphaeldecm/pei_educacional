@@ -12,7 +12,7 @@
 {% block content %}
   <div class="w-full">
     <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}: {{ course.name }}</h1>
-    <div class="flex items-center m-8 gap-6 p-2 [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px] border border-slate-300">
+    <div class="mt-[53px] w-full h-max p-8 overflow-x-auto border border-slate-300 rounded-lg">
       <div class="flex flex-col">
         <div class="flex gap-4">
           <p class="font-semibold text-[18px]">Nome:</p>
@@ -32,6 +32,56 @@
         </div>
       </div>
     </div>
-    <p class="font-semibold m-[38px]">Disciplinas</p>
+    <p class="font-semibold mb-4 mt-[38px]">Disciplinas</p>
+    <div class="overflow-y-auto h-[253px] mb-[38px]">
+      {% for subject in object.subjects.all %}
+        <div class="flex items-center w-full h-max overflow-x-auto border border-slate-300 rounded-lg mb-4 p-2 gap-2">
+          <p class="text-slate-900 font-bold text-[18px]">Nome:</p>
+          <p class="text-slate-900 font-regular text-[18px]">{{ subject.name }}</p>
+          <p class="text-slate-900 font-bold text-[18px]">Duração:</p>
+          <p class="text-slate-900 font-regular text-[18px]">{{ subject.get_subject_type_display }}</p>
+        </div>
+
+        <div class="flex items-center w-full h-max overflow-x-auto border border-slate-300 rounded-lg mb-4 p-2 gap-2">
+          <p class="text-slate-900 font-bold text-[18px]">Nome:</p>
+          <p class="text-slate-900 font-regular text-[18px]">{{ subject.name }}</p>
+          <p class="text-slate-900 font-bold text-[18px]">Duração:</p>
+          <p class="text-slate-900 font-regular text-[18px]">{{ subject.get_subject_type_display }}</p>
+        </div>
+        <div class="flex items-center w-full h-max overflow-x-auto border border-slate-300 rounded-lg mb-4 p-2 gap-2">
+          <p class="text-slate-900 font-bold text-[18px]">Nome:</p>
+          <p class="text-slate-900 font-regular text-[18px]">{{ subject.name }}</p>
+          <p class="text-slate-900 font-bold text-[18px]">Duração:</p>
+          <p class="text-slate-900 font-regular text-[18px]">{{ subject.get_subject_type_display }}</p>
+        </div>
+        <div class="flex items-center w-full h-max overflow-x-auto border border-slate-300 rounded-lg mb-4 p-2 gap-2">
+          <p class="text-slate-900 font-bold text-[18px]">Nome:</p>
+          <p class="text-slate-900 font-regular text-[18px]">{{ subject.name }}</p>
+          <p class="text-slate-900 font-bold text-[18px]">Duração:</p>
+          <p class="text-slate-900 font-regular text-[18px]">{{ subject.get_subject_type_display }}</p>
+        </div>
+        <div class="flex items-center w-full h-max overflow-x-auto border border-slate-300 rounded-lg mb-4 p-2 gap-2">
+          <p class="text-slate-900 font-bold text-[18px]">Nome:</p>
+          <p class="text-slate-900 font-regular text-[18px]">{{ subject.name }}</p>
+          <p class="text-slate-900 font-bold text-[18px]">Duração:</p>
+          <p class="text-slate-900 font-regular text-[18px]">{{ subject.get_subject_type_display }}</p>
+        </div>
+        <div class="flex items-center w-full h-max overflow-x-auto border border-slate-300 rounded-lg mb-4 p-2 gap-2">
+          <p class="text-slate-900 font-bold text-[18px]">Nome:</p>
+          <p class="text-slate-900 font-regular text-[18px]">{{ subject.name }}</p>
+          <p class="text-slate-900 font-bold text-[18px]">Duração:</p>
+          <p class="text-slate-900 font-regular text-[18px]">{{ subject.get_subject_type_display }}</p>
+        </div>
+        <div class="flex items-center w-full h-max overflow-x-auto border border-slate-300 rounded-lg mb-4 p-2 gap-2">
+          <p class="text-slate-900 font-bold text-[18px]">Nome:</p>
+          <p class="text-slate-900 font-regular text-[18px]">{{ subject.name }}</p>
+          <p class="text-slate-900 font-bold text-[18px]">Duração:</p>
+          <p class="text-slate-900 font-regular text-[18px]">{{ subject.get_subject_type_display }}</p>
+        </div>
+      {% endfor %}
+
+    </div>
+
+
   </div>
 {% endblock content %}
