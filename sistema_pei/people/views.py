@@ -49,6 +49,7 @@ class TeacherListView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.Li
     paginate_by = constants.DEFAULT_PAGE_SIZE
     filterset_class = TeacherFilter
     template_name = "people/teacher_list.html"
+    ordering = ["name"]
 
 
 class TeacherCreateView(

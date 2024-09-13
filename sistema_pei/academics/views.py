@@ -33,13 +33,14 @@ class CourseListView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.Lis
     paginate_by = constants.DEFAULT_PAGE_SIZE
     filterset_class = filters.CourseFilter
     template_name = "academics/course/course_list.html"
+    ordering = ["name"]
 
 
 class CourseCreateView(
     LoginRequiredMixin,
     TitleViewMixin,
-    generic.CreateView,
     SuccessMessageMixin,
+    generic.CreateView,
 ):
     model = models.Course
     form_class = forms.CourseForm
@@ -57,15 +58,15 @@ class CourseCreateView(
 class CourseUpdateView(
     LoginRequiredMixin,
     TitleViewMixin,
-    generic.UpdateView,
     SuccessMessageMixin,
+    generic.UpdateView,
 ):
     model = models.Course
     form_class = forms.CourseForm
     title = _("Editar Curso")
     template_name = "academics/course/course_form.html"
     success_url = reverse_lazy("academics:course_list")
-    success_message = _("O curso foi cadastrado com sucesso.")
+    success_message = _("O curso foi atualizado com sucesso.")
 
 
 class CourseDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
