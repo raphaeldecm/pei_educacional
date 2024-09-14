@@ -35,44 +35,7 @@
     <p class="font-semibold mb-4 mt-[38px]">Disciplinas</p>
     <div class="overflow-y-auto h-[253px] mb-[38px]">
       {% for subject in object.subjects.all %}
-        <div class="flex items-center w-full h-max overflow-x-auto border border-slate-300 rounded-lg mb-4 p-2 gap-2">
-          <p class="text-slate-900 font-bold text-[18px]">Nome:</p>
-          <p class="text-slate-900 font-regular text-[18px]">{{ subject.name }}</p>
-          <p class="text-slate-900 font-bold text-[18px]">Duração:</p>
-          <p class="text-slate-900 font-regular text-[18px]">{{ subject.get_subject_type_display }}</p>
-        </div>
-
-        <div class="flex items-center w-full h-max overflow-x-auto border border-slate-300 rounded-lg mb-4 p-2 gap-2">
-          <p class="text-slate-900 font-bold text-[18px]">Nome:</p>
-          <p class="text-slate-900 font-regular text-[18px]">{{ subject.name }}</p>
-          <p class="text-slate-900 font-bold text-[18px]">Duração:</p>
-          <p class="text-slate-900 font-regular text-[18px]">{{ subject.get_subject_type_display }}</p>
-        </div>
-        <div class="flex items-center w-full h-max overflow-x-auto border border-slate-300 rounded-lg mb-4 p-2 gap-2">
-          <p class="text-slate-900 font-bold text-[18px]">Nome:</p>
-          <p class="text-slate-900 font-regular text-[18px]">{{ subject.name }}</p>
-          <p class="text-slate-900 font-bold text-[18px]">Duração:</p>
-          <p class="text-slate-900 font-regular text-[18px]">{{ subject.get_subject_type_display }}</p>
-        </div>
-        <div class="flex items-center w-full h-max overflow-x-auto border border-slate-300 rounded-lg mb-4 p-2 gap-2">
-          <p class="text-slate-900 font-bold text-[18px]">Nome:</p>
-          <p class="text-slate-900 font-regular text-[18px]">{{ subject.name }}</p>
-          <p class="text-slate-900 font-bold text-[18px]">Duração:</p>
-          <p class="text-slate-900 font-regular text-[18px]">{{ subject.get_subject_type_display }}</p>
-        </div>
-        <div class="flex items-center w-full h-max overflow-x-auto border border-slate-300 rounded-lg mb-4 p-2 gap-2">
-          <p class="text-slate-900 font-bold text-[18px]">Nome:</p>
-          <p class="text-slate-900 font-regular text-[18px]">{{ subject.name }}</p>
-          <p class="text-slate-900 font-bold text-[18px]">Duração:</p>
-          <p class="text-slate-900 font-regular text-[18px]">{{ subject.get_subject_type_display }}</p>
-        </div>
-        <div class="flex items-center w-full h-max overflow-x-auto border border-slate-300 rounded-lg mb-4 p-2 gap-2">
-          <p class="text-slate-900 font-bold text-[18px]">Nome:</p>
-          <p class="text-slate-900 font-regular text-[18px]">{{ subject.name }}</p>
-          <p class="text-slate-900 font-bold text-[18px]">Duração:</p>
-          <p class="text-slate-900 font-regular text-[18px]">{{ subject.get_subject_type_display }}</p>
-        </div>
-        <div class="flex items-center w-full h-max overflow-x-auto border border-slate-300 rounded-lg mb-4 p-2 gap-2">
+        <div class="flex items-center w-full h-max overflow-x-auto border border-slate-300 rounded-lg mb-4 px-8 p-2 gap-2">
           <p class="text-slate-900 font-bold text-[18px]">Nome:</p>
           <p class="text-slate-900 font-regular text-[18px]">{{ subject.name }}</p>
           <p class="text-slate-900 font-bold text-[18px]">Duração:</p>
