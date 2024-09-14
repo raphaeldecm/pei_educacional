@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% load static i18n %}
+{% load breadcrumb_item %}
+
+{% block breadcrumb %}
+  {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
+  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-home-green.svg" url="academics:dashboard" %}
+  {% breadcrumb_item text="Cursos" icon="images/icons/icon-courses-green.svg" url="academics:course_list" %}
+{% endblock breadcrumb %}
+{% block content %}
+  <div class="flex flex-col w-full">
+    <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
+    <form mathod="get">
+      <div class="mb-[26px] flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
+        <img src="{% static 'images/icons/icon-search.svg' %}"
+             width="18px"
+             height="18px" />
+        <input type="text"
+               name="name"
+               placeholder="Pesquisar..."
+               class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50"
+               value="{{ request.GET.name }}" />
+      </div>
+      <div class="flex gap-[8px]">
+        <div class="relative w-[322px] cursor-pointer mb-4">
+          <img class="absolute top-[12px] right-[10px]"
+               src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+               width="24px"
+               height="24px" />
+          <select name="period"
+                  id="period"
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
+            <option value="" selected disabled>Selecione o turno...</option>
+            {% for key, value in filter.form.period.field.choices %}
+              <option value="{{ key }}"
+                      {% if key == request.GET.period %}selected{% endif %}>{{ value }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="relative w-[322px] cursor-pointer mb-4">
+          <img class="absolute top-[12px] right-[10px]"
+               src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+               width="24px"
+               height="24px" />
+          <select name="course_type"
+                  id="course_type"
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
+            <option value="" selected disabled>Selecione o tipo de curso...</option>
+            {% for key, value in filter.form.course_type.field.choices %}
+              <option value="{{ key }}"
+                      {% if key == request.GET.course_type %}selected{% endif %}>{{ value }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <button class="flex items-center justify-center gap-[10px] min-w-[100px] h-[48px] bg-green-500 rounded-[6px] text-neutral-50">
+          <img src="{% static 'images/icons/icon-filter.svg' %}"
+               width="24px"
+               height="24px" />
+          <span>Filtrar</span>
+        </button>
+      </div>
+    </form>
+    <div class="mt-[53px]">
+      <a href="{% url 'academics:course_create' %}"
+         class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer hover:bg-green-500 hover:text-white transition-colors duration-300 mt-[2px]">
+        Cadastrar Novo Curso
+      </a>
+    </div>
+    <div class="mt-[53px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg">
+      <table class="table-auto w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px]">
+        <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">
+          <tr>
+            <th class="pl-[76px]">Nome do curso</th>
+            <th>Turno</th>
+            <th>Tipo</th>
+            <th colspan="3" style="text-align: center" class='pr-[26px]'>Ações</th>
+          </tr>
+        </thead>
+        <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
+          {% for object in object_list %}
+            <tr class="hover:bg-slate-200">
+              <td class="pl-[76px]">{{ object.name }}</td>
+              <td>{{ object.get_period_display }}</td>
+              <td>{{ object.course_type }}</td>
+              <td class="flex justify-center h-full gap-[30px] !mt-[32px]">
+                <a class="hover:bg-slate-100 p-2 rounded-full"
+                   href="{% url 'academics:course_detail' object.pk %}">
+                  <img src="{% static 'images/icons/icon-eye.svg' %}"
+                       width="24px"
+                       height="24px"
+                       class="cursor-pointer" />
+                </a>
+                <a class="hover:bg-slate-100 p-2 rounded-full"
+                   href="{% url 'academics:course_update' object.pk %}">
+                  <img src="{% static 'images/icons/icon-edit-element.svg' %}"
+                       width="24px"
+                       height="24px"
+                       class="cursor-pointer" />
+                </a>
+                <button class="hover:bg-slate-100 p-2 rounded-full"
+                        type="button"
+                        id="openModal{{ object.pk }}"
+                        data-modal-id="confirmationModal{{ object.pk }}">
+                  <img src="{% static 'images/icons/icon-remove-element.svg' %}"
+                       width="24px"
+                       height="24px"
+                       class="cursor-pointer" />
+                </button>
+              </td>
+              {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão do Curso" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="academics:course_delete" %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% include "_table_pagination.html" %}
+  </div>
+{% endblock content %}

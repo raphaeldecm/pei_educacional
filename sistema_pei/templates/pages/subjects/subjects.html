@@ -5,7 +5,7 @@
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
-  {% breadcrumb_item text="Cursos" icon="images/icons/icon-courses-green.svg" url="courses" %}
+  {% breadcrumb_item text="Cursos" icon="images/icons/icon-courses-green.svg" url="academics:course_list" %}
   {% breadcrumb_item text="Materias" icon="images/icons/icon-courses-green.svg" %}
 {% endblock breadcrumb %}
 {% block content %}
@@ -58,7 +58,7 @@
               <td class="pl-[76px]">{{ subject.name }}</td>
               <td>{{ subject.get_subject_type_display }}</td>
               <td class="flex justify-center h-full gap-[30px] !mt-[32px] pr-[26px]">
-                <a href="{% url 'academics:offers' course.id %}?subject={{ subject.id }}"
+                <a href="{% url 'create_subject' course.id %}?subject={{ subject.id }}"
                    title="Ofertas associadas">
                   <img src="{% static 'images/icons/icon-eye.svg' %}"
                        width="24px"
@@ -108,7 +108,7 @@
          class=" text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer">
         Cadastrar Nova Matéria
       </a>
-      <a href="{% url 'delete_course' course.id %}"
+      <a href="{% url 'academics:course_delete' course.id %}"
          onclick="return confirm('Tem certeza que deseja excluir o curso {{ course.name }}?')"
          class="text-[18px] py-[11px] px-[44px] border border-red-500 rounded-lg font-medium cursor-pointer">
         Excluir Curso
