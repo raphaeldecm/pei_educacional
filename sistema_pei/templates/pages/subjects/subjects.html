@@ -49,7 +49,7 @@
           <tr>
             <th class="pl-[76px]">Nome da Matéria</th>
             <th>Duração</th>
-            <th></th>
+            <th colspan="3" style="text-align: center" class='pr-[30px]'>Ações</th>
           </tr>
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
@@ -57,31 +57,27 @@
             <tr>
               <td class="pl-[76px]">{{ subject.name }}</td>
               <td>{{ subject.get_subject_type_display }}</td>
-              <td class="min-w-[40px] !px-[0px]">
-                <div class="flex items-center justify-end gap-[50px] mr-[44px]">
-                  <a href="{% url 'edit_subject' subject.id %}">
-                    <img src="{% static 'images/icons/icon-edit-element.svg' %}"
-                         width="24px"
-                         height="24px"
-                         class="cursor-pointer" />
-                  </a>
-                  <a href="{% url 'academics:course_delete' subject.id %}"
-                     onclick="return confirm('Tem certeza que deseja excluir a matéria {{ subject.name }}?')">
-                    <img src="{% static 'images/icons/icon-remove-element.svg' %}"
-                         width="24px"
-                         height="24px"
-                         class="cursor-pointer" />
-                  </a>
-                  <a href="#"
-                     class="offers-link"
-                     data-subject-id="{{ subject.id }}"
-                     title="Ofertas associadas">
-                    <img src="{% static 'images/icons/icon-eye.svg' %}"
-                         width="24px"
-                         height="24px"
-                         class="cursor-pointer" />
-                  </a>
-                </div>
+              <td class="flex justify-center h-full gap-[30px] !mt-[32px] pr-[26px]">
+                <a href="{% url 'create_subject' course.id %}?subject={{ subject.id }}"
+                   title="Ofertas associadas">
+                  <img src="{% static 'images/icons/icon-eye.svg' %}"
+                       width="24px"
+                       height="24px"
+                       class="cursor-pointer" />
+                </a>
+                <a href="{% url 'edit_subject' subject.id %}">
+                  <img src="{% static 'images/icons/icon-edit-element.svg' %}"
+                       width="24px"
+                       height="24px"
+                       class="cursor-pointer" />
+                </a>
+                <a href="{% url 'delete_subject' subject.id %}"
+                   onclick="return confirm('Tem certeza que deseja excluir a matéria {{ subject.name }}?')">
+                  <img src="{% static 'images/icons/icon-remove-element.svg' %}"
+                       width="24px"
+                       height="24px"
+                       class="cursor-pointer" />
+                </a>
               </td>
             </tr>
           {% endfor %}

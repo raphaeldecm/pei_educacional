@@ -83,7 +83,7 @@
               <td class="pl-[76px]">{{ object.name }}</td>
               <td>{{ object.get_period_display }}</td>
               <td>{{ object.course_type }}</td>
-              <td class="flex justify-center items-center h-full gap-[30px]">
+              <td class="flex justify-center h-full gap-[30px] !mt-[32px]">
                 <a class="hover:bg-slate-100 p-2 rounded-full"
                    href="{% url 'academics:course_detail' object.pk %}">
                   <img src="{% static 'images/icons/icon-eye.svg' %}"
