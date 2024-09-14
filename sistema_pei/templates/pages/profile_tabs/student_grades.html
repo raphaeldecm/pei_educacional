@@ -6,7 +6,7 @@
       <a href="{% url 'profile' student.id %}?tab=grades&selectedPeriod={{ forloop.counter }}"
       class="p-[10px] rounded-lg cursor-pointer hover:bg-green-500 hover:text-white transition duration-300 ease-in-out {% if request.GET.selectedPeriod == forloop.counter|slugify or forloop.first and request.GET.selectedPeriod is null %} bg-green-500 text-slate-50{% endif %}">
         {{ forloop.counter }}°
-        {% if student.course.durationType == "SEMESTER" %}
+        {% if student.course.duration_type == "SEMESTER" %}
           semestre
         {% else %}
           ano
@@ -28,7 +28,7 @@
               <th class="pl-[76px]">Matéria</th>
               <th>1° Bimestre</th>
               <th>2° Bimestre</th>
-              {% if student.course.durationType != "SEMESTER" %}
+              {% if student.course.duration_type != "SEMESTER" %}
                 <th>3° Bimestre</th>
                 <th>4° Bimestre</th>
               {% endif %}
@@ -52,7 +52,7 @@
                     ---
                   {% endif %}
                 </td>
-                {% if student.course.durationType != "SEMESTER" %}
+                {% if student.course.duration_type != "SEMESTER" %}
                   <td>
                     {% if subject_grades.grade3 is not null %}
                       {{ subject_grades.grade3 }}
@@ -77,7 +77,7 @@
   {% else %}
     <p>
       Não há notas registradas para este
-      {% if student.course.durationType == "SEMESTER" %}
+      {% if student.course.duration_type == "SEMESTER" %}
         semestre
       {% else %}
         ano
@@ -100,7 +100,7 @@
         "data": [
           {% if subject_grades.grade1 %}{{ subject_grades.grade1|floatformat:2|slice:":-1" }}{% else %}0,0{% endif %},
           {% if subject_grades.grade2 %}{{ subject_grades.grade2|floatformat:2|slice:":-1" }}{% else %}0,0{% endif %},
-          {% if student.course.durationType != "SEMESTER" %}
+          {% if student.course.duration_type != "SEMESTER" %}
             {% if subject_grades.grade3 %}{{ subject_grades.grade3|floatformat:2|slice:":-1" }}{% else %}0,0{% endif %},
             {% if subject_grades.grade4 %}{{ subject_grades.grade4|floatformat:2|slice:":-1" }}{% else %}0,0{% endif %}
           {% endif %}
@@ -111,7 +111,7 @@
       {% if not forloop.last %},{% endif %}
       {% endfor %}
     ]
-  `.trim(); 
+  `.trim();
 
   const data = JSON.parse(jsonData).map((grades) => {
     const fixedGrade = {
@@ -132,7 +132,7 @@
       labels: [
         '1° Bimestre',
         '2° Bimestre',
-        {% if student.course.durationType != "SEMESTER" %}
+        {% if student.course.duration_type != "SEMESTER" %}
           '3° Bimestre',
           '4° Bimestre'
         {% endif %}

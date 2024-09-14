@@ -1,0 +1,18 @@
+type,name,carga_horaria,duracao,tipo_ensino
+Técnico Integrado,Alimentos,4100,Quatro anos,Presencial
+Técnico Subsequente,Alimentos,1760,Dois anos,Presencial
+Técnico Subsequente,Apicultura,1730,Dois anos,Presencial
+Técnico Integrado,Apicultura,4010,Quatro anos,Presencial
+FIC,Corte e Costura (Vestuário),200,Quatro meses,Presencial
+Doutorado,Doutorado em Ensino (Renoen),1920,Quatro anos,Presencial
+Especialização,Educação do Campo – Saberes da Terra,400,Dois módulos,Presencial
+Especialização,Ensino de Ciências Naturais e Matemática,400,Três módulos,Presencial
+Técnico Integrado,Informática,4040,Quatro anos,Presencial
+FIC,Modelista e Costureira em Geral na modalidade presencial,180,Trinta semanas,Presencial
+FIC,Preparador de Doces e Conservas,240,Três meses,Presencial
+FIC,Processamento de Alimentos,200,Quatro meses,Presencial
+Licenciatura,Química,3404,Quatro anos,Presencial
+Técnico Integrado EJA,Técnico em Alimentos,3.020,Quatro anos,Presencial
+Técnico Integrado EJA,Técnico em Informática,2.870,Quatro anos,Presencial
+Tecnologia,Tecnologia em Agroindústria,2850,Três anos e seis meses,Presencial
+Tecnologia,Tecnologia em Análise e Desenvolvimento de Sistemas,2594,Três anos,Presencial
