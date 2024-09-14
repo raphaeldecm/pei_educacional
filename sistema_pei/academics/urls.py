@@ -13,17 +13,17 @@ urlpatterns = [
     ),
     path(
         "course/create/",
-        login_required(views.CourseCreateView.as_view()),
+        views.CourseCreateView.as_view(),
         name="course_create",
     ),
     path(
         "course/update/<int:pk>/",
-        login_required(views.CourseUpdateView.as_view()),
+        views.CourseUpdateView.as_view(),
         name="course_update",
     ),
     path(
         "course/delete/<int:pk>/",
-        login_required(views.CourseDeleteView.as_view()),
+        views.CourseDeleteView.as_view(),
         name="course_delete",
     ),
     path(
@@ -33,37 +33,37 @@ urlpatterns = [
     ),
     path(
         "offers/list/",
-        login_required(views.OffersPageView.as_view()),
+        views.OffersPageView.as_view(),
         name="offer_list",
     ),
     path(
         "offers/create/",
-        login_required(views.CreateOfferPageView.as_view()),
+        views.CreateOfferPageView.as_view(),
         name="offer_create",
     ),
     path(
         "offers/update/<int:pk>/",
-        login_required(views.EditOfferPageView.as_view()),
+        views.EditOfferPageView.as_view(),
         name="offer_update",
     ),
     path(
         "offers/delete/<int:pk>/",
-        login_required(views.DeleteOfferView.as_view()),
+        views.DeleteOfferView.as_view(),
         name="offer_delete",
     ),
     path(
         "offers/detail/<int:pk>/",
-        login_required(views.OfferDetailsPageView.as_view()),
+        views.OfferDetailsPageView.as_view(),
         name="offer_detail",
     ),
     path(
         "offers/remove_student_from_offer/<int:offer_id>/<int:student_id>/",
-        login_required(views.RemoveStudentFromOfferView.as_view()),
+        views.RemoveStudentFromOfferView.as_view(),
         name="remove_student_from_offer",
     ),
     path(
         "offers/add_student_to_offer/<int:offer_id>/",
-        login_required(views.AddStudentToOfferView.as_view()),
+        views.AddStudentToOfferView.as_view(),
         name="add_student_to_offer",
     ),
 ]

@@ -91,14 +91,14 @@ class CourseDeleteView(
     )
 
 
-class OffersPageView(TitleViewMixin, FilterView, generic.ListView):
+class OffersPageView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.ListView):
     title = _("Ofertas")
     paginate_by = constants.DEFAULT_PAGE_SIZE
     filterset_class = filters.OfferFilter
     template_name = "academics/offers/offer_list.html"
 
 
-class CreateOfferPageView(TitleViewMixin, CreateView):
+class CreateOfferPageView(LoginRequiredMixin, TitleViewMixin, CreateView):
     title = _("Criar Oferta")
     model = models.Offer
     form_class = forms.OfferForm
@@ -119,7 +119,7 @@ class CreateOfferPageView(TitleViewMixin, CreateView):
         return self.request.path
 
 
-class EditOfferPageView(TitleViewMixin, UpdateView):
+class EditOfferPageView(LoginRequiredMixin, TitleViewMixin, UpdateView):
     title = _("Editar Oferta")
     model = models.Offer
     form_class = forms.OfferForm
@@ -148,7 +148,7 @@ class EditOfferPageView(TitleViewMixin, UpdateView):
         return super().form_invalid(form)
 
 
-class OfferDetailsPageView(FilterView, generic.ListView):
+class OfferDetailsPageView(LoginRequiredMixin, FilterView, generic.ListView):
     paginate_by = 10
     filterset_class = filters.EnrollmentFilter
     template_name = "academics/offers/offer_detail.html"
@@ -188,7 +188,7 @@ class DeleteOfferView(
     )
 
 
-class RemoveStudentFromOfferView(View):
+class RemoveStudentFromOfferView(LoginRequiredMixin, View):
     def get(self, request, offer_id, student_id):
         offer = get_object_or_404(models.Offer, id=offer_id)
         student = get_object_or_404(Student, id=student_id)
@@ -210,7 +210,7 @@ class RemoveStudentFromOfferView(View):
         return redirect(f"/academics/offers/detail/{offer.id}/")
 
 
-class AddStudentToOfferView(View):
+class AddStudentToOfferView(LoginRequiredMixin, View):
     def post(self, request, offer_id):
         offer = get_object_or_404(models.Offer, id=offer_id)
         student_id = request.POST.get("student")
