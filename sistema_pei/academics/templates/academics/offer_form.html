@@ -56,9 +56,15 @@
             {{ form.status }}
           </div>
         </div>
-        <div class="mt-[24px] flex-1">
-          <label for="year" class="font-medium text-[18px]">Ano referência:</label>
-          {{ form.year }}
+        <div class="flex gap-8">
+          <div class="mt-[24px] flex-1">
+            <label for="year" class="font-medium text-[18px]">Ano referência:</label>
+            {{ form.year }}
+          </div>
+          <div class="mt-[24px] flex-1">
+            <label for="year" class="font-medium text-[18px]">Semestre referência:</label>
+            {{ form.semester }}
+          </div>
         </div>
       </div>
       <button class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer mt-[56px]">

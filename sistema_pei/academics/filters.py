@@ -29,12 +29,21 @@ class CourseFilter(django_filters.FilterSet):
 class OfferFilter(django_filters.FilterSet):
     search = django_filters.CharFilter(method="filter_by_search", label="Search")
 
+    year = django_filters.NumberFilter(
+        field_name="year",
+        lookup_expr="exact",
+        label="Ano",
+    )
+
+    semester = django_filters.ChoiceFilter(
+        field_name="semester",
+        choices=models.Offer.Semester.choices,
+        label="Semestre",
+    )
+
     class Meta:
         model = models.Offer
-        fields = {
-            "teacher": ["exact"],
-            "subject": ["exact"],
-        }
+        fields = ["teacher", "subject", "semester", "year"]
 
     def filter_by_search(self, queryset, name, value):
         return queryset.filter(
