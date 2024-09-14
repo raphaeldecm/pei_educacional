@@ -97,32 +97,17 @@ class OffersPageView(TitleViewMixin, FilterView, generic.ListView):
     filterset_class = filters.OfferFilter
     template_name = "academics/offers/offer_list.html"
 
-    # def get_queryset(self):
-    #     # Listar somente ofertas do curso
-    #     course_id = self.kwargs.get("course_id")
-    #     queryset = models.Offer.objects.filter(course_id=course_id)
-    #     filterset = filters.OfferFilter(self.request.GET, queryset=queryset)
-    #     return filterset.qs
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     course_id = self.kwargs.get("course_id")
-    #     course = get_object_or_404(models.Course, id=course_id)
-    #     context["course"] = course
-
-    #     return context
-
-
 class CreateOfferPageView(TitleViewMixin, CreateView):
     title = _("Criar Oferta")
     model = models.Offer
     form_class = forms.OfferForm
+    template_name = "academics/offers/offer_form.html"
 
     def form_valid(self, form):
         self.object = form.save()
         form = self.get_form_class()()
         messages.success(self.request, "Oferta criada com sucesso!")
-        return redirect(f"/academics/offers/{self.object.course.id}")
+        return redirect(f"/academics/offers/list")
 
     def form_invalid(self, form):
         context = self.get_context_data(form=form)
@@ -137,6 +122,7 @@ class EditOfferPageView(TitleViewMixin, UpdateView):
     title = _("Editar Oferta")
     model = models.Offer
     form_class = forms.OfferForm
+    template_name = "academics/offers/offer_form.html"
     context_object_name = "offer"
 
     def get_context_data(self, **kwargs):
@@ -149,8 +135,7 @@ class EditOfferPageView(TitleViewMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy(
-            "academics:offers",
-            kwargs={"course_id": self.object.course_id},
+            "academics:offers_list"
         )
 
     def form_valid(self, form):
@@ -219,7 +204,7 @@ class RemoveStudentFromOfferView(View):
                 "Não é possível remover o aluno desta oferta porque existem PEIs associados.",
             )
 
-        return redirect(f"/academics/offers/details/{student.course.id}/{offer.id}")
+        return redirect(f"/academics/offers/detail/{offer.id}/")
 
 
 class AddStudentToOfferView(View):
@@ -235,4 +220,4 @@ class AddStudentToOfferView(View):
                 YearSemesterReference=student.reference_period,
             )
 
-        return redirect(f"/academics/offers/details/{student.course.id}/{offer.id}")
+        return redirect(f"/academics/offers/detail/{offer.id}/")

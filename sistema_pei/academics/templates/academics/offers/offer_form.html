@@ -5,9 +5,8 @@
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
-  {% breadcrumb_item text="Cursos" icon="images/icons/icon-courses-green.svg" url="academics:courses" %}
-  {% breadcrumb_item text="Matérias" icon="images/icons/icon-courses-green.svg" %}
-  {% breadcrumb_item text="Ofertas" icon="images/icons/icon-courses-green.svg" %}
+  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" %}
+  {% breadcrumb_item text="Ofertas" icon="images/icons/icon-courses-green.svg" url="academics:offers_list" %}
   {% breadcrumb_item text=title icon="images/icons/icon-courses-green.svg" %}
 {% endblock breadcrumb %}
 {% block content %}
@@ -67,13 +66,7 @@
           </div>
         </div>
       </div>
-      <button class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer mt-[56px]">
-        {% if isEditing %}
-          Editar
-        {% else %}
-          Cadastrar
-        {% endif %}
-      </button>
+      {% include "_save_back_edit_buttons.html" with link_to_back="academics:offers_list" %}
     </form>
   </div>
 {% endblock content %}
