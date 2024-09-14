@@ -119,7 +119,9 @@ class CreateOfferPageView(LoginRequiredMixin, TitleViewMixin, CreateView):
         return self.request.path
 
 
-class EditOfferPageView(SuccessMessageMixin, LoginRequiredMixin, TitleViewMixin, UpdateView):
+class EditOfferPageView(
+    SuccessMessageMixin, LoginRequiredMixin, TitleViewMixin, UpdateView
+):
     title = _("Editar Oferta")
     model = models.Offer
     form_class = forms.OfferForm
