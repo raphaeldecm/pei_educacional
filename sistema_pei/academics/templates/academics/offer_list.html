@@ -40,7 +40,7 @@
             {% endfor %}
           </select>
         </div>
-        <div class="relative min-w-[322px] w-max cursor-pointer">
+        <div class="relative min-w-[222px] w-max cursor-pointer">
           <img class="absolute top-[12px] right-[10px]"
                src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                width="24px"
@@ -52,6 +52,29 @@
               <option value="{{ teacher.id }}"
                       {% if request.GET.teacher == teacher.id|stringformat:'s' %}selected{% endif %}>
                 {{ teacher.name }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="mb-[26px] flex h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
+          <input type="number"
+                 name="year"
+                 placeholder="Digite o ano..."
+                 class="placeholder:text-slate-300 outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50"
+                 value="{{ request.GET.year }}" />
+        </div>
+        <div class="relative cursor-pointer w-[400px]">
+          <img class="absolute top-[12px] right-[10px]"
+               src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+               width="24px"
+               height="24px" />
+          <select name="semester"
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
+            <option value="default" selected disabled>Selecione o semestre...</option>
+            {% for semester_value, semester_label in filter.form.fields.semester.choices %}
+              <option value="{{ semester_value }}"
+                      {% if request.GET.semester|stringformat:"s" == semester_value|stringformat:"s" %}selected{% endif %}>
+                {{ semester_label }}
               </option>
             {% endfor %}
           </select>
@@ -80,7 +103,7 @@
             <tr>
               <td class="pl-[76px]">{{ offer.subject.name }}</td>
               <td>{{ offer.teacher }}</td>
-              <td>{{ offer.year }}</td>
+              <td>{{ offer.year }}.{{ offer.semester }}</td>
               <td>{{ offer.status }}</td>
               <td class="flex justify-center h-full gap-[30px] !mt-[32px] pr-[26px]">
                 <a href="{% url 'academics:offer_details' course.id offer.id %}">

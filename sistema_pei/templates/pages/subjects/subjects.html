@@ -115,4 +115,27 @@
       </a>
     </div>
   </div>
+  <script>
+    {% comment %} Script para redirecionar as ofertas aplicando filtros de ano e semestre {% endcomment %}
+    document.addEventListener('DOMContentLoaded', function() {
+      function getCurrentYear() {
+        return new Date().getFullYear();
+      }
+
+      function getCurrentSemester() {
+        const month = new Date().getMonth() + 1;
+        return month <= 6 ? '1' : '2';
+      }
+
+      const year = getCurrentYear();
+      const semester = getCurrentSemester();
+
+      const subjectId = "{{ subject.id }}";
+      const link = document.querySelector(`.offers-link`);
+
+      if (link) {
+        link.href = `{% url 'academics:offers' course.id %}?subject=${subjectId}&year=${year}&semester=${semester}`;
+      }
+    });
+  </script>
 {% endblock content %}

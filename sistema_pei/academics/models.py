@@ -81,6 +81,10 @@ class Offer(BaseModel):
         OPEN = "Aberta", "Aberta"
         CLOSED = "Fechada", "Fechada"
 
+    class Semester(models.IntegerChoices):
+        FIRST = 1, _("1º Semestre")
+        SECOND = 2, _("2º Semestre")
+
     status = models.CharField(
         verbose_name=_("Situação"),
         max_length=SMALL_CHAR_FIELD_NAME_LENGTH,
@@ -105,7 +109,12 @@ class Offer(BaseModel):
         on_delete=models.PROTECT,
         related_name="offers",
     )
+
     year = models.PositiveSmallIntegerField(verbose_name=_("Ano referência"))
+    semester = models.PositiveSmallIntegerField(
+        verbose_name=_("Semestre referência"),
+        choices=Semester.choices,
+    )
 
     class Meta:
         verbose_name = _("Oferta")
