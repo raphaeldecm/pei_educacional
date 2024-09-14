@@ -119,10 +119,11 @@ class CreateOfferPageView(LoginRequiredMixin, TitleViewMixin, CreateView):
         return self.request.path
 
 
-class EditOfferPageView(LoginRequiredMixin, TitleViewMixin, UpdateView):
+class EditOfferPageView(SuccessMessageMixin, LoginRequiredMixin, TitleViewMixin, UpdateView):
     title = _("Editar Oferta")
     model = models.Offer
     form_class = forms.OfferForm
+    success_message = _("A oferta foi atualizada com sucesso.")
     template_name = "academics/offers/offer_form.html"
     context_object_name = "offer"
 
@@ -138,14 +139,6 @@ class EditOfferPageView(LoginRequiredMixin, TitleViewMixin, UpdateView):
         return reverse_lazy(
             "academics:offer_list",
         )
-
-    def form_valid(self, form):
-        messages.success(self.request, "Oferta editada com sucesso!")
-        return super().form_valid(form)
-
-    def form_invalid(self, form):
-        messages.error(self.request, "Erro ao editar a oferta")
-        return super().form_invalid(form)
 
 
 class OfferDetailsPageView(LoginRequiredMixin, FilterView, generic.ListView):
@@ -184,12 +177,12 @@ class DeleteOfferView(
     success_message = _("A oferta foi excluída com sucesso.")
     protected_warning_message = _(
         "Não é possível excluir a oferta, pois ele possui"
-        "uma ou mais alunos associados.",
+        "um ou mais alunos associados.",
     )
 
 
-class RemoveStudentFromOfferView(LoginRequiredMixin, View):
-    def get(self, request, offer_id, student_id):
+class RemoveStudentFromOfferView(SuccessMessageMixin, LoginRequiredMixin, View):
+    def post(self, request, offer_id, student_id):
         offer = get_object_or_404(models.Offer, id=offer_id)
         student = get_object_or_404(Student, id=student_id)
 
