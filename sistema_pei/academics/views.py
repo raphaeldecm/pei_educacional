@@ -108,7 +108,7 @@ class CreateOfferPageView(TitleViewMixin, CreateView):
         self.object = form.save()
         form = self.get_form_class()()
         messages.success(self.request, "Oferta criada com sucesso!")
-        return redirect("/academics/offers/list")
+        return redirect("/academics/offers/list/")
 
     def form_invalid(self, form):
         context = self.get_context_data(form=form)

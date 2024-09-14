@@ -32,7 +32,7 @@ urlpatterns = [
         name="course_detail",
     ),
     path(
-        "offer/list/",
+        "offers/list/",
         login_required(views.OffersPageView.as_view()),
         name="offer_list",
     ),
