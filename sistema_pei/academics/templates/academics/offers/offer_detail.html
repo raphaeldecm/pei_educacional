@@ -6,7 +6,7 @@
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
   {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-home-green.svg" url="academics:dashboard" %}
-  {% breadcrumb_item text="Ofertas" icon="images/icons/icon-courses-green.svg" url="academics:offers_list" %}
+  {% breadcrumb_item text="Ofertas" icon="images/icons/icon-courses-green.svg" url="academics:offer_list" %}
   {% breadcrumb_item text="Detalhes da Oferta" icon="images/icons/highlighter-green.svg" %}
 {% endblock breadcrumb %}
 {% block content %}
@@ -132,7 +132,7 @@
       </div>
     </div>
     <div class="flex mt-[56px] gap-[16px]">
-      <a href="{% url 'academics:delete_offer' offer.id %}"
+      <a href="{% url 'academics:offer_delete' offer.id %}"
          onclick="return confirm('Tem certeza que deseja excluir esta oferta?')"
          class="text-[18px] py-[11px] px-[44px] border border-red-500 rounded-lg font-medium cursor-pointer">
         Excluir Oferta

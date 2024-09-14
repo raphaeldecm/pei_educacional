@@ -97,6 +97,7 @@ class OffersPageView(TitleViewMixin, FilterView, generic.ListView):
     filterset_class = filters.OfferFilter
     template_name = "academics/offers/offer_list.html"
 
+
 class CreateOfferPageView(TitleViewMixin, CreateView):
     title = _("Criar Oferta")
     model = models.Offer
@@ -107,7 +108,7 @@ class CreateOfferPageView(TitleViewMixin, CreateView):
         self.object = form.save()
         form = self.get_form_class()()
         messages.success(self.request, "Oferta criada com sucesso!")
-        return redirect(f"/academics/offers/list")
+        return redirect("/academics/offers/list")
 
     def form_invalid(self, form):
         context = self.get_context_data(form=form)
@@ -131,11 +132,11 @@ class EditOfferPageView(TitleViewMixin, UpdateView):
         return context
 
     def get_object(self, queryset=None):
-        return get_object_or_404(models.Offer, id=self.kwargs["offer_id"])
+        return get_object_or_404(models.Offer, id=self.kwargs["pk"])
 
     def get_success_url(self):
         return reverse_lazy(
-            "academics:offers_list"
+            "academics:offer_list",
         )
 
     def form_valid(self, form):
@@ -162,7 +163,7 @@ class OfferDetailsPageView(FilterView, generic.ListView):
 
         offer_id = self.kwargs.get("pk")
         offer = get_object_or_404(models.Offer, id=offer_id)
-        
+
         context["offer"] = offer
 
         context["selector_students"] = Student.objects.filter(
@@ -172,19 +173,19 @@ class OfferDetailsPageView(FilterView, generic.ListView):
         return context
 
 
-class DeleteOfferView(View):
-    def get(self, request, offer_id):
-        offer = get_object_or_404(models.Offer, id=offer_id)
-        try:
-            offer.delete()
-            messages.success(request, "Oferta removida com sucesso!")
-            return redirect(request.headers.get("referer", "/"))
-        except ProtectedError:
-            messages.error(
-                request,
-                "Erro - Você não pode remover ofertas com alunos associados!",
-            )
-            return redirect(request.headers.get("referer", "/"))
+class DeleteOfferView(
+    LoginRequiredMixin,
+    ProtectedErrorMessageMixin,
+    SuccessMessageMixin,
+    generic.DeleteView,
+):
+    model = models.Offer
+    success_url = reverse_lazy("academics:offer_list")
+    success_message = _("A oferta foi excluída com sucesso.")
+    protected_warning_message = _(
+        "Não é possível excluir a oferta, pois ele possui"
+        "uma ou mais alunos associados.",
+    )
 
 
 class RemoveStudentFromOfferView(View):
@@ -194,7 +195,9 @@ class RemoveStudentFromOfferView(View):
 
         try:
             enrollment = get_object_or_404(
-                models.Enrollment, offer=offer, student=student
+                models.Enrollment,
+                offer=offer,
+                student=student,
             )
             enrollment.delete()
             messages.success(request, "Aluno removido com sucesso da oferta.")

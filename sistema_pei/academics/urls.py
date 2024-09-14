@@ -32,29 +32,29 @@ urlpatterns = [
         name="course_detail",
     ),
     path(
-        "offers/list/",
+        "offer/list/",
         login_required(views.OffersPageView.as_view()),
-        name="offers_list",
+        name="offer_list",
     ),
     path(
         "offers/create/",
         login_required(views.CreateOfferPageView.as_view()),
-        name="create_offer",
+        name="offer_create",
     ),
     path(
-        "offers/edit/<int:offer_id>/",
+        "offers/update/<int:pk>/",
         login_required(views.EditOfferPageView.as_view()),
-        name="edit_offer",
+        name="offer_update",
     ),
     path(
-        "offers/delete/<int:offer_id>/",
+        "offers/delete/<int:pk>/",
         login_required(views.DeleteOfferView.as_view()),
-        name="delete_offer",
+        name="offer_delete",
     ),
     path(
         "offers/detail/<int:pk>/",
         login_required(views.OfferDetailsPageView.as_view()),
-        name="offer_details",
+        name="offer_detail",
     ),
     path(
         "offers/remove_student_from_offer/<int:offer_id>/<int:student_id>/",

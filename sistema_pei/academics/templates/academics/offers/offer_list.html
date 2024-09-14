@@ -87,7 +87,7 @@
       </div>
     </form>
     <div class="flex mt-3 gap-[16px]">
-      <a href="{% url 'academics:create_offer' %}"
+      <a href="{% url 'academics:offer_create' %}"
          class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer hover:bg-green-500 hover:text-white active:scale-75 transition-all duration-300">
         Cadastrar Nova Oferta
       </a>
@@ -105,35 +105,35 @@
           </tr>
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
-          {% for offer in object_list %}
+          {% for object in object_list %}
             <tr>
-              <td class="pl-[76px]">{{ offer.subject.name }}</td>
-              <td>{{ offer.course.name }}</td>
-              <td>{{ offer.teacher }}</td>
-              <td>{{ offer.year }}.{{ offer.semester }}</td>
-              <td>{{ offer.status }}</td>
+              <td class="pl-[76px]">{{ object.subject.name }}</td>
+              <td>{{ object.course.name }}</td>
+              <td>{{ object.teacher }}</td>
+              <td>{{ object.year }}.{{ object.semester }}</td>
+              <td>{{ object.status }}</td>
               <td class="flex justify-center h-full gap-[30px] !mt-[32px] pr-[26px]">
-                <a href="{% url 'academics:offer_details' offer.id %}">
+                <a href="{% url 'academics:offer_detail' object.pk %}">
                   <img src="{% static 'images/icons/icon-eye.svg' %}"
-                       width="24px"
-                       height="24px"
+                       height="25px"
                        class="cursor-pointer" />
                 </a>
-                <a href="{% url 'academics:edit_offer' offer.id %}">
+                <a href="{% url 'academics:offer_update' object.pk %}">
                   <img src="{% static 'images/icons/icon-edit-element.svg' %}"
-                       width="24px"
-                       height="24px"
+                       height="25px"
                        class="cursor-pointer" />
                 </a>
-                <a href="{% url 'academics:delete_offer' offer.id %}"
-                   onclick="return confirm('Tem certeza que deseja excluir a oferta?')">
+                <button class="hover:bg-slate-100 rounded-full"
+                        type="button"
+                        id="openModal{{ object.pk }}"
+                        data-modal-id="confirmationModal{{ object.pk }}">
                   <img src="{% static 'images/icons/icon-remove-element.svg' %}"
-                       width="24px"
-                       height="24px"
+                       height="25px"
                        class="cursor-pointer" />
-                </a>
+                </button>
               </td>
             </tr>
+            {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão de oferta" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="academics:offer_delete" %}
           {% endfor %}
         </tbody>
       </table>

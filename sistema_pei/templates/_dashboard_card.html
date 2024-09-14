@@ -1,6 +1,6 @@
 {% load static %}
 
-<a class="flex items-center justify-between rounded-lg cursor-pointer w-[365px] min-w-[365px] border border-slate-300 py-6 px-3 hover:bg-green-200 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out {{custom_class}}"
+<a class="flex items-center justify-between rounded-lg cursor-pointer w-[365px] min-w-[365px] border border-slate-300 py-6 px-3 hover:bg-green-200 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out {{ custom_class }}"
    href="{% if link_to %}{% url link_to %}{% endif %}">
   <img src="{% static path_icon %}"
        width="60px"
