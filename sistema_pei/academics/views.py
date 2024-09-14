@@ -95,22 +95,22 @@ class OffersPageView(TitleViewMixin, FilterView, generic.ListView):
     title = _("Ofertas")
     paginate_by = constants.DEFAULT_PAGE_SIZE
     filterset_class = filters.OfferFilter
-    template_name = "academics/offer_list.html"
+    template_name = "academics/offers/offer_list.html"
 
-    def get_queryset(self):
-        # Listar somente ofertas do curso
-        course_id = self.kwargs.get("course_id")
-        queryset = models.Offer.objects.filter(course_id=course_id)
-        filterset = filters.OfferFilter(self.request.GET, queryset=queryset)
-        return filterset.qs
+    # def get_queryset(self):
+    #     # Listar somente ofertas do curso
+    #     course_id = self.kwargs.get("course_id")
+    #     queryset = models.Offer.objects.filter(course_id=course_id)
+    #     filterset = filters.OfferFilter(self.request.GET, queryset=queryset)
+    #     return filterset.qs
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        course_id = self.kwargs.get("course_id")
-        course = get_object_or_404(models.Course, id=course_id)
-        context["course"] = course
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     course_id = self.kwargs.get("course_id")
+    #     course = get_object_or_404(models.Course, id=course_id)
+    #     context["course"] = course
 
-        return context
+    #     return context
 
 
 class CreateOfferPageView(TitleViewMixin, CreateView):
@@ -165,22 +165,19 @@ class EditOfferPageView(TitleViewMixin, UpdateView):
 class OfferDetailsPageView(FilterView, generic.ListView):
     paginate_by = 10
     filterset_class = filters.EnrollmentFilter
-    template_name = "academics/offer_detail.html"
+    template_name = "academics/offers/offer_detail.html"
 
     def get_queryset(self):
-        offer_id = self.kwargs.get("offer_id")
+        offer_id = self.kwargs.get("pk")
         offer = get_object_or_404(models.Offer, id=offer_id)
         return offer.enrollments.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        offer_id = self.kwargs.get("offer_id")
+        offer_id = self.kwargs.get("pk")
         offer = get_object_or_404(models.Offer, id=offer_id)
-
-        course_id = self.kwargs.get("course_id")
-        course = get_object_or_404(models.Course, id=course_id)
-        context["course"] = course
+        
         context["offer"] = offer
 
         context["selector_students"] = Student.objects.filter(
