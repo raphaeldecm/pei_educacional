@@ -65,8 +65,9 @@ urlpatterns = [
         views.AddStudentToOfferView.as_view(),
         name="add_student_to_offer",
     ),
-    path('offers/get_subjects_by_course_id/<int:pk>/',
-         views.GetSubjectsByCourseView.as_view(),
-         name='get_subjects_by_course'
+    path(
+        "offers/get_subjects_by_course_id/<int:pk>/",
+        views.GetSubjectsByCourseView.as_view(),
+        name="get_subjects_by_course",
     ),
 ]

@@ -9,7 +9,6 @@
   {% breadcrumb_item text="Ofertas" icon="images/icons/icon-courses-green.svg" url="academics:offer_list" %}
   {% breadcrumb_item text=title icon="images/icons/icon-courses-green.svg" %}
 {% endblock breadcrumb %}
-
 {% block content %}
   <div class="w-full">
     <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
@@ -119,56 +118,55 @@
     </form>
   </div>
 {% endblock content %}
-
 {% block inline_javascript %}
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const courseSelect = document.getElementById('id_course');
-    const subjectSelect = document.getElementById('id_subject');
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const courseSelect = document.getElementById('id_course');
+      const subjectSelect = document.getElementById('id_subject');
 
-    subjectSelect.disabled = true;
-    subjectSelect.innerHTML = '<option value="default" selected disabled>Selecione o curso primeiro...</option>';
+      subjectSelect.disabled = true;
+      subjectSelect.innerHTML = '<option value="default" selected disabled>Selecione o curso primeiro...</option>';
 
-    if (courseSelect.value !== 'default') {
+      if (courseSelect.value !== 'default') {
         subjectSelect.disabled = false;
         fetch(`/academics/offers/get_subjects_by_course_id/${courseSelect.value}/`)
-            .then(response => response.json())
-            .then(data => {
-                subjectSelect.innerHTML = '<option value="default" selected disabled>Selecione a disciplina...</option>';
-                data.subjects.forEach(subject => {
-                    const option = document.createElement('option');
-                    option.value = subject.id;
-                    option.textContent = subject.name;
-                    subjectSelect.appendChild(option);
-                });
-                if (subjectSelect.dataset.selectedValue) {
-                    subjectSelect.value = subjectSelect.dataset.selectedValue;
-                }
+          .then(response => response.json())
+          .then(data => {
+            subjectSelect.innerHTML = '<option value="default" selected disabled>Selecione a disciplina...</option>';
+            data.subjects.forEach(subject => {
+              const option = document.createElement('option');
+              option.value = subject.id;
+              option.textContent = subject.name;
+              subjectSelect.appendChild(option);
             });
-    }
+            if (subjectSelect.dataset.selectedValue) {
+              subjectSelect.value = subjectSelect.dataset.selectedValue;
+            }
+          });
+      }
 
-    courseSelect.addEventListener('change', function() {
+      courseSelect.addEventListener('change', function() {
         const courseId = this.value;
         if (courseId !== 'default') {
-            subjectSelect.disabled = false;
-            subjectSelect.innerHTML = '<option value="default" selected disabled>Selecione a disciplina...</option>';
+          subjectSelect.disabled = false;
+          subjectSelect.innerHTML = '<option value="default" selected disabled>Selecione a disciplina...</option>';
 
-            fetch(`/academics/offers/get_subjects_by_course_id/${courseId}/`)
-                .then(response => response.json())
-                .then(data => {
-                    subjectSelect.innerHTML = '<option value="default" selected disabled>Selecione a disciplina...</option>';
-                    data.subjects.forEach(subject => {
-                        const option = document.createElement('option');
-                        option.value = subject.id;
-                        option.textContent = subject.name;
-                        subjectSelect.appendChild(option);
-                    });
-                });
+          fetch(`/academics/offers/get_subjects_by_course_id/${courseId}/`)
+            .then(response => response.json())
+            .then(data => {
+              subjectSelect.innerHTML = '<option value="default" selected disabled>Selecione a disciplina...</option>';
+              data.subjects.forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject.id;
+                option.textContent = subject.name;
+                subjectSelect.appendChild(option);
+              });
+            });
         } else {
-            subjectSelect.disabled = true;
-            subjectSelect.innerHTML = '<option value="default" selected disabled>Selecione a disciplina...</option>';
+          subjectSelect.disabled = true;
+          subjectSelect.innerHTML = '<option value="default" selected disabled>Selecione a disciplina...</option>';
         }
+      });
     });
-  });
-</script>
+  </script>
 {% endblock inline_javascript %}

@@ -121,7 +121,10 @@ class CreateOfferPageView(LoginRequiredMixin, TitleViewMixin, CreateView):
 
 
 class EditOfferPageView(
-    SuccessMessageMixin, LoginRequiredMixin, TitleViewMixin, UpdateView
+    SuccessMessageMixin,
+    LoginRequiredMixin,
+    TitleViewMixin,
+    UpdateView,
 ):
     title = _("Editar Oferta")
     model = models.Offer
@@ -225,5 +228,5 @@ class AddStudentToOfferView(LoginRequiredMixin, View):
 class GetSubjectsByCourseView(View):
     def get(self, request, pk):
         subjects = models.Subject.objects.filter(courses=pk)
-        subjects_data = list(subjects.values('id', 'name'))
-        return JsonResponse({'subjects': subjects_data})
+        subjects_data = list(subjects.values("id", "name"))
+        return JsonResponse({"subjects": subjects_data})
