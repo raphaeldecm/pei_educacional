@@ -225,7 +225,7 @@ class AddStudentToOfferView(LoginRequiredMixin, View):
         return redirect(f"/academics/offers/detail/{offer.id}/")
 
 
-class GetSubjectsByCourseView(View):
+class GetSubjectsByCourseView(LoginRequiredMixin, View):
     def get(self, request, pk):
         subjects = models.Subject.objects.filter(courses=pk)
         subjects_data = list(subjects.values("id", "name"))
