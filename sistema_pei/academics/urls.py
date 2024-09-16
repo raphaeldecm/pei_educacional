@@ -61,8 +61,12 @@ urlpatterns = [
         name="remove_student_from_offer",
     ),
     path(
-        "offers/add_student_to_offer/<int:offer_id>/",
+        "offers/add_student_to_offer/<int:pk>/",
         views.AddStudentToOfferView.as_view(),
         name="add_student_to_offer",
+    ),
+    path('offers/get_subjects_by_course_id/<int:pk>/',
+         views.GetSubjectsByCourseView.as_view(),
+         name='get_subjects_by_course'
     ),
 ]

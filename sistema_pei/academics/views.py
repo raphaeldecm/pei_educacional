@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import ProtectedError
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -206,8 +207,8 @@ class RemoveStudentFromOfferView(SuccessMessageMixin, LoginRequiredMixin, View):
 
 
 class AddStudentToOfferView(LoginRequiredMixin, View):
-    def post(self, request, offer_id):
-        offer = get_object_or_404(models.Offer, id=offer_id)
+    def post(self, request, pk):
+        offer = get_object_or_404(models.Offer, id=pk)
         student_id = request.POST.get("student")
         student = get_object_or_404(Student, id=student_id)
 
@@ -219,3 +220,10 @@ class AddStudentToOfferView(LoginRequiredMixin, View):
             )
 
         return redirect(f"/academics/offers/detail/{offer.id}/")
+
+
+class GetSubjectsByCourseView(View):
+    def get(self, request, pk):
+        subjects = models.Subject.objects.filter(courses=pk)
+        subjects_data = list(subjects.values('id', 'name'))
+        return JsonResponse({'subjects': subjects_data})
