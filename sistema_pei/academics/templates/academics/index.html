@@ -15,7 +15,7 @@
       <div class="flex flex-wrap items-center gap-8 py-6">
         {% include "_dashboard_card.html" with link_to="academics:course_list" path_icon="images/icons/icon-courses-green.svg" text="Cursos" %}
         {% include "_dashboard_card.html" with link_to="academics:course_list" path_icon="images/icons/icon-courses-green.svg" text="Disciplinas" %}
-        {% include "_dashboard_card.html" with path_icon="images/icons/icon-courses-green.svg" text="Ofertas" custom_class="offers-link" %}
+        {% include "_dashboard_card.html" with path_icon="images/icons/icon-courses-green.svg" text="Ofertas" link_to="academics:offer_list" %}
         {% include "_dashboard_card.html" with link_to="academics:course_list" path_icon="images/icons/icon-courses-green.svg" text="PEIs" %}
       </div>
       <p class="font-semibold">Participantes</p>
@@ -26,29 +26,3 @@
     </div>
   </div>
 {% endblock content %}
-{% block inline_javascript %}
-  <script>
-    //Script para redirecionar as ofertas aplicando filtros de ano e semestre
-
-    document.addEventListener('DOMContentLoaded', function() {
-      function getCurrentYear() {
-        return new Date().getFullYear();
-      }
-
-      function getCurrentSemester() {
-        const month = new Date().getMonth() + 1;
-        return month <= 6 ? '1' : '2';
-      }
-
-      const year = getCurrentYear();
-      const semester = getCurrentSemester();
-
-      const subjectId = "{{ subject.id }}";
-      const link = document.querySelector(`.offers-link`);
-
-      if (link) {
-        link.href = `{% url 'academics:offer_list' %}?year=${year}&semester=${semester}`;
-      }
-    });
-  </script>
-{% endblock inline_javascript %}

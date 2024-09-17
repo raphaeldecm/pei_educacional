@@ -12,6 +12,7 @@ from django.views import View
 from django.views import generic
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
+from django.utils.timezone import now
 from django_filters.views import FilterView
 
 from sistema_pei.academics import filters
@@ -98,6 +99,21 @@ class OffersPageView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.Lis
     filterset_class = filters.OfferFilter
     template_name = "academics/offers/offer_list.html"
 
+    def get_filterset_kwargs(self, filterset_class):
+        semester = '1' if now().month <= 6 else '2'
+
+        kwargs = super().get_filterset_kwargs(filterset_class)
+        data = kwargs.get('data') or self.request.GET.copy()
+
+        if not data.get('year'):
+            data['year'] = now().year
+
+        if not data.get('semester'):
+            data['semester'] = semester
+
+        kwargs['data'] = data
+
+        return kwargs
 
 class CreateOfferPageView(LoginRequiredMixin, TitleViewMixin, CreateView):
     title = _("Criar Oferta")
