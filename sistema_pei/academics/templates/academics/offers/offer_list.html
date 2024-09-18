@@ -72,9 +72,7 @@
             <option value="default" selected disabled>Selecione o semestre...</option>
             {% for semester_value, semester_label in filter.form.fields.semester.choices %}
               <option value="{{ semester_value }}"
-                      {% if semester_value|stringformat:"s" == default_semester|stringformat:"s" or request.GET.semester|stringformat:"s" == semester_value|stringformat:"s" %}
-                        selected
-                      {% endif %}>
+                      {% if semester_value|stringformat:"s" == default_semester|stringformat:"s" or request.GET.semester|stringformat:"s" == semester_value|stringformat:"s" %} selected {% endif %}>
                 {{ semester_label }}
               </option>
             {% endfor %}

@@ -1,6 +1,5 @@
 import django_filters
 from django.db.models import Q
-from django.utils.timezone import now
 
 from sistema_pei.academics import models
 from sistema_pei.academics.constants import COURSE_TYPE
@@ -27,7 +26,7 @@ class CourseFilter(django_filters.FilterSet):
         fields = ["name", "course_type", "period", "duration_type", "number_of_periods"]
 
 
-class OfferFilter(django_filters.FilterSet): 
+class OfferFilter(django_filters.FilterSet):
     search = django_filters.CharFilter(method="filter_by_search", label="Search")
 
     year = django_filters.NumberFilter(

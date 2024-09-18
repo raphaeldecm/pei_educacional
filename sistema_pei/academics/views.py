@@ -7,12 +7,12 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views import generic
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
-from django.utils.timezone import now
 from django_filters.views import FilterView
 
 from sistema_pei.academics import filters
@@ -106,20 +106,21 @@ class OffersPageView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.Lis
         if not filter_data or not any(filter_data.values()):
             queryset = queryset.filter(
                 year=now().year,
-                semester='1' if now().month <= 6 else '2'
+                semester="1" if now().month <= 6 else "2",
             )
 
         return self.filterset_class(self.request.GET, queryset=queryset).qs
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         filter_data = self.request.GET
 
         if not filter_data or not any(filter_data.values()):
-            context['default_year'] = now().year
-            context['default_semester'] = '1' if now().month <= 6 else '2'
+            context["default_year"] = now().year
+            context["default_semester"] = "1" if now().month <= 6 else "2"
 
         return context
+
 
 class CreateOfferPageView(LoginRequiredMixin, TitleViewMixin, CreateView):
     title = _("Criar Oferta")
