@@ -23,11 +23,11 @@ class Command(BaseCommand):
                 name = row["name"].strip() + " " + row["type"].strip()
                 duracao = row["duracao"].strip()
                 period = random.choice(
-                    [  # noqa: S311
+                    [
                         Course.CoursePeriod.MORNING,
                         Course.CoursePeriod.AFTERNOON,
                         Course.CoursePeriod.NIGHT,
-                    ]
+                    ],
                 )
 
                 course_type_normalized = self.normalize_course_type(course_type)
@@ -50,7 +50,7 @@ class Command(BaseCommand):
                 )
                 if created:
                     self.stdout.write(
-                        self.style.SUCCESS(f"Curso '{name}' criado com sucesso.")
+                        self.style.SUCCESS(f"Curso '{name}' criado com sucesso."),
                     )
                 else:
                     self.stdout.write(self.style.WARNING(f"Curso '{name}' já existe."))

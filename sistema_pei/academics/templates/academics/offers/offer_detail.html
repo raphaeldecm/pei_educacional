@@ -5,14 +5,13 @@
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
-  {% breadcrumb_item text="Cursos" icon="images/icons/icon-courses-green.svg" url="academics:courses" %}
-  {% breadcrumb_item text="Matérias" icon="images/icons/icon-courses-green.svg" %}
-  {% breadcrumb_item text="Ofertas" icon="images/icons/icon-courses-green.svg" %}
+  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-home-green.svg" url="academics:dashboard" %}
+  {% breadcrumb_item text="Ofertas" icon="images/icons/icon-courses-green.svg" url="academics:offer_list" %}
   {% breadcrumb_item text="Detalhes da Oferta" icon="images/icons/highlighter-green.svg" %}
 {% endblock breadcrumb %}
 {% block content %}
   <div class="w-full">
-    <h1 class="text-[32px] font-medium mb-[38px]">Oferta: {{ course.name }} - {{ offer.subject.name }}</h1>
+    <h1 class="text-[32px] font-medium mb-[38px]">Oferta: {{ offer.subject.name }}</h1>
     {% comment %} Adicionar a oferta {% endcomment %}
     <form action="{% url 'academics:add_student_to_offer' offer.id %}"
           method="post">
@@ -75,65 +74,50 @@
           </tr>
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
-          {% for enrollment in object_list %}
+          {% for object in object_list %}
             <tr>
               <td class="pl-[76px]">
                 <div class="relative w-[67px] h-[67px] rounded-full overflow-hidden">
-                  <img src="{{ enrollment.student.image.url }}"
+                  <img src="{{ object.student.image.url }}"
                        class="w-full h-full object-cover relative"
                        alt="Student Image" />
                 </div>
               </td>
-              <td>{{ enrollment.student.name }}</td>
-              <td>{{ enrollment.student.email }}</td>
-              <td>{{ enrollment.student.registration }}</td>
+              <td>{{ object.student.name }}</td>
+              <td>{{ object.student.email }}</td>
+              <td>{{ object.student.registration }}</td>
               <td class="flex justify-center h-full gap-[30px] !mt-[32px] pr-[26px]">
-                <a href="{% url 'profile' enrollment.student.id %}">
+                <a href="{% url 'profile' object.student.id %}">
                   <img src="{% static 'images/icons/icon-eye.svg' %}"
                        width="24px"
                        height="24px"
                        class="cursor-pointer" />
                 </a>
-                <a href="{% url 'profile' enrollment.student.id %}?tab=edit_student_data#tab">
+                <a href="{% url 'profile' object.student.id %}?tab=edit_student_data#tab">
                   <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                        width="24px"
                        height="24px"
                        class="cursor-pointer" />
                 </a>
-                <a href="{% url 'academics:remove_student_from_offer' offer.id enrollment.student.id %}"
-                   onclick="return confirm('Tem certeza que deseja remover o aluno desta oferta?')">
+                <button class="hover:bg-slate-100 rounded-full"
+                        type="button"
+                        id="openModal{{ object.pk }}"
+                        data-modal-id="confirmationModal{{ object.pk }}">
                   <img src="{% static 'images/icons/icon-remove-element.svg' %}"
-                       width="24px"
-                       height="24px"
+                       height="25px"
                        class="cursor-pointer" />
-                </a>
+                </button>
               </td>
+              {% url 'academics:remove_student_from_offer' offer.id object.student.id as full_delete_url %}
+              {% include "_confirm_delete_modal.html" with title="Confirmar remoção de aluno" body_text="Tem certeza de que deseja remover este aluno? Esta ação não pode ser desfeita." full_delete_url=full_delete_url %}
             </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
-    <div class="mt-[50px] mb-[78px] w-full flex items-center justify-between text-[18px]">
-      <span class="font-semibold">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
-      <div class="flex gap-[36px]">
-        {% if page_obj.has_previous %}
-          <a href="?{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}page={{ page_obj.previous_page_number }}">
-            <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-400 border border-slate-400 rounded-lg">
-              Anterior
-            </div>
-          </a>
-        {% endif %}
-        {% if page_obj.has_next %}
-          <a href="?{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}page={{ page_obj.next_page_number }}">
-            <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-400 border border-slate-400 rounded-lg">
-              Próximo
-            </div>
-          </a>
-        {% endif %}
-      </div>
-    </div>
+    {% include "_table_pagination.html" %}
     <div class="flex mt-[56px] gap-[16px]">
-      <a href="{% url 'academics:delete_offer' offer.id %}"
+      <a href="{% url 'academics:offer_delete' offer.id %}"
          onclick="return confirm('Tem certeza que deseja excluir esta oferta?')"
          class="text-[18px] py-[11px] px-[44px] border border-red-500 rounded-lg font-medium cursor-pointer">
         Excluir Oferta

@@ -1,4 +1,5 @@
-<form action="{% url delete_url object.pk %}" method="post">
+<form action="{% if full_delete_url %}{{ full_delete_url }}{% else %}{% url delete_url object.pk %}{% endif %}"
+      method="post">
   {% csrf_token %}
   <div id="confirmationModal{{ object.pk }}"
        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">

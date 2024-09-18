@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% load static i18n %}
+{% load breadcrumb_item %}
+
+{% block breadcrumb %}
+  {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
+  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" url="academics:dashboard" %}
+  {% breadcrumb_item text="Ofertas" icon="images/icons/icon-courses-green.svg" url="academics:offer_list" %}
+  {% breadcrumb_item text=title icon="images/icons/icon-courses-green.svg" %}
+{% endblock breadcrumb %}
+{% block content %}
+  <div class="w-full">
+    <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
+    <form method='post'>
+      {% csrf_token %}
+      <div class="mt-[24px]">
+        <label for="{{ form.course.id_for_label }}" class="font-medium text-[18px]">Curso:</label>
+        <div class="relative w-full cursor-pointer mt-[16px]">
+          <img class="absolute top-[12px] right-[10px]"
+               src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+               width="24px"
+               height="24px" />
+          <select name="{{ form.course.name }}"
+                  id="id_course"
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
+            <option value="default" selected disabled>Selecione o curso...</option>
+            {% for key, value in form.course.field.choices %}
+              <option value="{{ key }}"
+                      {% if key == form.course.value %}selected{% endif %}>{{ value }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="mt-[24px]">
+        <label for="{{ form.subject.id_for_label }}" class="font-medium text-[18px]">Disciplina:</label>
+        <div class="relative w-full cursor-pointer mt-[16px]">
+          <img class="absolute top-[12px] right-[10px]"
+               src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+               width="24px"
+               height="24px" />
+          <select name="{{ form.subject.name }}"
+                  id="id_subject"
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
+                  data-selected-value="{{ form.subject.value|default_if_none:'' }}">
+            <option value="default" selected disabled>Selecione a disciplina...</option>
+            {% for key, value in form.subject.field.choices %}
+              <option value="{{ key }}"
+                      {% if key == form.subject.value %}selected{% endif %}>{{ value }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="mt-[24px]">
+        <label for="{{ form.teacher.id_for_label }}" class="font-medium text-[18px]">Professor:</label>
+        <div class="relative w-full cursor-pointer mt-[16px]">
+          <img class="absolute top-[12px] right-[10px]"
+               src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+               width="24px"
+               height="24px" />
+          <select name="{{ form.teacher.name }}"
+                  id="{{ form.teacher.id_for_label }}"
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
+            <option value="default" selected disabled>Selecione o professor...</option>
+            {% for key, value in form.teacher.field.choices %}
+              <option value="{{ key }}"
+                      {% if key == form.teacher.value %}selected{% endif %}>{{ value }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="flex gap-8">
+        <div class="mt-[24px] flex-1">
+          <label for="{{ form.status.id_for_label }}" class="font-medium text-[18px]">Situação:</label>
+          <div class="relative w-full cursor-pointer mt-[16px]">
+            <img class="absolute top-[12px] right-[10px]"
+                 src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+                 width="24px"
+                 height="24px" />
+            <select name="{{ form.status.name }}"
+                    id="{{ form.status.id_for_label }}"
+                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
+              <option value="default" selected disabled>Selecione a situação...</option>
+              {% for key, value in form.status.field.choices %}
+                <option value="{{ key }}"
+                        {% if key == form.status.value %}selected{% endif %}>{{ value }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="flex gap-8">
+          <div class="mt-[24px] flex-1">
+            <label for="{{ form.year.id_for_label }}" class="font-medium text-[18px]">Ano referência:</label>
+            <input type="number"
+                   name="{{ form.year.name }}"
+                   id="{{ form.year.id_for_label }}"
+                   class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+                   value="{{ form.year.value|default_if_none:'' }}"
+                   placeholder="Digite o ano de referência..."
+                   min="1" />
+          </div>
+          <div class="mt-[24px] flex-1">
+            <label for="{{ form.semester.id_for_label }}"
+                   class="font-medium text-[18px]">Semestre referência:</label>
+            <select name="{{ form.semester.name }}"
+                    id="{{ form.semester.id_for_label }}"
+                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50 mt-[16px]">
+              <option value="default" selected disabled>Selecione o semestre...</option>
+              {% for key, value in form.semester.field.choices %}
+                <option value="{{ key }}"
+                        {% if key == form.semester.value %}selected{% endif %}>{{ value }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+      {% include "_save_back_edit_buttons.html" with link_to_back="academics:offer_list" %}
+    </form>
+  </div>
+{% endblock content %}
+{% block inline_javascript %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const courseSelect = document.getElementById('id_course');
+      const subjectSelect = document.getElementById('id_subject');
+
+      subjectSelect.disabled = true;
+      subjectSelect.innerHTML = '<option value="default" selected disabled>Selecione o curso primeiro...</option>';
+
+      if (courseSelect.value !== 'default') {
+        subjectSelect.disabled = false;
+        fetch(`/academics/offers/get_subjects_by_course_id/${courseSelect.value}/`)
+          .then(response => response.json())
+          .then(data => {
+            subjectSelect.innerHTML = '<option value="default" selected disabled>Selecione a disciplina...</option>';
+            data.subjects.forEach(subject => {
+              const option = document.createElement('option');
+              option.value = subject.id;
+              option.textContent = subject.name;
+              subjectSelect.appendChild(option);
+            });
+            if (subjectSelect.dataset.selectedValue) {
+              subjectSelect.value = subjectSelect.dataset.selectedValue;
+            }
+          });
+      }
+
+      courseSelect.addEventListener('change', function() {
+        const courseId = this.value;
+        if (courseId !== 'default') {
+          subjectSelect.disabled = false;
+          subjectSelect.innerHTML = '<option value="default" selected disabled>Selecione a disciplina...</option>';
+
+          fetch(`/academics/offers/get_subjects_by_course_id/${courseId}/`)
+            .then(response => response.json())
+            .then(data => {
+              subjectSelect.innerHTML = '<option value="default" selected disabled>Selecione a disciplina...</option>';
+              data.subjects.forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject.id;
+                option.textContent = subject.name;
+                subjectSelect.appendChild(option);
+              });
+            });
+        } else {
+          subjectSelect.disabled = true;
+          subjectSelect.innerHTML = '<option value="default" selected disabled>Selecione a disciplina...</option>';
+        }
+      });
+    });
+  </script>
+{% endblock inline_javascript %}

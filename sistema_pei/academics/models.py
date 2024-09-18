@@ -48,7 +48,7 @@ class Course(BaseModel):
         verbose_name_plural = _("Cursos")
 
     def __str__(self):
-        return self.name + " - " + self.period
+        return self.name + " - " + self.get_period_display()
 
 
 class Subject(BaseModel):
