@@ -99,21 +99,27 @@ class OffersPageView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.Lis
     filterset_class = filters.OfferFilter
     template_name = "academics/offers/offer_list.html"
 
-    def get_filterset_kwargs(self, filterset_class):
-        semester = '1' if now().month <= 6 else '2'
+    def get_queryset(self):
+        queryset = models.Offer.objects.all()
+        filter_data = self.request.GET
 
-        kwargs = super().get_filterset_kwargs(filterset_class)
-        data = kwargs.get('data') or self.request.GET.copy()
+        if not filter_data or not any(filter_data.values()):
+            queryset = queryset.filter(
+                year=now().year,
+                semester='1' if now().month <= 6 else '2'
+            )
 
-        if not data.get('year'):
-            data['year'] = now().year
+        return self.filterset_class(self.request.GET, queryset=queryset).qs
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        filter_data = self.request.GET
 
-        if not data.get('semester'):
-            data['semester'] = semester
+        if not filter_data or not any(filter_data.values()):
+            context['default_year'] = now().year
+            context['default_semester'] = '1' if now().month <= 6 else '2'
 
-        kwargs['data'] = data
-
-        return kwargs
+        return context
 
 class CreateOfferPageView(LoginRequiredMixin, TitleViewMixin, CreateView):
     title = _("Criar Oferta")

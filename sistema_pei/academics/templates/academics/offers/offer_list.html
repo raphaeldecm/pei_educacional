@@ -60,7 +60,7 @@
                  name="year"
                  placeholder="Digite o ano..."
                  class="placeholder:text-slate-300 outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50"
-                 value="{{ request.GET.year }}" />
+                 value="{% if default_year %}{{ default_year }}{% else %}{{ request.GET.year }}{% endif %}" />
         </div>
         <div class="relative cursor-pointer w-[400px]">
           <img class="absolute top-[12px] right-[10px]"
@@ -72,7 +72,9 @@
             <option value="default" selected disabled>Selecione o semestre...</option>
             {% for semester_value, semester_label in filter.form.fields.semester.choices %}
               <option value="{{ semester_value }}"
-                      {% if request.GET.semester|stringformat:"s" == semester_value|stringformat:"s" %}selected{% endif %}>
+                      {% if semester_value|stringformat:"s" == default_semester|stringformat:"s" or request.GET.semester|stringformat:"s" == semester_value|stringformat:"s" %}
+                        selected
+                      {% endif %}>
                 {{ semester_label }}
               </option>
             {% endfor %}
