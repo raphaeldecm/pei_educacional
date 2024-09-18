@@ -111,28 +111,20 @@ class OffersPageView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.Lis
 
         return self.filterset_class(self.request.GET, queryset=queryset).qs
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        filter_data = self.request.GET
 
-        if not filter_data or not any(filter_data.values()):
-            context["default_year"] = now().year
-            context["default_semester"] = "1" if now().month <= 6 else "2"
-
-        return context
-
-
-class CreateOfferPageView(LoginRequiredMixin, TitleViewMixin, CreateView):
+class CreateOfferPageView(SuccessMessageMixin, LoginRequiredMixin, TitleViewMixin, CreateView):
     title = _("Criar Oferta")
     model = models.Offer
     form_class = forms.OfferForm
     template_name = "academics/offers/offer_form.html"
+    success_message = _("Oferta criada com sucesso!")
+    success_url = reverse_lazy("academics:offer_list")
 
     def form_valid(self, form):
-        self.object = form.save()
-        form = self.get_form_class()()
-        messages.success(self.request, "Oferta criada com sucesso!")
-        return redirect("/academics/offers/list/")
+        form.instance.created_by = self.request.user
+        form.instance.updated_by = self.request.user
+
+        return super().form_valid(form)
 
     def form_invalid(self, form):
         context = self.get_context_data(form=form)
@@ -155,6 +147,7 @@ class EditOfferPageView(
     success_message = _("A oferta foi atualizada com sucesso.")
     template_name = "academics/offers/offer_form.html"
     context_object_name = "offer"
+    success_url = reverse_lazy("academics:offer_list")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -163,6 +156,10 @@ class EditOfferPageView(
 
     def get_object(self, queryset=None):
         return get_object_or_404(models.Offer, id=self.kwargs["pk"])
+
+    def form_valid(self, form):
+        form.instance.updated_by = self.request.user
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy(

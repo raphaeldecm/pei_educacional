@@ -1,3 +1,4 @@
+from datetime import date
 import django_filters
 from django.db.models import Q
 
@@ -33,12 +34,14 @@ class OfferFilter(django_filters.FilterSet):
         field_name="year",
         lookup_expr="exact",
         label="Ano",
+        initial=date.today().year
     )
 
     semester = django_filters.ChoiceFilter(
         field_name="semester",
         choices=models.Offer.Semester.choices,
         label="Semestre",
+        initial=1 if date.today().month <= 6 else 2
     )
 
     class Meta:
