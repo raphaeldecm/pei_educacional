@@ -5,12 +5,12 @@
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
-  {% breadcrumb_item text="Cursos" icon="images/icons/icon-courses-green.svg" url="academics:course_list" %}
-  {% breadcrumb_item text="Materias" icon="images/icons/icon-courses-green.svg" %}
+  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" url="academics:dashboard" %}
+  {% breadcrumb_item text="Disciplinas" icon="images/icons/icon-courses-green.svg" %}
 {% endblock breadcrumb %}
 {% block content %}
   <div class="w-full">
-    <h1 class="text-[32px] font-medium mb-[38px]">Curso: {{ course.name }}</h1>
+    <h1 class="text-[32px] font-medium mb-[38px]">{{title}}</h1>
     <form>
       <div class="mb-[26px] flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
         <img src="{% static 'images/icons/icon-search.svg' %}"
@@ -45,6 +45,12 @@
         </button>
       </div>
     </form>
+    <div class="flex mt-[56px] gap-[16px]">
+      <a href="{% url 'academics:subject_create' %}"
+         class=" text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer">
+        Cadastrar Nova Matéria
+      </a>
+    </div>
     <div class="mt-[53px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg">
       <table class="table-auto w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px]">
         <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">
@@ -55,27 +61,27 @@
           </tr>
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
-          {% for subject in course_subjects %}
+          {% for subject in object_list %}
             <tr>
               <td class="pl-[76px]">{{ subject.name }}</td>
               <td>{{ subject.get_subject_type_display }}</td>
               <td class="flex justify-center h-full gap-[30px] !mt-[32px] pr-[26px]">
-                <a href="{% url 'academics:create_subject' course.id %}?subject={{ subject.id }}"
+                {% comment %} <a href="{% url 'academics:subject_create' course.id %}?subject={{ subject.id }}"
                    title="Ofertas associadas">
                   <img src="{% static 'images/icons/icon-eye.svg' %}"
                        alt=""
                        width="24px"
                        height="24px"
                        class="cursor-pointer" />
-                </a>
-                <a href="{% url 'academics:edit_subject' subject.id %}">
+                </a> {% endcomment %}
+                <a href="{% url 'academics:subject_update' subject.id %}">
                   <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                        alt=""
                        width="24px"
                        height="24px"
                        class="cursor-pointer" />
                 </a>
-                <a href="{% url 'academics:delete_subject' subject.id %}"
+                <a href="{% url 'academics:subject_delete' subject.id %}"
                    onclick="return confirm('Tem certeza que deseja excluir a matéria {{ subject.name }}?')">
                   <img src="{% static 'images/icons/icon-remove-element.svg' %}"
                        alt=""
@@ -89,35 +95,6 @@
         </tbody>
       </table>
     </div>
-    <div class="mt-[50px] mb-[78px] w-full flex items-center justify-between text-[18px]">
-      <span class="font-semibold">Página {{ course_subjects.number }} de {{ course_subjects.paginator.num_pages }}</span>
-      <div class="flex gap-[36px]">
-        {% if course_subjects.has_previous %}
-          <a href="?{% if request.GET.duration %}duration={{ request.GET.duration }}&{% endif %}page={{ course_subjects.previous_page_number }}">
-            <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-400 border border-slate-400 rounded-lg">
-              Anterior
-            </div>
-          </a>
-        {% endif %}
-        {% if course_subjects.has_next %}
-          <a href="?{% if request.GET.duration %}duration={{ request.GET.duration }}&{% endif %}page={{ course_subjects.next_page_number }}">
-            <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-400 border border-slate-400 rounded-lg">
-              Próximo
-            </div>
-          </a>
-        {% endif %}
-      </div>
-    </div>
-    <div class="flex mt-[56px] gap-[16px]">
-      <a href="{% url 'academics:create_subject' course.id %}"
-         class=" text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer">
-        Cadastrar Nova Matéria
-      </a>
-      <a href="{% url 'academics:course_delete' course.id %}"
-         onclick="return confirm('Tem certeza que deseja excluir o curso {{ course.name }}?')"
-         class="text-[18px] py-[11px] px-[44px] border border-red-500 rounded-lg font-medium cursor-pointer">
-        Excluir Curso
-      </a>
-    </div>
+    {% include "_table_pagination.html" %}
   </div>
 {% endblock content %}

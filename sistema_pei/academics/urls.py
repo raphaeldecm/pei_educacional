@@ -31,24 +31,24 @@ urlpatterns = [
         name="course_detail",
     ),
     path(
-        "subjects/delete/<int:subject_id>",
-        views.DeleteSubjectView.as_view(),
-        name="delete_subject",
-    ),
-    path(
-        "subjects/<int:course_id>",
+        "subjects/list/",
         views.SubjectsPageView.as_view(),
-        name="subjects",
+        name="subject_list",
     ),
     path(
-        "subjects/create/<int:course_id>",
+        "subjects/create/",
         views.CreateSubjectPageView.as_view(),
-        name="create_subject",
+        name="subject_create",
     ),
     path(
-        "subjects/edit/<int:subject_id>",
+        "subjects/update/<int:pk>",
         views.EditSubjectPageView.as_view(),
-        name="edit_subject",
+        name="subject_update",
+    ),
+    path(
+        "subjects/delete/<int:pk>",
+        views.DeleteSubjectView.as_view(),
+        name="subject_delete",
     ),
     path(
         "subjects/remove_student_from_subject/<int:subject_id>/<int:student_id>",
