@@ -1,11 +1,16 @@
 {% load static %}
 
-<a class="flex items-center justify-between rounded-lg cursor-pointer w-[365px] min-w-[365px] border border-slate-300 py-6 px-3 hover:bg-green-200 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out"
-   href="{% if link_to %}{% url link_to %}{% endif %}">
-  <img src="{% static path_icon %}"
-       width="60px"
-       height="60px"
-       alt="{{ text }}"
-       class="mr-4" />
-  <p class="text-[30px] text-green-600">{{ text }}</p>
+<a href="{% if link_to %}{% url link_to %}{% endif %}">
+  <div class="relative w-[321px] h-[169px] bg-gradient-to-bl from-green-500 to-green-950 rounded-2xl pt-10 px-4 drop-shadow-xl overflow-hidden hover:scale-[1.02] hover:drop-shadow-xl transition-all active:scale-90">
+    <p class="font-medium text-2xl text-white">{{text}}</p>
+    <p class="text-white">{{count}}</p>
+    <div class="absolute top-0 right-0 w-[110px] h-[110px] flex justify-end items-start">
+      <img class="absolute top-[-5px] right-[-5px]" src="{% static 'images/icons/icon-pentagon.svg' %}" />
+      <img class="z-10 mt-4 mr-[14px]" src="{% static path_icon %}"
+        width="32px"
+        height="32px"
+        alt="{{ text }}"
+        class="mr-4" />
+    </div>
+  </div>
 </a>
