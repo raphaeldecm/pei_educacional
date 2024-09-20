@@ -241,7 +241,8 @@ class RemoveStudentFromOfferView(SuccessMessageMixin, LoginRequiredMixin, View):
         except ProtectedError:
             messages.error(
                 request,
-                "Não é possível remover o aluno desta oferta porque existem PEIs associados.",
+                "Não é possível remover o aluno desta oferta"
+                "porque existem PEIs associados.",
             )
 
         return redirect(f"/academics/offers/detail/{offer.id}/")
