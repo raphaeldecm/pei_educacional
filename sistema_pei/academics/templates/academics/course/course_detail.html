@@ -41,6 +41,8 @@
           <p class="text-slate-900 font-bold text-[18px]">Duração:</p>
           <p class="text-slate-900 font-regular text-[18px]">{{ subject.get_subject_type_display }}</p>
         </div>
+      {% empty %}
+        <p class="text-slate-900 font-regular text-[18px]">Nenhuma disciplina cadastrada para este curso.</p>
       {% endfor %}
     </div>
     {% include "_save_back_edit_buttons.html" with link_to_back="academics:course_list" edit_url="academics:course_update" %}
