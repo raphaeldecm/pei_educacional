@@ -7,7 +7,6 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views import generic
@@ -22,7 +21,8 @@ from sistema_pei.core import constants
 from sistema_pei.core.mixins import ProtectedErrorMessageMixin
 from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.educational_plan.models import Pei
-from sistema_pei.people.models import Student, Teacher
+from sistema_pei.people.models import Student
+from sistema_pei.people.models import Teacher
 
 
 class AcademicsIndexView(LoginRequiredMixin, TitleViewMixin, generic.TemplateView):
@@ -38,12 +38,11 @@ class AcademicsIndexView(LoginRequiredMixin, TitleViewMixin, generic.TemplateVie
         context["offers_counter"] = models.Offer.objects.current_offers().count()
         context["peis_counter"] = Pei.objects.count()
 
-        #Participants
+        # Participants
         context["students_counter"] = Student.objects.count()
         context["teachers_counter"] = Teacher.objects.count()
 
         return context
-
 
 
 class CourseListView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.ListView):
@@ -126,7 +125,9 @@ class OffersPageView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.Lis
         return self.filterset_class(self.request.GET, queryset=queryset).qs
 
 
-class CreateOfferPageView(SuccessMessageMixin, LoginRequiredMixin, TitleViewMixin, CreateView):
+class CreateOfferPageView(
+    SuccessMessageMixin, LoginRequiredMixin, TitleViewMixin, CreateView
+):
     title = _("Criar Oferta")
     model = models.Offer
     form_class = forms.OfferForm

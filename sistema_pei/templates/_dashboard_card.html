@@ -1,26 +1,14 @@
 {% load static %}
 
 <a href="{% if link_to %}{% url link_to %}{% endif %}">
-  <div
-    class="relative w-[321px] h-[169px] bg-gradient-to-bl from-green-500 to-green-950 rounded-2xl pt-10 px-4 drop-shadow-xl overflow-hidden hover:scale-[1.02] hover:drop-shadow-xl transition-all active:scale-90"
-  >
-    <p class="font-medium text-2xl text-white">{{text}}</p>
-    <p class="text-white">{{count}}</p>
-    <div
-      class="absolute top-0 right-0 w-[110px] h-[110px] flex justify-end items-start"
-    >
-      <img
-        class="absolute top-[-5px] right-[-5px]"
-        src="{% static 'images/icons/icon-pentagon.svg' %}"
-      />
-      <div
-        class="z-10 mt-[18px] mr-[18px] w-6 h-6"
-      >
-        <img
-          class="w-full h-full"
-          src="{% static path_icon %}"
-          alt="{{ text }}"
-        />
+  <div class="relative w-[321px] h-[169px] bg-gradient-to-bl from-green-500 to-green-950 rounded-2xl pt-10 px-4 drop-shadow-xl overflow-hidden hover:scale-[1.02] hover:drop-shadow-xl transition-all active:scale-90">
+    <p class="font-medium text-2xl text-white">{{ text }}</p>
+    <p class="text-white">{{ count }}</p>
+    <div class="absolute top-0 right-0 w-[110px] h-[110px] flex justify-end items-start">
+      <img class="absolute top-[-5px] right-[-5px]"
+           src="{% static 'images/icons/icon-pentagon.svg' %}" />
+      <div class="z-10 mt-[18px] mr-[18px] w-6 h-6">
+        <img class="w-full h-full" src="{% static path_icon %}" alt="{{ text }}" />
       </div>
     </div>
   </div>
