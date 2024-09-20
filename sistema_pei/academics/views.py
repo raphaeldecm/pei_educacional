@@ -22,7 +22,7 @@ from sistema_pei.core import constants
 from sistema_pei.core.mixins import ProtectedErrorMessageMixin
 from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.educational_plan.models import Pei
-from sistema_pei.people.models import Student
+from sistema_pei.people.models import Student, Teacher
 
 
 class AcademicsIndexView(LoginRequiredMixin, TitleViewMixin, generic.TemplateView):
@@ -40,6 +40,8 @@ class AcademicsIndexView(LoginRequiredMixin, TitleViewMixin, generic.TemplateVie
 
         #Participants
         context["students_counter"] = Student.objects.count()
+        context["teachers_counter"] = Teacher.objects.count()
+
         return context
 
 
