@@ -35,7 +35,7 @@ class AcademicsIndexView(LoginRequiredMixin, TitleViewMixin, generic.TemplateVie
         # Components
         context["courses_counter"] = models.Course.objects.count()
         context["subjects_counter"] = models.Subject.objects.count()
-        context["offers_counter"] = models.Offer.objects.count()
+        context["offers_counter"] = models.Offer.objects.current_offers().count()
         context["peis_counter"] = Pei.objects.count()
 
         #Participants
@@ -121,10 +121,7 @@ class OffersPageView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.Lis
         filter_data = self.request.GET
 
         if not filter_data or not any(filter_data.values()):
-            queryset = queryset.filter(
-                year=now().year,
-                semester="1" if now().month <= 6 else "2",
-            )
+            queryset = models.Offer.objects.current_offers()
 
         return self.filterset_class(self.request.GET, queryset=queryset).qs
 

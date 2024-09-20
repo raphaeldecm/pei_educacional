@@ -76,7 +76,7 @@
                  class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50"
                  value="{{ request.GET.search }}" />
         </div>
-        <div class="mt-[35px] flex gap-[19px]">
+        <div class="mt-[35px] flex flex-wrap gap-[19px]">
           <div class="relative w-[322px] cursor-pointer">
             <img class="absolute top-[12px] right-[10px]"
                  src="{% static 'images/icons/icon-updown-arrow.svg' %}"
@@ -219,6 +219,10 @@
                      height="24px"
                      class="cursor-pointer" />
               </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="7" class="text-center">Nenhum PEI cadastrado.</td>
             </tr>
           {% endfor %}
         </tbody>
