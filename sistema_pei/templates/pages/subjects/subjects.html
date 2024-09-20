@@ -14,6 +14,7 @@
     <form>
       <div class="mb-[26px] flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
         <img src="{% static 'images/icons/icon-search.svg' %}"
+             alt=""
              width="18px"
              height="18px" />
         <input type="text"
@@ -37,6 +38,7 @@
         </div>
         <button class="flex items-center justify-center gap-[10px] min-w-[100px] h-[48px] bg-green-500 rounded-[6px] text-neutral-50">
           <img src="{% static 'images/icons/icon-filter.svg' %}"
+               alt=""
                width="24px"
                height="24px" />
           <span>Filtrar</span>
@@ -61,12 +63,14 @@
                 <a href="{% url 'create_subject' course.id %}?subject={{ subject.id }}"
                    title="Ofertas associadas">
                   <img src="{% static 'images/icons/icon-eye.svg' %}"
+                       alt=""
                        width="24px"
                        height="24px"
                        class="cursor-pointer" />
                 </a>
                 <a href="{% url 'edit_subject' subject.id %}">
                   <img src="{% static 'images/icons/icon-edit-element.svg' %}"
+                       alt=""
                        width="24px"
                        height="24px"
                        class="cursor-pointer" />
@@ -74,6 +78,7 @@
                 <a href="{% url 'delete_subject' subject.id %}"
                    onclick="return confirm('Tem certeza que deseja excluir a matéria {{ subject.name }}?')">
                   <img src="{% static 'images/icons/icon-remove-element.svg' %}"
+                       alt=""
                        width="24px"
                        height="24px"
                        class="cursor-pointer" />

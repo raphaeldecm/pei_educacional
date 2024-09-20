@@ -2,6 +2,7 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from sistema_pei.academics import managers
 from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.core.constants import SMALL_CHAR_FIELD_NAME_LENGTH
 from sistema_pei.core.models import BaseModel
@@ -115,6 +116,8 @@ class Offer(BaseModel):
         verbose_name=_("Semestre referência"),
         choices=Semester.choices,
     )
+
+    objects = managers.OfferManager()
 
     class Meta:
         verbose_name = _("Oferta")

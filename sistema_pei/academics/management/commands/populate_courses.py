@@ -22,7 +22,7 @@ class Command(BaseCommand):
                 course_type = row["type"].strip()
                 name = row["name"].strip() + " " + row["type"].strip()
                 duracao = row["duracao"].strip()
-                period = random.choice(
+                period = random.choice(  # noqa: S311
                     [
                         Course.CoursePeriod.MORNING,
                         Course.CoursePeriod.AFTERNOON,
@@ -35,7 +35,7 @@ class Command(BaseCommand):
                 if course_type_normalized is None:
                     self.stdout.write(
                         self.style.WARNING(
-                            f"Tipo de curso desconhecido: '{course_type}', pulando entrada.",
+                            f"Tipo de curso desconhecido: '{course_type}', pulando entrada.",  # noqa: E501
                         ),
                     )
                     continue
@@ -69,14 +69,12 @@ class Command(BaseCommand):
             "Doutorado": "Pós-Graduação",
             "Técnico Integrado EJA": "Técnico Integrado EJA",
             "FIC": "Outros",
-            # Adicione outras mapeações conforme necessário
         }
         return course_type_map.get(course_type.strip(), None)
 
     def get_number_of_periods(self, duracao):
         if "quatro anos" in duracao.lower():
-            return 8  # Exemplo: 4 anos = 8 semestres
-        elif "dois anos" in duracao.lower():
-            return 4  # Exemplo: 2 anos = 4 semestres
-        # Adicione lógica adicional conforme necessário
-        return 1  # Retorno padrão caso não corresponda a nenhuma condição
+            return 8
+        if "dois anos" in duracao.lower():
+            return 4
+        return 1

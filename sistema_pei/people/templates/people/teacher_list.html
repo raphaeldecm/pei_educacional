@@ -15,6 +15,7 @@
       <div class="flex gap-[8px]">
         <div class="mb-[26px] flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
           <img src="{% static 'images/icons/icon-search.svg' %}"
+               alt=""
                width="18px"
                height="18px" />
           <input type="text"
@@ -26,6 +27,7 @@
         </div>
         <div class="mb-[26px] flex w-1/4 h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
           <img src="{% static 'images/icons/icon-search.svg' %}"
+               alt=""
                width="18px"
                height="18px" />
           <input type="text"
@@ -39,6 +41,7 @@
       <div class="flex gap-[8px]">
         <div class="mb-[26px] flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
           <img src="{% static 'images/icons/icon-search.svg' %}"
+               alt=""
                width="18px"
                height="18px" />
           <input type="text"
@@ -67,6 +70,7 @@
         </div>
         <button class="flex items-center justify-center gap-[10px] min-w-[100px] h-[48px] bg-green-500 hover:bg-green-400 rounded-[6px] text-neutral-50">
           <img src="{% static 'images/icons/icon-filter.svg' %}"
+               alt=""
                width="24px"
                height="24px" />
           <span>Filtrar</span>
@@ -99,6 +103,7 @@
                 <a class="hover:bg-slate-100 p-2 rounded-full"
                    href="{% url 'people:teacher_detail' object.pk %}">
                   <img src="{% static 'images/icons/icon-eye.svg' %}"
+                       alt=""
                        width="24px"
                        height="24px"
                        class="cursor-pointer" />
@@ -106,6 +111,7 @@
                 <a class="hover:bg-slate-100 p-2 rounded-full"
                    href="{% url 'people:teacher_update' object.pk %}">
                   <img src="{% static 'images/icons/icon-edit-element.svg' %}"
+                       alt=""
                        width="24px"
                        height="24px"
                        class="cursor-pointer" />
@@ -115,6 +121,7 @@
                         id="openModal{{ object.pk }}"
                         data-modal-id="confirmationModal{{ object.pk }}">
                   <img src="{% static 'images/icons/icon-remove-element.svg' %}"
+                       alt=""
                        width="24px"
                        height="24px"
                        class="cursor-pointer" />

@@ -11,17 +11,17 @@
   <div class="w-full">
     <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
     <div class="flex flex-col my-4">
-      <p class="font-semibold">Componentes</p>
+      <p class="text-lg">Componentes</p>
       <div class="flex flex-wrap items-center gap-8 py-6">
-        {% include "_dashboard_card.html" with link_to="academics:course_list" path_icon="images/icons/icon-courses-green.svg" text="Cursos" %}
-        {% include "_dashboard_card.html" with link_to="academics:course_list" path_icon="images/icons/icon-courses-green.svg" text="Disciplinas" %}
-        {% include "_dashboard_card.html" with path_icon="images/icons/icon-courses-green.svg" text="Ofertas" link_to="academics:offer_list" %}
-        {% include "_dashboard_card.html" with link_to="academics:course_list" path_icon="images/icons/icon-courses-green.svg" text="PEIs" %}
+        {% include "_dashboard_card.html" with link_to="academics:course_list" path_icon="images/icons/icon-courses-square.svg" text="Cursos" count=courses_counter %}
+        {% include "_dashboard_card.html" with link_to="academics:course_list" path_icon="images/icons/icon-subject.svg" text="Disciplinas" count=subjects_counter %}
+        {% include "_dashboard_card.html" with path_icon="images/icons/icon-offer.svg" text="Ofertas" link_to="academics:offer_list" count=offers_counter %}
+        {% include "_dashboard_card.html" with link_to="academics:course_list" path_icon="images/icons/icon-pei.svg" text="PEIs" count=peis_counter %}
       </div>
-      <p class="font-semibold">Participantes</p>
+      <p class="text-lg">Participantes</p>
       <div class="flex flex-wrap items-center gap-8 py-6">
-        {% include "_dashboard_card.html" with link_to="people:teacher_list" path_icon="images/icons/icon-multiple-users-green.svg" text="Doscentes" %}
-        {% include "_dashboard_card.html" with link_to="student_create" path_icon="images/icons/icon-register-student-green.svg" text="Alunos" %}
+        {% include "_dashboard_card.html" with link_to="people:teacher_list" path_icon="images/icons/icon-multiple-users-green.svg" text="Doscentes" count=teachers_counter %}
+        {% include "_dashboard_card.html" with link_to="student_create" path_icon="images/icons/icon-user-green.svg" text="Alunos" count=students_counter %}
       </div>
     </div>
   </div>

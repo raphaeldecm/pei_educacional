@@ -1,6 +1,6 @@
-from datetime import date
 import django_filters
 from django.db.models import Q
+from django.utils import timezone
 
 from sistema_pei.academics import models
 from sistema_pei.academics.constants import COURSE_TYPE
@@ -29,19 +29,20 @@ class CourseFilter(django_filters.FilterSet):
 
 class OfferFilter(django_filters.FilterSet):
     search = django_filters.CharFilter(method="filter_by_search", label="Search")
+    SEMESTER_SPLIT_MONTH = 6
 
     year = django_filters.NumberFilter(
         field_name="year",
         lookup_expr="exact",
         label="Ano",
-        initial=date.today().year
+        initial=timezone.now().date().year,
     )
 
     semester = django_filters.ChoiceFilter(
         field_name="semester",
         choices=models.Offer.Semester.choices,
         label="Semestre",
-        initial=1 if date.today().month <= 6 else 2
+        initial=1 if timezone.now().date().month <= SEMESTER_SPLIT_MONTH else 2,
     )
 
     class Meta:

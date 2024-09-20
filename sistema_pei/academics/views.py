@@ -7,7 +7,6 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views import generic
@@ -21,12 +20,29 @@ from sistema_pei.academics import models
 from sistema_pei.core import constants
 from sistema_pei.core.mixins import ProtectedErrorMessageMixin
 from sistema_pei.core.mixins import TitleViewMixin
+from sistema_pei.educational_plan.models import Pei
 from sistema_pei.people.models import Student
+from sistema_pei.people.models import Teacher
 
 
 class AcademicsIndexView(LoginRequiredMixin, TitleViewMixin, generic.TemplateView):
     template_name = "academics/index.html"
     title = _("Acadêmico")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Components
+        context["courses_counter"] = models.Course.objects.count()
+        context["subjects_counter"] = models.Subject.objects.count()
+        context["offers_counter"] = models.Offer.objects.current_offers().count()
+        context["peis_counter"] = Pei.objects.count()
+
+        # Participants
+        context["students_counter"] = Student.objects.count()
+        context["teachers_counter"] = Teacher.objects.count()
+
+        return context
 
 
 class CourseListView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.ListView):
@@ -104,15 +120,17 @@ class OffersPageView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.Lis
         filter_data = self.request.GET
 
         if not filter_data or not any(filter_data.values()):
-            queryset = queryset.filter(
-                year=now().year,
-                semester="1" if now().month <= 6 else "2",
-            )
+            queryset = models.Offer.objects.current_offers()
 
         return self.filterset_class(self.request.GET, queryset=queryset).qs
 
 
-class CreateOfferPageView(SuccessMessageMixin, LoginRequiredMixin, TitleViewMixin, CreateView):
+class CreateOfferPageView(
+    SuccessMessageMixin,
+    LoginRequiredMixin,
+    TitleViewMixin,
+    CreateView,
+):
     title = _("Criar Oferta")
     model = models.Offer
     form_class = forms.OfferForm
@@ -223,7 +241,8 @@ class RemoveStudentFromOfferView(SuccessMessageMixin, LoginRequiredMixin, View):
         except ProtectedError:
             messages.error(
                 request,
-                "Não é possível remover o aluno desta oferta porque existem PEIs associados.",
+                "Não é possível remover o aluno desta oferta"
+                "porque existem PEIs associados.",
             )
 
         return redirect(f"/academics/offers/detail/{offer.id}/")
