@@ -13,7 +13,8 @@
     <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
     <form>
       <div class="mb-[26px] flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
-        <img src="{% static 'images/icons/icon-search.svg' %}" alt=""
+        <img src="{% static 'images/icons/icon-search.svg' %}"
+             alt=""
              width="18px"
              height="18px" />
         <input type="text"
@@ -79,7 +80,8 @@
           </select>
         </div>
         <button class="flex items-center justify-center gap-[10px] min-w-[100px] h-[48px] bg-green-500 rounded-[6px] text-neutral-50 hover:opacity-75 transition-all active:scale-75">
-          <img src="{% static 'images/icons/icon-filter.svg' %}" alt=""
+          <img src="{% static 'images/icons/icon-filter.svg' %}"
+               alt=""
                width="24px"
                height="24px" />
           <span>Filtrar</span>
@@ -114,12 +116,14 @@
               <td>{{ object.status }}</td>
               <td class="flex justify-center h-full gap-[30px] !mt-[32px] pr-[26px]">
                 <a href="{% url 'academics:offer_detail' object.pk %}">
-                  <img src="{% static 'images/icons/icon-eye.svg' %}" alt=""
+                  <img src="{% static 'images/icons/icon-eye.svg' %}"
+                       alt=""
                        height="25px"
                        class="cursor-pointer" />
                 </a>
                 <a href="{% url 'academics:offer_update' object.pk %}">
-                  <img src="{% static 'images/icons/icon-edit-element.svg' %}" alt=""
+                  <img src="{% static 'images/icons/icon-edit-element.svg' %}"
+                       alt=""
                        height="25px"
                        class="cursor-pointer" />
                 </a>
@@ -127,7 +131,8 @@
                         type="button"
                         id="openModal{{ object.pk }}"
                         data-modal-id="confirmationModal{{ object.pk }}">
-                  <img src="{% static 'images/icons/icon-remove-element.svg' %}" alt=""
+                  <img src="{% static 'images/icons/icon-remove-element.svg' %}"
+                       alt=""
                        height="25px"
                        class="cursor-pointer" />
                 </button>

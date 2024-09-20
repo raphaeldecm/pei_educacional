@@ -6,7 +6,8 @@
   </button>
   <h1>
     <a href="{% url 'home' %}">
-      <img src="{% static 'images/icons/green-logo.svg' %}" alt=""
+      <img src="{% static 'images/icons/green-logo.svg' %}"
+           alt=""
            width="85px"
            height="30px" />
     </a>
@@ -43,7 +44,8 @@
 {% if user.is_authenticated %}
   <div class="flex items-center relative text-left gap-6">
     <div class="flex w-full max-w-[400px] h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
-      <img src="{% static 'images/icons/icon-search.svg' %}" alt=""
+      <img src="{% static 'images/icons/icon-search.svg' %}"
+           alt=""
            width="18px"
            height="18px" />
       <input type="text"
