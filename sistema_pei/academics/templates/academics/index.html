@@ -13,15 +13,15 @@
     <div class="flex flex-col my-4">
       <p class="font-semibold">Componentes</p>
       <div class="flex flex-wrap items-center gap-8 py-6">
-        {% include "_dashboard_card.html" with link_to="academics:course_list" path_icon="images/icons/icon-courses-green.svg" text="Cursos" %}
-        {% include "_dashboard_card.html" with link_to="academics:course_list" path_icon="images/icons/icon-courses-green.svg" text="Disciplinas" %}
-        {% include "_dashboard_card.html" with path_icon="images/icons/icon-courses-green.svg" text="Ofertas" link_to="academics:offer_list" %}
-        {% include "_dashboard_card.html" with link_to="academics:course_list" path_icon="images/icons/icon-courses-green.svg" text="PEIs" %}
+        {% include "_dashboard_card.html" with link_to="academics:course_list" path_icon="images/icons/icon-courses-green.svg" text="Cursos" count=courses_counter %}
+        {% include "_dashboard_card.html" with link_to="academics:course_list" path_icon="images/icons/icon-courses-green.svg" text="Disciplinas" count=subjects_counter %}
+        {% include "_dashboard_card.html" with path_icon="images/icons/icon-courses-green.svg" text="Ofertas" link_to="academics:offer_list" count=offers_counter %}
+        {% include "_dashboard_card.html" with link_to="academics:course_list" path_icon="images/icons/icon-courses-green.svg" text="PEIs" count=peis_counter %}
       </div>
       <p class="font-semibold">Participantes</p>
       <div class="flex flex-wrap items-center gap-8 py-6">
-        {% include "_dashboard_card.html" with link_to="people:teacher_list" path_icon="images/icons/icon-multiple-users-green.svg" text="Doscentes" %}
-        {% include "_dashboard_card.html" with link_to="student_create" path_icon="images/icons/icon-register-student-green.svg" text="Alunos" %}
+        {% include "_dashboard_card.html" with link_to="people:teacher_list" path_icon="images/icons/icon-multiple-users-green.svg" text="Doscentes" count=students_counter %}
+        {% include "_dashboard_card.html" with link_to="student_create" path_icon="images/icons/icon-register-student-green.svg" text="Alunos" count=students_counter %}
       </div>
     </div>
   </div>

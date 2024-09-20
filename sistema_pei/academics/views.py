@@ -21,12 +21,27 @@ from sistema_pei.academics import models
 from sistema_pei.core import constants
 from sistema_pei.core.mixins import ProtectedErrorMessageMixin
 from sistema_pei.core.mixins import TitleViewMixin
+from sistema_pei.educational_plan.models import Pei
 from sistema_pei.people.models import Student
 
 
 class AcademicsIndexView(LoginRequiredMixin, TitleViewMixin, generic.TemplateView):
     template_name = "academics/index.html"
     title = _("Acadêmico")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Components
+        context["courses_counter"] = models.Course.objects.count()
+        context["subjects_counter"] = models.Subject.objects.count()
+        context["offers_counter"] = models.Offer.objects.count()
+        context["peis_counter"] = Pei.objects.count()
+
+        #Participants
+        context["students_counter"] = Student.objects.count()
+        return context
+
 
 
 class CourseListView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.ListView):
