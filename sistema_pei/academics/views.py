@@ -126,7 +126,10 @@ class OffersPageView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.Lis
 
 
 class CreateOfferPageView(
-    SuccessMessageMixin, LoginRequiredMixin, TitleViewMixin, CreateView
+    SuccessMessageMixin,
+    LoginRequiredMixin,
+    TitleViewMixin,
+    CreateView,
 ):
     title = _("Criar Oferta")
     model = models.Offer
