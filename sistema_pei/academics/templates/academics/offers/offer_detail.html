@@ -20,7 +20,7 @@
       <div class="flex items-center gap-4">
         <div class="flex-1">
           <div class="relative w-full cursor-pointer">
-            <img class="absolute top-[12px] right-[10px]"
+            <img class="absolute top-[12px] right-[10px]" alt=""
                  src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                  width="24px"
                  height="24px" />
@@ -45,7 +45,7 @@
       <p class="text-[22px] uppercase font-medium mb-[25px]">Discentes:</p>
       <div class="flex gap-[8px]">
         <div class="flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
-          <img src="{% static 'images/icons/icon-search.svg' %}"
+          <img src="{% static 'images/icons/icon-search.svg' %}" alt=""
                width="18px"
                height="18px" />
           <input type="text"
@@ -55,7 +55,7 @@
                  value="{{ request.GET.search }}" />
         </div>
         <button class="flex items-center justify-center gap-[10px] min-w-[100px] h-[48px] bg-green-500 rounded-[6px] text-neutral-50">
-          <img src="{% static 'images/icons/icon-filter.svg' %}"
+          <img src="{% static 'images/icons/icon-filter.svg' %}" alt=""
                width="24px"
                height="24px" />
           <span>Filtrar</span>
@@ -88,13 +88,13 @@
               <td>{{ object.student.registration }}</td>
               <td class="flex justify-center h-full gap-[30px] !mt-[32px] pr-[26px]">
                 <a href="{% url 'profile' object.student.id %}">
-                  <img src="{% static 'images/icons/icon-eye.svg' %}"
+                  <img src="{% static 'images/icons/icon-eye.svg' %}" alt=""
                        width="24px"
                        height="24px"
                        class="cursor-pointer" />
                 </a>
                 <a href="{% url 'profile' object.student.id %}?tab=edit_student_data#tab">
-                  <img src="{% static 'images/icons/icon-edit-element.svg' %}"
+                  <img src="{% static 'images/icons/icon-edit-element.svg' %}" alt=""
                        width="24px"
                        height="24px"
                        class="cursor-pointer" />
@@ -103,7 +103,7 @@
                         type="button"
                         id="openModal{{ object.pk }}"
                         data-modal-id="confirmationModal{{ object.pk }}">
-                  <img src="{% static 'images/icons/icon-remove-element.svg' %}"
+                  <img src="{% static 'images/icons/icon-remove-element.svg' %}" alt=""
                        height="25px"
                        class="cursor-pointer" />
                 </button>

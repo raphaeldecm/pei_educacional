@@ -1,5 +1,3 @@
-from datetime import date
-
 import django_filters
 from django.db.models import Q
 from django.utils import timezone
