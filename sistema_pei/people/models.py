@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from sistema_pei.core import constants
 from sistema_pei.core.models import BaseModel
 from sistema_pei.core.models import get_sentinel_user
+from sistema_pei.users.decorators import profile
 
 User = get_user_model()
 
@@ -49,7 +50,57 @@ class Person(BaseModel):
     def __str__(self):
         return self.name
 
+@profile
+class Coordinator(Person):
+    campus = models.ForeignKey(
+        Campus,
+        on_delete=models.SET_NULL,
+        verbose_name=_("Campus"),
+        null=True,
+        related_name="coordinators",
+    )
+    photo = models.ImageField(
+        upload_to="coordinators",
+        verbose_name=_("Foto"),
+        blank=True,
+    )
+    code = models.CharField(
+        verbose_name=_("Matrícula"),
+        max_length=constants.SMALL_CHAR_FIELD_NAME_LENGTH,
+        blank=True,
+        unique=True,
+    )
 
+    class Meta:
+        verbose_name = _("Coordenador")
+        verbose_name_plural = _("Coordenadores")
+
+    def __str__(self):
+        return self.name
+
+@profile
+class Assistant(Person):
+    campus = models.ForeignKey(
+        Campus,
+        on_delete=models.SET_NULL,
+        verbose_name=_("Campus"),
+        null=True,
+        related_name="assistants",
+    )
+    photo = models.ImageField(
+        upload_to="assistants",
+        verbose_name=_("Foto"),
+        blank=True,
+    )
+
+    class Meta:
+        verbose_name = _("Assistente")
+        verbose_name_plural = _("Assistentes")
+
+    def __str__(self):
+        return self.name
+
+@profile
 class Teacher(Person):
     campus = models.ForeignKey(
         Campus,
@@ -77,7 +128,7 @@ class Teacher(Person):
     def __str__(self):
         return self.name
 
-
+@profile
 class Responsible(Person):
     class Meta:
         verbose_name = _("Responsável")
