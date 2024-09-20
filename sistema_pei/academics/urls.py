@@ -31,6 +31,31 @@ urlpatterns = [
         name="course_detail",
     ),
     path(
+        "subjects/delete/<int:subject_id>",
+        views.DeleteSubjectView.as_view(),
+        name="delete_subject",
+    ),
+    path(
+        "subjects/<int:course_id>",
+        views.SubjectsPageView.as_view(),
+        name="subjects",
+    ),
+    path(
+        "subjects/create/<int:course_id>",
+        views.CreateSubjectPageView.as_view(),
+        name="create_subject",
+    ),
+    path(
+        "subjects/edit/<int:subject_id>",
+        views.EditSubjectPageView.as_view(),
+        name="edit_subject",
+    ),
+    path(
+        "subjects/remove_student_from_subject/<int:subject_id>/<int:student_id>",
+        views.RemoveStudentFromSubjectView.as_view(),
+        name="remove_student_from_subject",
+    ),
+    path(
         "offers/list/",
         views.OffersPageView.as_view(),
         name="offer_list",

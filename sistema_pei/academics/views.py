@@ -1,4 +1,5 @@
 # Create your views here.
+import datetime
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -10,14 +11,18 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views import generic
-from django.views.generic.edit import CreateView
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic import TemplateView
+from django.db.models import Q
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django_filters.views import FilterView
 
 from sistema_pei.academics import filters
 from sistema_pei.academics import forms
 from sistema_pei.academics import models
+from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.core import constants
+from sistema_pei.core.forms import SubjectForm
 from sistema_pei.core.mixins import ProtectedErrorMessageMixin
 from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.educational_plan.models import Pei
@@ -269,3 +274,132 @@ class GetSubjectsByCourseView(LoginRequiredMixin, View):
         subjects = models.Subject.objects.filter(courses=pk)
         subjects_data = list(subjects.values("id", "name"))
         return JsonResponse({"subjects": subjects_data})
+
+
+class RemoveStudentFromSubjectView(View):
+    def get(self, request, subject_id, student_id):
+        subject = get_object_or_404(models.Subject, id=subject_id)
+        student = get_object_or_404(Student, id=student_id)
+        subject.students.remove(student)
+        return redirect(f"/subjects/edit/{subject.id}")
+
+
+class DeleteSubjectView(View):
+    def get(self, request, subject_id):
+        subject = get_object_or_404(models.Subject, id=subject_id)
+        try:
+            subject.delete()
+            return redirect("courses")
+        except ProtectedError:
+            return redirect(f"/subjects/edit/{subject.id}?error=protected")
+
+
+class SubjectsPageView(TemplateView):
+    template_name = "academics/subjects/subjects.html"
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        course_id = self.kwargs.get("course_id")
+        course = get_object_or_404(models.Course, id=course_id)
+        course_subjects = course.subjects.all()
+        context["course"] = course
+
+        # Table
+        filters = {}
+        if "duration" in self.request.GET:
+            filters["subject_type"] = self.request.GET["duration"]
+
+        course_subjects = course_subjects.filter(**filters)
+
+        if "search" in self.request.GET:
+            course_subjects = course_subjects.filter(
+                Q(name__icontains=self.request.GET["search"]),
+            )
+
+        paginator = Paginator(course_subjects, self.paginate_by)
+        page_number = self.request.GET.get("page")
+
+        try:
+            all_course_subjects = paginator.page(page_number)
+        except PageNotAnInteger:
+            all_course_subjects = paginator.page(1)
+        except EmptyPage:
+            all_course_subjects = paginator.page(paginator.num_pages)
+
+        context["course_subjects"] = all_course_subjects
+
+        return context
+
+
+class CreateSubjectPageView(TemplateView):
+    template_name = "academics/subjects/create-subject.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        course_id = self.kwargs.get("course_id")
+        course = get_object_or_404(models.Course, id=course_id)
+        context["current_course"] = course
+
+        context["course_types"] = [course[0] for course in COURSE_TYPE]
+        context["courses"] = models.Course.objects.all()
+
+        request = self.request
+        if request.GET.get("alert") == "error":
+            messages.error(request, "Erro - Matéria já foi cadastrada!")
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = SubjectForm(request.POST)
+        course_id = self.kwargs.get("course_id")
+        course = get_object_or_404(models.Course, id=course_id)
+
+        if form.is_valid():
+            existing_subject = models.Subject.objects.filter(
+                name=form.cleaned_data["name"],
+            ).exists()
+
+            if existing_subject:
+                messages.error(request, "Erro - Matéria já foi cadastrada!")
+                return redirect(f"{request.path}")
+
+            form.instance.course = course
+            form.instance.year = datetime.datetime.now().year
+            form.save()
+            return redirect(f"/subjects/{course.id}")
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+class EditSubjectPageView(TemplateView):
+    template_name = "academics/subjects/edit-subject.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        subject_id = self.kwargs.get("subject_id")
+        subject = get_object_or_404(models.Subject, id=subject_id)
+
+        # Filter Selectors
+        context["courses"] = models.Course.objects.all()
+
+        # Protected delete error
+        request = self.request
+        if request.GET.get("error") == "protected":
+            messages.error(
+                request,
+                "Erro - Você não pode remover matérias com ofertas associadas!",
+            )
+
+        context["subject"] = subject
+        context["course_types"] = [course[0] for course in COURSE_TYPE]
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        subject_id = self.kwargs.get("subject_id")
+        subject = get_object_or_404(models.Subject, id=subject_id)
+        form = SubjectForm(request.POST, instance=subject)
+        if form.is_valid():
+            form.save()
+            return redirect("courses")
+        return self.render_to_response(self.get_context_data(form=form))

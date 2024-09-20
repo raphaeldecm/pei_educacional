@@ -5,25 +5,22 @@
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
-  {% breadcrumb_item text="Cursos" icon="images/icons/icon-courses-green.svg" url="academics:courses" %}
-  {% breadcrumb_item text="Editar Matéria" icon="images/icons/icon-edit-green.svg" %}
+  {% breadcrumb_item text="Cursos" icon="images/icons/icon-courses-green.svg" url="academics:course_list" %}
+  {% breadcrumb_item text="Criar Materia" icon="images/icons/icon-edit-green.svg" %}
 {% endblock breadcrumb %}
 {% block content %}
   <div class="w-full">
-    <h1 class="text-[32px] font-medium mb-[38px]">
-      Editar Matéria: {{ subject.name }} - {{ subject.get_subject_type_display }}
-    </h1>
-    <form action="{% url 'edit_subject' subject.id %}"
-          method="post"
-          id="edit-form">
+    <h1 class="text-[32px] font-medium mb-[38px]">Criar Matéria</h1>
+    <form action="{% url 'academics:create_subject' current_course.id %}" method="post">
       {% csrf_token %}
       <div class="flex-1">
         <label for="name" class="font-medium text-[18px]">Nome:</label>
         <input type="text"
                name="name"
-               placeholder="Digite o nome do curso..."
+               placeholder="Digite o nome da matéria..."
                class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
-               value="{{ subject.name }}" />
+               value="{{ request.GET.name }}"
+               required />
       </div>
       <div class="mt-[32px]">
         <label for="teacher" class="font-medium text-[18px]">Cursos:</label>
@@ -46,7 +43,6 @@
               <input type="radio"
                      required
                      id="Semestral"
-                     {% if subject.subject_type == "SEMESTER" %}checked{% endif %}
                      name="subject_type"
                      value="SEMESTER"
                      class="hidden peer" />
@@ -67,7 +63,6 @@
                      id="Anual"
                      required
                      name="subject_type"
-                     {% if subject.subject_type == "YEAR" %}checked{% endif %}
                      value="YEAR"
                      class="hidden peer" />
               <label for="Anual"
@@ -83,18 +78,9 @@
           </div>
         </div>
       </div>
-    </form>
-    <div class="flex mt-[56px] gap-[16px]">
-      <button type="submit"
-              onclick="document.getElementById('edit-form').submit()"
-              class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer">
-        Editar
+      <button class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer mt-[56px]">
+        Cadastrar
       </button>
-      <a href="{% url 'delete_subject' subject.id %}"
-         onclick="return confirm('Tem certeza que deseja excluir o curso {{ subject.name }}?')"
-         class="text-[18px] py-[11px] px-[44px] border border-red-500 rounded-lg font-medium cursor-pointer">
-        Excluir
-      </a>
-    </div>
+    </form>
   </div>
 {% endblock content %}

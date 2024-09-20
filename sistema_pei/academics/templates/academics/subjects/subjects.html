@@ -60,7 +60,7 @@
               <td class="pl-[76px]">{{ subject.name }}</td>
               <td>{{ subject.get_subject_type_display }}</td>
               <td class="flex justify-center h-full gap-[30px] !mt-[32px] pr-[26px]">
-                <a href="{% url 'create_subject' course.id %}?subject={{ subject.id }}"
+                <a href="{% url 'academics:create_subject' course.id %}?subject={{ subject.id }}"
                    title="Ofertas associadas">
                   <img src="{% static 'images/icons/icon-eye.svg' %}"
                        alt=""
@@ -68,14 +68,14 @@
                        height="24px"
                        class="cursor-pointer" />
                 </a>
-                <a href="{% url 'edit_subject' subject.id %}">
+                <a href="{% url 'academics:edit_subject' subject.id %}">
                   <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                        alt=""
                        width="24px"
                        height="24px"
                        class="cursor-pointer" />
                 </a>
-                <a href="{% url 'delete_subject' subject.id %}"
+                <a href="{% url 'academics:delete_subject' subject.id %}"
                    onclick="return confirm('Tem certeza que deseja excluir a matéria {{ subject.name }}?')">
                   <img src="{% static 'images/icons/icon-remove-element.svg' %}"
                        alt=""
@@ -109,7 +109,7 @@
       </div>
     </div>
     <div class="flex mt-[56px] gap-[16px]">
-      <a href="{% url 'create_subject' course.id %}"
+      <a href="{% url 'academics:create_subject' course.id %}"
          class=" text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer">
         Cadastrar Nova Matéria
       </a>
