@@ -298,47 +298,9 @@ class SubjectsPageView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.L
     model = models.Subject
     title = _("Disciplinas")
     paginate_by = constants.DEFAULT_PAGE_SIZE
-    filterset_class = filters.CourseFilter
+    filterset_class = filters.SubjectFilter
     template_name = "academics/subjects/subjects_list.html"
     ordering = ["name"]
-
-# class SubjectsPageView(TemplateView):
-#     template_name = "academics/subjects/subjects.html"
-#     paginate_by = 10
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         course_id = self.kwargs.get("course_id")
-#         course = get_object_or_404(models.Course, id=course_id)
-#         course_subjects = course.subjects.all()
-#         context["course"] = course
-
-#         # Table
-#         filters = {}
-#         if "duration" in self.request.GET:
-#             filters["subject_type"] = self.request.GET["duration"]
-
-#         course_subjects = course_subjects.filter(**filters)
-
-#         if "search" in self.request.GET:
-#             course_subjects = course_subjects.filter(
-#                 Q(name__icontains=self.request.GET["search"]),
-#             )
-
-#         paginator = Paginator(course_subjects, self.paginate_by)
-#         page_number = self.request.GET.get("page")
-
-#         try:
-#             all_course_subjects = paginator.page(page_number)
-#         except PageNotAnInteger:
-#             all_course_subjects = paginator.page(1)
-#         except EmptyPage:
-#             all_course_subjects = paginator.page(paginator.num_pages)
-
-#         context["course_subjects"] = all_course_subjects
-
-#         return context
-
 
 class CreateSubjectPageView(TemplateView):
     template_name = "academics/subjects/create-subject.html"

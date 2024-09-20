@@ -75,4 +75,4 @@ class SubjectFilter(django_filters.FilterSet):
 
     class Meta:
         model = models.Subject
-        fields = []
+        fields = ['name', 'subject_type']
