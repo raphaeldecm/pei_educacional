@@ -80,11 +80,11 @@
           </tr>
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
-          {% for subject in object_list %}
+          {% for object in object_list %}
             <tr>
-              <td class="pl-[76px]">{{ subject.name }}</td>
-              <td>{% for subject_course in subject.courses.all %}<p>{{subject_course}}</p>{% endfor %}</td>
-              <td>{{ subject.get_subject_type_display }}</td>
+              <td class="pl-[76px]">{{ object.name }}</td>
+              <td>{% for subject_course in object.courses.all %}<p>{{subject_course}}</p>{% endfor %}</td>
+              <td>{{ object.get_subject_type_display }}</td>
               <td class="flex justify-center h-full gap-[30px] !mt-[32px] pr-[26px]">
                 {% comment %} <a href="{% url 'academics:subject_create' course.id %}?subject={{ subject.id }}"
                    title="Ofertas associadas">
@@ -94,22 +94,24 @@
                        height="24px"
                        class="cursor-pointer" />
                 </a> {% endcomment %}
-                <a href="{% url 'academics:subject_update' subject.id %}">
+                <a href="{% url 'academics:subject_update' object.id %}">
                   <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                        alt=""
                        width="24px"
                        height="24px"
                        class="cursor-pointer" />
                 </a>
-                <a href="{% url 'academics:subject_delete' subject.id %}"
-                   onclick="return confirm('Tem certeza que deseja excluir a matéria {{ subject.name }}?')">
+                <button
+                        type="button"
+                        id="openModal{{ object.pk }}"
+                        data-modal-id="confirmationModal{{ object.pk }}">
                   <img src="{% static 'images/icons/icon-remove-element.svg' %}"
                        alt=""
-                       width="24px"
                        height="24px"
                        class="cursor-pointer" />
-                </a>
+                </button>
               </td>
+              {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão da disciplina" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="academics:subject_delete" %}
             </tr>
           {% endfor %}
         </tbody>

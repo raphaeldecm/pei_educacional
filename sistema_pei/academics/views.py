@@ -284,14 +284,19 @@ class RemoveStudentFromSubjectView(View):
         return redirect(f"/subjects/edit/{subject.id}")
 
 
-class DeleteSubjectView(View):
-    def get(self, request, subject_id):
-        subject = get_object_or_404(models.Subject, id=subject_id)
-        try:
-            subject.delete()
-            return redirect("courses")
-        except ProtectedError:
-            return redirect(f"/subjects/edit/{subject.id}?error=protected")
+class SubjectDeleteView(
+    LoginRequiredMixin,
+    ProtectedErrorMessageMixin,
+    SuccessMessageMixin,
+    generic.DeleteView,
+):
+    model = models.Subject
+    success_url = reverse_lazy("academics:subject_list")
+    success_message = _("A disciplina foi excluída com sucesso.")
+    protected_warning_message = _(
+        "Não é possível excluir a disciplina, pois ele possui"
+        "uma ou mais ofertas associadas.",
+    )
 
 
 class SubjectsPageView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.ListView):
