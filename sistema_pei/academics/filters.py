@@ -73,6 +73,12 @@ class SubjectFilter(django_filters.FilterSet):
         label="Search",
     )
 
+    courses = django_filters.ModelChoiceFilter(
+        queryset=models.Course.objects.all(),
+        field_name="courses",
+        label="Courses",
+    )
+
     class Meta:
         model = models.Subject
-        fields = ['name', 'subject_type']
+        fields = ['name', 'subject_type', 'courses']
