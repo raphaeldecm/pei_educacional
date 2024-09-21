@@ -1,8 +1,10 @@
 import re
 
 from allauth.account.models import EmailAddress
+from allauth.account.utils import send_email_confirmation
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Group
@@ -23,7 +25,6 @@ from django.utils.translation import gettext_lazy as _
 from django.views import generic
 from django.views.generic.edit import CreateView
 from django_filters.views import FilterView
-from django.contrib.auth import get_user_model
 
 from sistema_pei.core import constants
 from sistema_pei.core.mixins import TitleViewMixin
@@ -35,8 +36,8 @@ from sistema_pei.people.models import User
 from sistema_pei.users.models import Sector
 
 from .forms import TeacherForm
+from .forms import PeopleInviteForm
 from .forms import ViewStudentForm
-from .forms import UserInviteForm
 
 User = get_user_model()
 
@@ -57,67 +58,49 @@ def activate_account(request, uidb64, token):
         return redirect("/")
     return render(request, "403.html")
 
+def people_invite(email, group, sector, request):
+    # Verifica se o usuário já existe
+    user, created = User.objects.get_or_create(
+        email=email,
+        defaults={
+            "sector": sector,
+            "is_active": False,
+        })
+
+    # Se o usuário já existir, retorne
+    if not created:
+        return False, "Usuário já cadastrado."
+
+    # Associa o usuário ao grupo
+    user.groups.add(group)
+
+    # Envia email de confirmação usando allauth
+    send_email_confirmation(request, user)
+
+    return True
 
 class UsersPageView(generic.View):
-    template_name = "people/invite_people.html"
+    template_name = "people/people_invite.html"
 
     def get(self, request):
-        form = UserInviteForm()
+        form = PeopleInviteForm()
         return render(request, self.template_name, {"form": form})
 
-    def post(self, request, *args, **kwargs):
-        recipient = request.POST.get("recipient")
-        username = re.split(r"@", recipient)[0]
+    def post(self, request):
+        form = PeopleInviteForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data["email"]
+            group = form.cleaned_data["group"]
+            sector = form.cleaned_data["sector"]
 
-        sector = Sector.objects.get(id=request.POST.get("sector"))
-        group = Group.objects.get(id=request.POST.get("group"))
-        current_site = get_current_site(request)
+            success, message = people_invite(email, group, sector, request)
 
-        try:
-            user = User.objects.create_user(
-                email=recipient,
-                name=username,
-                is_active=False,
-                sector=sector,
-            )
-            group.user_set.add(user)
-            EmailAddress.objects.create(
-                user=user,
-                email=recipient,
-                verified=True,
-                primary=True,
-            )
-        except IntegrityError:
-            messages.error(request, "Usuário já cadastrado!")
-            return redirect("users")
+            if success:
+                messages.success(request, message)
+                return redirect("people:people_invite")
+            messages.error(request, message)
 
-        token = default_token_generator.make_token(user)
-        uid = urlsafe_base64_encode(force_bytes(user.pk))
-        activation_link = f"http://{current_site.domain}/activate/{uid}/{token}/"
-
-        context = {
-            "sector_name": sector.name,
-            "group_name": group.name,
-            "user": username,
-            "activation_link": activation_link,
-        }
-
-        html_message = render_to_string("layouts/email_template.html", context)
-
-        email = EmailMessage(
-            subject="PEIs - Convite",
-            body=html_message,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            to=[recipient],
-        )
-
-        email.content_subtype = "html"
-
-        try:
-            email.send()
-            messages.success(request, "Convite enviado!")
-        except Exception as e:
-            return HttpResponse(f"Erro ao enviar o e-mail: {e}")
+        return render(request, self.template_name, {"form": form})
 
 class TeacherListView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.ListView):
     model = Teacher

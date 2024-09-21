@@ -22,8 +22,8 @@ urlpatterns = [
         name="teacher_detail",
     ),
     path(
-        "users/",
+        "people_invite/",
         views.UsersPageView.as_view(),
-        name="users",
+        name="people_invite",
     ),
 ]

@@ -13,7 +13,7 @@ from .models import Teacher
 
 User = get_user_model()
 
-class UserInviteForm(forms.Form):
+class PeopleInviteForm(forms.Form):
     email = forms.EmailField(
         max_length=constants.MAX_CHAR_FIELD_NAME_LENGTH,
     )

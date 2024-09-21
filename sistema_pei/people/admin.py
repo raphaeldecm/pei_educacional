@@ -17,6 +17,11 @@ class TeacherAdmin(admin.ModelAdmin):
     readonly_fields = ["updated_by", "created_at"]
     list_display = ["name", "email", "campus"]
 
+class CoordinatorAdmin(admin.ModelAdmin):
+    search_fields = ["name"]
+    readonly_fields = ["updated_by", "created_at"]
+    list_display = ["name", "email", "campus"]
+
 
 class SpecificNecessitieAdmin(admin.ModelAdmin):
     search_fields = ["name"]
@@ -50,6 +55,7 @@ class NotificationAdmin(admin.ModelAdmin):
 
 admin.site.register(models.Campus, CampusAdmin)
 admin.site.register(models.Teacher, TeacherAdmin)
+admin.site.register(models.Coordinator, CoordinatorAdmin)
 admin.site.register(models.SpecificNecessitie, SpecificNecessitieAdmin)
 admin.site.register(models.Student, StudentAdmin)
 admin.site.register(models.StudentFile, StudentFileAdmin)

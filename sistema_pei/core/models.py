@@ -9,7 +9,7 @@ User = get_user_model()
 
 
 def get_sentinel_user():
-    return get_user_model().objects.get_or_create(username="deleted")[0]
+    return get_user_model().objects.get_or_create(email="deleted")[0]
 
 
 class UUIDModel(models.Model):
