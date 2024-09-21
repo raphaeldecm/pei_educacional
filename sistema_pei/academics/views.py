@@ -343,36 +343,3 @@ class EditSubjectPageView(
     def form_valid(self, form):
         form.instance.updated_by = self.request.user
         return super().form_valid(form)
-
-# class EditSubjectPageView(TemplateView):
-#     template_name = "academics/subjects/edit-subject.html"
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         subject_id = self.kwargs.get("subject_id")
-#         subject = get_object_or_404(models.Subject, id=subject_id)
-
-#         # Filter Selectors
-#         context["courses"] = models.Course.objects.all()
-
-#         # Protected delete error
-#         request = self.request
-#         if request.GET.get("error") == "protected":
-#             messages.error(
-#                 request,
-#                 "Erro - Você não pode remover matérias com ofertas associadas!",
-#             )
-
-#         context["subject"] = subject
-#         context["course_types"] = [course[0] for course in COURSE_TYPE]
-
-#         return context
-
-#     def post(self, request, *args, **kwargs):
-#         subject_id = self.kwargs.get("subject_id")
-#         subject = get_object_or_404(models.Subject, id=subject_id)
-#         form = SubjectForm(request.POST, instance=subject)
-#         if form.is_valid():
-#             form.save()
-#             return redirect("courses")
-#         return self.render_to_response(self.get_context_data(form=form))
