@@ -21,4 +21,9 @@ urlpatterns = [
         views.TeacherDetailView.as_view(),
         name="teacher_detail",
     ),
+    path(
+        "users/",
+        views.UsersPageView.as_view(),
+        name="users",
+    ),
 ]

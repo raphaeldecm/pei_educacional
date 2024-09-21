@@ -1,12 +1,32 @@
 from django import forms
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+
+from sistema_pei.core import constants
 
 from .models import Campus
 from .models import Student
 from .models import StudentFile
 from .models import Teacher
 
+User = get_user_model()
+
+class UserInviteForm(forms.Form):
+    email = forms.EmailField(
+        max_length=constants.MAX_CHAR_FIELD_NAME_LENGTH,
+    )
+    group = forms.ModelChoiceField(
+        queryset=Group.objects.all(),
+        label="Tipo de Usuário",
+        required=True,
+    )
+    sector = forms.ChoiceField(
+        choices=User.Sector.choices,
+        label="Setor",
+        required=True,
+    )
 
 class MultipleFileInput(forms.FileInput):
     allow_multiple_selected = True

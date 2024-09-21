@@ -26,7 +26,6 @@ from sistema_pei.core.views import (
     ProfilePageView,
     SubjectsPageView,
     UpdateStudentGradesView,
-    UsersPageView,
     EditHistoricPersonalDataView,
     EditPersonalDataView,
     UploadStudentFilesView,
@@ -46,11 +45,6 @@ urlpatterns = [
     path(
         "academics/",
         include("sistema_pei.academics.urls", namespace="academics"),
-    ),
-    path(
-        "users/",
-        login_required(UsersPageView.as_view()),
-        name="users",
     ),
     path(
         "profile/<int:student_id>",
