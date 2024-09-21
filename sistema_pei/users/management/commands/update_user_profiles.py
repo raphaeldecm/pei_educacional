@@ -1,5 +1,6 @@
 from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand
+from django.utils.translation import gettext_lazy as _
 
 from ...decorators import profile_groups
 
@@ -11,7 +12,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for group_name in profile_groups:
-            group, created = Group.objects.get_or_create(name=group_name)
+            group, created = Group.objects.get_or_create(name=_(group_name))
             if created:
                 self.stdout.write(f"# {group} created")
         self.stdout.write("Profile groups were updated successfully")
