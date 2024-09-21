@@ -154,9 +154,6 @@ class CreateOfferPageView(
         messages.error(self.request, "Erro ao criar oferta")
         return redirect(self.request.headers.get("referer", "/"))
 
-    def get_success_url(self):
-        return self.request.path
-
 
 class EditOfferPageView(
     SuccessMessageMixin,
@@ -171,11 +168,6 @@ class EditOfferPageView(
     template_name = "academics/offers/offer_form.html"
     context_object_name = "offer"
     success_url = reverse_lazy("academics:offer_list")
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["isEditing"] = True
-        return context
 
     def get_object(self, queryset=None):
         return get_object_or_404(models.Offer, id=self.kwargs["pk"])
@@ -304,77 +296,83 @@ class SubjectsPageView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.L
     title = _("Disciplinas")
     paginate_by = constants.DEFAULT_PAGE_SIZE
     filterset_class = filters.SubjectFilter
-    template_name = "academics/subjects/subjects_list.html"
+    template_name = "academics/subjects/subject_list.html"
     ordering = ["name"]
 
-class CreateSubjectPageView(TemplateView):
-    template_name = "academics/subjects/create-subject.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        course_id = self.kwargs.get("course_id")
-        course = get_object_or_404(models.Course, id=course_id)
-        context["current_course"] = course
+class CreateSubjectPageView(
+    SuccessMessageMixin,
+    LoginRequiredMixin,
+    TitleViewMixin,
+    CreateView,
+):
+    title = _("Criar Disciplina")
+    model = models.Subject
+    form_class = forms.SubjectForm
+    template_name = "academics/subjects/subject_form.html"
+    success_message = _("Disciplina criada com sucesso!")
+    success_url = reverse_lazy("academics:subject_list")
 
-        context["course_types"] = [course[0] for course in COURSE_TYPE]
-        context["courses"] = models.Course.objects.all()
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        form.instance.updated_by = self.request.user
 
-        request = self.request
-        if request.GET.get("alert") == "error":
-            messages.error(request, "Erro - Matéria já foi cadastrada!")
+        return super().form_valid(form)
 
-        return context
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        messages.error(self.request, "Erro ao criar oferta")
+        return redirect(self.request.headers.get("referer", "/"))
 
-    def post(self, request, *args, **kwargs):
-        form = SubjectForm(request.POST)
-        course_id = self.kwargs.get("course_id")
-        course = get_object_or_404(models.Course, id=course_id)
+class EditSubjectPageView(
+    SuccessMessageMixin,
+    LoginRequiredMixin,
+    TitleViewMixin,
+    UpdateView,
+):
+    title = _("Editar Disciplina")
+    model = models.Subject
+    form_class = forms.SubjectForm
+    success_message = _("A disciplina foi atualizada com sucesso.")
+    template_name = "academics/subjects/subject_form.html"
+    success_url = reverse_lazy("academics:subject_list")
 
-        if form.is_valid():
-            existing_subject = models.Subject.objects.filter(
-                name=form.cleaned_data["name"],
-            ).exists()
+    def get_object(self, queryset=None):
+        return get_object_or_404(models.Subject, id=self.kwargs["pk"])
 
-            if existing_subject:
-                messages.error(request, "Erro - Matéria já foi cadastrada!")
-                return redirect(f"{request.path}")
+    def form_valid(self, form):
+        form.instance.updated_by = self.request.user
+        return super().form_valid(form)
 
-            form.instance.course = course
-            form.instance.year = datetime.datetime.now().year
-            form.save()
-            return redirect(f"/subjects/{course.id}")
-        return self.render_to_response(self.get_context_data(form=form))
+# class EditSubjectPageView(TemplateView):
+#     template_name = "academics/subjects/edit-subject.html"
 
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         subject_id = self.kwargs.get("subject_id")
+#         subject = get_object_or_404(models.Subject, id=subject_id)
 
-class EditSubjectPageView(TemplateView):
-    template_name = "academics/subjects/edit-subject.html"
+#         # Filter Selectors
+#         context["courses"] = models.Course.objects.all()
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        subject_id = self.kwargs.get("subject_id")
-        subject = get_object_or_404(models.Subject, id=subject_id)
+#         # Protected delete error
+#         request = self.request
+#         if request.GET.get("error") == "protected":
+#             messages.error(
+#                 request,
+#                 "Erro - Você não pode remover matérias com ofertas associadas!",
+#             )
 
-        # Filter Selectors
-        context["courses"] = models.Course.objects.all()
+#         context["subject"] = subject
+#         context["course_types"] = [course[0] for course in COURSE_TYPE]
 
-        # Protected delete error
-        request = self.request
-        if request.GET.get("error") == "protected":
-            messages.error(
-                request,
-                "Erro - Você não pode remover matérias com ofertas associadas!",
-            )
+#         return context
 
-        context["subject"] = subject
-        context["course_types"] = [course[0] for course in COURSE_TYPE]
-
-        return context
-
-    def post(self, request, *args, **kwargs):
-        subject_id = self.kwargs.get("subject_id")
-        subject = get_object_or_404(models.Subject, id=subject_id)
-        form = SubjectForm(request.POST, instance=subject)
-        if form.is_valid():
-            form.save()
-            return redirect("courses")
-        return self.render_to_response(self.get_context_data(form=form))
+#     def post(self, request, *args, **kwargs):
+#         subject_id = self.kwargs.get("subject_id")
+#         subject = get_object_or_404(models.Subject, id=subject_id)
+#         form = SubjectForm(request.POST, instance=subject)
+#         if form.is_valid():
+#             form.save()
+#             return redirect("courses")
+#         return self.render_to_response(self.get_context_data(form=form))

@@ -83,7 +83,7 @@
           {% for object in object_list %}
             <tr>
               <td class="pl-[76px]">{{ object.name }}</td>
-              <td>{% for subject_course in object.courses.all %}<p>{{subject_course}}</p>{% endfor %}</td>
+              <td>{% for subject_course in object.courses.all %}{{subject_course.name}}{% if not forloop.last %},<br>{% else %}.{% endif %}{% endfor %}</td>
               <td>{{ object.get_subject_type_display }}</td>
               <td class="flex justify-center h-full gap-[30px] !mt-[32px] pr-[26px]">
                 {% comment %} <a href="{% url 'academics:subject_create' course.id %}?subject={{ subject.id }}"
