@@ -5,8 +5,9 @@
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
-  {% breadcrumb_item text="Cursos" icon="images/icons/icon-courses-green.svg" url="academics:course_list" %}
-  {% breadcrumb_item text="Criar Materia" icon="images/icons/icon-edit-green.svg" %}
+  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" url="academics:dashboard" %}
+  {% breadcrumb_item text="Disciplinas" icon="images/icons/icon-courses-green.svg" url="academics:subject_list" %}
+  {% breadcrumb_item text=title icon="images/icons/icon-edit-green.svg" %}
 {% endblock breadcrumb %}
 {% block content %}
   <div class="w-full">
