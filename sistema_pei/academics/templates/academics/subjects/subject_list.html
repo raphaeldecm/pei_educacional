@@ -86,14 +86,14 @@
               <td class="py-2">{% for subject_course in object.courses.all %}{{subject_course.name}}{% if not forloop.last %},<br>{% else %}.{% endif %}{% endfor %}</td>
               <td>{{ object.get_subject_type_display }}</td>
               <td class="flex justify-center h-full gap-[30px] !mt-[32px] pr-[26px]">
-                {% comment %} <a href="{% url 'academics:subject_create' course.id %}?subject={{ subject.id }}"
+                <a href="{% url 'academics:subject_detail' object.id %}"
                    title="Ofertas associadas">
                   <img src="{% static 'images/icons/icon-eye.svg' %}"
                        alt=""
                        width="24px"
                        height="24px"
                        class="cursor-pointer" />
-                </a> {% endcomment %}
+                </a>
                 <a href="{% url 'academics:subject_update' object.id %}">
                   <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                        alt=""
@@ -112,6 +112,10 @@
                 </button>
               </td>
               {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão da disciplina" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="academics:subject_delete" %}
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="7" class="text-center">Nenhum PEI cadastrado.</td>
             </tr>
           {% endfor %}
         </tbody>

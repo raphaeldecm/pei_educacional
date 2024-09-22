@@ -56,6 +56,11 @@ urlpatterns = [
         name="remove_student_from_subject",
     ),
     path(
+        "subjects/detail/<int:pk>/",
+        views.SubjectDetailView.as_view(),
+        name="subject_detail",
+    ),
+    path(
         "offers/list/",
         views.OffersPageView.as_view(),
         name="offer_list",

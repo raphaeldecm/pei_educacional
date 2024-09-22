@@ -139,6 +139,10 @@
               </td>
             </tr>
             {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão de oferta" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="academics:offer_delete" %}
+          {% empty %}
+            <tr>
+              <td colspan="7" class="text-center">Nenhum PEI cadastrado.</td>
+            </tr>
           {% endfor %}
         </tbody>
       </table>

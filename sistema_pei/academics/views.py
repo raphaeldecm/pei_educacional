@@ -286,7 +286,7 @@ class SubjectDeleteView(
     success_url = reverse_lazy("academics:subject_list")
     success_message = _("A disciplina foi excluída com sucesso.")
     protected_warning_message = _(
-        "Não é possível excluir a disciplina, pois ele possui"
+        "Não é possível excluir a disciplina, pois ele possui "
         "uma ou mais ofertas associadas.",
     )
 
@@ -343,3 +343,8 @@ class EditSubjectPageView(
     def form_valid(self, form):
         form.instance.updated_by = self.request.user
         return super().form_valid(form)
+
+class SubjectDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
+    model = models.Subject
+    title = _("Detalhes da disciplina")
+    template_name = "academics/subjects/subject_detail.html"
