@@ -81,7 +81,7 @@
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
           {% for object in object_list %}
-            <tr class="relative">
+            <tr>
               <td class="pl-[76px]">{{ object.name }}</td>
               <td class="py-2">
                 {% for subject_course in object.courses.all %}
