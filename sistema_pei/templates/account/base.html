@@ -53,12 +53,17 @@
         </div>
       </section>
       <section class="flex flex-col items-center gap-16 m-10 mini:min-w-[30vh] lg:min-w-[70vh]">
+        {% if messages %}
+          <div class="fixed p-4 top-20 flex flex-col gap-4">{% include "layouts/messages.html" %}</div>
+        {% endif %}
+        {% block alerts %}
+          <div class="fixed p-4 top-20 flex flex-col gap-4">{% include "layouts/alerts.html" %}</div>
+        {% endblock alerts %}
         {% block login_content %}
         {% endblock login_content %}
-        <h1 class="text-[32px] font-medium mb-[38px]">
-          {% block head_title %}
-          {% endblock head_title %}
-        </h1>
+
+        {% block head_title %}
+        {% endblock head_title %}
 
         {% block inner %}
         {% endblock inner %}

@@ -600,10 +600,8 @@ msgstr "Cadastro"
 
 #: sistema_pei/templates/account/signup.html:12
 #, python-format
-msgid ""
-"Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
-msgstr ""
-"já tem uma conta? Então, por favor, faça <a href=\"%(login_url)s\">login</a>."
+msgid "Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
+msgstr "Já tem uma conta? Então, por favor, faça <a href=\"%(login_url)s\">login</a>."
 
 #: sistema_pei/templates/account/signup_closed.html:6
 #: sistema_pei/templates/account/signup_closed.html:9

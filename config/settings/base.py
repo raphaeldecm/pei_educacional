@@ -359,8 +359,8 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"  # Values: "mandatory", "optional", "none"
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = False  # Evita login automático após a confirmação
 # Redireciona para a redefinição de senha após a confirmação do email
-ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = "/accounts/password/reset/"
-ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = "/accounts/password/reset/"
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = "/"
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = "/accounts/login/"
 # https://docs.allauth.org/en/latest/account/configuration.html
 ACCOUNT_ADAPTER = "sistema_pei.users.adapters.AccountAdapter"
 # https://docs.allauth.org/en/latest/account/forms.html
