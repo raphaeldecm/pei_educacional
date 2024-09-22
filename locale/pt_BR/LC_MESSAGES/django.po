@@ -2530,3 +2530,6 @@ msgstr "Professor"
 
 msgid "Responsible"
 msgstr "Responsável"
+
+msgid "Manage Users Access"
+msgstr "Gerenciar acesso de usuários"

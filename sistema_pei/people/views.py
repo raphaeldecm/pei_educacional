@@ -58,50 +58,6 @@ def activate_account(request, uidb64, token):
         return redirect("/")
     return render(request, "403.html")
 
-def people_invite(email, group, sector, request):
-    # Verifica se o usuário já existe
-    user, created = User.objects.get_or_create(
-        email=email,
-        defaults={
-            "sector": sector,
-            "is_active": False,
-        })
-
-    # Se o usuário já existir, retorne
-    if not created:
-        return False, "Usuário já cadastrado."
-
-    # Associa o usuário ao grupo
-    user.groups.add(group)
-
-    # Envia email de confirmação usando allauth
-    send_email_confirmation(request, user)
-
-    return True
-
-class UsersPageView(generic.View):
-    template_name = "people/people_invite.html"
-
-    def get(self, request):
-        form = PeopleInviteForm()
-        return render(request, self.template_name, {"form": form})
-
-    def post(self, request):
-        form = PeopleInviteForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data["email"]
-            group = form.cleaned_data["group"]
-            sector = form.cleaned_data["sector"]
-
-            success, message = people_invite(email, group, sector, request)
-
-            if success:
-                messages.success(request, message)
-                return redirect("people:people_invite")
-            messages.error(request, message)
-
-        return render(request, self.template_name, {"form": form})
-
 class TeacherListView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.ListView):
     model = Teacher
     title = _("Docentes")

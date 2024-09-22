@@ -3,11 +3,15 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView
+from django.views.generic import ListView
 from django.views.generic import RedirectView
 from django.views.generic import UpdateView
+from django_filters.views import FilterView
 
+from sistema_pei.core import constants
+from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.users.models import User
-
+from .filters import UserFilter
 
 class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
@@ -43,3 +47,21 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 
 
 user_redirect_view = UserRedirectView.as_view()
+
+
+class UsersManageAccess(
+    LoginRequiredMixin,
+    TitleViewMixin,
+    SuccessMessageMixin,
+    FilterView,
+    ListView,
+):
+    template_name = "users/users_manage_access.html"
+    model = User
+    context_object_name = "users"
+    title = _("Manage Users Access")
+    paginate_by = constants.DEFAULT_PAGE_SIZE
+    filterset_class = UserFilter
+    ordering = ["name"]
+    queryset = User.objects.all().exclude(is_superuser=True).exclude(name="")
+
