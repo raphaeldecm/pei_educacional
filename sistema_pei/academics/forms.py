@@ -14,6 +14,7 @@ class OfferForm(forms.ModelForm):
         model = models.Offer
         fields = ["status", "subject", "year", "teacher", "course", "semester"]
 
+
 class SubjectForm(forms.ModelForm):
     class Meta:
         model = models.Subject

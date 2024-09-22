@@ -10,7 +10,7 @@
 {% endblock breadcrumb %}
 {% block content %}
   <div class="w-full">
-    <h1 class="text-[32px] font-medium mb-[38px]">{{title}}</h1>
+    <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
     <form>
       <div class="mb-[26px] flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
         <img src="{% static 'images/icons/icon-search.svg' %}"
@@ -81,35 +81,46 @@
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
           {% for object in object_list %}
-            <tr>
+            <tr class="relative">
               <td class="pl-[76px]">{{ object.name }}</td>
-              <td class="py-2">{% for subject_course in object.courses.all %}{{subject_course.name}}{% if not forloop.last %},<br>{% else %}.{% endif %}{% endfor %}</td>
+              <td class="py-2">
+                {% for subject_course in object.courses.all %}
+                  {{ subject_course.name }}
+                  {% if not forloop.last %}
+                    ,
+                    <br />
+                  {% else %}
+                    .
+                  {% endif %}
+                {% endfor %}
+              </td>
               <td>{{ object.get_subject_type_display }}</td>
-              <td class="flex justify-center h-full gap-[30px] !mt-[32px] pr-[26px]">
-                <a href="{% url 'academics:subject_detail' object.id %}"
-                   title="Ofertas associadas">
-                  <img src="{% static 'images/icons/icon-eye.svg' %}"
-                       alt=""
-                       width="24px"
-                       height="24px"
-                       class="cursor-pointer" />
-                </a>
-                <a href="{% url 'academics:subject_update' object.id %}">
-                  <img src="{% static 'images/icons/icon-edit-element.svg' %}"
-                       alt=""
-                       width="24px"
-                       height="24px"
-                       class="cursor-pointer" />
-                </a>
-                <button
-                        type="button"
-                        id="openModal{{ object.pk }}"
-                        data-modal-id="confirmationModal{{ object.pk }}">
-                  <img src="{% static 'images/icons/icon-remove-element.svg' %}"
-                       alt=""
-                       height="24px"
-                       class="cursor-pointer" />
-                </button>
+              <td>
+                <span class="flex justify-center items-center h-full gap-[30px] pr-[26px]">
+                  <a href="{% url 'academics:subject_detail' object.id %}"
+                     title="Ofertas associadas">
+                    <img src="{% static 'images/icons/icon-eye.svg' %}"
+                         alt=""
+                         width="24px"
+                         height="24px"
+                         class="cursor-pointer" />
+                  </a>
+                  <a href="{% url 'academics:subject_update' object.id %}">
+                    <img src="{% static 'images/icons/icon-edit-element.svg' %}"
+                         alt=""
+                         width="24px"
+                         height="24px"
+                         class="cursor-pointer" />
+                  </a>
+                  <button type="button"
+                          id="openModal{{ object.pk }}"
+                          data-modal-id="confirmationModal{{ object.pk }}">
+                    <img src="{% static 'images/icons/icon-remove-element.svg' %}"
+                         alt=""
+                         height="24px"
+                         class="cursor-pointer" />
+                  </button>
+                </span>
               </td>
               {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão da disciplina" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="academics:subject_delete" %}
             </tr>

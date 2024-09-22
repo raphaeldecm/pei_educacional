@@ -66,6 +66,7 @@ class EnrollmentFilter(django_filters.FilterSet):
         model = models.Enrollment
         fields = []
 
+
 class SubjectFilter(django_filters.FilterSet):
     search = django_filters.CharFilter(
         field_name="name",
@@ -81,4 +82,4 @@ class SubjectFilter(django_filters.FilterSet):
 
     class Meta:
         model = models.Subject
-        fields = ['name', 'subject_type', 'courses']
+        fields = ["name", "subject_type", "courses"]

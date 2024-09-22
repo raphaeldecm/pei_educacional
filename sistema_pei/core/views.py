@@ -1,4 +1,3 @@
-import datetime
 import re
 
 from allauth.account.models import EmailAddress
@@ -13,7 +12,6 @@ from django.core.paginator import PageNotAnInteger
 from django.core.paginator import Paginator
 from django.db import IntegrityError
 from django.db.models import Count
-from django.db.models import ProtectedError
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -29,7 +27,6 @@ from sistema_pei.academics.models import Course
 from sistema_pei.academics.models import Enrollment
 from sistema_pei.academics.models import Subject
 from sistema_pei.core.forms import EnrollmentForm
-from sistema_pei.core.forms import SubjectForm
 from sistema_pei.educational_plan.models import Pei
 from sistema_pei.people.forms import StudentFilesForm
 from sistema_pei.people.forms import ViewEditDataStudentForm

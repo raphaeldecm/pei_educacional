@@ -1,5 +1,4 @@
 # Create your views here.
-import datetime
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -11,18 +10,14 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views import generic
-from django.views.generic.edit import CreateView, UpdateView
-from django.views.generic import TemplateView
-from django.db.models import Q
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.views.generic.edit import CreateView
+from django.views.generic.edit import UpdateView
 from django_filters.views import FilterView
 
 from sistema_pei.academics import filters
 from sistema_pei.academics import forms
 from sistema_pei.academics import models
-from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.core import constants
-from sistema_pei.core.forms import SubjectForm
 from sistema_pei.core.mixins import ProtectedErrorMessageMixin
 from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.educational_plan.models import Pei
@@ -291,7 +286,9 @@ class SubjectDeleteView(
     )
 
 
-class SubjectsPageView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.ListView):
+class SubjectsPageView(
+    LoginRequiredMixin, TitleViewMixin, FilterView, generic.ListView
+):
     model = models.Subject
     title = _("Disciplinas")
     paginate_by = constants.DEFAULT_PAGE_SIZE
@@ -324,6 +321,7 @@ class CreateSubjectPageView(
         messages.error(self.request, "Erro ao criar oferta")
         return redirect(self.request.headers.get("referer", "/"))
 
+
 class EditSubjectPageView(
     SuccessMessageMixin,
     LoginRequiredMixin,
@@ -343,6 +341,7 @@ class EditSubjectPageView(
     def form_valid(self, form):
         form.instance.updated_by = self.request.user
         return super().form_valid(form)
+
 
 class SubjectDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
     model = models.Subject
