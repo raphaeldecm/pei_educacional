@@ -76,6 +76,6 @@ class UserManagerUpdate(
     title = _("User Update")
     form_class = forms.UserUpdateForm
     success_url = reverse_lazy("users:list")
-    success_message = _("Information successfully updated")
+    success_message = _("Usuário atualizado com sucesso.")
 
 
