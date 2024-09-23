@@ -84,15 +84,16 @@
             <tr>
               <td class="pl-[76px]">{{ object.name }}</td>
               <td class="py-2">
-                {% for subject_course in object.courses.all %}
+                {% for subject_course in object.courses.all|slice:":3" %}
                   {{ subject_course.name }}
                   {% if not forloop.last %}
                     ,
                     <br />
-                  {% else %}
-                    .
                   {% endif %}
                 {% endfor %}
+                {% if object.courses.all|length > 3 %}
+                    ...
+                {% endif %}
               </td>
               <td>{{ object.get_subject_type_display }}</td>
               <td>
