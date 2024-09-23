@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% load static i18n %}
+{% load breadcrumb_item %}
+
+{% block breadcrumb %}
+  {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
+  {% breadcrumb_item text="Usuários" icon="images/icons/icon-users-green.svg" url="users:list" %}
+  {% breadcrumb_item text=title icon="images/icons/icon-user-green.svg" %}
+{% endblock breadcrumb %}
+
+{% block content %}
+<div class="w-full">
+  <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
+  <div class="flex justify-center items-center gap-6 p-2 [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px] border border-slate-300">
+    <div class="flex flex-col items-center m-4">
+      <img id="profileImage"
+           src="{% if object.photo %}{{ object.photo.url }}{% else %}{% static 'images/img/boy_user-profile.svg' %}{% endif %}"
+           alt="imagem de perfil"
+           class="h-64 w-64 rounded-full bg-transparent border object-cover text-transparent" />
+    </label>
+  </div>
+  <div class="flex flex-col flex-1 m-4">
+    <form id="editForm" method="POST" action="{% url 'users:update' object.pk %}">
+      {% csrf_token %}
+      <div class="flex justify-start items-center">
+        <p class="font-semibold text-[18px] m-4">Nome:</p>
+        {{ object.name }}
+      </div>
+
+      <div class="flex justify-start items-center">
+        <p class="font-semibold text-[18px] m-4">Email:</p>
+        {{ object.email }}
+      </div>
+      <div class="flex justify-start items-center">
+        <p class="font-semibold text-[18px] m-4">Setor:</p>
+        {{ object.sector }}
+        <span id="sectorText">{{ object.sector }}</span>
+        <select id="sectorSelect" name="sector" class="hidden">
+          {% for choice in object.Sector.choices %}
+            <option value="{{ choice.0 }}" {% if object.sector == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="flex justify-start items-center">
+        <p class="font-semibold text-[18px] m-4">Tipo de usuário:</p>
+        {% for group in object.groups.all %}
+          {% translate group.name %}
+        {% endfor %}
+      </div>
+      <div class="flex justify-start items-center">
+        <p class="font-semibold text-[18px] m-4">Data de ingresso no sistema:</p>
+        {{ object.date_joined }}
+      </div>
+      <div class="flex justify-start items-center">
+        <p class="font-semibold text-[18px] m-4">Situação:</p>
+        {% if object.is_active %}
+                    <img src="{% static 'images/icons/icon-user-green.svg' %}"
+                    alt="ativo"
+                    width="20px"
+                    height="17px" />
+                  {% else %}
+                  <img src="{% static 'images/icons/icon-user-orange.svg' %}"
+                  alt="inativo"
+                  width="20px"
+                  height="17px" />
+                  {% endif %}
+      </div>
+      <div class="flex justify-start items-center gap-4 mt-4">
+        <button id="editButton" type="button" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-400">Editar</button>
+        <button id="saveButton" type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-400">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% include "_save_back_edit_buttons.html" with link_to_back="users:list" edit_url="users:update" %}
+{% endblock content %}
+
+{% block inline_javascript %}
+<script>
+const editButton = document.getElementById('editButton');
+  const saveButton = document.getElementById('saveButton');
+  const sectorText = document.getElementById('sectorText');
+  const sectorSelect = document.getElementById('sectorSelect');
+  const groupText = document.getElementById('groupText');
+  const groupSelect = document.getElementById('groupSelect');
+
+  editButton.addEventListener('click', () => {
+    // Esconde os textos e mostra os selects
+    sectorText.classList.add('hidden');
+    sectorSelect.classList.remove('hidden');
+    groupText.classList.add('hidden');
+    groupSelect.classList.remove('hidden');
+
+    // Mostrar o botão "Salvar"
+    saveButton.classList.remove('hidden');
+    editButton.classList.add('hidden');
+  });
+  </script>
+{% endblock inline_javascript %}

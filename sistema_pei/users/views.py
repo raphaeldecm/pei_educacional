@@ -13,10 +13,11 @@ from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.users.models import User
 from .filters import UserFilter
 
-class UserDetailView(LoginRequiredMixin, DetailView):
+class UserDetailView(LoginRequiredMixin, TitleViewMixin, DetailView):
     model = User
     slug_field = "id"
     slug_url_kwarg = "id"
+    title = _("User Details")
 
 
 user_detail_view = UserDetailView.as_view()
@@ -24,13 +25,12 @@ user_detail_view = UserDetailView.as_view()
 
 class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = User
-    fields = ["name"]
+    template_name = "users/user_form.html"
+    fields = ["name", "email", "sector", "groups"]
     success_message = _("Information successfully updated")
 
     def get_success_url(self):
-        # for mypy to know that the user is authenticated
-        assert self.request.user.is_authenticated
-        return self.request.user.get_absolute_url()
+        return reverse("users:detail", kwargs={"pk": self.object.pk})
 
     def get_object(self):
         return self.request.user
@@ -56,7 +56,7 @@ class UsersManageAccess(
     FilterView,
     ListView,
 ):
-    template_name = "users/users_manage_access.html"
+    template_name = "users/user_list.html"
     model = User
     context_object_name = "users"
     title = _("Manage Users Access")

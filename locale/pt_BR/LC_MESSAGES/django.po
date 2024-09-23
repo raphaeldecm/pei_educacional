@@ -2533,3 +2533,6 @@ msgstr "Responsável"
 
 msgid "Manage Users Access"
 msgstr "Gerenciar acesso de usuários"
+
+msgid "User Details"
+msgstr "Detalhes do usuário"

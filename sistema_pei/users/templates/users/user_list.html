@@ -5,7 +5,7 @@
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
-  {% breadcrumb_item text="Usuários" icon="images/icons/icon-courses-green.svg" url="users:users_manage_access" %}
+  {% breadcrumb_item text="Usuários" icon="images/icons/icon-courses-green.svg" url="users:list" %}
 
 {% endblock breadcrumb %}
 {% block content %}
@@ -117,7 +117,7 @@
                   width="20px"
                   height="17px" />
                 {% else %}
-                <img src="{% static 'images/icons/icon-user-placeholder.svg' %}"
+                <img src="{% static 'images/icons/icon-user-orange.svg' %}"
                 alt=""
                 width="20px"
                 height="17px" />
@@ -126,7 +126,7 @@
               </td>
               <td class="flex justify-center items-center h-full gap-[30px]">
                 <a class="hover:bg-slate-100 p-2 rounded-full"
-                    href="{% url 'people:teacher_detail' object.pk %}">
+                    href="{% url 'users:detail' object.pk %}">
                   <img src="{% static 'images/icons/icon-eye.svg' %}"
                         alt=""
                         width="24px"
