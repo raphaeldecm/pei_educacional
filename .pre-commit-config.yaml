@@ -37,6 +37,7 @@ repos:
         args: [--fix, --exit-non-zero-on-fix]
         # Pre-commit breaks the graph rendering in this template
         exclude: 'templates/pages/profile_tabs/student_grades.html'
+        exclude: 'templates/pages/profile_tabs/student_grades.html'
       # Formatter
       - id: ruff-format
         exclude: 'templates/pages/profile_tabs/student_grades.html'
