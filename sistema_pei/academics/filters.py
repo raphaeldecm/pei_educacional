@@ -65,3 +65,21 @@ class EnrollmentFilter(django_filters.FilterSet):
     class Meta:
         model = models.Enrollment
         fields = []
+
+
+class SubjectFilter(django_filters.FilterSet):
+    search = django_filters.CharFilter(
+        field_name="name",
+        lookup_expr="icontains",
+        label="Search",
+    )
+
+    courses = django_filters.ModelChoiceFilter(
+        queryset=models.Course.objects.all(),
+        field_name="courses",
+        label="Courses",
+    )
+
+    class Meta:
+        model = models.Subject
+        fields = ["name", "subject_type", "courses"]

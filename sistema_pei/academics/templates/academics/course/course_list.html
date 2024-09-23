@@ -5,7 +5,7 @@
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
-  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-home-green.svg" url="academics:dashboard" %}
+  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" url="academics:dashboard" %}
   {% breadcrumb_item text="Cursos" icon="images/icons/icon-courses-green.svg" url="academics:course_list" %}
 {% endblock breadcrumb %}
 {% block content %}
@@ -114,6 +114,10 @@
                 </button>
               </td>
               {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão do Curso" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="academics:course_delete" %}
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="7" class="text-center">Nenhum PEI cadastrado.</td>
             </tr>
           {% endfor %}
         </tbody>

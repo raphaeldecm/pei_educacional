@@ -5,34 +5,40 @@
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
-  {% breadcrumb_item text="Cursos" icon="images/icons/icon-courses-green.svg" url="academics:courses" %}
-  {% breadcrumb_item text="Criar Materia" icon="images/icons/icon-edit-green.svg" %}
+  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" url="academics:dashboard" %}
+  {% breadcrumb_item text="Disciplinas" icon="images/icons/icon-courses-green.svg" url="academics:subject_list" %}
+  {% breadcrumb_item text=title icon="images/icons/icon-edit-green.svg" %}
 {% endblock breadcrumb %}
 {% block content %}
   <div class="w-full">
-    <h1 class="text-[32px] font-medium mb-[38px]">Criar Matéria</h1>
-    <form action="{% url 'create_subject' current_course.id %}" method="post">
+    <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
+    <form method="post">
       {% csrf_token %}
       <div class="flex-1">
         <label for="name" class="font-medium text-[18px]">Nome:</label>
         <input type="text"
                name="name"
-               placeholder="Digite o nome da matéria..."
+               placeholder="Digite o nome da disciplina ..."
                class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
-               value="{{ request.GET.name }}"
+               value="{{ form.name.value|default_if_none:'' }}"
                required />
       </div>
       <div class="mt-[32px]">
-        <label for="teacher" class="font-medium text-[18px]">Cursos:</label>
-        <div class="relative w-full cursor-pointer mt-[16px]">
-          <select name="courses"
-                  multiple
-                  class="outline-none text-[18px] rounded-lg h-[100px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
-            {% for course in courses %}
-              <option value="{{ course.id }}"
-                      {% if course in subject.courses.all %}selected{% endif %}>{{ course.name }}</option>
-            {% endfor %}
-          </select>
+        <label class="font-medium text-[18px]">Cursos:</label>
+        <div class="mt-[16px] border border-slate-300 rounded-lg py-2 px-3 max-h-[150px] overflow-y-auto gap-6">
+          {% for course in form.courses.field.queryset %}
+            <div class="flex flex-row-reverse justify-end items-center gap-1">
+              <input id={{ course.id }} type="checkbox" class="hidden peer" name="courses" value="{{ course.id }}" {% if course.id in form.courses.value %}checked{% endif %} />
+              {{ course.name }}
+              <label for={{ course.id }} class="flex items-center cursor-pointer w-[20px] h-[20px] rounded-[5px] peer-checked:[&_img]:block bg-slate-300">
+                <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}"
+                     width="20px"
+                     height="20px"
+                     class="hidden"
+                     alt="Checkmark" />
+              </label>
+            </div>
+          {% endfor %}
         </div>
       </div>
       <div class="mt-[32px]">
@@ -45,7 +51,8 @@
                      id="Semestral"
                      name="subject_type"
                      value="SEMESTER"
-                     class="hidden peer" />
+                     class="hidden peer"
+                     {% if form.subject_type.value == "SEMESTER" %}checked{% endif %} />
               <label for="Semestral"
                      class="flex items-center cursor-pointer w-[20px] h-[20px] rounded-[5px] peer-checked:[&_img]:block bg-slate-300">
                 <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}"
@@ -64,7 +71,8 @@
                      required
                      name="subject_type"
                      value="YEAR"
-                     class="hidden peer" />
+                     class="hidden peer"
+                     {% if form.subject_type.value == "YEAR" %}checked{% endif %} />
               <label for="Anual"
                      class="flex items-center cursor-pointer peer-checked:text-white border border-gray-300 w-[20px] h-[20px] rounded-[5px] peer-checked:border-none peer-checked:[&_img]:block bg-slate-300">
                 <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}"
@@ -78,9 +86,7 @@
           </div>
         </div>
       </div>
-      <button class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer mt-[56px]">
-        Cadastrar
-      </button>
+      {% include "_save_back_edit_buttons.html" with link_to_back="academics:subject_list" %}
     </form>
   </div>
 {% endblock content %}
