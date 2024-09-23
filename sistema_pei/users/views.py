@@ -13,6 +13,7 @@ from sistema_pei.core import constants
 from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.users.models import User
 from .filters import UserFilter
+from . import forms
 
 class UserDetailView(LoginRequiredMixin, TitleViewMixin, SuccessMessageMixin, DetailView):
     model = User
@@ -72,13 +73,9 @@ class UserManagerUpdate(
     UpdateView,
 ):
     model = User
-    fields = ["name", "email", "sector", "groups", "is_active"]
-    success_message = _("Information successfully updated")
     title = _("User Update")
-    form_class = forms.
+    form_class = forms.UserUpdateForm
+    success_url = reverse_lazy("users:list")
+    success_message = _("Information successfully updated")
 
-    def get_object(self):
-        return self.request.user
 
-    def get_success_url(self):
-        return reverse("users:detail", kwargs={"pk": self.object.pk})

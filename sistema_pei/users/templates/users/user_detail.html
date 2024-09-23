@@ -21,71 +21,84 @@
     </label>
   </div>
   <div class="flex flex-col flex-1 m-4">
-      {% csrf_token %}
-      <div class="flex justify-start items-center">
-        <p class="font-semibold text-[18px] m-4">Nome:</p>
-        {{ object.name }}
-      </div>
 
-      <div class="flex justify-start items-center">
-        <p class="font-semibold text-[18px] m-4">Email:</p>
-        {{ object.email }}
-      </div>
-      <div class="flex justify-start items-center border-b border-slate-300">
-        <p class="font-semibold text-[18px] m-4">Data de ingresso no sistema:</p>
-        {{ object.date_joined }}
-      </div>
+    <div class="flex-1 mb-4">
+      <label for="{{ object.name.id_for_label }}" class="font-medium text-[18px]">Nome:</label>
+      <input type="text"
+             name="{{ object.name }}"
+             id="{{ object.name.id_for_label }}"
+             class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+             value="{{ object.name }}"
+             readonly />
+    </div>
 
-      <div class="flex justify-start items-center">
-        <p class="font-semibold text-[18px] m-4">Setor:</p>
-        {{ object.sector }}
-      </div>
-      <div class="flex justify-start items-center">
-        <p class="font-semibold text-[18px] m-4">Tipo de usuário:</p>
-        {% for group in object.groups.all %}
-          {% translate group.name %}{% if not forloop.last %}, {% endif %}
-        {% endfor %}
-      </div>
+    <div class="flex-1 mb-4">
+      <label for="{{ object.email.id_for_label }}" class="font-medium text-[18px]">Email:</label>
+      <input type="text"
+             name="{{ object.email.name }}"
+             id="{{ object.email.id_for_label }}"
+             class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+             value="{{ object.email }}"
+             readonly />
+    </div>
+    <div class="flex-1 mb-4">
+      <label for="{{ object.date_joined.id_for_label }}" class="font-medium text-[18px]">Data de ingresso no sistema:</label>
+      <input type="text"
+             name="{{ object.date_joined.name }}"
+             id="{{ object.date_joined.id_for_label }}"
+             class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+             value="{{ object.date_joined }}"
+             readonly />
+    </div>
+    <div class="border-t border-slate-50"></div>
 
-      <div class="flex justify-start items-center">
-        <p class="font-semibold text-[18px] m-4">Situação:</p>
-        {% if object.is_active %}
-                    <img src="{% static 'images/icons/icon-user-green.svg' %}"
-                    alt="ativo"
+    <div class="flex">
+      <div class="flex-col">
+        <div class="flex-1 my-4">
+          <label for="{{ object.is_active.id_for_label }}" class="font-medium text-[18px]">Situação:</label>
+          <input type="text"
+             name="{{ object.is_active.name }}"
+             id="{{ object.is_active.id_for_label }}"
+             class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+             value="{% if object.is_active %}Ativo{% else %}Inativo{% endif %}"
+             readonly />
+        </div>
+        <div class="flex-1 my-4">
+          <label for="{{ form.sector.id_for_label }}" class="font-medium text-[18px]">Setor:</label>
+          <input type="text"
+             name="{{ object.sector.name }}"
+             id="{{ object.sector.id_for_label }}"
+             class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+             value="{{ object.sector }}"
+             readonly />
+        </div>
+
+      </div>
+      <div class="flex-1 ml-6 mt-4">
+        <label for="{{ object.groups.id_for_label }}" class="font-medium text-[18px]">Tipo de usuário:</label>
+        <div class="mt-[16px] border border-slate-300 rounded-lg py-2 px-3 max-h-[150px] overflow-y-auto gap-6">
+          {% for group in object.groups.all %}
+            <div class="flex flex-row-reverse justify-end items-center gap-1">
+              <input id="{{ group.id }}"
+                    type="checkbox"
+                    class="hidden peer"
+                    name="{{ object.groups.name }}"
+                    value="{{ group.id }}"
+                    checked />
+                    {{ group.name }}
+              <label for="{{ group.id }}" class="flex items-center cursor-pointer w-[20px] h-[20px] rounded-[5px] peer-checked:[&_img]:block bg-slate-300">
+                <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}"
                     width="20px"
-                    height="17px" />
-                  {% else %}
-                  <img src="{% static 'images/icons/icon-user-orange.svg' %}"
-                  alt="inativo"
-                  width="20px"
-                  height="17px" />
-                  {% endif %}
+                    height="20px"
+                    class="hidden"
+                    alt="Checkmark" />
+              </label>
+            </div>
+          {% endfor %}
+        </div>
       </div>
-    </form>
+    </div>
   </div>
 </div>
 {% include "_save_back_edit_buttons.html" with link_to_back="users:list" edit_url="users:manage_user" %}
 {% endblock content %}
-
-{% block inline_javascript %}
-<script>
-const editButton = document.getElementById('editButton');
-  const saveButton = document.getElementById('saveButton');
-  const sectorText = document.getElementById('sectorText');
-  const sectorSelect = document.getElementById('sectorSelect');
-  const groupText = document.getElementById('groupText');
-  const groupSelect = document.getElementById('groupSelect');
-
-  editButton.addEventListener('click', () => {
-    // Esconde os textos e mostra os selects
-    sectorText.classList.add('hidden');
-    sectorSelect.classList.remove('hidden');
-    groupText.classList.add('hidden');
-    groupSelect.classList.remove('hidden');
-
-    // Mostrar o botão "Salvar"
-    saveButton.classList.remove('hidden');
-    editButton.classList.add('hidden');
-  });
-  </script>
-{% endblock inline_javascript %}
