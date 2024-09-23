@@ -21,7 +21,6 @@
     </label>
   </div>
   <div class="flex flex-col flex-1 m-4">
-    <form id="editForm" method="POST" action="{% url 'users:update' object.pk %}">
       {% csrf_token %}
       <div class="flex justify-start items-center">
         <p class="font-semibold text-[18px] m-4">Nome:</p>
@@ -32,26 +31,22 @@
         <p class="font-semibold text-[18px] m-4">Email:</p>
         {{ object.email }}
       </div>
+      <div class="flex justify-start items-center border-b border-slate-300">
+        <p class="font-semibold text-[18px] m-4">Data de ingresso no sistema:</p>
+        {{ object.date_joined }}
+      </div>
+
       <div class="flex justify-start items-center">
         <p class="font-semibold text-[18px] m-4">Setor:</p>
         {{ object.sector }}
-        <span id="sectorText">{{ object.sector }}</span>
-        <select id="sectorSelect" name="sector" class="hidden">
-          {% for choice in object.Sector.choices %}
-            <option value="{{ choice.0 }}" {% if object.sector == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
-          {% endfor %}
-        </select>
       </div>
       <div class="flex justify-start items-center">
         <p class="font-semibold text-[18px] m-4">Tipo de usuário:</p>
         {% for group in object.groups.all %}
-          {% translate group.name %}
+          {% translate group.name %}{% if not forloop.last %}, {% endif %}
         {% endfor %}
       </div>
-      <div class="flex justify-start items-center">
-        <p class="font-semibold text-[18px] m-4">Data de ingresso no sistema:</p>
-        {{ object.date_joined }}
-      </div>
+
       <div class="flex justify-start items-center">
         <p class="font-semibold text-[18px] m-4">Situação:</p>
         {% if object.is_active %}
@@ -66,14 +61,10 @@
                   height="17px" />
                   {% endif %}
       </div>
-      <div class="flex justify-start items-center gap-4 mt-4">
-        <button id="editButton" type="button" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-400">Editar</button>
-        <button id="saveButton" type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-400">Salvar</button>
-      </div>
     </form>
   </div>
 </div>
-{% include "_save_back_edit_buttons.html" with link_to_back="users:list" edit_url="users:update" %}
+{% include "_save_back_edit_buttons.html" with link_to_back="users:list" edit_url="users:manage_user" %}
 {% endblock content %}
 
 {% block inline_javascript %}

@@ -7,13 +7,14 @@ from django.views.generic import ListView
 from django.views.generic import RedirectView
 from django.views.generic import UpdateView
 from django_filters.views import FilterView
+from django.urls import reverse_lazy
 
 from sistema_pei.core import constants
 from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.users.models import User
 from .filters import UserFilter
 
-class UserDetailView(LoginRequiredMixin, TitleViewMixin, DetailView):
+class UserDetailView(LoginRequiredMixin, TitleViewMixin, SuccessMessageMixin, DetailView):
     model = User
     slug_field = "id"
     slug_url_kwarg = "id"
@@ -25,7 +26,6 @@ user_detail_view = UserDetailView.as_view()
 
 class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = User
-    template_name = "users/user_form.html"
     fields = ["name", "email", "sector", "groups"]
     success_message = _("Information successfully updated")
 
@@ -65,3 +65,20 @@ class UsersManageAccess(
     ordering = ["name"]
     queryset = User.objects.all().exclude(is_superuser=True).exclude(name="")
 
+class UserManagerUpdate(
+    LoginRequiredMixin,
+    TitleViewMixin,
+    SuccessMessageMixin,
+    UpdateView,
+):
+    model = User
+    fields = ["name", "email", "sector", "groups", "is_active"]
+    success_message = _("Information successfully updated")
+    title = _("User Update")
+    form_class = forms.
+
+    def get_object(self):
+        return self.request.user
+
+    def get_success_url(self):
+        return reverse("users:detail", kwargs={"pk": self.object.pk})

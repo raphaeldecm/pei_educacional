@@ -10,7 +10,7 @@
 {% endblock breadcrumb %}
 {% block content %}
   <div class="w-full">
-    <h1 class="text-[32px] font-medium mb-[38px]">{% trans title %}</h1>
+    <h1 class="text-[32px] font-medium mb-[38px]">{% translate title %}</h1>
 
     <form method="get">
       <div class="flex gap-[8px]">
@@ -133,15 +133,15 @@
                         height="24px"
                         class="cursor-pointer" />
                 </a>
-                <a class="hover:bg-slate-100 p-2 rounded-full"
+                {% comment %} <a class="hover:bg-slate-100 p-2 rounded-full"
                     href="{% url 'people:teacher_update' object.pk %}">
                   <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                         alt=""
                         width="24px"
                         height="24px"
                         class="cursor-pointer" />
-                </a>
-                <button class="hover:bg-slate-100 p-2 rounded-full"
+                </a> {% endcomment %}
+                {% comment %} <button class="hover:bg-slate-100 p-2 rounded-full"
                         type="button"
                         id="openModal{{ object.pk }}"
                         data-modal-id="confirmationModal{{ object.pk }}">
@@ -150,7 +150,7 @@
                         width="24px"
                         height="24px"
                         class="cursor-pointer" />
-                </button>
+                </button> {% endcomment %}
               </td>
               {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão de Docente" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="people:teacher_delete" %}
             </tr>

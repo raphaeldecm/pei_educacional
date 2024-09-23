@@ -2536,3 +2536,6 @@ msgstr "Gerenciar acesso de usuários"
 
 msgid "User Details"
 msgstr "Detalhes do usuário"
+
+msgid "User Update"
+msgstr "Atualização de usuário"
