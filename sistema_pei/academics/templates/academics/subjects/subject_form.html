@@ -27,16 +27,16 @@
         <label class="font-medium text-[18px]">Cursos:</label>
         <div class="mt-[16px] border border-slate-300 rounded-lg py-2 px-3 max-h-[150px] overflow-y-auto gap-6">
           {% for course in form.courses.field.queryset %}
-          <div class="flex items-center gap-1">
-            <input id={{ course.id }} type="checkbox" class="hidden peer" name="courses" value="{{ course.id }}" {% if course.id in form.courses.value %}checked{% endif %} />
-            <label for={{ course.id }} class="flex items-center cursor-pointer w-[20px] h-[20px] rounded-[5px] peer-checked:[&_img]:block bg-slate-300">
-              <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}"
-                   width="20px"
-                   height="20px"
-                   class="hidden"
-                   alt="Checkmark" />
-            </label>
+            <div class="flex flex-row-reverse justify-end items-center gap-1">
+              <input id={{ course.id }} type="checkbox" class="hidden peer" name="courses" value="{{ course.id }}" {% if course.id in form.courses.value %}checked{% endif %} />
               {{ course.name }}
+              <label for={{ course.id }} class="flex items-center cursor-pointer w-[20px] h-[20px] rounded-[5px] peer-checked:[&_img]:block bg-slate-300">
+                <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}"
+                     width="20px"
+                     height="20px"
+                     class="hidden"
+                     alt="Checkmark" />
+              </label>
             </div>
           {% endfor %}
         </div>

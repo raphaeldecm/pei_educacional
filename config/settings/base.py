@@ -93,7 +93,7 @@ LOCAL_APPS = [
     "sistema_pei.academics",
     "sistema_pei.people",
     "sistema_pei.educational_plan",
-    "sistema_pei.suap_backend",
+    "suap_backend",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
