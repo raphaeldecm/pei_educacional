@@ -73,29 +73,48 @@
       <table class="table-auto w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px]">
         <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">
           <tr>
-            <th class="pl-[76px]">Nome da Disciplina</th>
-            <th>Cursos</th>
-            <th>Duração</th>
+            <th class="pl-[76px]">Perfil</th>
+            <th>Matrícula</th>
+            <th>Nome</th>
+            <th>Curso</th>
+            <th>Disciplina</th>
+            <th>Status</th>
             <th colspan="3" style="text-align: center" class='pr-[30px]'>Ações</th>
           </tr>
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
           {% for object in object_list %}
             <tr>
-              <td class="pl-[76px]">{{ object.name }}</td>
-              <td class="py-2">
-                {% for subject_course in object.courses.all|slice:":3" %}
-                  {{ subject_course.name }}
-                  {% if not forloop.last %}
-                    ,
-                    <br />
-                  {% endif %}
-                {% endfor %}
-                {% if object.courses.all|length > 3 %}
-                    ...
+              <td class="pl-[76px]">
+                <img src="{{ object.enrollment.student.image.url }}"
+                alt=""
+                class="rounded-full w-16 h-16 aspect-square" />
+              </td>
+              <td>
+                {{object.enrollment.student.registration}}
+              </td>
+              <td>{{ object.enrollment.student.name }}</td>
+              <td>{{ object.enrollment.student.course.name }}</td>
+              <td>{{ object.enrollment.offer.subject }}</td>
+              <td>
+                {% if object.status == 'NOT_START' %}
+                  <div class=" bg-red-300 text-red-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-red-700">
+                    PEI Não iniciado
+                  </div>
+                {% elif object.status == 'IN_PROGRESS' %}
+                  <div class=" bg-amber-300 text-amber-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-amber-700">
+                    PEI em andamento
+                  </div>
+                {% elif object.status == 'FEEDBACK' %}
+                  <div class=" bg-blue-300 text-blue-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-blue-700">
+                    PEI Preenchido
+                  </div>
+                {% elif object.status == 'COMPLETED' %}
+                  <div class=" bg-green-300 text-green-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-green-700">
+                    PEI Finalizado
+                  </div>
                 {% endif %}
               </td>
-              <td>{{ object.get_subject_type_display }}</td>
               <td>
                 <span class="flex justify-center items-center h-full gap-[30px] pr-[26px]">
                   <a href="{% url 'academics:subject_detail' object.id %}"
