@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% load static i18n %}
+{% load breadcrumb_item %}
+
+{% block breadcrumb %}
+  {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
+  {% breadcrumb_item text="Usuários" icon="images/icons/icon-users-green.svg" url="users:list" %}
+  {% breadcrumb_item text=title icon="images/icons/icon-user-green.svg" %}
+{% endblock breadcrumb %}
+{% block alerts %}
+  <div class="fixed p-4 top-20 flex flex-col gap-4">{% include "layouts/alerts.html" %}</div>
+{% endblock alerts %}
+{% block content %}
+  <div class="w-full">
+    <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
+    <div class="flex justify-center items-center gap-6 p-2 [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px] border border-slate-300">
+      <div class="flex flex-col items-center m-4">
+        <img id="profileImage"
+             src="{% if object.photo %}{{ object.photo.url }}{% else %}{% static 'images/img/boy_user-profile.svg' %}{% endif %}"
+             alt="imagem de perfil"
+             class="h-64 w-64 rounded-full bg-transparent border object-cover text-transparent" />
+      </label>
+    </div>
+    <div class="flex flex-col flex-1 m-4">
+      <form method="POST">
+        {% csrf_token %}
+        <div class="flex-1 mb-4">
+          <label for="{{ form.name.id_for_label }}" class="font-medium text-[18px]">Nome:</label>
+          <input type="text"
+                 name="{{ form.name.name }}"
+                 id="{{ form.name.id_for_label }}"
+                 class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+                 value="{{ form.name.value }}"
+                 readonly />
+        </div>
+        <div class="flex-1 mb-4">
+          <label for="{{ form.email.id_for_label }}" class="font-medium text-[18px]">Email:</label>
+          <input type="text"
+                 name="{{ form.email.name }}"
+                 id="{{ form.email.id_for_label }}"
+                 class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+                 value="{{ form.email.value }}"
+                 readonly />
+        </div>
+        <div class="flex-1 mb-4">
+          <label for="{{ form.date_joined.id_for_label }}"
+                 class="font-medium text-[18px]">Data de ingresso no sistema:</label>
+          <input type="text"
+                 name="{{ form.date_joined.name }}"
+                 id="{{ form.date_joined.id_for_label }}"
+                 class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+                 value="{{ form.date_joined.value|date:'d/m/Y H:i:s' }}"
+                 readonly />
+        </div>
+        <div class="border-t border-slate-50"></div>
+        <div class="flex">
+          <div class="flex-col">
+            <div class="flex-1 my-4">
+              <label for="{{ form.is_active.id_for_label }}"
+                     class="font-medium text-[18px]">Situação:</label>
+              <div class="relative w-full cursor-pointer mt-[16px]">
+                <img class="absolute top-[12px] right-[10px]"
+                     src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+                     width="24px"
+                     height="24px" />
+                <select name="{{ form.is_active.name }}"
+                        id="{{ form.is_active.id_for_label }}"
+                        class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full appearance-none bg-neutral-50">
+                  <option value="default" selected disabled>Selecione a situação ...</option>
+                  <option value="True" {% if form.is_active.value %}selected{% endif %}>Ativo</option>
+                  <option value="False" {% if not form.is_active.value %}selected{% endif %}>Inativo</option>
+                </select>
+              </div>
+            </div>
+            <div class="flex-1 my-4">
+              <label for="{{ form.sector.id_for_label }}" class="font-medium text-[18px]">Setor:</label>
+              <div class="relative w-full cursor-pointer mt-[16px]">
+                <img class="absolute top-[12px] right-[10px]"
+                     src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+                     width="24px"
+                     height="24px" />
+                <select name="{{ form.sector.name }}"
+                        id="{{ form.sector.id_for_label }}"
+                        class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full appearance-none bg-neutral-50">
+                  <option value="default" selected disabled>Selecione o setor ...</option>
+                  {% for key, value in form.sector.field.choices %}
+                    <option value="{{ key }}"
+                            {% if key == form.sector.value %}selected{% endif %}>{{ value }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="flex-1 ml-6 mt-4">
+            <label for="{{ form.groups.id_for_label }}" class="font-medium text-[18px]">Tipo de usuário:</label>
+            <div class="mt-[16px] border border-slate-300 rounded-lg py-2 px-3 max-h-[150px] overflow-y-auto gap-6">
+              {% for group in form.groups.field.queryset %}
+                <div class="flex flex-row-reverse justify-end items-center gap-1">
+                  <input id="{{ group.id }}"
+                         type="checkbox"
+                         class="hidden peer"
+                         name="{{ form.groups.name }}"
+                         value="{{ group.id }}"
+                         {% if group.id in form.groups.value %}checked{% endif %} />
+                  {{ group.name }}
+                  <label for="{{ group.id }}"
+                         class="flex items-center cursor-pointer w-[20px] h-[20px] rounded-[5px] peer-checked:[&_img]:block bg-slate-300">
+                    <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}"
+                         width="20px"
+                         height="20px"
+                         class="hidden"
+                         alt="Checkmark" />
+                  </label>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% include "_save_back_edit_buttons.html" with link_to_back="users:list" %}
+  </form>
+{% endblock content %}
