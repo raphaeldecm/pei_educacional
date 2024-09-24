@@ -19,7 +19,10 @@ from .filters import UserFilter
 
 
 class UserDetailView(
-    LoginRequiredMixin, TitleViewMixin, SuccessMessageMixin, DetailView
+    LoginRequiredMixin,
+    TitleViewMixin,
+    SuccessMessageMixin,
+    DetailView,
 ):
     model = User
     slug_field = "id"

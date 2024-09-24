@@ -293,7 +293,10 @@ class SubjectDeleteView(
 
 
 class SubjectsPageView(
-    LoginRequiredMixin, TitleViewMixin, FilterView, generic.ListView
+    LoginRequiredMixin,
+    TitleViewMixin,
+    FilterView,
+    generic.ListView,
 ):
     model = models.Subject
     title = _("Disciplinas")

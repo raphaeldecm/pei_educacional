@@ -1,6 +1,3 @@
-import datetime
-import re
-
 from django.contrib import messages
 from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
