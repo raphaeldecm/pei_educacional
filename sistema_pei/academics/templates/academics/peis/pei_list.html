@@ -6,7 +6,7 @@
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
   {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" url="academics:dashboard" %}
-  {% breadcrumb_item text="Disciplinas" icon="images/icons/icon-courses-green.svg" %}
+  {% breadcrumb_item text="PEIs" icon="images/icons/icon-pei.svg" %}
 {% endblock breadcrumb %}
 {% block content %}
   <div class="w-full">
@@ -66,7 +66,7 @@
     <div class="flex mt-[56px] gap-[16px]">
       <a href="{% url 'academics:subject_create' %}"
          class=" text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer">
-        Cadastrar Nova Disciplina
+        Cadastrar Novo PEI
       </a>
     </div>
     <div class="mt-[53px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg">
@@ -127,7 +127,7 @@
             </tr>
           {% empty %}
             <tr>
-              <td colspan="7" class="text-center">Nenhuma disciplina cadastrada.</td>
+              <td colspan="7" class="text-center">Nenhum PEI cadastrado.</td>
             </tr>
           {% endfor %}
         </tbody>

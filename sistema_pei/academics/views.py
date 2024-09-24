@@ -347,3 +347,13 @@ class SubjectDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
     model = models.Subject
     title = _("Detalhes da disciplina")
     template_name = "academics/subjects/subject_detail.html"
+
+
+class PeisPageView(
+    LoginRequiredMixin, TitleViewMixin, FilterView, generic.ListView
+):
+    model = Pei
+    title = _("PEIs")
+    paginate_by = constants.DEFAULT_PAGE_SIZE
+    filterset_class = filters.PeiFilter
+    template_name = "academics/peis/pei_list.html"

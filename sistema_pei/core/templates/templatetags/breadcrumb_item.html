@@ -7,7 +7,7 @@
        height="20px" />
 {% endif %}
 <a href="{% if url %}{{ url }}{% else %}#{% endif %}"
-   class="flex gap-[10px] font-medium text-[16px] text-green-500">
-  <img src="{% static icon %}" width="19px" height="19px" alt="" />
+   class="flex gap-[10px] font-medium text-[16px] text-green-500 items-center">
+   <img src="{% static icon %}" class="w-[19px] h-[19px]" alt="" />
   <p>{{ text }}</p>
 </a>

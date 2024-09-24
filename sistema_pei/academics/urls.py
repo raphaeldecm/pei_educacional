@@ -100,4 +100,9 @@ urlpatterns = [
         views.GetSubjectsByCourseView.as_view(),
         name="get_subjects_by_course",
     ),
+    path(
+        "peis/list/",
+        views.PeisPageView.as_view(),
+        name="pei_list",
+    ),
 ]
