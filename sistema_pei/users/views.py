@@ -12,6 +12,7 @@ from django.urls import reverse_lazy
 from sistema_pei.core import constants
 from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.users.models import User
+from sistema_pei.users.permissions import CoordinatorPermission
 from .filters import UserFilter
 from . import forms
 
@@ -52,6 +53,7 @@ user_redirect_view = UserRedirectView.as_view()
 
 class UsersManageAccess(
     LoginRequiredMixin,
+    CoordinatorPermission,
     TitleViewMixin,
     SuccessMessageMixin,
     FilterView,
@@ -68,6 +70,7 @@ class UsersManageAccess(
 
 class UserManagerUpdate(
     LoginRequiredMixin,
+    CoordinatorPermission,
     TitleViewMixin,
     SuccessMessageMixin,
     UpdateView,

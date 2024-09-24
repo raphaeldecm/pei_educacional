@@ -1,15 +1,15 @@
 {% extends "base.html" %}
-
+{% load static i18n %}
 {% block title %}
   Forbidden (403)
 {% endblock title %}
 {% block content %}
-  <h1>Forbidden (403)</h1>
+  <h1 class="text-[32px] font-medium mb-[38px]">{% translate "Forbidden" %} 403</h1>
   <p>
     {% if exception %}
       {{ exception }}
     {% else %}
-      You're not allowed to access this page.
+    {% translate "You're not allowed to access this page" %}
     {% endif %}
   </p>
 {% endblock content %}
