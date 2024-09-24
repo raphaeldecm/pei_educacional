@@ -5,7 +5,7 @@
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
-  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-home-green.svg" url="academics:dashboard" %}
+  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" url="academics:dashboard" %}
   {% breadcrumb_item text=title icon="images/icons/icon-courses-green.svg" %}
 {% endblock breadcrumb %}
 {% block content %}
@@ -23,8 +23,8 @@
                class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50"
                value="{{ request.GET.search }}" />
       </div>
-      <div class="flex gap-[8px]">
-        <div class="relative w-[362px] cursor-pointer">
+      <div class="flex gap-[8px] flex-wrap mb-[26px]">
+        <div class="relative w-full max-w-xs cursor-pointer">
           <img class="absolute top-[12px] right-[10px]"
                src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                width="24px"
@@ -46,7 +46,7 @@
                width="24px"
                height="24px" />
           <select name="teacher"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full max-w-xs text-slate-300 appearance-none bg-neutral-50">
             <option value="default" selected disabled>Selecione o professor...</option>
             {% for teacher in filter.form.teacher.field.queryset %}
               <option value="{{ teacher.id }}"
@@ -56,14 +56,14 @@
             {% endfor %}
           </select>
         </div>
-        <div class="mb-[26px] flex h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
+        <div class="flex h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2 w-full max-w-xs">
           <input type="number"
                  name="year"
                  placeholder="Digite o ano..."
                  class="placeholder:text-slate-300 outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50"
                  value="{{ filter.form.year.value }}" />
         </div>
-        <div class="relative cursor-pointer w-[400px]">
+        <div class="relative cursor-pointer w-full max-w-xs">
           <img class="absolute top-[12px] right-[10px]"
                src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                width="24px"
@@ -98,7 +98,7 @@
       <table class="table-auto w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px]">
         <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">
           <tr>
-            <th class="pl-[76px]">Nome da Matéria</th>
+            <th class="pl-[76px]">Nome da Disciplina</th>
             <th>Curso</th>
             <th>Professor</th>
             <th>Ano</th>
@@ -139,6 +139,10 @@
               </td>
             </tr>
             {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão de oferta" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="academics:offer_delete" %}
+          {% empty %}
+            <tr>
+              <td colspan="7" class="text-center">Nenhum PEI cadastrado.</td>
+            </tr>
           {% endfor %}
         </tbody>
       </table>

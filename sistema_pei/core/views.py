@@ -1,11 +1,11 @@
 import datetime
+import re
 
 from django.contrib import messages
 from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
 from django.core.paginator import Paginator
 from django.db.models import Count
-from django.db.models import ProtectedError
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
@@ -17,7 +17,6 @@ from sistema_pei.academics.models import Course
 from sistema_pei.academics.models import Enrollment
 from sistema_pei.academics.models import Subject
 from sistema_pei.core.forms import EnrollmentForm
-from sistema_pei.core.forms import SubjectForm
 from sistema_pei.educational_plan.models import Pei
 from sistema_pei.people.forms import StudentFilesForm
 from sistema_pei.people.forms import ViewEditDataStudentForm
@@ -356,132 +355,3 @@ class CoursesPageView(TemplateView):
         context["courses"] = all_courses
 
         return context
-
-
-class RemoveStudentFromSubjectView(View):
-    def get(self, request, subject_id, student_id):
-        subject = get_object_or_404(Subject, id=subject_id)
-        student = get_object_or_404(Student, id=student_id)
-        subject.students.remove(student)
-        return redirect(f"/subjects/edit/{subject.id}")
-
-
-class DeleteSubjectView(View):
-    def get(self, request, subject_id):
-        subject = get_object_or_404(Subject, id=subject_id)
-        try:
-            subject.delete()
-            return redirect("courses")
-        except ProtectedError:
-            return redirect(f"/subjects/edit/{subject.id}?error=protected")
-
-
-class SubjectsPageView(TemplateView):
-    template_name = "pages/subjects/subjects.html"
-    paginate_by = 10
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        course_id = self.kwargs.get("course_id")
-        course = get_object_or_404(Course, id=course_id)
-        course_subjects = course.subjects.all()
-        context["course"] = course
-
-        # Table
-        filters = {}
-        if "duration" in self.request.GET:
-            filters["subject_type"] = self.request.GET["duration"]
-
-        course_subjects = course_subjects.filter(**filters)
-
-        if "search" in self.request.GET:
-            course_subjects = course_subjects.filter(
-                Q(name__icontains=self.request.GET["search"]),
-            )
-
-        paginator = Paginator(course_subjects, self.paginate_by)
-        page_number = self.request.GET.get("page")
-
-        try:
-            all_course_subjects = paginator.page(page_number)
-        except PageNotAnInteger:
-            all_course_subjects = paginator.page(1)
-        except EmptyPage:
-            all_course_subjects = paginator.page(paginator.num_pages)
-
-        context["course_subjects"] = all_course_subjects
-
-        return context
-
-
-class CreateSubjectPageView(TemplateView):
-    template_name = "pages/subjects/create-subject.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        course_id = self.kwargs.get("course_id")
-        course = get_object_or_404(Course, id=course_id)
-        context["current_course"] = course
-
-        context["course_types"] = [course[0] for course in COURSE_TYPE]
-        context["courses"] = Course.objects.all()
-
-        request = self.request
-        if request.GET.get("alert") == "error":
-            messages.error(request, "Erro - Matéria já foi cadastrada!")
-
-        return context
-
-    def post(self, request, *args, **kwargs):
-        form = SubjectForm(request.POST)
-        course_id = self.kwargs.get("course_id")
-        course = get_object_or_404(Course, id=course_id)
-
-        if form.is_valid():
-            existing_subject = Subject.objects.filter(
-                name=form.cleaned_data["name"],
-            ).exists()
-
-            if existing_subject:
-                messages.error(request, "Erro - Matéria já foi cadastrada!")
-                return redirect(f"{request.path}")
-
-            form.instance.course = course
-            form.instance.year = datetime.datetime.now().year
-            form.save()
-            return redirect(f"/subjects/{course.id}")
-        return self.render_to_response(self.get_context_data(form=form))
-
-
-class EditSubjectPageView(TemplateView):
-    template_name = "pages/subjects/edit-subject.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        subject_id = self.kwargs.get("subject_id")
-        subject = get_object_or_404(Subject, id=subject_id)
-
-        # Filter Selectors
-        context["courses"] = Course.objects.all()
-
-        # Protected delete error
-        request = self.request
-        if request.GET.get("error") == "protected":
-            messages.error(
-                request,
-                "Erro - Você não pode remover matérias com ofertas associadas!",
-            )
-
-        context["subject"] = subject
-        context["course_types"] = [course[0] for course in COURSE_TYPE]
-
-        return context
-
-    def post(self, request, *args, **kwargs):
-        subject_id = self.kwargs.get("subject_id")
-        subject = get_object_or_404(Subject, id=subject_id)
-        form = SubjectForm(request.POST, instance=subject)
-        if form.is_valid():
-            form.save()
-            return redirect("courses")
-        return self.render_to_response(self.get_context_data(form=form))

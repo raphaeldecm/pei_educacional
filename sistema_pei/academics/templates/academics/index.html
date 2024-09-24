@@ -14,7 +14,7 @@
       <p class="text-lg">Componentes</p>
       <div class="flex flex-wrap items-center gap-8 py-6">
         {% include "_dashboard_card.html" with link_to="academics:course_list" path_icon="images/icons/icon-courses-square.svg" text="Cursos" count=courses_counter %}
-        {% include "_dashboard_card.html" with link_to="academics:course_list" path_icon="images/icons/icon-subject.svg" text="Disciplinas" count=subjects_counter %}
+        {% include "_dashboard_card.html" with link_to="academics:subject_list" path_icon="images/icons/icon-subject.svg" text="Disciplinas" count=subjects_counter %}
         {% include "_dashboard_card.html" with path_icon="images/icons/icon-offer.svg" text="Ofertas" link_to="academics:offer_list" count=offers_counter %}
         {% include "_dashboard_card.html" with link_to="academics:course_list" path_icon="images/icons/icon-pei.svg" text="PEIs" count=peis_counter %}
       </div>

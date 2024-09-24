@@ -155,9 +155,6 @@ class CreateOfferPageView(
         messages.error(self.request, "Erro ao criar oferta")
         return redirect(self.request.headers.get("referer", "/"))
 
-    def get_success_url(self):
-        return self.request.path
-
 
 class EditOfferPageView(
     SuccessMessageMixin,
@@ -172,11 +169,6 @@ class EditOfferPageView(
     template_name = "academics/offers/offer_form.html"
     context_object_name = "offer"
     success_url = reverse_lazy("academics:offer_list")
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["isEditing"] = True
-        return context
 
     def get_object(self, queryset=None):
         return get_object_or_404(models.Offer, id=self.kwargs["pk"])
@@ -275,3 +267,89 @@ class GetSubjectsByCourseView(LoginRequiredMixin, View):
         subjects = models.Subject.objects.filter(courses=pk)
         subjects_data = list(subjects.values("id", "name"))
         return JsonResponse({"subjects": subjects_data})
+
+
+class RemoveStudentFromSubjectView(View):
+    def get(self, request, subject_id, student_id):
+        subject = get_object_or_404(models.Subject, id=subject_id)
+        student = get_object_or_404(Student, id=student_id)
+        subject.students.remove(student)
+        return redirect(f"/subjects/edit/{subject.id}")
+
+
+class SubjectDeleteView(
+    LoginRequiredMixin,
+    ProtectedErrorMessageMixin,
+    SuccessMessageMixin,
+    generic.DeleteView,
+):
+    model = models.Subject
+    success_url = reverse_lazy("academics:subject_list")
+    success_message = _("A disciplina foi excluída com sucesso.")
+    protected_warning_message = _(
+        "Não é possível excluir a disciplina, pois ele possui "
+        "uma ou mais ofertas associadas.",
+    )
+
+
+class SubjectsPageView(
+    LoginRequiredMixin, TitleViewMixin, FilterView, generic.ListView
+):
+    model = models.Subject
+    title = _("Disciplinas")
+    paginate_by = constants.DEFAULT_PAGE_SIZE
+    filterset_class = filters.SubjectFilter
+    template_name = "academics/subjects/subject_list.html"
+    ordering = ["name"]
+
+
+class CreateSubjectPageView(
+    SuccessMessageMixin,
+    LoginRequiredMixin,
+    TitleViewMixin,
+    CreateView,
+):
+    title = _("Criar Disciplina")
+    model = models.Subject
+    form_class = forms.SubjectForm
+    template_name = "academics/subjects/subject_form.html"
+    success_message = _("Disciplina criada com sucesso!")
+    success_url = reverse_lazy("academics:subject_list")
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        form.instance.updated_by = self.request.user
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        messages.error(self.request, "Erro ao criar oferta")
+        return redirect(self.request.headers.get("referer", "/"))
+
+
+class EditSubjectPageView(
+    SuccessMessageMixin,
+    LoginRequiredMixin,
+    TitleViewMixin,
+    UpdateView,
+):
+    title = _("Editar Disciplina")
+    model = models.Subject
+    form_class = forms.SubjectForm
+    success_message = _("A disciplina foi atualizada com sucesso.")
+    template_name = "academics/subjects/subject_form.html"
+    success_url = reverse_lazy("academics:subject_list")
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(models.Subject, id=self.kwargs["pk"])
+
+    def form_valid(self, form):
+        form.instance.updated_by = self.request.user
+        return super().form_valid(form)
+
+
+class SubjectDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
+    model = models.Subject
+    title = _("Detalhes da disciplina")
+    template_name = "academics/subjects/subject_detail.html"
