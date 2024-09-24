@@ -1,22 +1,26 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic import RedirectView
 from django.views.generic import UpdateView
 from django_filters.views import FilterView
-from django.urls import reverse_lazy
 
 from sistema_pei.core import constants
 from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.users.models import User
 from sistema_pei.users.permissions import CoordinatorPermission
-from .filters import UserFilter
-from . import forms
 
-class UserDetailView(LoginRequiredMixin, TitleViewMixin, SuccessMessageMixin, DetailView):
+from . import forms
+from .filters import UserFilter
+
+
+class UserDetailView(
+    LoginRequiredMixin, TitleViewMixin, SuccessMessageMixin, DetailView
+):
     model = User
     slug_field = "id"
     slug_url_kwarg = "id"
@@ -68,6 +72,7 @@ class UsersManageAccess(
     ordering = ["name"]
     queryset = User.objects.all().exclude(is_superuser=True).exclude(name="")
 
+
 class UserManagerUpdate(
     LoginRequiredMixin,
     CoordinatorPermission,
@@ -80,5 +85,3 @@ class UserManagerUpdate(
     form_class = forms.UserUpdateForm
     success_url = reverse_lazy("users:list")
     success_message = _("Usuário atualizado com sucesso.")
-
-

@@ -50,6 +50,7 @@ class Person(BaseModel):
     def __str__(self):
         return self.name
 
+
 @profile
 class Coordinator(Person):
     campus = models.ForeignKey(
@@ -78,6 +79,7 @@ class Coordinator(Person):
     def __str__(self):
         return self.name
 
+
 @profile
 class Assistant(Person):
     campus = models.ForeignKey(
@@ -99,6 +101,7 @@ class Assistant(Person):
 
     def __str__(self):
         return self.name
+
 
 @profile
 class Teacher(Person):
@@ -127,6 +130,7 @@ class Teacher(Person):
 
     def __str__(self):
         return self.name
+
 
 @profile
 class Responsible(Person):

@@ -6,29 +6,26 @@
 {% block head_title %}
 {% endblock head_title %}
 {% block inner %}
-<section>
-  <h1 class="items-start font-sans font-bold text-slate-900 pb-4">
-    {% translate "Confirm E-mail Address" %}
-  </h1>
-
-  {% if confirmation %}
-    {% user_display confirmation.email_address.user as user_display %}
-    <p class="mb-9">
-      {% blocktranslate %}Please confirm the <a href="mailto:{{ email }}">{{ email }}</a> e-mail address.{% endblocktranslate %}
-    </p>
-    <form method="post"
-          action="{% url 'account_confirm_email' confirmation.key %}">
-      {% csrf_token %}
-      <button class="w-full btn btn-primary font-sans bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded transition duration-300 ease-in-out mt-8" type="submit">{% translate "Confirm" %}</button>
-
-    </form>
-  {% else %}
-    {% url 'account_email' as email_url %}
-    <p>
-      {% blocktranslate %}This e-mail confirmation link expired or is invalid. Please <a href="{{ email_url }}">issue a new e-mail confirmation request</a>.{% endblocktranslate %}
-    </p>
-  {% endif %}
-  <a href="{% url 'account_login' %}"
+  <section>
+    <h1 class="items-start font-sans font-bold text-slate-900 pb-4">{% translate "Confirm E-mail Address" %}</h1>
+    {% if confirmation %}
+      {% user_display confirmation.email_address.user as user_display %}
+      <p class="mb-9">
+        {% blocktranslate %}Please confirm the <a href="mailto:{{ email }}">{{ email }}</a> e-mail address.{% endblocktranslate %}
+      </p>
+      <form method="post"
+            action="{% url 'account_confirm_email' confirmation.key %}">
+        {% csrf_token %}
+        <button class="w-full btn btn-primary font-sans bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded transition duration-300 ease-in-out mt-8"
+                type="submit">{% translate "Confirm" %}</button>
+      </form>
+    {% else %}
+      {% url 'account_email' as email_url %}
+      <p>
+        {% blocktranslate %}This e-mail confirmation link expired or is invalid. Please <a href="{{ email_url }}">issue a new e-mail confirmation request</a>.{% endblocktranslate %}
+      </p>
+    {% endif %}
+    <a href="{% url 'account_login' %}"
        class="text-center font-sans block align-baseline font-light text-sm text-green-700 hover:underline focus:text-green-700 px-4 py-2 m-2 cursor-pointer">
       Voltar para tela de login
     </a>

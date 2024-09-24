@@ -17,6 +17,7 @@ class TeacherAdmin(admin.ModelAdmin):
     readonly_fields = ["updated_by", "created_at"]
     list_display = ["name", "email", "campus"]
 
+
 class CoordinatorAdmin(admin.ModelAdmin):
     search_fields = ["name"]
     readonly_fields = ["updated_by", "created_at"]

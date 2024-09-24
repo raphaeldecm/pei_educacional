@@ -1,26 +1,13 @@
-import re
-
-from allauth.account.models import EmailAddress
-from allauth.account.utils import send_email_confirmation
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import Group
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.sites.shortcuts import get_current_site
-from django.core.mail import EmailMessage
-from django.db import IntegrityError
-from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.shortcuts import render
-from django.template.loader import render_to_string
 from django.urls import reverse_lazy
-from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_decode
-from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import gettext_lazy as _
 from django.views import generic
 from django.views.generic.edit import CreateView
@@ -33,13 +20,12 @@ from sistema_pei.people.models import Student
 from sistema_pei.people.models import StudentFile
 from sistema_pei.people.models import Teacher
 from sistema_pei.people.models import User
-from sistema_pei.users.models import Sector
 
 from .forms import TeacherForm
-from .forms import PeopleInviteForm
 from .forms import ViewStudentForm
 
 User = get_user_model()
+
 
 def activate_account(request, uidb64, token):
     try:
@@ -57,6 +43,7 @@ def activate_account(request, uidb64, token):
 
         return redirect("/")
     return render(request, "403.html")
+
 
 class TeacherListView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.ListView):
     model = Teacher

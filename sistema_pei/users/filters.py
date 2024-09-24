@@ -4,6 +4,7 @@ from django.contrib.auth.models import Group
 
 User = get_user_model()
 
+
 class UserFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(lookup_expr="icontains", label="Nome")
     email = django_filters.CharFilter(lookup_expr="icontains", label="Email")
