@@ -48,6 +48,9 @@ class AcademicsIndexView(
         context["students_counter"] = Student.objects.count()
         context["teachers_counter"] = Teacher.objects.count()
 
+        print(self.request.user.groups.all())
+        print(self.request.user.email)
+
         return context
 
 

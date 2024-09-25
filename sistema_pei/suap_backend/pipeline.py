@@ -2,6 +2,8 @@ from django.contrib.auth.models import Group
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
+from sistema_pei.people.models import Campus, Teacher
+
 
 def verificar_tipo_usuario(strategy, details, backend, response, *args, **kwargs):
     """
@@ -18,13 +20,32 @@ def verificar_tipo_usuario(strategy, details, backend, response, *args, **kwargs
     return None
 
 
-def verifica_grupo_usuario(backend, user, response, *args, **kwargs):
+def record_teacher_data(strategy, details, backend, response, user, *args, **kwargs):
     """
-    Verifica se o usuário já pertence ao grupo 'Professor'.
-    Se não pertencer, adiciona o usuário ao grupo 'Professor'.
+    Record the teacher data in the database.
     """
 
-    group_name = "Professor"
+    teacher, created = Teacher.objects.get_or_create(
+        code=response.get("identificacao"),
+        defaults={
+            "name": response.get("nome"),
+            "email": response.get("email_preferencial"),
+            "campus": Campus.objects.get(abbreviation=response.get("campus")),
+            "code": response.get("identificacao"),
+            "photo": response.get("foto"),
+        },
+    )
+
+    return None
+
+
+def verifica_grupo_usuario(backend, user, response, *args, **kwargs):
+    """
+    Verifica se o usuário já pertence ao grupo 'Teacher'.
+    Se não pertencer, adiciona o usuário ao grupo 'Teacher'.
+    """
+
+    group_name = "Teacher"
     if user and not user.groups.filter(name=group_name).exists():
         professor_group, _ = Group.objects.get_or_create(name=group_name)
         user.groups.add(professor_group)
