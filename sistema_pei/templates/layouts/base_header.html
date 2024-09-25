@@ -1,4 +1,5 @@
 {% load static i18n %}
+{% load has_group %}
 
 <div class="flex justify-center items-center gap-[40px]">
   <button class="block md:hidden" onclick="handleToggleNav()">
@@ -22,6 +23,7 @@
           <span>Início</span>
         </a>
       </li>
+      {% if not user|has_group:"Teacher" %}
 
       <li>
         <a href="{% url 'academics:dashboard' %}"
@@ -40,6 +42,7 @@
           <span>Usuários</span>
         </a>
       </li>
+      {% endif %}
 
     </ul>
   </nav>
