@@ -62,7 +62,7 @@
       <img src="{% static 'images/icons/icon-notification.svg' %}" alt="" />
     </div>
     <div>
-      <a onclick="toggleDropdown"
+      <a onclick="toggleDropdown()"
          type="button"
          class="inline-flex w-full justify-center items-center gap-x-1.5 rounded-md py-2 text-sm font-semibold hover:cursor-pointer hover:bg-zinc-200/10"
          id="menu-button"
@@ -82,14 +82,24 @@
          aria-orientation="vertical"
          aria-labelledby="menu-button"
          tabindex="-1">
-      <div class="py-1 cursor-pointer" role="none">
+      <div class="flex items-center justify-between w-full px-4 py-2 text-left text-sm font-sans align-baseline font-light"
+         role="none">
+           <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+           <h1>{{ user.teacher.photo }}</h1>
+      </div>
+      <div class="flex items-center border-t border-slate-10 justify-between text-slate-900-700 w-full px-4 py-2 text-left text-sm cursor-pointer font-sans align-baseline font-light hover:text-green-700"
+      role="none">
         <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
         <a id="logoutButton"
-           class="text-slate-900-700 block w-full px-4 py-2 text-left text-sm cursor-pointer font-sans align-baseline font-light hover:text-green-700"
+           class=""
            role="menuitem"
            aria-haspopup="true"
            tabindex="-1"
            id="menu-item-0">{% trans "Sign Out" %}</a>
+        <img class="text-cyan-500"
+           src="{% static 'images/icons/icon_logout.svg' %}"
+           width="24px"
+           height="24px" />
       </div>
     </div>
   </div>

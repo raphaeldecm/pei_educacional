@@ -24,10 +24,12 @@ def record_teacher_data(strategy, details, backend, response, user, *args, **kwa
     """
     Record the teacher data in the database.
     """
+    #TODO: Check if the user is already a teacher
 
     teacher, created = Teacher.objects.get_or_create(
         code=response.get("identificacao"),
         defaults={
+            "user": user,
             "name": response.get("nome"),
             "email": response.get("email_preferencial"),
             "campus": Campus.objects.get(abbreviation=response.get("campus")),
