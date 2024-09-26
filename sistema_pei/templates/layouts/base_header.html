@@ -68,12 +68,20 @@
          id="menu-button"
          aria-expanded="true"
          aria-haspopup="true">
-        <div class="bg-green-500/50 py-2.5 px-3 rounded-full">
-          <i class="fas fa-solid fa-user fa-lg"></i>
+         {% if user.teacher.photo %}
+         <div class="">
+          <img src="{{ user.teacher.photo }}"
+              class="rounded-full"
+              alt="{{ user.teacher.full_name }}" />
         </div>
-        <div class="ml-2 text-zinc-50">
-          <i class="fas fa-solid fa-angle-down"></i>
-        </div>
+         {% else %}
+          <div class="bg-green-500/50 py-2.5 px-3 rounded-full">
+            <i class="fas fa-solid fa-user fa-lg"></i>
+          </div>
+          <div class="ml-2 text-zinc-50">
+            <i class="fas fa-solid fa-angle-down"></i>
+          </div>
+          {% endif %}
       </a>
     </div>
     <div id="dropdown"
@@ -82,10 +90,36 @@
          aria-orientation="vertical"
          aria-labelledby="menu-button"
          tabindex="-1">
-      <div class="flex items-center justify-between w-full px-4 py-2 text-left text-sm font-sans align-baseline font-light"
+      <div class="flex items-center justify-between w-full px-4 py-2 text-left text-sm font-sans align-baseline font-light cursor-pointer hover:text-green-700"
          role="none">
-           <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-           <h1>{{ user.teacher.photo }}</h1>
+           <a href="{% url 'users:detail' user.pk %}"
+           role="menuitem"
+           aria-haspopup="true"
+           tabindex="-1"
+           id="menu-item-0">
+           {% if user.teacher.photo %}
+           <div class="flex flex-col">
+             <img src="{{ user.teacher.photo }}"
+                 class="w-10 h-10 rounded-full"
+                 alt="{{ user.teacher.full_name }}" />
+
+            <span class="text-slate-900-700 font-semibold">{{ user.teacher.name }}</span>
+              <span class="text-slate-900-700 font-light">{{ user.email }}</span>
+           </div>
+            {% else %}
+            <div class="flex flex-col">
+              <div class="bg-green-500/50 w-10 h-10 py-2.5 px-3 rounded-full">
+                <i class="fas fa-solid fa-user fa-lg"></i>
+              </div>
+              <div class="ml-2 text-zinc-50">
+                <i class="fas fa-solid fa-angle-down"></i>
+              </div>
+              <span class="text-slate-900-700 font-semibold">{{ user.name }}</span>
+              <span class="text-slate-900-700 font-light">{{ user.email }}</span>
+
+            </div>
+            {% endif %}
+          </a>
       </div>
       <div class="flex items-center border-t border-slate-10 justify-between text-slate-900-700 w-full px-4 py-2 text-left text-sm cursor-pointer font-sans align-baseline font-light hover:text-green-700"
       role="none">
@@ -96,10 +130,10 @@
            aria-haspopup="true"
            tabindex="-1"
            id="menu-item-0">{% trans "Sign Out" %}</a>
-        <img class="text-cyan-500"
-           src="{% static 'images/icons/icon_logout.svg' %}"
+        <img src="{% static 'images/icons/icon_logout.svg' %}"
            width="24px"
-           height="24px" />
+           height="24px"
+           alt="" />
       </div>
     </div>
   </div>
