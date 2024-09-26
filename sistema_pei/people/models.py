@@ -9,8 +9,6 @@ from sistema_pei.core.models import BaseModel
 from sistema_pei.core.models import get_sentinel_user
 from sistema_pei.users.decorators import profile
 
-from . import utils as users_utils
-
 User = get_user_model()
 
 

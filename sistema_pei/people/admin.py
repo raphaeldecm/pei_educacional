@@ -19,10 +19,12 @@ class TeacherAdmin(admin.ModelAdmin):
     list_filter = ("campus",)
     readonly_fields = ("user",)
 
+    @admin.display(
+        description="Usuário Ativo",
+        boolean=True,
+    )
     def is_active(self, obj):
         return obj.user.is_active if obj.user else False
-    is_active.boolean = True
-    is_active.short_description = "Usuário Ativo"
 
     # Sobrescreve o método save_model para garantir que o Teacher seja salvo corretamente
     def save_model(self, request, obj, form, change):
@@ -31,9 +33,12 @@ class TeacherAdmin(admin.ModelAdmin):
 
     # Definir campos para exibir no formulário de edição do admin
     fieldsets = (
-        (None, {
-            "fields": ("name", "email", "code", "campus", "photo", "user")
-        }),
+        (
+            None,
+            {
+                "fields": ("name", "email", "code", "campus", "photo", "user"),
+            },
+        ),
     )
 
 
