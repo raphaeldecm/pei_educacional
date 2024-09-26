@@ -414,3 +414,17 @@ class PeiUpdateView(
         return reverse_lazy(
             "academics:offer_list",
         )
+
+class PeiDeleteView(
+    LoginRequiredMixin,
+    ProtectedErrorMessageMixin,
+    SuccessMessageMixin,
+    generic.DeleteView,
+):
+    model = Pei
+    success_url = reverse_lazy("academics:pei_list")
+    success_message = _("O pei foi removido com sucesso.")
+    protected_warning_message = _(
+        "Não é possível excluir o pei, pois ele possui "
+        "itens associados.",
+    )

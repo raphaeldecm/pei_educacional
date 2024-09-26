@@ -115,4 +115,9 @@ urlpatterns = [
         views.PeiUpdateView.as_view(),
         name="pei_update",
     ),
+    path(
+        "peis/delete/<int:pk>/",
+        views.PeiDeleteView.as_view(),
+        name="pei_delete",
+    ),
 ]
