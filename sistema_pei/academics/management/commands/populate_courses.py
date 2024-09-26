@@ -16,7 +16,7 @@ class Command(BaseCommand):
     help = "Popula o banco de dados com cursos"
 
     def handle(self, *args, **kwargs):
-        with open(COURSES_CSV, newline="", encoding="utf-8") as csvfile:
+        with open(COURSES_CSV, newline="", encoding="utf-8") as csvfile:  # noqa: PTH123
             reader = csv.DictReader(csvfile)
             for row in reader:
                 course_type = row["type"].strip()

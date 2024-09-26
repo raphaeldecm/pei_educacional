@@ -7,7 +7,8 @@ from ...decorators import profile_groups
 
 class Command(BaseCommand):
     help = """
-        Create django groups to represent user profiles, based in models using decorator 'profile'
+        Create django groups to represent user profiles,
+        based in models using decorator 'profile'
     """
 
     def handle(self, *args, **options):

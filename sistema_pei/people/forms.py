@@ -102,7 +102,8 @@ class TeacherForm(forms.ModelForm):
 
 class AdminStudentForm(forms.ModelForm):
     """
-    Formulário usado no admin do Django. Ele garante que a validação de "período atual" ocorra.
+    Formulário usado no admin do Django.
+    Ele garante que a validação de "período atual" ocorra.
     """
 
     class Meta:
@@ -120,8 +121,12 @@ class AdminStudentForm(forms.ModelForm):
         if course and reference_period:
             number_of_periods = course.number_of_periods
             if reference_period > number_of_periods:
+                msg = (
+                    f"O período de referência não pode ser maior que o número "
+                    f"máximo de períodos ({number_of_periods}) do curso selecionado."
+                )
                 raise ValidationError(
-                    f"O período de referência não pode ser maior que o número máximo de períodos ({number_of_periods}) do curso selecionado.",
+                    msg,
                 )
 
         return reference_period
@@ -154,8 +159,12 @@ class ViewStudentForm(AdminStudentForm):
 
         for file in files:
             if not any(file.name.lower().endswith(ext) for ext in allowed_extensions):
+                msg = (
+                    f"Arquivo {file.name} possuia uma extensão não suportada. "
+                    f"As extensões suportadas são: {', '.join(allowed_extensions)}"
+                )
                 raise ValidationError(
-                    f"Arquivo {file.name} possuia uma extensão não suportada. As extensões suportadas são: {', '.join(allowed_extensions)}",
+                    msg,
                 )
 
         return files
@@ -224,8 +233,12 @@ class StudentFilesForm(forms.ModelForm):
 
         for file in files:
             if not any(file.name.lower().endswith(ext) for ext in allowed_extensions):
+                msg = (
+                    f"Arquivo {file.name} possui uma extensão não suportada. "
+                    f"As extensões suportadas são: {', '.join(allowed_extensions)}"
+                )
                 raise ValidationError(
-                    f"Arquivo {file.name} possui uma extensão não suportada. As extensões suportadas são: {', '.join(allowed_extensions)}",
+                    msg,
                 )
 
         return files

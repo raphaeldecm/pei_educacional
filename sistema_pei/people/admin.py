@@ -26,9 +26,11 @@ class TeacherAdmin(admin.ModelAdmin):
     def is_active(self, obj):
         return obj.user.is_active if obj.user else False
 
-    # Sobrescreve o método save_model para garantir que o Teacher seja salvo corretamente
+    # Sobrescreve o método save_model para garantir
+    # que o Teacher seja salvo corretamente
     def save_model(self, request, obj, form, change):
-        # Chama o método save do modelo Teacher, que adiciona o grupo e sincroniza o email/nome
+        # Chama o método save do modelo Teacher,
+        # que adiciona o grupo e sincroniza o email/nome
         super().save_model(request, obj, form, change)
 
     # Definir campos para exibir no formulário de edição do admin

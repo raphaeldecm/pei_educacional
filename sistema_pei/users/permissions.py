@@ -28,6 +28,7 @@ class AssistentOrCoordinatorPermission(UserPassesTestMixin):
             ).exists()
         )
 
+
 class AnyGroupPermission(UserPassesTestMixin):
     """ "Mixin that checks if the user is a assistant or coordinator"""
 
