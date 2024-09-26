@@ -357,8 +357,10 @@ ACCOUNT_USERNAME_REQUIRED = False
 # https://docs.allauth.org/en/latest/account/configuration.html
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 # https://docs.allauth.org/en/latest/account/configuration.html
-ACCOUNT_EMAIL_VERIFICATION = "none"  # Values: "mandatory", "optional", "none"
-ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = False  # Evita login automático após a confirmação
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"  # Values: "mandatory", "optional", "none"
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True  # Evita login automático após a confirmação
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
+ACCOUNT_UNIQUE_EMAIL = True
 # Redireciona para a redefinição de senha após a confirmação do email
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = "/"
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = "/accounts/login/"
