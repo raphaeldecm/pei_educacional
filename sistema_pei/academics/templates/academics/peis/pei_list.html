@@ -64,7 +64,7 @@
       </div>
     </form>
     <div class="flex mt-[56px] gap-[16px]">
-      <a href="{% url 'academics:subject_create' %}"
+      <a href="{% url 'academics:pei_create' %}"
          class=" text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer">
         Cadastrar Novo PEI
       </a>
@@ -119,15 +119,14 @@
               </td>
               <td>
                 <span class="flex justify-center items-center h-full gap-[30px] pr-[26px]">
-                  <a href="{% url 'academics:subject_detail' object.id %}"
-                     title="Ofertas associadas">
+                  <a href="{% url 'academics:subject_detail' object.id %}">
                     <img src="{% static 'images/icons/icon-eye.svg' %}"
                          alt=""
                          width="24px"
                          height="24px"
                          class="cursor-pointer" />
                   </a>
-                  <a href="{% url 'academics:subject_update' object.id %}">
+                  <a href="{% url 'academics:pei_update' object.id %}">
                     <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                          alt=""
                          width="24px"

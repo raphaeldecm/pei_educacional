@@ -109,7 +109,7 @@ class CourseDeleteView(
     )
 
 
-class OffersPageView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.ListView):
+class OfferListView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.ListView):
     title = _("Ofertas")
     paginate_by = constants.DEFAULT_PAGE_SIZE
     filterset_class = filters.OfferFilter
@@ -125,7 +125,7 @@ class OffersPageView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.Lis
         return self.filterset_class(self.request.GET, queryset=queryset).qs
 
 
-class CreateOfferPageView(
+class OfferCreateView(
     SuccessMessageMixin,
     LoginRequiredMixin,
     TitleViewMixin,
@@ -150,7 +150,7 @@ class CreateOfferPageView(
         return redirect(self.request.headers.get("referer", "/"))
 
 
-class EditOfferPageView(
+class OfferUpdateView(
     SuccessMessageMixin,
     LoginRequiredMixin,
     TitleViewMixin,
@@ -177,7 +177,7 @@ class EditOfferPageView(
         )
 
 
-class OfferDetailsPageView(LoginRequiredMixin, FilterView, generic.ListView):
+class OfferDetailView(LoginRequiredMixin, FilterView, generic.ListView):
     paginate_by = 10
     filterset_class = filters.EnrollmentFilter
     template_name = "academics/offers/offer_detail.html"
@@ -202,7 +202,7 @@ class OfferDetailsPageView(LoginRequiredMixin, FilterView, generic.ListView):
         return context
 
 
-class DeleteOfferView(
+class OfferDeleteView(
     LoginRequiredMixin,
     ProtectedErrorMessageMixin,
     SuccessMessageMixin,
@@ -349,7 +349,7 @@ class SubjectDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
     template_name = "academics/subjects/subject_detail.html"
 
 
-class PeisPageView(
+class PeiListView(
     LoginRequiredMixin, TitleViewMixin, FilterView, generic.ListView
 ):
     model = Pei
@@ -357,3 +357,52 @@ class PeisPageView(
     paginate_by = constants.DEFAULT_PAGE_SIZE
     filterset_class = filters.PeiFilter
     template_name = "academics/peis/pei_list.html"
+
+class PeiCreateView(
+    SuccessMessageMixin,
+    LoginRequiredMixin,
+    TitleViewMixin,
+    CreateView,
+):
+    title = _("Cadastrar PEI")
+    model = Pei
+    form_class = forms.PeiForm
+    template_name = "academics/peis/pei_form.html"
+    success_message = _("PEI criado com sucesso!")
+    success_url = reverse_lazy("academics:pei_list")
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        form.instance.updated_by = self.request.user
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        messages.error(self.request, "Erro ao criar PEI")
+        return redirect(self.request.headers.get("referer", "/"))
+
+class PeiUpdateView(
+    SuccessMessageMixin,
+    LoginRequiredMixin,
+    TitleViewMixin,
+    UpdateView,
+):
+    title = _("Editar PEI")
+    model = Pei
+    form_class = forms.PeiForm
+    success_message = _("O PEI foi atualizado com sucesso.")
+    template_name = "academics/peis/pei_form.html"
+    success_url = reverse_lazy("academics:pei_list")
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(Pei, id=self.kwargs["pk"])
+
+    def form_valid(self, form):
+        form.instance.updated_by = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy(
+            "academics:offer_list",
+        )
