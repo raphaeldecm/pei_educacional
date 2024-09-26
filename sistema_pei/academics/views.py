@@ -415,6 +415,7 @@ class PeiUpdateView(
             "academics:offer_list",
         )
 
+
 class PeiDeleteView(
     LoginRequiredMixin,
     ProtectedErrorMessageMixin,
@@ -425,6 +426,5 @@ class PeiDeleteView(
     success_url = reverse_lazy("academics:pei_list")
     success_message = _("O pei foi removido com sucesso.")
     protected_warning_message = _(
-        "Não é possível excluir o pei, pois ele possui "
-        "itens associados.",
+        "Não é possível excluir o pei, pois ele possui " "itens associados.",
     )

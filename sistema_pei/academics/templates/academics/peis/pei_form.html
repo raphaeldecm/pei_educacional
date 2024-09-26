@@ -9,7 +9,6 @@
   {% breadcrumb_item text="PEIs" icon="images/icons/icon-pei.svg" url="academics:pei_list" %}
   {% breadcrumb_item text=title icon="images/icons/highlighter-green.svg" %}
 {% endblock breadcrumb %}
-
 {% block content %}
   <div class="w-full">
     <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
@@ -78,14 +77,186 @@
       </nav>
       <section>
         <div id="content-metodologia" class="tab-content">
-          
+          <div class="flex gap-6">
+            <div class="mb-4 col-span-2 flex-1">
+              <label for="{{ form.personal_history.id_for_label }}"
+                     class="font-sans font-medium text-lg text-ls block mb-4">
+                Objetivos da disciplina <span class="text-red-500">*</span>
+              </label>
+              <textarea id="{{ form.personal_history.id_for_label }}"
+                        name="{{ form.personal_history.name }}"
+                        placeholder="Escreva aqui!"
+                        required
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.personal_history.value|default_if_none:'' }}</textarea>
+              {% if form.personal_history.errors %}
+                <ul class="list-disc p-2">
+                  {% for error in form.personal_history.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+            <div class="mb-4 col-span-2 flex-1">
+              <label for="{{ form.personal_history.id_for_label }}"
+                     class="font-sans font-medium text-lg text-ls block mb-4">
+                Objetivos Adptados <span class="text-red-500">*</span>
+              </label>
+              <textarea id="{{ form.personal_history.id_for_label }}"
+                        name="{{ form.personal_history.name }}"
+                        placeholder="Escreva aqui!"
+                        required
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.personal_history.value|default_if_none:'' }}</textarea>
+              {% if form.personal_history.errors %}
+                <ul class="list-disc p-2">
+                  {% for error in form.personal_history.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+          </div>
+          <div class="flex gap-6">
+            <div class="mb-4 col-span-2 flex-1">
+              <label for="{{ form.personal_history.id_for_label }}"
+                     class="font-sans font-medium text-lg text-ls block mb-4">
+                Conteúdo programático <span class="text-red-500">*</span>
+              </label>
+              <textarea id="{{ form.personal_history.id_for_label }}"
+                        name="{{ form.personal_history.name }}"
+                        placeholder="Escreva aqui!"
+                        required
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.personal_history.value|default_if_none:'' }}</textarea>
+              {% if form.personal_history.errors %}
+                <ul class="list-disc p-2">
+                  {% for error in form.personal_history.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+            <div class="mb-4 col-span-2 flex-1">
+              <label for="{{ form.personal_history.id_for_label }}"
+                     class="font-sans font-medium text-lg text-ls block mb-4">
+                  Conteúdos Adaptados <span class="text-red-500">*</span>
+              </label>
+              <textarea id="{{ form.personal_history.id_for_label }}"
+                        name="{{ form.personal_history.name }}"
+                        placeholder="Escreva aqui!"
+                        required
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.personal_history.value|default_if_none:'' }}</textarea>
+              {% if form.personal_history.errors %}
+                <ul class="list-disc p-2">
+                  {% for error in form.personal_history.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+          </div>
+          <div class="flex gap-6">
+            <div class="mb-4 col-span-2 flex-1">
+              <label for="{{ form.personal_history.id_for_label }}"
+                     class="font-sans font-medium text-lg text-ls block mb-4">
+                     Metodologias <span class="text-red-500">*</span>
+              </label>
+              <textarea id="{{ form.personal_history.id_for_label }}"
+                        name="{{ form.personal_history.name }}"
+                        placeholder="Escreva aqui!"
+                        required
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.personal_history.value|default_if_none:'' }}</textarea>
+              {% if form.personal_history.errors %}
+                <ul class="list-disc p-2">
+                  {% for error in form.personal_history.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+            <div class="mb-4 col-span-2 flex-1">
+              <label for="{{ form.personal_history.id_for_label }}"
+                     class="font-sans font-medium text-lg text-ls block mb-4">
+                     Metodologias adaptadas <span class="text-red-500">*</span>
+              </label>
+              <textarea id="{{ form.personal_history.id_for_label }}"
+                        name="{{ form.personal_history.name }}"
+                        placeholder="Escreva aqui!"
+                        required
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.personal_history.value|default_if_none:'' }}</textarea>
+              {% if form.personal_history.errors %}
+                <ul class="list-disc p-2">
+                  {% for error in form.personal_history.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+          </div>
+          <div class="flex gap-6">
+            <div class="mb-4 col-span-2 flex-1">
+              <label for="{{ form.personal_history.id_for_label }}"
+                     class="font-sans font-medium text-lg text-ls block mb-4">
+                     Recursos didáticos <span class="text-red-500">*</span>
+              </label>
+              <textarea id="{{ form.personal_history.id_for_label }}"
+                        name="{{ form.personal_history.name }}"
+                        placeholder="Escreva aqui!"
+                        required
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.personal_history.value|default_if_none:'' }}</textarea>
+              {% if form.personal_history.errors %}
+                <ul class="list-disc p-2">
+                  {% for error in form.personal_history.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+            <div class="mb-4 col-span-2 flex-1">
+              <label for="{{ form.personal_history.id_for_label }}"
+                     class="font-sans font-medium text-lg text-ls block mb-4">
+                     Recursos didáticos adaptados <span class="text-red-500">*</span>
+              </label>
+              <textarea id="{{ form.personal_history.id_for_label }}"
+                        name="{{ form.personal_history.name }}"
+                        placeholder="Escreva aqui!"
+                        required
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.personal_history.value|default_if_none:'' }}</textarea>
+              {% if form.personal_history.errors %}
+                <ul class="list-disc p-2">
+                  {% for error in form.personal_history.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+          </div>
+          <div class="flex gap-6">
+            <div class="mb-4 col-span-2 flex-1">
+              <label for="{{ form.personal_history.id_for_label }}"
+                     class="font-sans font-medium text-lg text-ls block mb-4">
+                     Avaliações <span class="text-red-500">*</span>
+              </label>
+              <textarea id="{{ form.personal_history.id_for_label }}"
+                        name="{{ form.personal_history.name }}"
+                        placeholder="Escreva aqui!"
+                        required
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.personal_history.value|default_if_none:'' }}</textarea>
+              {% if form.personal_history.errors %}
+                <ul class="list-disc p-2">
+                  {% for error in form.personal_history.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+            <div class="mb-4 col-span-2 flex-1">
+              <label for="{{ form.personal_history.id_for_label }}"
+                     class="font-sans font-medium text-lg text-ls block mb-4">
+                     Avaliações Adaptadas <span class="text-red-500">*</span>
+              </label>
+              <textarea id="{{ form.personal_history.id_for_label }}"
+                        name="{{ form.personal_history.name }}"
+                        placeholder="Escreva aqui!"
+                        required
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.personal_history.value|default_if_none:'' }}</textarea>
+              {% if form.personal_history.errors %}
+                <ul class="list-disc p-2">
+                  {% for error in form.personal_history.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+          </div>
+          <button class="text-[18px] py-[11px] w-full px-[44px] border border-slate-300 text-slate-500 rounded-lg font-medium cursor-pointer mt-6 hover:bg-green-500 hover:text-white transition-colors duration-300">
+            Salvar
+          </button>
         </div>
+
         <div id="content-parecer" class="tab-content hidden">Conteúdo de Parecer</div>
       </section>
     </form>
   </div>
 {% endblock content %}
-
 {% block inline_javascript %}
   <script>
     function showTab(tab) {
