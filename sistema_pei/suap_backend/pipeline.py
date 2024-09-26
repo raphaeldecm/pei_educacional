@@ -20,11 +20,16 @@ def verificar_tipo_usuario(strategy, details, backend, response, *args, **kwargs
     return None
 
 
-def record_teacher_data(strategy, details, backend, response, user, *args, **kwargs):
+def record_teacher_data(backend, user, response, *args, **kwargs):
     """
-    Record the teacher data in the database.
+    Verifica se o usuário já pertence ao grupo 'Teacher'.
+    Se não pertencer, adiciona o usuário ao grupo 'Teacher'.
     """
-    #TODO: Check if the user is already a teacher
+
+    group_name = "Teacher"
+    if user and not user.groups.filter(name=group_name).exists():
+        professor_group, _ = Group.objects.get_or_create(name=group_name)
+        user.groups.add(professor_group)
 
     teacher, created = Teacher.objects.get_or_create(
         code=response.get("identificacao"),
@@ -37,17 +42,9 @@ def record_teacher_data(strategy, details, backend, response, user, *args, **kwa
             "photo": response.get("foto"),
         },
     )
+    # Associar o User ao Teacher
+    if created or not teacher.user:
+        teacher.user = user
+        teacher.save()
 
     return None
-
-
-def verifica_grupo_usuario(backend, user, response, *args, **kwargs):
-    """
-    Verifica se o usuário já pertence ao grupo 'Teacher'.
-    Se não pertencer, adiciona o usuário ao grupo 'Teacher'.
-    """
-
-    group_name = "Teacher"
-    if user and not user.groups.filter(name=group_name).exists():
-        professor_group, _ = Group.objects.get_or_create(name=group_name)
-        user.groups.add(professor_group)

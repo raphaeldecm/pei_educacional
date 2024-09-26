@@ -146,16 +146,8 @@ class Teacher(Person):
     @transaction.atomic
     def save(self, **kwargs):
         if self.user:
-            try:
-                group = models.Group.objects.get(name="Teacher")
-            except models.Group.DoesNotExist:
-                pass
-            else:
-                self.user.groups.add(group)
-
-            self.user.email = self.email
-            self.user.name = self.name
-            self.user.save(update_fields=["email", "name"])
+            self.user.is_active = True
+            self.user.save(update_fields=["is_active"])
 
         super().save(**kwargs)
 

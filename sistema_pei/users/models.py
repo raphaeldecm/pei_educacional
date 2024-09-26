@@ -40,6 +40,7 @@ class User(AbstractUser):
         verbose_name=_("Setor"),
         choices=Sector.choices,
         max_length=constants.SMALL_CHAR_FIELD_NAME_LENGTH,
+        blank=True,
     )
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
