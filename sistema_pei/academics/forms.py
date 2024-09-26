@@ -21,6 +21,7 @@ class SubjectForm(forms.ModelForm):
         model = models.Subject
         fields = ["name", "subject_type", "courses"]
 
+
 class PeiForm(forms.ModelForm):
     class Meta:
         model = Pei
@@ -37,4 +38,4 @@ class PeiForm(forms.ModelForm):
             "adapted_resources",
             "assessments",
             "adapted_assessments",
-            ]
+        ]

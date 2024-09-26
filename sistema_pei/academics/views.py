@@ -287,7 +287,10 @@ class SubjectDeleteView(
 
 
 class SubjectsPageView(
-    LoginRequiredMixin, TitleViewMixin, FilterView, generic.ListView
+    LoginRequiredMixin,
+    TitleViewMixin,
+    FilterView,
+    generic.ListView,
 ):
     model = models.Subject
     title = _("Disciplinas")
@@ -350,13 +353,17 @@ class SubjectDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
 
 
 class PeiListView(
-    LoginRequiredMixin, TitleViewMixin, FilterView, generic.ListView
+    LoginRequiredMixin,
+    TitleViewMixin,
+    FilterView,
+    generic.ListView,
 ):
     model = Pei
     title = _("PEIs")
     paginate_by = constants.DEFAULT_PAGE_SIZE
     filterset_class = filters.PeiFilter
     template_name = "academics/peis/pei_list.html"
+
 
 class PeiCreateView(
     SuccessMessageMixin,
@@ -381,6 +388,7 @@ class PeiCreateView(
         context = self.get_context_data(form=form)
         messages.error(self.request, "Erro ao criar PEI")
         return redirect(self.request.headers.get("referer", "/"))
+
 
 class PeiUpdateView(
     SuccessMessageMixin,

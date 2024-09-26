@@ -91,9 +91,7 @@
                     <br />
                   {% endif %}
                 {% endfor %}
-                {% if object.courses.all|length > 3 %}
-                    ...
-                {% endif %}
+                {% if object.courses.all|length > 3 %}...{% endif %}
               </td>
               <td>{{ object.get_subject_type_display }}</td>
               <td>

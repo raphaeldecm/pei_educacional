@@ -86,16 +86,14 @@
             <tr>
               <td class="pl-[76px]">
                 <img src="{{ object.enrollment.student.image.url }}"
-                alt=""
-                class="rounded-full w-16 h-16 aspect-square" />
+                     alt=""
+                     class="rounded-full w-16 h-16 aspect-square" />
               </td>
-              <td>
-                {{object.enrollment.student.registration}}
-              </td>
-              <td>{{ object.enrollment.student.name }} </td>
+              <td>{{ object.enrollment.student.registration }}</td>
+              <td>{{ object.enrollment.student.name }}</td>
               <td>
                 {{ object.enrollment.offer.subject }}
-                <br>
+                <br />
                 <span class="text-sm text-slate-600/50">{{ object.enrollment.student.course.name }}</span>
               </td>
               <td>

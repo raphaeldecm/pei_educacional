@@ -85,6 +85,7 @@ class SubjectFilter(django_filters.FilterSet):
         model = models.Subject
         fields = ["name", "subject_type", "courses"]
 
+
 class PeiFilter(django_filters.FilterSet):
     # search = django_filters.CharFilter(
     #     field_name="name",
