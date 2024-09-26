@@ -23,6 +23,7 @@ class User(AbstractUser):
     class Sector(models.TextChoices):
         NAPNE = "NAPNE", _("NAPNE")
         ETEP = "ETEP", _("ETEP")
+        DIAC = "DIAC", _("DIAC")
 
     """
     Default custom user model for sistema-pei.
