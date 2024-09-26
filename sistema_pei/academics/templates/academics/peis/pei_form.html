@@ -17,27 +17,27 @@
       <div class="flex gap-8">
         <div class="flex-1">
           <label for="{{ form.year.id_for_label }}" class="font-medium text-[18px]">Selecionar Inscrição:</label>
-          <select name="{{ form.semester.name }}"
-                  id="{{ form.semester.id_for_label }}"
+          <select name="{{ form.enrollment.name }}"
+                  id="{{ form.enrollment.id_for_label }}"
                   class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50 mt-[16px]">
             <option value="default" selected disabled>Selecione a inscrição...</option>
-            {% for key, value in form.semester.field.choices %}
+            {% for key, value in form.enrollment.field.choices %}
               <option value="{{ key }}"
-                      {% if key == form.semester.value %}selected{% endif %}>{{ value }}</option>
+                      {% if key == form.enrollment.value %}selected{% endif %}>{{ value }}</option>
             {% endfor %}
           </select>
           <p class="mt-2 text-slate-300">Inscrições podem ser criadas através da página de ofertas.</p>
         </div>
         <div class="flex-1">
-          <label for="{{ form.semester.id_for_label }}"
+          <label for="{{ form.status.id_for_label }}"
                  class="font-medium text-[18px]">Status:</label>
-          <select name="{{ form.semester.name }}"
-                  id="{{ form.semester.id_for_label }}"
+          <select name="{{ form.status.name }}"
+                  id="{{ form.status.id_for_label }}"
                   class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50 mt-[16px]">
             <option value="default" selected disabled>Selecione o status...</option>
-            {% for key, value in form.semester.field.choices %}
+            {% for key, value in form.status.field.choices %}
               <option value="{{ key }}"
-                      {% if key == form.semester.value %}selected{% endif %}>{{ value }}</option>
+                      {% if key == form.status.value %}selected{% endif %}>{{ value }}</option>
             {% endfor %}
           </select>
         </div>
@@ -79,170 +79,170 @@
         <div id="content-metodologia" class="tab-content">
           <div class="flex gap-6">
             <div class="mb-4 col-span-2 flex-1">
-              <label for="{{ form.personal_history.id_for_label }}"
+              <label for="{{ form.objective.id_for_label }}"
                      class="font-sans font-medium text-lg text-ls block mb-4">
                 Objetivos da disciplina <span class="text-red-500">*</span>
               </label>
-              <textarea id="{{ form.personal_history.id_for_label }}"
-                        name="{{ form.personal_history.name }}"
+              <textarea id="{{ form.objective.id_for_label }}"
+                        name="{{ form.objective.name }}"
                         placeholder="Escreva aqui!"
                         required
-                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.personal_history.value|default_if_none:'' }}</textarea>
-              {% if form.personal_history.errors %}
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.objective.value|default_if_none:'' }}</textarea>
+              {% if form.objective.errors %}
                 <ul class="list-disc p-2">
-                  {% for error in form.personal_history.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                  {% for error in form.objective.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
                 </ul>
               {% endif %}
             </div>
             <div class="mb-4 col-span-2 flex-1">
-              <label for="{{ form.personal_history.id_for_label }}"
+              <label for="{{ form.adapted_objective.id_for_label }}"
                      class="font-sans font-medium text-lg text-ls block mb-4">
                 Objetivos Adptados <span class="text-red-500">*</span>
               </label>
-              <textarea id="{{ form.personal_history.id_for_label }}"
-                        name="{{ form.personal_history.name }}"
+              <textarea id="{{ form.adapted_objective.id_for_label }}"
+                        name="{{ form.adapted_objective.name }}"
                         placeholder="Escreva aqui!"
                         required
-                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.personal_history.value|default_if_none:'' }}</textarea>
-              {% if form.personal_history.errors %}
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.adapted_objective.value|default_if_none:'' }}</textarea>
+              {% if form.adapted_objective.errors %}
                 <ul class="list-disc p-2">
-                  {% for error in form.personal_history.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                  {% for error in form.adapted_objective.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
                 </ul>
               {% endif %}
             </div>
           </div>
           <div class="flex gap-6">
             <div class="mb-4 col-span-2 flex-1">
-              <label for="{{ form.personal_history.id_for_label }}"
+              <label for="{{ form.content.id_for_label }}"
                      class="font-sans font-medium text-lg text-ls block mb-4">
                 Conteúdo programático <span class="text-red-500">*</span>
               </label>
-              <textarea id="{{ form.personal_history.id_for_label }}"
-                        name="{{ form.personal_history.name }}"
+              <textarea id="{{ form.content.id_for_label }}"
+                        name="{{ form.content.name }}"
                         placeholder="Escreva aqui!"
                         required
-                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.personal_history.value|default_if_none:'' }}</textarea>
-              {% if form.personal_history.errors %}
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.content.value|default_if_none:'' }}</textarea>
+              {% if form.content.errors %}
                 <ul class="list-disc p-2">
-                  {% for error in form.personal_history.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                  {% for error in form.content.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
                 </ul>
               {% endif %}
             </div>
             <div class="mb-4 col-span-2 flex-1">
-              <label for="{{ form.personal_history.id_for_label }}"
+              <label for="{{ form.adapted_content.id_for_label }}"
                      class="font-sans font-medium text-lg text-ls block mb-4">
                   Conteúdos Adaptados <span class="text-red-500">*</span>
               </label>
-              <textarea id="{{ form.personal_history.id_for_label }}"
-                        name="{{ form.personal_history.name }}"
+              <textarea id="{{ form.adapted_content.id_for_label }}"
+                        name="{{ form.adapted_content.name }}"
                         placeholder="Escreva aqui!"
                         required
-                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.personal_history.value|default_if_none:'' }}</textarea>
-              {% if form.personal_history.errors %}
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.adapted_content.value|default_if_none:'' }}</textarea>
+              {% if form.adapted_content.errors %}
                 <ul class="list-disc p-2">
-                  {% for error in form.personal_history.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                  {% for error in form.adapted_content.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
                 </ul>
               {% endif %}
             </div>
           </div>
           <div class="flex gap-6">
             <div class="mb-4 col-span-2 flex-1">
-              <label for="{{ form.personal_history.id_for_label }}"
+              <label for="{{ form.methodology.id_for_label }}"
                      class="font-sans font-medium text-lg text-ls block mb-4">
                      Metodologias <span class="text-red-500">*</span>
               </label>
-              <textarea id="{{ form.personal_history.id_for_label }}"
-                        name="{{ form.personal_history.name }}"
+              <textarea id="{{ form.methodology.id_for_label }}"
+                        name="{{ form.methodology.name }}"
                         placeholder="Escreva aqui!"
                         required
-                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.personal_history.value|default_if_none:'' }}</textarea>
-              {% if form.personal_history.errors %}
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.methodology.value|default_if_none:'' }}</textarea>
+              {% if form.methodology.errors %}
                 <ul class="list-disc p-2">
-                  {% for error in form.personal_history.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                  {% for error in form.methodology.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
                 </ul>
               {% endif %}
             </div>
             <div class="mb-4 col-span-2 flex-1">
-              <label for="{{ form.personal_history.id_for_label }}"
+              <label for="{{ form.adapted_methodology.id_for_label }}"
                      class="font-sans font-medium text-lg text-ls block mb-4">
                      Metodologias adaptadas <span class="text-red-500">*</span>
               </label>
-              <textarea id="{{ form.personal_history.id_for_label }}"
-                        name="{{ form.personal_history.name }}"
+              <textarea id="{{ form.adapted_methodology.id_for_label }}"
+                        name="{{ form.adapted_methodology.name }}"
                         placeholder="Escreva aqui!"
                         required
-                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.personal_history.value|default_if_none:'' }}</textarea>
-              {% if form.personal_history.errors %}
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.adapted_methodology.value|default_if_none:'' }}</textarea>
+              {% if form.adapted_methodology.errors %}
                 <ul class="list-disc p-2">
-                  {% for error in form.personal_history.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                  {% for error in form.adapted_methodology.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
                 </ul>
               {% endif %}
             </div>
           </div>
           <div class="flex gap-6">
             <div class="mb-4 col-span-2 flex-1">
-              <label for="{{ form.personal_history.id_for_label }}"
+              <label for="{{ form.resources.id_for_label }}"
                      class="font-sans font-medium text-lg text-ls block mb-4">
                      Recursos didáticos <span class="text-red-500">*</span>
               </label>
-              <textarea id="{{ form.personal_history.id_for_label }}"
-                        name="{{ form.personal_history.name }}"
+              <textarea id="{{ form.resources.id_for_label }}"
+                        name="{{ form.resources.name }}"
                         placeholder="Escreva aqui!"
                         required
-                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.personal_history.value|default_if_none:'' }}</textarea>
-              {% if form.personal_history.errors %}
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.resources.value|default_if_none:'' }}</textarea>
+              {% if form.resources.errors %}
                 <ul class="list-disc p-2">
-                  {% for error in form.personal_history.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                  {% for error in form.resources.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
                 </ul>
               {% endif %}
             </div>
             <div class="mb-4 col-span-2 flex-1">
-              <label for="{{ form.personal_history.id_for_label }}"
+              <label for="{{ form.adapted_resources.id_for_label }}"
                      class="font-sans font-medium text-lg text-ls block mb-4">
                      Recursos didáticos adaptados <span class="text-red-500">*</span>
               </label>
-              <textarea id="{{ form.personal_history.id_for_label }}"
-                        name="{{ form.personal_history.name }}"
+              <textarea id="{{ form.adapted_resources.id_for_label }}"
+                        name="{{ form.adapted_resources.name }}"
                         placeholder="Escreva aqui!"
                         required
-                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.personal_history.value|default_if_none:'' }}</textarea>
-              {% if form.personal_history.errors %}
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.adapted_resources.value|default_if_none:'' }}</textarea>
+              {% if form.adapted_resources.errors %}
                 <ul class="list-disc p-2">
-                  {% for error in form.personal_history.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                  {% for error in form.adapted_resources.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
                 </ul>
               {% endif %}
             </div>
           </div>
           <div class="flex gap-6">
             <div class="mb-4 col-span-2 flex-1">
-              <label for="{{ form.personal_history.id_for_label }}"
+              <label for="{{ form.assessments.id_for_label }}"
                      class="font-sans font-medium text-lg text-ls block mb-4">
                      Avaliações <span class="text-red-500">*</span>
               </label>
-              <textarea id="{{ form.personal_history.id_for_label }}"
-                        name="{{ form.personal_history.name }}"
+              <textarea id="{{ form.assessments.id_for_label }}"
+                        name="{{ form.assessments.name }}"
                         placeholder="Escreva aqui!"
                         required
-                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.personal_history.value|default_if_none:'' }}</textarea>
-              {% if form.personal_history.errors %}
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.assessments.value|default_if_none:'' }}</textarea>
+              {% if form.assessments.errors %}
                 <ul class="list-disc p-2">
-                  {% for error in form.personal_history.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                  {% for error in form.assessments.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
                 </ul>
               {% endif %}
             </div>
             <div class="mb-4 col-span-2 flex-1">
-              <label for="{{ form.personal_history.id_for_label }}"
+              <label for="{{ form.adapted_assessments.id_for_label }}"
                      class="font-sans font-medium text-lg text-ls block mb-4">
                      Avaliações Adaptadas <span class="text-red-500">*</span>
               </label>
-              <textarea id="{{ form.personal_history.id_for_label }}"
-                        name="{{ form.personal_history.name }}"
+              <textarea id="{{ form.adapted_assessments.id_for_label }}"
+                        name="{{ form.adapted_assessments.name }}"
                         placeholder="Escreva aqui!"
                         required
-                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.personal_history.value|default_if_none:'' }}</textarea>
-              {% if form.personal_history.errors %}
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.adapted_assessments.value|default_if_none:'' }}</textarea>
+              {% if form.adapted_assessments.errors %}
                 <ul class="list-disc p-2">
-                  {% for error in form.personal_history.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                  {% for error in form.adapted_assessments.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
                 </ul>
               {% endif %}
             </div>
