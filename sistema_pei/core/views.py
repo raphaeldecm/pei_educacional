@@ -21,9 +21,10 @@ from sistema_pei.people.forms import ViewEdithistoricStudentForm
 from sistema_pei.people.models import Student
 from sistema_pei.people.models import StudentFile
 from sistema_pei.people.models import Teacher
+from sistema_pei.users.permissions import AnyGroupPermission
 
 
-class HomePageView(TemplateView):
+class HomePageView(AnyGroupPermission, TemplateView):
     template_name = "pages/home.html"
     paginate_by = 10
 

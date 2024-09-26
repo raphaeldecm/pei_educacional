@@ -1,4 +1,5 @@
 {% load static i18n %}
+{% load has_group %}
 
 <div class="flex justify-center items-center gap-[40px]">
   <button class="block md:hidden" onclick="handleToggleNav()">
@@ -19,25 +20,27 @@
            class="flex gap-[10px] py-[10px] {% if request.resolver_match.url_name == 'home' %}text-green-500 border border-transparent border-b-green-500{% endif %}">
           <img src="{% if request.resolver_match.url_name == 'home' %}{% static 'images/icons/icon-home-green.svg' %}{% else %}{% static 'images/icons/icon-home.svg' %}{% endif %}"
                alt="" />
-          <span>Home</span>
+          <span>Início</span>
         </a>
       </li>
-      <li>
-        <a href="{% url 'academics:dashboard' %}"
-           class="flex gap-[10px] py-[10px] {% if 'academics' in request.resolver_match.app_names or 'people' in request.resolver_match.app_names %}text-green-500 border border-transparent border-b-green-500{% endif %}">
-          <img src="{% if 'academics' in request.resolver_match.app_names or 'people' in request.resolver_match.app_names %}{% static 'images/icons/icon-courses-green.svg' %}{% else %}{% static 'images/icons/icon-courses.svg' %}{% endif %}"
-               alt="" />
-          <span>Acadêmico</span>
-        </a>
-      </li>
-      <li>
-        <a href="{% url 'users:list' %}"
-           class="flex gap-[10px] py-[10px] {% if request.resolver_match.url_name == 'list' %}text-green-500 border border-transparent border-b-green-500{% endif %}">
-          <img src="{% if request.resolver_match.url_name == 'list' %}{% static 'images/icons/icon-users-green.svg' %}{% else %}{% static 'images/icons/icon-users.svg' %}{% endif %}"
-               alt="" />
-          <span>Usuários</span>
-        </a>
-      </li>
+      {% if not user|has_group:"Teacher" %}
+        <li>
+          <a href="{% url 'academics:dashboard' %}"
+             class="flex gap-[10px] py-[10px] {% if 'academics' in request.resolver_match.app_names or 'people' in request.resolver_match.app_names %}text-green-500 border border-transparent border-b-green-500{% endif %}">
+            <img src="{% if 'academics' in request.resolver_match.app_names or 'people' in request.resolver_match.app_names %}{% static 'images/icons/icon-courses-green.svg' %}{% else %}{% static 'images/icons/icon-courses.svg' %}{% endif %}"
+                 alt="" />
+            <span>Acadêmico</span>
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'users:list' %}"
+             class="flex gap-[10px] py-[10px] {% if request.resolver_match.url_name == 'list' %}text-green-500 border border-transparent border-b-green-500{% endif %}">
+            <img src="{% if request.resolver_match.url_name == 'list' %}{% static 'images/icons/icon-users-green.svg' %}{% else %}{% static 'images/icons/icon-users.svg' %}{% endif %}"
+                 alt="" />
+            <span>Usuários</span>
+          </a>
+        </li>
+      {% endif %}
     </ul>
   </nav>
 </div>
@@ -56,18 +59,26 @@
       <img src="{% static 'images/icons/icon-notification.svg' %}" alt="" />
     </div>
     <div>
-      <a onclick="toggleDropdown"
+      <a onclick="toggleDropdown()"
          type="button"
          class="inline-flex w-full justify-center items-center gap-x-1.5 rounded-md py-2 text-sm font-semibold hover:cursor-pointer hover:bg-zinc-200/10"
          id="menu-button"
          aria-expanded="true"
          aria-haspopup="true">
-        <div class="bg-green-500/50 py-2.5 px-3 rounded-full">
-          <i class="fas fa-solid fa-user fa-lg"></i>
-        </div>
-        <div class="ml-2 text-zinc-50">
-          <i class="fas fa-solid fa-angle-down"></i>
-        </div>
+        {% if user.teacher.photo %}
+          <div class="">
+            <img src="{{ user.teacher.photo }}"
+                 class="rounded-full"
+                 alt="{{ user.teacher.full_name }}" />
+          </div>
+        {% else %}
+          <div class="bg-green-500/50 py-2.5 px-3 rounded-full">
+            <i class="fas fa-solid fa-user fa-lg"></i>
+          </div>
+          <div class="ml-2 text-zinc-50">
+            <i class="fas fa-solid fa-angle-down"></i>
+          </div>
+        {% endif %}
       </a>
     </div>
     <div id="dropdown"
@@ -76,14 +87,49 @@
          aria-orientation="vertical"
          aria-labelledby="menu-button"
          tabindex="-1">
-      <div class="py-1 cursor-pointer" role="none">
-        <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-        <a id="logoutButton"
-           class="text-slate-900-700 block w-full px-4 py-2 text-left text-sm cursor-pointer font-sans align-baseline font-light hover:text-green-700"
+      <div class="flex items-center justify-between w-full px-4 py-2 text-left text-sm font-sans align-baseline font-light cursor-pointer hover:text-green-700"
+           role="none">
+        <a href="{% url 'users:detail' user.pk %}"
            role="menuitem"
            aria-haspopup="true"
            tabindex="-1"
-           id="menu-item-0">{% trans "Sign Out" %}</a>
+           id="menu-item-0">
+          {% if user.teacher.photo %}
+            <div class="flex flex-col">
+              <img src="{{ user.teacher.photo }}"
+                   class="w-10 h-10 rounded-full"
+                   alt="{{ user.teacher.full_name }}" />
+              <span class="text-slate-900-700 font-semibold">{{ user.teacher.name }}</span>
+              <span class="text-slate-900-700 font-light">{{ user.email }}</span>
+            </div>
+          {% else %}
+            <div class="flex flex-col">
+              <div class="bg-green-500/50 w-10 h-10 py-2.5 px-3 rounded-full">
+                <i class="fas fa-solid fa-user fa-lg"></i>
+              </div>
+              <div class="ml-2 text-zinc-50">
+                <i class="fas fa-solid fa-angle-down"></i>
+              </div>
+              <span class="text-slate-900-700 font-semibold">{{ user.name }}</span>
+              <span class="text-slate-900-700 font-light">{{ user.email }}</span>
+            </div>
+          {% endif %}
+        </a>
+      </div>
+      <div class="flex justify-between items-center border-t border-slate-10 text-slate-900-700 w-full px-4 py-2 text-left text-sm cursor-pointer font-sans align-baseline font-light hover:text-green-700"
+           role="none">
+        <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+        <a id="logoutButton"
+           class=""
+           role="menuitem"
+           aria-haspopup="true"
+           tabindex="-1"
+           id="menu-item-0">{% trans "Sign Out" %}
+          <img src="{% static 'images/icons/icon_logout.svg' %}"
+               width="24px"
+               height="24px"
+               alt="" />
+        </a>
       </div>
     </div>
   </div>

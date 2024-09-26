@@ -553,6 +553,9 @@ msgstr ""
 "Confirme se <a href=\"mailto:%(email)s\">%(email)s</a> é um endereço de e-"
 "mail do usuário %(user_display)s."
 
+msgid "Please confirm the %(email)s e-mail address."
+msgstr "Por favor, confirme o endereço de e-mail %(email)s."
+
 #: sistema_pei/templates/account/email_confirm.html:19
 msgid "Confirm"
 msgstr "Confirmar"
@@ -2540,5 +2543,8 @@ msgstr "Detalhes do usuário"
 msgid "User Update"
 msgstr "Atualização de usuário"
 
-msgid "You're not allowed to access this page"
-msgstr "Você não possui permissão para acessar esta página"
+msgid "You're not allowed to access this page."
+msgstr "Você não possui permissão para acessar esta página."
+
+msgid "If you think this is a mistake, please contact the administrator."
+msgstr "Se você acha que isso é um erro, entre em contato com o administrador."

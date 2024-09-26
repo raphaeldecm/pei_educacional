@@ -27,3 +27,20 @@ class AssistentOrCoordinatorPermission(UserPassesTestMixin):
                 name="Coordinator",
             ).exists()
         )
+
+
+class AnyGroupPermission(UserPassesTestMixin):
+    """ "Mixin that checks if the user is a assistant or coordinator"""
+
+    def test_func(self):
+        return (
+            self.request.user.groups.filter(
+                name="Assistant",
+            ).exists()
+            or self.request.user.groups.filter(
+                name="Coordinator",
+            ).exists()
+            or self.request.user.groups.filter(
+                name="Teacher",
+            ).exists()
+        )
