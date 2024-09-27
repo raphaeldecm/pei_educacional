@@ -12,6 +12,7 @@
       <h1 class="font-semibold text-[30px]">Olá 👋, {{ request.user.name }}!</h1>
       <p class="text-[18px]">Seja bem-vindo (a)</p>
     </div>
+    {% if "Teacher" in user.groups.values_list %}<h1>{{ user.groups.values_list }}</h1>{% endif %}
     <div class="flex gap-[28px] w-[calc(100vw-100px)] max-w-[1693px] overflow-x-auto">
       <a href="?&status=NOT_START">
         <div class="flex rounded-lg items-center justify-center cursor-pointer mt-10 gap-[16px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-red-500 to-red-700">

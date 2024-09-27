@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.tokens import default_token_generator
@@ -23,6 +24,8 @@ from sistema_pei.people.models import User
 from .forms import TeacherForm
 from .forms import ViewStudentForm
 
+User = get_user_model()
+
 
 def activate_account(request, uidb64, token):
     try:
@@ -39,8 +42,7 @@ def activate_account(request, uidb64, token):
         login(request, user)
 
         return redirect("/")
-    else:
-        return render(request, "403.html")
+    return render(request, "403.html")
 
 
 class TeacherListView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.ListView):

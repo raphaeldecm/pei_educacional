@@ -1,10 +1,13 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth import models
 from django.db import models
+from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 
 from sistema_pei.core import constants
 from sistema_pei.core.models import BaseModel
 from sistema_pei.core.models import get_sentinel_user
+from sistema_pei.users.decorators import profile
 
 User = get_user_model()
 
@@ -50,7 +53,68 @@ class Person(BaseModel):
         return self.name
 
 
+@profile
+class Coordinator(Person):
+    campus = models.ForeignKey(
+        Campus,
+        on_delete=models.SET_NULL,
+        verbose_name=_("Campus"),
+        null=True,
+        related_name="coordinators",
+    )
+    photo = models.ImageField(
+        upload_to="coordinators",
+        verbose_name=_("Foto"),
+        blank=True,
+    )
+    code = models.CharField(
+        verbose_name=_("Matrícula"),
+        max_length=constants.SMALL_CHAR_FIELD_NAME_LENGTH,
+        blank=True,
+        unique=True,
+    )
+
+    class Meta:
+        verbose_name = _("Coordenador")
+        verbose_name_plural = _("Coordenadores")
+
+    def __str__(self):
+        return self.name
+
+
+@profile
+class Assistant(Person):
+    campus = models.ForeignKey(
+        Campus,
+        on_delete=models.SET_NULL,
+        verbose_name=_("Campus"),
+        null=True,
+        related_name="assistants",
+    )
+    photo = models.ImageField(
+        upload_to="assistants",
+        verbose_name=_("Foto"),
+        blank=True,
+    )
+
+    class Meta:
+        verbose_name = _("Assistente")
+        verbose_name_plural = _("Assistentes")
+
+    def __str__(self):
+        return self.name
+
+
+@profile
 class Teacher(Person):
+    user = models.OneToOneField(
+        User,
+        verbose_name=_("Usuário"),
+        related_name="teacher",
+        null=True,
+        on_delete=models.SET_NULL,
+        editable=False,
+    )
     campus = models.ForeignKey(
         Campus,
         on_delete=models.SET_NULL,
@@ -58,10 +122,10 @@ class Teacher(Person):
         null=True,
         related_name="teachers",
     )
-    photo = models.ImageField(
-        upload_to="teachers",
+    photo = models.URLField(
         verbose_name=_("Foto"),
         blank=True,
+        max_length=constants.URL_LENGTH,
     )
     code = models.CharField(
         verbose_name=_("Matrícula"),
@@ -77,7 +141,23 @@ class Teacher(Person):
     def __str__(self):
         return self.name
 
+    @transaction.atomic
+    def save(self, **kwargs):
+        if self.user:
+            self.user.is_active = True
+            self.user.save(update_fields=["is_active"])
 
+        super().save(**kwargs)
+
+    @transaction.atomic
+    def delete(self, **kwargs):
+        if self.user_id:
+            self.user.is_active = False
+            self.user.save(update_fields=["is_active"])
+        return super().delete(**kwargs)
+
+
+@profile
 class Responsible(Person):
     class Meta:
         verbose_name = _("Responsável")

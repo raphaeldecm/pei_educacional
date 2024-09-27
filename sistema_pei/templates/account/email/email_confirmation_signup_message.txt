@@ -1,0 +1,13 @@
+{% extends "account/email/base_message.txt" %}
+{% load i18n %}
+
+{% block content %}{% autoescape off %}
+{% blocktrans %}Olá,
+
+Obrigado por se registrar no {{ current_site.name }}! Para completar seu cadastro, por favor clique no link abaixo para confirmar seu e-mail:
+
+{{ activate_url }}
+
+Este e-mail pode ser ignorado com segurança se você não solicitou uma redefinição de senha.{% endblocktrans %}
+
+{% endautoescape %}{% endblock %}

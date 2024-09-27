@@ -1,15 +1,21 @@
 {% extends "base.html" %}
 
+{% load static i18n %}
+
 {% block title %}
   Forbidden (403)
 {% endblock title %}
 {% block content %}
-  <h1>Forbidden (403)</h1>
+  <h1 class="text-[32px] font-medium mb-[38px]">{% translate "Forbidden" %} 403</h1>
   <p>
     {% if exception %}
       {{ exception }}
     {% else %}
-      You're not allowed to access this page.
+      {% translate "You're not allowed to access this page." %}
     {% endif %}
   </p>
+  <p class="mt-[20px]">{% translate "If you think this is a mistake, please contact the administrator." %}</p>
+  <a href="{% url 'home' %}"
+     class="btn btn-primary font-sans bg-green-500 hover:bg-green-700 text-white py-4 px-8 rounded-xl transition duration-300 ease-in-out mt-[40px]"
+     type="submit">Voltar</a>
 {% endblock content %}

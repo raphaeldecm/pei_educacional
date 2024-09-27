@@ -1,18 +1,33 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView
+from django.views.generic import ListView
 from django.views.generic import RedirectView
 from django.views.generic import UpdateView
+from django_filters.views import FilterView
 
+from sistema_pei.core import constants
+from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.users.models import User
+from sistema_pei.users.permissions import CoordinatorPermission
+
+from . import forms
+from .filters import UserFilter
 
 
-class UserDetailView(LoginRequiredMixin, DetailView):
+class UserDetailView(
+    LoginRequiredMixin,
+    TitleViewMixin,
+    SuccessMessageMixin,
+    DetailView,
+):
     model = User
     slug_field = "id"
     slug_url_kwarg = "id"
+    title = _("User Details")
 
 
 user_detail_view = UserDetailView.as_view()
@@ -20,13 +35,11 @@ user_detail_view = UserDetailView.as_view()
 
 class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = User
-    fields = ["name"]
+    fields = ["name", "email", "sector", "groups"]
     success_message = _("Information successfully updated")
 
     def get_success_url(self):
-        # for mypy to know that the user is authenticated
-        assert self.request.user.is_authenticated
-        return self.request.user.get_absolute_url()
+        return reverse("users:detail", kwargs={"pk": self.object.pk})
 
     def get_object(self):
         return self.request.user
@@ -43,3 +56,35 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 
 
 user_redirect_view = UserRedirectView.as_view()
+
+
+class UsersManageAccess(
+    LoginRequiredMixin,
+    CoordinatorPermission,
+    TitleViewMixin,
+    SuccessMessageMixin,
+    FilterView,
+    ListView,
+):
+    template_name = "users/user_list.html"
+    model = User
+    context_object_name = "users"
+    title = _("Manage Users Access")
+    paginate_by = constants.DEFAULT_PAGE_SIZE
+    filterset_class = UserFilter
+    ordering = ["name"]
+    queryset = User.objects.all().exclude(is_superuser=True).exclude(name="")
+
+
+class UserManagerUpdate(
+    LoginRequiredMixin,
+    CoordinatorPermission,
+    TitleViewMixin,
+    SuccessMessageMixin,
+    UpdateView,
+):
+    model = User
+    title = _("User Update")
+    form_class = forms.UserUpdateForm
+    success_url = reverse_lazy("users:list")
+    success_message = _("Usuário atualizado com sucesso.")

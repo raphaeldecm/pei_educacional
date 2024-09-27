@@ -23,9 +23,15 @@ from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.educational_plan.models import Pei
 from sistema_pei.people.models import Student
 from sistema_pei.people.models import Teacher
+from sistema_pei.users.permissions import AssistentOrCoordinatorPermission
 
 
-class AcademicsIndexView(LoginRequiredMixin, TitleViewMixin, generic.TemplateView):
+class AcademicsIndexView(
+    LoginRequiredMixin,
+    AssistentOrCoordinatorPermission,
+    TitleViewMixin,
+    generic.TemplateView,
+):
     template_name = "academics/index.html"
     title = _("Acadêmico")
 

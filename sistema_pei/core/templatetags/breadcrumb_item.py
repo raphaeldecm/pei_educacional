@@ -1,11 +1,11 @@
-from django import template
+from django import template  # noqa: INP001
 from django.urls import reverse_lazy
 
 register = template.Library()
 
 
 @register.inclusion_tag("templatetags/breadcrumb_item.html")
-def breadcrumb_item(text, icon, url=None, first=False, **kwargs):
+def breadcrumb_item(text, icon, url=None, first=False, **kwargs):  # noqa: FBT002
     link = None
 
     if url:

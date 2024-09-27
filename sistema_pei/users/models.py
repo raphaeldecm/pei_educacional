@@ -22,6 +22,8 @@ class Sector(models.Model):
 class User(AbstractUser):
     class Sector(models.TextChoices):
         NAPNE = "NAPNE", _("NAPNE")
+        ETEP = "ETEP", _("ETEP")
+        DIAC = "DIAC", _("DIAC")
 
     """
     Default custom user model for sistema-pei.
@@ -39,6 +41,7 @@ class User(AbstractUser):
         verbose_name=_("Setor"),
         choices=Sector.choices,
         max_length=constants.SMALL_CHAR_FIELD_NAME_LENGTH,
+        blank=True,
     )
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
