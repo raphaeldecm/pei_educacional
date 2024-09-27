@@ -410,11 +410,6 @@ class PeiUpdateView(
         form.instance.updated_by = self.request.user
         return super().form_valid(form)
 
-    def get_success_url(self):
-        return reverse_lazy(
-            "academics:offer_list",
-        )
-
 
 class PeiDeleteView(
     LoginRequiredMixin,
@@ -428,3 +423,8 @@ class PeiDeleteView(
     protected_warning_message = _(
         "Não é possível excluir o pei, pois ele possui " "itens associados.",
     )
+
+class PeiDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
+    model = Pei
+    title = _("Detalhes do PEI")
+    template_name = "academics/peis/pei_detail.html"
