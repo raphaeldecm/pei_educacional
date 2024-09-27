@@ -8,6 +8,7 @@
   {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" url="academics:dashboard" %}
   {% breadcrumb_item text="PEIs" icon="images/icons/icon-pei.svg" %}
 {% endblock breadcrumb %}
+
 {% block content %}
   <div class="w-full">
     <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
@@ -29,28 +30,46 @@
                src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                width="24px"
                height="24px" />
-          <select name="courses"
+          <select name="course"
                   class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-300 appearance-none bg-neutral-50">
             <option value="default" selected disabled>Selecione o curso...</option>
-            {% for course in filter.form.courses.field.queryset %}
+            {% for course in filter.form.course.field.queryset %}
               <option value="{{ course.id }}"
-                      {% if course.id|stringformat:"s" == request.GET.courses %}selected{% endif %}>
+                      {% if course.id|stringformat:"s" == request.GET.course %}selected{% endif %}>
                 {{ course }}
               </option>
             {% endfor %}
           </select>
+        </div>
+        <div class="flex gap-[8px] flex-wrap">
+          <div class="relative w-[322px] cursor-pointer">
+            <img class="absolute top-[12px] right-[10px]"
+                 src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+                 width="24px"
+                 height="24px" />
+            <select name="subject"
+                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-300 appearance-none bg-neutral-50">
+              <option value="default" selected disabled>Selecione a disciplina...</option>
+              {% for course in filter.form.subject.field.queryset %}
+                <option value="{{ course.id }}"
+                        {% if course.id|stringformat:"s" == request.GET.subject %}selected{% endif %}>
+                  {{ course }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
         </div>
         <div class="relative w-[322px] cursor-pointer">
           <img class="absolute top-[12px] right-[10px]"
                src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                width="24px"
                height="24px" />
-          <select name="subject_type"
+          <select name="status"
                   class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
-            <option value="default" selected disabled>Selecione a duração...</option>
-            {% for key, value in filter.form.subject_type.field.choices %}
+            <option value="default" selected disabled>Selecione o status...</option>
+            {% for key, value in filter.form.status.field.choices %}
               <option value="{{ key }}"
-                      {% if key == request.GET.subject_type %}selected{% endif %}>{{ value }}</option>
+                      {% if key == request.GET.status %}selected{% endif %}>{{ value }}</option>
             {% endfor %}
           </select>
         </div>
