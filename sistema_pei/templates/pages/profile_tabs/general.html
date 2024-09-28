@@ -81,15 +81,17 @@
         <th class="pl-[76px]">Disciplina</th>
         <th>Professor</th>
         <th>Status</th>
-        <th>Curso</th>
-        <th></th>
-        <th></th>
+        <th style="text-align: center" class='pr-[30px]'>Ações</th>
       </tr>
     </thead>
     <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
       {% for pei in student_peis %}
         <tr>
-          <td class="pl-[76px]">{{ pei.enrollment.offer.subject }}</td>
+          <td class="pl-[76px]">
+            {{ pei.enrollment.offer.subject }}
+            <br />
+            <span class="text-sm text-slate-600/50">{{ pei.enrollment.student.course.name }}</span>
+          </td>
           <td>{{ pei.enrollment.offer.teacher }}</td>
           <td>
             {% if pei.status == 'NOT_START' %}
@@ -110,22 +112,39 @@
               </div>
             {% endif %}
           </td>
-          <td>{{ student.course.name }}</td>
-          <td class="min-w-[40px] !px-[0px]">
-            <img src="{% static 'images/icons/icon-edit-element.svg' %}"
-                 alt=""
-                 width="24px"
-                 height="24px"
-                 class="cursor-pointer" />
+          <td>
+            <span class="flex justify-center items-center h-full gap-[30px] pr-[26px]">
+              <a href="{% url 'academics:pei_detail' pei.id %}">
+                <img src="{% static 'images/icons/icon-eye.svg' %}"
+                     alt=""
+                     width="24px"
+                     height="24px"
+                     class="cursor-pointer" />
+              </a>
+              <a href="{% url 'academics:pei_update' pei.id %}">
+                <img src="{% static 'images/icons/icon-edit-element.svg' %}"
+                     alt=""
+                     width="24px"
+                     height="24px"
+                     class="cursor-pointer" />
+              </a>
+              {% comment %} <button type="button"
+                id="openModal{{ pei.id }}"
+                data-modal-id="confirmationModal{{ pei.id }}">
+                <img src="{% static 'images/icons/icon-remove-element.svg' %}"
+                    alt=""
+                    height="24px"
+                    class="cursor-pointer" />
+              </button> {% endcomment %}
+            </span>
           </td>
-          <td class="min-w-[40px] !px-[0px]">
-            <img src="{% static 'images/icons/icon-copy.svg' %}"
-                 alt=""
-                 width="24px"
-                 height="24px"
-                 class="cursor-pointer" />
-          </td>
-        </tr>
+          {% comment %} {% url 'academics:pei_delete' pei.id as full_delete_url %}
+          {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão do PEI" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." full_delete_url=full_delete_url %}
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="4" class="text-center">Nenhum PEI cadastrado.</td>
+          </tr> {% endcomment %}
       {% endfor %}
     </tbody>
   </table>

@@ -17,7 +17,10 @@ def createPeiForEnrollment(sender, instance, created, **kwargs):
 @receiver(pre_save, sender=Pei)
 def update_pei_status_on_update(sender, instance, **kwargs):
     if instance.pk:
-        previous_instance = Pei.objects.get(pk=instance.pk)
+
+        # Se marcado como concluído pelo coordenador, não faz nada
+        if getattr(instance, 'status', 'COMPLETED'):
+            return
 
         fields_to_check = [
             instance.objective,

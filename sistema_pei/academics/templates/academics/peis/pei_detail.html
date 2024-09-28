@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static i18n %}
+{% load has_group %}
 
 {% load breadcrumb_item %}
 {% block breadcrumb %}
@@ -47,13 +48,24 @@
           </div>
         </div>
         <hr class="mt-6" />
-        <a href="{% url 'profile' object.enrollment.student.id %}" class="w-max cursor-pointer flex items-center justify-center mt-6 gap-[10px] p-[10px] h-[44px] bg-green-500 rounded-[6px] text-neutral-50">
-          <img src="{% static 'images/icons/icon-eye.svg' %}"
-               alt=""
-               width="24px"
-               height="24px" />
-          <span>Visualizar perfil completo</span>
-        </a>
+        <div class="flex gap-6">
+          <a href="{% url 'profile' object.enrollment.student.id %}" class="w-max cursor-pointer flex items-center justify-center mt-6 gap-[10px] p-[10px] h-[44px] bg-green-500 rounded-[6px] text-neutral-50 hover:opacity-85">
+            <img src="{% static 'images/icons/icon-eye-white.svg' %}"
+                 alt=""
+                 width="24px"
+                 height="24px" />
+            <span>Visualizar perfil completo</span>
+          </a>
+          {% if user|has_group:"Coordinator" and object.status == 'FEEDBACK' %}
+            <a href="{% url 'academics:pei_mark_completed' object.id %}" class="w-max cursor-pointer flex items-center justify-center mt-6 gap-[10px] p-[10px] h-[44px] bg-blue-600 rounded-[6px] text-neutral-50 hover:opacity-85">
+              <img src="{% static 'images/icons/icon-checked-white.svg' %}"
+                  alt=""
+                  width="24px"
+                  height="24px" />
+              <span>Marcar PEI como concluido</span>
+            </a>
+          {% endif %}
+        </div>
       </div>
     </div>
   </div>

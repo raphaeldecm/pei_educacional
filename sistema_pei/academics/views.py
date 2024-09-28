@@ -23,7 +23,7 @@ from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.educational_plan.models import Pei
 from sistema_pei.people.models import Student
 from sistema_pei.people.models import Teacher
-from sistema_pei.users.permissions import AssistentOrCoordinatorPermission
+from sistema_pei.users.permissions import AssistentOrCoordinatorPermission, CoordinatorPermission
 
 
 class AcademicsIndexView(
@@ -434,3 +434,13 @@ class PeiDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
     model = Pei
     title = _("Detalhes do PEI")
     template_name = "academics/peis/pei_detail.html"
+
+class PeiMarkCompletedView(CoordinatorPermission, LoginRequiredMixin, View):
+    def get(self, request, pk):
+        pei = get_object_or_404(Pei, id=pk)
+
+        pei.status = Pei.StatusChoice.COMPLETED
+        pei.save()
+        messages.success(request, 'PEI marcado como concluído com sucesso.')
+
+        return redirect('academics:pei_list')
