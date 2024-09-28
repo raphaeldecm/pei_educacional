@@ -36,12 +36,6 @@ class HomePageView(AnyGroupPermission, TemplateView):
         context["selector_teachers"] = Teacher.objects.all()
         context["selector_offers"] = Subject.objects.all()
 
-        # Cards
-        context["pending_peis"] = Pei.objects.filter(status="NOT_START").count()
-        context["in_progress_peis"] = Pei.objects.filter(status="IN_PROGRESS").count()
-        context["filled_peis"] = Pei.objects.filter(status="FEEDBACK").count()
-        context["finished_peis"] = Pei.objects.filter(status="COMPLETED").count()
-
         filters = {}
 
         if "course" in self.request.GET:
@@ -55,7 +49,15 @@ class HomePageView(AnyGroupPermission, TemplateView):
         if "subject" in self.request.GET:
             filters["enrollment__offer__subject__id"] = self.request.GET["subject"]
 
-        peis_list = Pei.objects.filter(**filters).annotate(
+        peis_list = Pei.objects.filter(enrollment__offer__teacher__email=self.request.user.email)
+
+        # Cards
+        context["pending_peis"] = peis_list.filter(status="NOT_START").count()
+        context["in_progress_peis"] = peis_list.filter(status="IN_PROGRESS").count()
+        context["filled_peis"] = peis_list.filter(status="FEEDBACK").count()
+        context["finished_peis"] = peis_list.filter(status="COMPLETED").count()
+
+        peis_list = peis_list.filter(**filters).annotate(
             subject_count=Count("enrollment__student__course__subjects", distinct=True),
         )
 
