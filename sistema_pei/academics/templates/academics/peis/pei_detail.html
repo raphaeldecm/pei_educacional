@@ -137,10 +137,10 @@
     </div>
   </div>
   {% endif %}
-  {% if object.objective and object.adapted_objective and object.content and object.adapted_content and object.methodology and object.adapted_methodology and object.resources and object.adapted_resources and object.assessments and object.adapted_assessments %}
-  {% else %}
+  {% if not object.objective and not object.adapted_objective and not object.content and not object.adapted_content and not object.methodology and not object.adapted_methodology and not object.resources and not object.adapted_resources and not object.assessments and not object.adapted_assessments %}
     <p class="text-center text-[18px] pt-6 text-slate-400">Não há conteúdo preenchido</p>
   {% endif %}
+
   {% comment %} Parecer em andamento {% endcomment %}
   {% comment %} <div>
     <h2 class="text-[24px] font-medium">Parecer:</h2>
