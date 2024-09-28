@@ -95,6 +95,7 @@
             <th class="pl-[76px]">Perfil</th>
             <th>Matrícula</th>
             <th>Nome</th>
+            <th>Professor</th>
             <th>Disciplina</th>
             <th>Status</th>
             <th style="text-align: center" class='pr-[30px]'>Ações</th>
@@ -110,6 +111,7 @@
               </td>
               <td>{{ object.enrollment.student.registration }}</td>
               <td>{{ object.enrollment.student.name }}</td>
+              <td>{{object.enrollment.offer.teacher}}</td>
               <td>
                 {{ object.enrollment.offer.subject }}
                 <br />

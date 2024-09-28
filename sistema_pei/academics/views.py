@@ -409,6 +409,15 @@ class PeiUpdateView(
     template_name = "academics/peis/pei_form.html"
     success_url = reverse_lazy("academics:pei_list")
 
+    def dispatch(self, request, *args, **kwargs):
+        # Verificar se o usuário logado é o professor associado ao PEI
+        pei = self.get_object()
+        if pei.enrollment.offer.teacher.email != request.user.email:
+            messages.error(request, 'Você não tem permissão para editar este PEI.')
+            return redirect('academics:pei_list')
+
+        return super().dispatch(request, *args, **kwargs)
+
     def get_object(self, queryset=None):
         return get_object_or_404(Pei, id=self.kwargs["pk"])
 
@@ -429,6 +438,15 @@ class PeiDeleteView(
     protected_warning_message = _(
         "Não é possível excluir o pei, pois ele possui " "itens associados.",
     )
+
+    def dispatch(self, request, *args, **kwargs):
+        # Verificar se o usuário logado é o professor associado ao PEI
+        pei = self.get_object()
+        if pei.enrollment.offer.teacher.email != request.user.email:
+            messages.error(request, 'Você não tem permissão para deletar este PEI.')
+            return redirect('academics:pei_list')
+
+        return super().dispatch(request, *args, **kwargs)
 
 class PeiDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
     model = Pei
