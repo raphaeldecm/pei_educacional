@@ -20,7 +20,6 @@ def update_pei_status_on_update(sender, instance, **kwargs):
 
         # Se marcado como concluído pelo coordenador, não faz nada
         if instance.status == Pei.StatusChoice.COMPLETED:
-            print("Entrou")
             return
 
         fields_to_check = [
