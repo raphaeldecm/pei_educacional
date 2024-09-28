@@ -10,8 +10,8 @@ class Pei(BaseModel):
     class StatusChoice(models.TextChoices):
         NOT_START = "NOT_START", _("Não iniciado")
         IN_PROGRESS = "IN_PROGRESS", _("Em andamento")
-        COMPLETED = "COMPLETED", _("Preenchidos")
-        FEEDBACK = "FEEDBACK", _("Com parecer")
+        FEEDBACK = "FEEDBACK", _("Preenchidos")
+        COMPLETED = "COMPLETED", _("Finalizado")
 
     enrollment = models.ForeignKey(
         Enrollment,
