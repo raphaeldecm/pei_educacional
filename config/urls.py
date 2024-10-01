@@ -26,7 +26,6 @@ from sistema_pei.core.views import (
     UploadStudentFilesView,
     DeletePersonalFilesView,
 )
-
 urlpatterns = [
     path(
         "people/",
@@ -40,6 +39,10 @@ urlpatterns = [
     path(
         "academics/",
         include("sistema_pei.academics.urls", namespace="academics"),
+    ),
+    path(
+        "educational_plan/",
+        include("sistema_pei.educational_plan.urls", namespace="educational_plan"),
     ),
     path(
         "profile/<int:student_id>",

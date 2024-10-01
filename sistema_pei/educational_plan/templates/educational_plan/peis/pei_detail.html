@@ -6,7 +6,7 @@
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
   {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-home-green.svg" url="academics:dashboard" %}
-  {% breadcrumb_item text="PEIs" icon="images/icons/icon-pei.svg" url="academics:pei_list" %}
+  {% breadcrumb_item text="PEIs" icon="images/icons/icon-pei.svg" url="educational_plan:pei_list" %}
   {% breadcrumb_item text=title icon="images/icons/highlighter-green.svg" %} {% endblock breadcrumb%}
 {% block content %}
 
@@ -57,7 +57,7 @@
             <span>Visualizar perfil completo</span>
           </a>
           {% if user|has_group:"Coordinator" and object.status == 'FEEDBACK' %}
-            <a href="{% url 'academics:pei_mark_completed' object.id %}" class="w-max cursor-pointer flex items-center justify-center mt-6 gap-[10px] p-[10px] h-[44px] bg-blue-600 rounded-[6px] text-neutral-50 hover:opacity-85">
+            <a href="{% url 'educational_plan:pei_mark_completed' object.id %}" class="w-max cursor-pointer flex items-center justify-center mt-6 gap-[10px] p-[10px] h-[44px] bg-blue-600 rounded-[6px] text-neutral-50 hover:opacity-85">
               <img src="{% static 'images/icons/icon-checked-white.svg' %}"
                   alt=""
                   width="24px"

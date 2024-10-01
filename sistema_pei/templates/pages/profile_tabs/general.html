@@ -114,14 +114,14 @@
           </td>
           <td>
             <span class="flex justify-center items-center h-full gap-[30px] pr-[26px]">
-              <a href="{% url 'academics:pei_detail' pei.id %}">
+              <a href="{% url 'educational_plan:pei_detail' pei.id %}">
                 <img src="{% static 'images/icons/icon-eye.svg' %}"
                      alt=""
                      width="24px"
                      height="24px"
                      class="cursor-pointer" />
               </a>
-              <a href="{% url 'academics:pei_update' pei.id %}">
+              <a href="{% url 'educational_plan:pei_update' pei.id %}">
                 <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                      alt=""
                      width="24px"
@@ -138,7 +138,7 @@
               </button> {% endcomment %}
             </span>
           </td>
-          {% comment %} {% url 'academics:pei_delete' pei.id as full_delete_url %}
+          {% comment %} {% url 'educational_plan:pei_delete' pei.id as full_delete_url %}
           {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão do PEI" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." full_delete_url=full_delete_url %}
           </tr>
         {% empty %}

@@ -100,34 +100,4 @@ urlpatterns = [
         views.GetSubjectsByCourseView.as_view(),
         name="get_subjects_by_course",
     ),
-    path(
-        "peis/list/",
-        views.PeiListView.as_view(),
-        name="pei_list",
-    ),
-    path(
-        "peis/create/",
-        views.PeiCreateView.as_view(),
-        name="pei_create",
-    ),
-    path(
-        "peis/update/<int:pk>/",
-        views.PeiUpdateView.as_view(),
-        name="pei_update",
-    ),
-    path(
-        "peis/detail/<int:pk>/",
-        views.PeiDetailView.as_view(),
-        name="pei_detail",
-    ),
-    path(
-        "peis/delete/<int:pk>/",
-        views.PeiDeleteView.as_view(),
-        name="pei_delete",
-    ),
-    path(
-        "peis/markCompleted/<int:pk>/",
-        views.PeiMarkCompletedView.as_view(),
-        name="pei_mark_completed",
-    ),
 ]
