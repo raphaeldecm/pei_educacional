@@ -5,6 +5,7 @@ from django.utils import timezone
 from sistema_pei.academics import models
 from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.educational_plan.models import Pei
+from sistema_pei.people.models import Teacher
 
 
 class CourseFilter(django_filters.FilterSet):
@@ -84,29 +85,3 @@ class SubjectFilter(django_filters.FilterSet):
     class Meta:
         model = models.Subject
         fields = ["name", "subject_type", "courses"]
-
-
-class PeiFilter(django_filters.FilterSet):
-    search = django_filters.CharFilter(method='multi_field_search', label="Search")
-
-    course = django_filters.ModelChoiceFilter(
-        queryset=models.Course.objects.all(),
-        field_name='enrollment__offer__course',
-        label="course"
-    )
-
-    subject = django_filters.ModelChoiceFilter(
-        queryset=models.Subject.objects.all(),
-        field_name='enrollment__offer__subject',
-        label="subject"
-    )
-
-    class Meta:
-        model = Pei
-        fields = ['status']
-
-    def multi_field_search(self, queryset, name, value):
-        return queryset.filter(
-            Q(enrollment__student__name__icontains=value) |
-            Q(enrollment__student__registration__icontains=value)
-        )

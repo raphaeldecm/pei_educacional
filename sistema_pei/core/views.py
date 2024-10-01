@@ -13,7 +13,9 @@ from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.academics.models import Course
 from sistema_pei.academics.models import Enrollment
 from sistema_pei.academics.models import Subject
+from sistema_pei.core import constants
 from sistema_pei.core.forms import EnrollmentForm
+from sistema_pei.educational_plan.filters import PeiFilter
 from sistema_pei.educational_plan.models import Pei
 from sistema_pei.people.forms import StudentFilesForm
 from sistema_pei.people.forms import ViewEditDataStudentForm
@@ -21,65 +23,49 @@ from sistema_pei.people.forms import ViewEdithistoricStudentForm
 from sistema_pei.people.models import Student
 from sistema_pei.people.models import StudentFile
 from sistema_pei.people.models import Teacher
+from django_filters.views import FilterView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.utils.translation import gettext_lazy as _
+from sistema_pei.core.mixins import TitleViewMixin
+from django.views import generic
 from sistema_pei.users.permissions import AnyGroupPermission
 
 
-class HomePageView(AnyGroupPermission, TemplateView):
+class HomeListView(
+    AnyGroupPermission,
+    LoginRequiredMixin,
+    TitleViewMixin,
+    FilterView,
+    generic.ListView,
+):
+    model = Pei
+    title = _("PEIs")
+    paginate_by = constants.DEFAULT_PAGE_SIZE
+    filterset_class = PeiFilter
     template_name = "pages/home.html"
-    paginate_by = 10
 
+    def get_queryset(self):
+        queryset = Pei.objects.all()
+        filter_data = self.request.GET
+
+        if not filter_data or not any(filter_data.values()):
+            queryset = Pei.objects.filter(enrollment__offer__teacher__email=self.request.user.email)
+
+        return self.filterset_class(self.request.GET, queryset=queryset, user=self.request.user).qs
+
+    # Cards
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Filter Selectors
-        context["selector_courses"] = Course.objects.all()
-        context["selector_teachers"] = Teacher.objects.all()
-        context["selector_offers"] = Subject.objects.all()
+        queryset = Pei.objects.all()
 
-        filters = {}
+        if self.request.user.groups.filter(name="Teacher").exists():
+            queryset = Pei.objects.filter(enrollment__offer__teacher__email=self.request.user.email)
 
-        if "course" in self.request.GET:
-            filters["enrollment__student__course__id"] = self.request.GET["course"]
-        if "teacher" in self.request.GET:
-            filters["enrollment__offer__teacher__id"] = self.request.GET["teacher"]
-        if "period" in self.request.GET:
-            filters["enrollment__student__course__period"] = self.request.GET["period"]
-        if "status" in self.request.GET:
-            filters["status"] = self.request.GET["status"]
-        if "subject" in self.request.GET:
-            filters["enrollment__offer__subject__id"] = self.request.GET["subject"]
-
-        peis_list = Pei.objects.filter(enrollment__offer__teacher__email=self.request.user.email)
-
-        # Cards
-        context["pending_peis"] = peis_list.filter(status="NOT_START").count()
-        context["in_progress_peis"] = peis_list.filter(status="IN_PROGRESS").count()
-        context["filled_peis"] = peis_list.filter(status="FEEDBACK").count()
-        context["finished_peis"] = peis_list.filter(status="COMPLETED").count()
-
-        peis_list = peis_list.filter(**filters).annotate(
-            subject_count=Count("enrollment__student__course__subjects", distinct=True),
-        )
-
-        if "search" in self.request.GET:
-            peis_list = peis_list.filter(
-                Q(enrollment__student__name__icontains=self.request.GET["search"])
-                | Q(
-                    enrollment__student__registration__icontains=self.request.GET[
-                        "search"
-                    ],
-                ),
-            )
-
-        paginator = Paginator(peis_list, self.paginate_by)
-        page_number = self.request.GET.get("page")
-
-        try:
-            all_peis = paginator.page(page_number)
-        except PageNotAnInteger:
-            all_peis = paginator.page(1)
-
-        context["all_peis"] = all_peis
+        context["pending_peis"] = queryset.filter(status="NOT_START").count()
+        context["in_progress_peis"] = queryset.filter(status="IN_PROGRESS").count()
+        context["filled_peis"] = queryset.filter(status="FEEDBACK").count()
+        context["finished_peis"] = queryset.filter(status="COMPLETED").count()
 
         return context
 

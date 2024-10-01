@@ -18,6 +18,7 @@ from sistema_pei.core import constants
 from sistema_pei.core.mixins import ProtectedErrorMessageMixin
 from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.educational_plan import models
+from sistema_pei.educational_plan.filters import PeiFilter
 from sistema_pei.users.permissions import CoordinatorPermission
 
 
@@ -31,7 +32,7 @@ class PeiListView(
     model = models.Pei
     title = _("PEIs")
     paginate_by = constants.DEFAULT_PAGE_SIZE
-    filterset_class = filters.PeiFilter
+    filterset_class = PeiFilter
     template_name = "educational_plan/peis/pei_list.html"
 
 

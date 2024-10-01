@@ -22,7 +22,7 @@
                height="30px" />
           <div class="flex-col text-neutral-50">
             <p class="text-[30px]">{{ pending_peis }}</p>
-            <p>PEIs não iniciados</p>
+            <p>Meus PEIs não iniciados</p>
             <p>Ver todos</p>
           </div>
         </div>
@@ -35,7 +35,7 @@
                height="30px" />
           <div class="flex-col text-neutral-50">
             <p class="text-[30px]">{{ in_progress_peis }}</p>
-            <p>PEIs em andamento</p>
+            <p>Meus PEIs em andamento</p>
             <p>Ver todos</p>
           </div>
         </div>
@@ -49,7 +49,7 @@
                height="30px" />
           <div class="flex-col text-neutral-50">
             <p class="text-[30px]">{{ filled_peis }}</p>
-            <p>PEIs Preenchidos</p>
+            <p>Meus PEIs Preenchidos</p>
             <p>Ver todos</p>
           </div>
         </div>
@@ -63,14 +63,13 @@
                height="30px" />
           <div class="flex-col text-neutral-50 block">
             <p class="text-[30px]">{{ finished_peis }}</p>
-            <p>PEIs Finalizados</p>
+            <p>Meus PEIs Finalizados</p>
             <p>Ver todos</p>
           </div>
         </div>
       </a>
     </div>
     <div class="mt-[60px]">
-      <h2 class="text-[24px] mb-[18px] flex items-center gap-3">PEIs Atribuídos a Mim: <a href="{% url 'academics:pei_list' %}" class="text-[14px] text-slate-400 border border-slate-300 hover:border-green-500 hover:bg-green-500 hover:text-white transition-all py-1 px-2 rounded-lg">Ver Todos</a></h2>
       <form method="GET" action="{% url 'home' %}">
         <div class="flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
           <img src="{% static 'images/icons/icon-search.svg' %}"
@@ -100,37 +99,41 @@
               {% endfor %}
             </select>
           </div>
-          {% comment %} <div class="relative w-[322px] cursor-pointer">
-            <img class="absolute top-[12px] right-[10px]"
-                 src="{% static 'images/icons/icon-updown-arrow.svg' %}"
-                 width="24px"
-                 height="24px" />
-            <select name="teacher"
-                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
-              <option value="default" selected disabled>Selecione o professor...</option>
-              {% for teacher in selector_teachers %}
-                <option value="{{ teacher.id }}"
-                        {% if request.GET.teacher == teacher.id|stringformat:'s' %}selected{% endif %}>
-                  {{ teacher.name }}
-                </option>
-              {% endfor %}
-            </select>
-          </div> {% endcomment %}
-          <div class="relative w-[322px] cursor-pointer">
-            <img class="absolute top-[12px] right-[10px]"
-                 src="{% static 'images/icons/icon-updown-arrow.svg' %}"
-                 width="24px"
-                 height="24px" />
-            <select name="period"
-                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
-              <option value="default" selected disabled>Selecione o turno...</option>
-              <option value="MORNING"
-                      {% if request.GET.period == 'MORNING' %}selected{% endif %}>Matutino</option>
-              <option value="AFTERNOON"
-                      {% if request.GET.period == 'AFTERNOON' %}selected{% endif %}>Vespertino</option>
-              <option value="NIGHT"
-                      {% if request.GET.period == 'NIGHT' %}selected{% endif %}>Noturno</option>
-            </select>
+          <div class="flex gap-[8px] flex-wrap">
+            <div class="relative w-[322px] cursor-pointer">
+              <img class="absolute top-[12px] right-[10px]"
+                   src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+                   width="24px"
+                   height="24px" />
+              <select name="subject"
+                      class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-300 appearance-none bg-neutral-50">
+                <option value="default" selected disabled>Selecione a disciplina...</option>
+                {% for subject in filter.form.subject.field.queryset %}
+                  <option value="{{ subject.id }}"
+                          {% if subject.id|stringformat:"s" == request.GET.subject %}selected{% endif %}>
+                    {{ subject }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="flex gap-[8px] flex-wrap">
+            <div class="relative w-[322px] cursor-pointer">
+                <img class="absolute top-[12px] right-[10px]"
+                     src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+                     width="24px"
+                     height="24px" />
+                <select name="teacher"
+                        class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-300 appearance-none bg-neutral-50">
+                    <option value="default" selected disabled>Selecione o professor...</option>
+                    {% for teacher in filter.form.teacher.field.queryset %}
+                    <option value="{{ teacher.id }}"
+                        {% if filter.form.teacher.value|stringformat:"s" == teacher.id|stringformat:"s" or request.GET.teacher|stringformat:"s" == teacher.id|stringformat:"s" %} selected {% endif %}>
+                        {{ teacher }}
+                    </option>
+                {% endfor %}
+                </select>
+            </div>
           </div>
           <div class="relative w-[322px] cursor-pointer">
             <img class="absolute top-[12px] right-[10px]"
@@ -140,29 +143,9 @@
             <select name="status"
                     class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
               <option value="default" selected disabled>Selecione o status...</option>
-              <option value="NOT_START"
-                      {% if request.GET.status == 'NOT_START' %}selected{% endif %}>Não iniciado</option>
-              <option value="IN_PROGRESS"
-                      {% if request.GET.status == 'IN_PROGRESS' %}selected{% endif %}>Em andamento</option>
-              <option value="FEEDBACK"
-                      {% if request.GET.status == 'FEEDBACK' %}selected{% endif %}>Com Parecer</option>
-              <option value="COMPLETED"
-                      {% if request.GET.status == 'COMPLETED' %}selected{% endif %}>Finalizado</option>
-            </select>
-          </div>
-          <div class="relative w-[322px] cursor-pointer">
-            <img class="absolute top-[12px] right-[10px]"
-                 src="{% static 'images/icons/icon-updown-arrow.svg' %}"
-                 width="24px"
-                 height="24px" />
-            <select name="subject"
-                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
-              <option value="default" selected disabled>Selecionar diciplina...</option>
-              {% for subject in selector_Subjects %}
-                <option value="{{ subject.id }}"
-                        {% if request.GET.subject == subject.id|stringformat:'s' %}selected{% endif %}>
-                  {{ subject.name }}
-                </option>
+              {% for key, value in filter.form.status.field.choices %}
+                <option value="{{ key }}"
+                        {% if key == request.GET.status %}selected{% endif %}>{{ value }}</option>
               {% endfor %}
             </select>
           </div>
@@ -182,13 +165,14 @@
           <th class="pl-[76px]">Perfil</th>
           <th>Matrícula</th>
           <th>Nome</th>
+          <th>Professor</th>
           <th>Disciplina</th>
           <th>Status</th>
           <th style="text-align: center" class='pr-[30px]'>Ações</th>
           </tr>
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
-          {% for object in all_peis %}
+          {% for object in object_list %}
             <tr>
               <td class="pl-[76px]">
                 <img src="{{ object.enrollment.student.image.url }}"
@@ -197,6 +181,7 @@
               </td>
               <td>{{ object.enrollment.student.registration }}</td>
               <td>{{ object.enrollment.student.name }}</td>
+              <td>{{object.enrollment.offer.teacher}}</td>
               <td>
                 {{ object.enrollment.offer.subject }}
                 <br />
@@ -223,14 +208,14 @@
               </td>
               <td>
                 <span class="flex justify-center items-center h-full gap-[30px] pr-[26px]">
-                  <a href="{% url 'academics:pei_detail' object.id %}">
+                  <a href="{% url 'educational_plan:pei_detail' object.id %}">
                     <img src="{% static 'images/icons/icon-eye.svg' %}"
                          alt=""
                          width="24px"
                          height="24px"
                          class="cursor-pointer" />
                   </a>
-                  <a href="{% url 'academics:pei_update' object.id %}">
+                  <a href="{% url 'educational_plan:pei_update' object.id %}">
                     <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                          alt=""
                          width="24px"
@@ -247,7 +232,7 @@
                   </button>
                 </span>
               </td>
-              {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão do PEI" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="academics:pei_delete" %}
+              {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão do PEI" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="educational_plan:pei_delete" %}
             </tr>
           {% empty %}
             <tr>
@@ -257,24 +242,6 @@
         </tbody>
       </table>
     </div>
-    <div class="mt-[50px] mb-[26px] w-full flex items-center justify-between text-[18px]">
-      <span class="font-semibold">Página {{ all_peis.number }} de {{ all_peis.paginator.num_pages }}</span>
-      <div class="flex gap-[36px]">
-        {% if all_peis.has_previous %}
-          <a href="{% url 'home' %}?{% if request.GET.course %}course={{ request.GET.course }}&{% endif %}{% if request.GET.teacher %}teacher={{ request.GET.teacher }}&{% endif %}{% if request.GET.period %}period={{ request.GET.period }}&{% endif %}{% if request.GET.status %}status={{ request.GET.status }}&{% endif %}{% if request.GET.subject %}subject={{ request.GET.subject }}&{% endif %}{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}page={{ all_peis.previous_page_number }}">
-            <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-400 border border-slate-400 rounded-lg">
-              Anterior
-            </div>
-          </a>
-        {% endif %}
-        {% if all_peis.has_next %}
-          <a href="{% url 'home' %}?{% if request.GET.course %}course={{ request.GET.course }}&{% endif %}{% if request.GET.teacher %}teacher={{ request.GET.teacher }}&{% endif %}{% if request.GET.period %}period={{ request.GET.period }}&{% endif %}{% if request.GET.status %}status={{ request.GET.status }}&{% endif %}{% if request.GET.subject %}subject={{ request.GET.subject }}&{% endif %}{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}page={{ all_peis.next_page_number }}">
-            <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-400 border border-slate-400 rounded-lg">
-              Próximo
-            </div>
-          </a>
-        {% endif %}
-      </div>
-    </div>
+    {% include "_table_pagination.html" %}
   </div>
 {% endblock content %}
