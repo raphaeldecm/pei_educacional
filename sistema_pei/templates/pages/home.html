@@ -2,6 +2,7 @@
 
 {% load static i18n %}
 {% load breadcrumb_item %}
+{% load has_group %}
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
@@ -128,10 +129,12 @@
                     <option value="default" selected disabled>Selecione o professor...</option>
                     {% for teacher in filter.form.teacher.field.queryset %}
                     <option value="{{ teacher.id }}"
-                        {% if filter.form.teacher.value|stringformat:"s" == teacher.id|stringformat:"s" or request.GET.teacher|stringformat:"s" == teacher.id|stringformat:"s" %} selected {% endif %}>
+                        {% if user|has_group:"Teacher" and not request.GET and teacher.email|stringformat:"s" == user.email|stringformat:"s"%}
+                        selected
+                        {% elif filter.form.teacher.value|stringformat:"s" == teacher.id|stringformat:"s" or request.GET.teacher|stringformat:"s" == teacher.id|stringformat:"s" %} selected {% endif %}>
                         {{ teacher }}
                     </option>
-                {% endfor %}
+                    {% endfor %}
                 </select>
             </div>
           </div>

@@ -28,17 +28,6 @@ class PeiFilter(django_filters.FilterSet):
         label="teacher",
     )
 
-    # def __init__(self, *args, **kwargs):
-    #     user = kwargs.pop('user', None)
-    #     super().__init__(*args, **kwargs)
-    #     if user is not None:
-    #         try:
-    #             teacher = Teacher.objects.get(email=self.user.email)
-    #             self.form.initial['teacher'] = teacher.id
-    #         except Teacher.DoesNotExist:
-    #             pass
-
-
     class Meta:
         model = Pei
         fields = ['status']
