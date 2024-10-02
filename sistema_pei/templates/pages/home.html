@@ -23,7 +23,7 @@
                height="30px" />
           <div class="flex-col text-neutral-50">
             <p class="text-[30px]">{{ pending_peis }}</p>
-            <p>Meus PEIs não iniciados</p>
+            <p>{% if user|has_group:"Teacher" %}Meus{% endif %} PEIs não iniciados</p>
             <p>Ver todos</p>
           </div>
         </div>
@@ -36,7 +36,7 @@
                height="30px" />
           <div class="flex-col text-neutral-50">
             <p class="text-[30px]">{{ in_progress_peis }}</p>
-            <p>Meus PEIs em andamento</p>
+            <p>{% if user|has_group:"Teacher" %}Meus{% endif %} PEIs em andamento</p>
             <p>Ver todos</p>
           </div>
         </div>
@@ -50,7 +50,7 @@
                height="30px" />
           <div class="flex-col text-neutral-50">
             <p class="text-[30px]">{{ filled_peis }}</p>
-            <p>Meus PEIs Preenchidos</p>
+            <p>{% if user|has_group:"Teacher" %}Meus{% endif %} PEIs Preenchidos</p>
             <p>Ver todos</p>
           </div>
         </div>
@@ -64,7 +64,7 @@
                height="30px" />
           <div class="flex-col text-neutral-50 block">
             <p class="text-[30px]">{{ finished_peis }}</p>
-            <p>Meus PEIs Finalizados</p>
+            <p>{% if user|has_group:"Teacher" %}Meus{% endif %} PEIs Finalizados</p>
             <p>Ver todos</p>
           </div>
         </div>
