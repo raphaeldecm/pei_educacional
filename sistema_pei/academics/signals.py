@@ -10,5 +10,10 @@ def createPeiForEnrollment(sender, instance, created, **kwargs):
     if created:
         Pei.objects.create(
             enrollment=instance,
-            status=Pei.StatusChoice.NOT_START
+            status=Pei.StatusChoice.NOT_START,
+            objective=instance.offer.subject.objective,
+            content=instance.offer.subject.content,
+            methodology=instance.offer.subject.methodology,
+            resources=instance.offer.subject.resources,
+            assessments=instance.offer.subject.assessments
         )
