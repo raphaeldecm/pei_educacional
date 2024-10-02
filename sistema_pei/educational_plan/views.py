@@ -35,6 +35,15 @@ class PeiListView(
     filterset_class = PeiFilter
     template_name = "educational_plan/peis/pei_list.html"
 
+    def get_queryset(self):
+        queryset = models.Pei.objects.all()
+        filter_data = self.request.GET
+
+        if not filter_data or not any(filter_data.values()):
+            queryset = models.Pei.objects.current_peis()
+
+        return self.filterset_class(self.request.GET, queryset=queryset).qs
+
 
 class PeiCreateView(
     SuccessMessageMixin,

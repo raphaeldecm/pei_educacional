@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 from sistema_pei.academics.models import Enrollment
 from sistema_pei.core.models import BaseModel
+from sistema_pei.educational_plan import managers
 
 
 # Create your models here.
@@ -64,6 +65,8 @@ class Pei(BaseModel):
         verbose_name=_("Avaliações Adaptadas"),
         blank=True,
     )
+
+    objects = managers.PeiManager()
 
     def __str__(self):
         return (
