@@ -68,6 +68,27 @@ class Subject(BaseModel):
         verbose_name=_("Cursos"),
         related_name="subjects",
     )
+    objective = models.TextField(
+        verbose_name=_("Objetivos"),
+        blank=True,
+    )
+    content = models.TextField(
+        verbose_name=_("Conteúdo"),
+        blank=True,
+    )
+    methodology = models.TextField(
+        verbose_name=_("Metodologia"),
+        blank=True,
+    )
+    resources = models.TextField(
+        verbose_name=("Recursos"),
+        blank=True,
+    )
+    assessments = models.TextField(
+        verbose_name=_("Avaliações"),
+        blank=True,
+    )
+
 
     class Meta:
         verbose_name = _("Disciplina")
