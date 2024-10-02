@@ -12,34 +12,3 @@ def createPeiForEnrollment(sender, instance, created, **kwargs):
             enrollment=instance,
             status=Pei.StatusChoice.NOT_START
         )
-
-# Atualiza o status do PEI de acordo com o preenchimento do professor
-@receiver(pre_save, sender=Pei)
-def update_pei_status_on_update(sender, instance, **kwargs):
-    if instance.pk:
-
-        # Se marcado como concluído pelo coordenador, não faz nada
-        if instance.status == Pei.StatusChoice.COMPLETED:
-            return
-
-        fields_to_check = [
-            instance.objective,
-            instance.adapted_objective,
-            instance.content,
-            instance.adapted_content,
-            instance.methodology,
-            instance.adapted_methodology,
-            instance.resources,
-            instance.adapted_resources,
-            instance.assessments,
-            instance.adapted_assessments
-        ]
-
-        filled_fields = [field for field in fields_to_check if field]
-
-        if len(filled_fields) == len(fields_to_check):
-            instance.status = Pei.StatusChoice.FEEDBACK
-        elif len(filled_fields) > 0:
-            instance.status = Pei.StatusChoice.IN_PROGRESS
-        else:
-            instance.status = Pei.StatusChoice.NOT_START

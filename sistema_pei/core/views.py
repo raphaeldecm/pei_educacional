@@ -34,12 +34,10 @@ from sistema_pei.users.permissions import AnyGroupPermission
 class HomeListView(
     AnyGroupPermission,
     LoginRequiredMixin,
-    TitleViewMixin,
     FilterView,
     generic.ListView,
 ):
     model = Pei
-    title = _("PEIs")
     paginate_by = constants.DEFAULT_PAGE_SIZE
     filterset_class = PeiFilter
     template_name = "pages/home.html"

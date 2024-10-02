@@ -86,10 +86,38 @@ class PeiUpdateView(
     def get_object(self, queryset=None):
         return get_object_or_404(models.Pei, id=self.kwargs["pk"])
 
+    def _update_pei_status(self, instance):
+        if instance.pk:
+            # Se marcado como concluído pelo coordenador, não faz nada
+            if instance.status == models.Pei.StatusChoice.COMPLETED:
+                return
+
+            fields_to_check = [
+                instance.objective,
+                instance.adapted_objective,
+                instance.content,
+                instance.adapted_content,
+                instance.methodology,
+                instance.adapted_methodology,
+                instance.resources,
+                instance.adapted_resources,
+                instance.assessments,
+                instance.adapted_assessments
+            ]
+
+            filled_fields = [field for field in fields_to_check if field]
+
+            if len(filled_fields) == len(fields_to_check):
+                instance.status = models.Pei.StatusChoice.FEEDBACK
+            elif len(filled_fields) > 0:
+                instance.status = models.Pei.StatusChoice.IN_PROGRESS
+            else:
+                instance.status = models.Pei.StatusChoice.NOT_START
+
     def form_valid(self, form):
         form.instance.updated_by = self.request.user
+        self._update_pei_status(form.instance)
         return super().form_valid(form)
-
 
 class PeiDeleteView(
     LoginRequiredMixin,

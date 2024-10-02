@@ -41,7 +41,7 @@ class PeiFilter(django_filters.FilterSet):
 
     class Meta:
         model = Pei
-        fields = ['status', 'teacher']
+        fields = ['status']
 
     def multi_field_search(self, queryset, name, value):
         return queryset.filter(
