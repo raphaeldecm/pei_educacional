@@ -73,6 +73,37 @@ class Pei(BaseModel):
             + self.enrollment.offer.teacher.name
         )
 
+    def update_status(self):
+        if self.pk:
+            if self.status == self.StatusChoice.COMPLETED:
+                return
+
+            fields_to_check = [
+                self.objective,
+                self.adapted_objective,
+                self.content,
+                self.adapted_content,
+                self.methodology,
+                self.adapted_methodology,
+                self.resources,
+                self.adapted_resources,
+                self.assessments,
+                self.adapted_assessments
+            ]
+
+            filled_fields = [field for field in fields_to_check if field]
+
+            if len(filled_fields) == len(fields_to_check):
+                self.status = self.StatusChoice.FEEDBACK
+            elif len(filled_fields) > 0:
+                self.status = self.StatusChoice.IN_PROGRESS
+            else:
+                self.status = self.StatusChoice.NOT_START
+
+    def save(self, *args, **kwargs):
+        self.update_status()
+        super().save(*args, **kwargs)
+
 
 class FeedbackPei(BaseModel):
     feedback = models.TextField(verbose_name=_("Parecer"))
