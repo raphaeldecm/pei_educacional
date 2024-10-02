@@ -19,8 +19,16 @@ class OfferForm(forms.ModelForm):
 class SubjectForm(forms.ModelForm):
     class Meta:
         model = models.Subject
-        fields = ["name", "subject_type", "courses"]
-
+        fields = [
+            "name",
+            "subject_type",
+            "courses",
+            "objective",
+            "content",
+            "methodology",
+            "resources",
+            "assessments"
+        ]
 
 class PeiForm(forms.ModelForm):
     class Meta:
