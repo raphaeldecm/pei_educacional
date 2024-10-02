@@ -18,7 +18,7 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 from sistema_pei.core.views import (
-    HomePageView,
+    HomeListView,
     ProfilePageView,
     UpdateStudentGradesView,
     EditHistoricPersonalDataView,
@@ -26,7 +26,6 @@ from sistema_pei.core.views import (
     UploadStudentFilesView,
     DeletePersonalFilesView,
 )
-
 urlpatterns = [
     path(
         "people/",
@@ -34,12 +33,16 @@ urlpatterns = [
     ),
     path(
         "",
-        login_required(HomePageView.as_view()),
+        login_required(HomeListView.as_view()),
         name="home",
     ),
     path(
         "academics/",
         include("sistema_pei.academics.urls", namespace="academics"),
+    ),
+    path(
+        "educational_plan/",
+        include("sistema_pei.educational_plan.urls", namespace="educational_plan"),
     ),
     path(
         "profile/<int:student_id>",

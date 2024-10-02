@@ -21,9 +21,8 @@ from sistema_pei.core import constants
 from sistema_pei.core.mixins import ProtectedErrorMessageMixin
 from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.educational_plan.models import Pei
-from sistema_pei.people.models import Student
-from sistema_pei.people.models import Teacher
-from sistema_pei.users.permissions import AssistentOrCoordinatorPermission
+from sistema_pei.people.models import Student, Teacher
+from sistema_pei.users.permissions import AssistentOrCoordinatorPermission, CoordinatorPermission
 
 
 class AcademicsIndexView(
@@ -115,7 +114,7 @@ class CourseDeleteView(
     )
 
 
-class OffersPageView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.ListView):
+class OfferListView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.ListView):
     title = _("Ofertas")
     paginate_by = constants.DEFAULT_PAGE_SIZE
     filterset_class = filters.OfferFilter
@@ -131,7 +130,7 @@ class OffersPageView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.Lis
         return self.filterset_class(self.request.GET, queryset=queryset).qs
 
 
-class CreateOfferPageView(
+class OfferCreateView(
     SuccessMessageMixin,
     LoginRequiredMixin,
     TitleViewMixin,
@@ -156,7 +155,7 @@ class CreateOfferPageView(
         return redirect(self.request.headers.get("referer", "/"))
 
 
-class EditOfferPageView(
+class OfferUpdateView(
     SuccessMessageMixin,
     LoginRequiredMixin,
     TitleViewMixin,
@@ -183,7 +182,7 @@ class EditOfferPageView(
         )
 
 
-class OfferDetailsPageView(LoginRequiredMixin, FilterView, generic.ListView):
+class OfferDetailView(LoginRequiredMixin, FilterView, generic.ListView):
     paginate_by = 10
     filterset_class = filters.EnrollmentFilter
     template_name = "academics/offers/offer_detail.html"
@@ -208,7 +207,7 @@ class OfferDetailsPageView(LoginRequiredMixin, FilterView, generic.ListView):
         return context
 
 
-class DeleteOfferView(
+class OfferDeleteView(
     LoginRequiredMixin,
     ProtectedErrorMessageMixin,
     SuccessMessageMixin,
@@ -239,7 +238,7 @@ class RemoveStudentFromOfferView(SuccessMessageMixin, LoginRequiredMixin, View):
         except ProtectedError:
             messages.error(
                 request,
-                "Não é possível remover o aluno desta oferta"
+                "Não é possível remover o aluno desta oferta "
                 "porque existem PEIs associados.",
             )
 

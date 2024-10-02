@@ -62,27 +62,27 @@ urlpatterns = [
     ),
     path(
         "offers/list/",
-        views.OffersPageView.as_view(),
+        views.OfferListView.as_view(),
         name="offer_list",
     ),
     path(
         "offers/create/",
-        views.CreateOfferPageView.as_view(),
+        views.OfferCreateView.as_view(),
         name="offer_create",
     ),
     path(
         "offers/update/<int:pk>/",
-        views.EditOfferPageView.as_view(),
+        views.OfferUpdateView.as_view(),
         name="offer_update",
     ),
     path(
         "offers/delete/<int:pk>/",
-        views.DeleteOfferView.as_view(),
+        views.OfferDeleteView.as_view(),
         name="offer_delete",
     ),
     path(
         "offers/detail/<int:pk>/",
-        views.OfferDetailsPageView.as_view(),
+        views.OfferDetailView.as_view(),
         name="offer_detail",
     ),
     path(
