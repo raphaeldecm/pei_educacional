@@ -46,10 +46,11 @@ class HomeListView(
         queryset = Pei.objects.all()
         filter_data = self.request.GET
 
-        if not filter_data or not any(filter_data.values()):
-            queryset = Pei.objects.filter(enrollment__offer__teacher__email=self.request.user.email)
+        if self.request.user.groups.filter(name="Teacher").exists():
+            if not filter_data or not any(filter_data.values()):
+                queryset = Pei.objects.filter(enrollment__offer__teacher__email=self.request.user.email)
 
-        return self.filterset_class(self.request.GET, queryset=queryset, user=self.request.user).qs
+        return self.filterset_class(self.request.GET, queryset=queryset).qs
 
     # Cards
     def get_context_data(self, **kwargs):
