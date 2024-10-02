@@ -28,6 +28,23 @@ class PeiFilter(django_filters.FilterSet):
         label="teacher",
     )
 
+    SEMESTER_SPLIT_MONTH = 6
+
+    year = django_filters.NumberFilter(
+        field_name='enrollment__offer__year',
+        lookup_expr="exact",
+        label="Ano",
+        initial=timezone.now().date().year,
+    )
+
+    semester = django_filters.ChoiceFilter(
+        field_name='enrollment__offer__semester',
+        choices=models.Offer.Semester.choices,
+        label="Semestre",
+        initial=1 if timezone.now().date().month <= SEMESTER_SPLIT_MONTH else 2,
+    )
+
+
     class Meta:
         model = Pei
         fields = ['status']
