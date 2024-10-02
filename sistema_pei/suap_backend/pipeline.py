@@ -48,7 +48,24 @@ def record_teacher_data(backend, user, response, *args, **kwargs):
             "photo": response.get("foto"),
         },
     )
+
+    # Atualiza os dados do professor se necessário
+    if not created:
+        update_teacher_data(teacher, response)
+
     # Associar o User ao Teacher
     if created or not teacher.user:
         teacher.user = user
         teacher.save()
+
+def update_teacher_data(teacher, response):
+    """
+    Atualiza os dados do professor.
+    """
+    teacher.name = response.get("nome")
+    teacher.email = response.get("email_preferencial")
+    teacher.campus = Campus.objects.get(abbreviation=response.get("campus"))
+    teacher.code = response.get("identificacao")
+    teacher.photo = response.get("foto")
+
+    teacher.save(update_fields=["name", "email", "campus", "photo"])
