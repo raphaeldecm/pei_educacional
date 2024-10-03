@@ -82,7 +82,7 @@
       </a>
     </div>
     <div id="dropdown"
-         class="hidden absolute right-0 z-10 mt-28 w-[305px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none py-[18px] px-4"
+         class="hidden absolute top-14 right-0 z-15 w-[305px] rounded-lg bg-white shadow-lg ring-opacity-5 focus:outline-none py-[18px] pb-0 px-4 drop-shadow-lg"
          role="menu"
          aria-orientation="vertical"
          aria-labelledby="menu-button"
@@ -99,7 +99,7 @@
                   class="w-10 h-10 rounded-full"
                   alt="{{ user.teacher.full_name }}" />
         {% else %}
-            <div class="bg-green-500/50 w-10 h-10 py-2.5 px-3 rounded-full">
+            <div class="bg-green-500/50 w-10 h-10 flex justify-center items-center rounded-full">
               <i class="fas fa-solid fa-user fa-lg"></i>
             </div>
         {% endif %}
@@ -115,6 +115,32 @@
             {% endif %}
           </p>
           <p class="text-base font-medium text-slate-400 whitespace-nowrap overflow-hidden text-ellipsis block">{{ user.email }}</p>
+        </div>
+      </a>
+      <hr class="mt-[18px]">
+      <a href="{% url 'users:detail' user.pk %}">
+        <div class="flex gap-4 items-center py-4 px-[14px] hover:bg-slate-100 transition-colors">
+          <img src="{% static 'images/icons/icon-settings.svg' %}"
+          class="w-[24px] h-[24px]"
+          alt="" />
+          <p class="text-black text-[18px] font-medium">Meu Perfil</p>
+        </div>
+      </a>
+      <a href="#">
+        <div class="flex gap-4 items-center py-4 px-[14px] hover:bg-slate-100 transition-colors">
+          <img src="{% static 'images/icons/icon-help.svg' %}"
+          class="w-[24px] h-[24px]"
+          alt="" />
+          <p class="text-black text-[18px] font-medium">Ajuda</p>
+        </div>
+      </a>
+      <hr>
+      <a id="logoutButton" class="cursor-pointer">
+        <div class="flex gap-4 items-center py-6 px-[14px] hover:bg-slate-100 transition-colors">
+          <img src="{% static 'images/icons/icon_logout.svg' %}"
+          class="w-[24px] h-[24px]"
+          alt="" />
+          <p class="text-[18px] font-medium text-red-700">Encerrar Sessão</p>
         </div>
       </a>
       {% comment %} <div class="flex items-center justify-between w-full px-4 py-2 text-left text-sm font-sans align-baseline font-light cursor-pointer hover:text-green-700"
