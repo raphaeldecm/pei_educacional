@@ -50,7 +50,7 @@ class TeacherListView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.Li
     title = _("Docentes")
     paginate_by = constants.DEFAULT_PAGE_SIZE
     filterset_class = TeacherFilter
-    template_name = "people/teacher_list.html"
+    template_name = "people/teacher/teacher_list.html"
     ordering = ["name"]
 
 
@@ -65,6 +65,7 @@ class TeacherCreateView(
     form_class = TeacherForm
     success_url = reverse_lazy("people:teacher_list")
     success_message = _("O professor foi cadastrado com sucesso.")
+    template_name = "people/teacher/teacher_form.html"
 
     def form_valid(self, form):
         form.instance.created_by = self.request.user
@@ -83,6 +84,7 @@ class TeacherUpdateView(
     form_class = TeacherForm
     success_url = reverse_lazy("people:teacher_list")
     success_message = _("O professor foi atualizado com sucesso.")
+    template_name = "people/teacher/teacher_form.html"
 
     def form_valid(self, form):
         form.instance.updated_by = self.request.user
@@ -99,6 +101,7 @@ class TeacherDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
     model = Teacher
     context_object_name = "teacher"
     title = _("Detalhes do Docente")
+    template_name = "people/teacher/teacher_detail.html"
 
 
 class StudentCreateView(CreateView):
