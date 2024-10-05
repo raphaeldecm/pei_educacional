@@ -21,7 +21,7 @@
       <p class="text-lg">Participantes</p>
       <div class="flex flex-wrap items-center gap-8 py-6">
         {% include "_dashboard_card.html" with link_to="people:teacher_list" path_icon="images/icons/icon-multiple-users-green.svg" text="Docentes" count=teachers_counter %}
-        {% include "_dashboard_card.html" with link_to="student_create" path_icon="images/icons/icon-user-green.svg" text="Alunos" count=students_counter %}
+        {% include "_dashboard_card.html" with link_to="people:student_create" path_icon="images/icons/icon-user-green.svg" text="Alunos" count=students_counter %}
       </div>
     </div>
   </div>

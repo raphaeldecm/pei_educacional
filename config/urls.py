@@ -19,12 +19,6 @@ from rest_framework_simplejwt.views import (
 )
 from sistema_pei.core.views import (
     HomeListView,
-    ProfilePageView,
-    UpdateStudentGradesView,
-    EditHistoricPersonalDataView,
-    EditPersonalDataView,
-    UploadStudentFilesView,
-    DeletePersonalFilesView,
 )
 urlpatterns = [
     path(
@@ -45,36 +39,6 @@ urlpatterns = [
         include("sistema_pei.educational_plan.urls", namespace="educational_plan"),
     ),
     path(
-        "profile/<int:student_id>",
-        login_required(ProfilePageView.as_view()),
-        name="profile",
-    ),
-    path(
-        "profile/<int:student_id>/edit_personal_data/",
-        login_required(EditPersonalDataView.as_view()),
-        name="edit_personal_data",
-    ),
-    path(
-        "profile/<int:student_id>/update_student_grades/<int:enrollment_id>",
-        login_required(UpdateStudentGradesView.as_view()),
-        name="update_student_grades",
-    ),
-    path(
-        "profile/<int:student_id>/edit_historic_data/",
-        login_required(EditHistoricPersonalDataView.as_view()),
-        name="edit_personal_historic_data",
-    ),
-    path(
-        "profile/<int:student_id>/upload_files/",
-        login_required(UploadStudentFilesView.as_view()),
-        name="upload_files",
-    ),
-    path(
-        "profile/<int:student_id>/delete_file/",
-        login_required(DeletePersonalFilesView.as_view()),
-        name="delete_personal_file",
-    ),
-    path(
         "about/",
         TemplateView.as_view(template_name="pages/about.html"),
         name="about",
@@ -85,11 +49,6 @@ urlpatterns = [
     path("users/", include("sistema_pei.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     path("activate/<uidb64>/<token>/", activate_account, name="activate"),
-    path(
-        "student/create/",
-        login_required(StudentCreateView.as_view()),
-        name="student_create",
-    ),
     # JWT
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),

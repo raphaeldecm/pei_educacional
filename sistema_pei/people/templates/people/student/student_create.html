@@ -11,7 +11,7 @@
 {% block content %}
   <div class="w-10/12 my-10">
     <h2 class="font-sans text-slate-900 text-3xl font-medium">Cadastrar Aluno</h2>
-    <form action="{% url 'student_create' %}"
+    <form action="{% url 'people:student_create' %}"
           method="post"
           enctype="multipart/form-data"
           class="mt-10 grid mini:grid-cols-1 md:grid-cols-2 gap-8">
