@@ -24,7 +24,7 @@
     {% if student_notes %}
       {% for subject_grades in student_notes %}
         <form method="post"
-              action="{% url 'people:update_student_grades' student.id subject_grades.id %}"
+              action="{% url 'people:student_update_grades' student.id subject_grades.id %}"
               class="mt-[42px]">
           {% csrf_token %}
           <p class="font-light text-slate-900 capitalize">{{ subject_grades.offer.subject.name }}</p>

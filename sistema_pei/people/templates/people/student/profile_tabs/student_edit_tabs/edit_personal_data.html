@@ -3,7 +3,7 @@
 <div>
   <form id="updateForm"
         method="post"
-        action="{% url 'people:edit_personal_data' student.id %}"
+        action="{% url 'people:profile_update' student.id %}"
         enctype="multipart/form-data"
         class="space-y-10">
     {% csrf_token %}

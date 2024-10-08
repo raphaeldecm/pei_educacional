@@ -29,7 +29,7 @@
     {% endfor %}
   </ul>
   <form id="updateForm"
-        action="{% url 'people:upload_files' student.id %}"
+        action="{% url 'people:student_upload_files' student.id %}"
         method="post"
         enctype="multipart/form-data"
         class="mt-10 space-y-4">

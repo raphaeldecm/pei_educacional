@@ -172,7 +172,7 @@ class ProfilePageView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        student_id = self.kwargs.get("student_id")
+        student_id = self.kwargs.get("pk")
         student = get_object_or_404(Student, id=student_id)
 
         # Profile data
@@ -304,7 +304,7 @@ class EditPersonalDataView(LoginRequiredMixin, View):
     """
 
     def post(self, request, *args, **kwargs):
-        student_id = kwargs.get("student_id")
+        student_id = kwargs.get("pk")
         student = get_object_or_404(Student, id=student_id)
         form = ViewEditDataStudentForm(request.POST, request.FILES, instance=student)
 
@@ -329,7 +329,7 @@ class EditHistoricPersonalDataView(LoginRequiredMixin, View):
     """
 
     def post(self, request, *args, **kwargs):
-        student_id = kwargs.get("student_id")
+        student_id = kwargs.get("pk")
         student = get_object_or_404(Student, id=student_id)
         form = ViewEdithistoricStudentForm(request.POST, instance=student)
 
@@ -354,7 +354,7 @@ class DeletePersonalFilesView(LoginRequiredMixin, View):
     """
 
     def post(self, request, *args, **kwargs):
-        student_id = kwargs.get("student_id")
+        student_id = kwargs.get("pk")
         file_id = request.POST.get("file_id")
         student = get_object_or_404(Student, id=student_id)
         file = get_object_or_404(StudentFile, id=file_id, student=student)
@@ -378,7 +378,7 @@ class UploadStudentFilesView(LoginRequiredMixin, View):
     """
 
     def post(self, request, *args, **kwargs):
-        student_id = kwargs.get("student_id")
+        student_id = kwargs.get("pk")
         student = get_object_or_404(Student, id=student_id)
         form = StudentFilesForm(request.POST, request.FILES)
 
