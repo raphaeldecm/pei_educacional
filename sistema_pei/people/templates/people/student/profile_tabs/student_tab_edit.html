@@ -63,13 +63,13 @@
   </nav>
   <section class="w-full space-y-9 col-span-5">
     {% if sub_active_tab == 'edit_personal_data' %}
-      {% include "people/student/profile_tabs/edit_student_tabs/edit_personal_data.html" %}
+      {% include "people/student/profile_tabs/student_edit_tabs/edit_personal_data.html" %}
     {% elif sub_active_tab == 'edit_files' %}
-      {% include "people/student/profile_tabs/edit_student_tabs/edit_files.html" %}
+      {% include "people/student/profile_tabs/student_edit_tabs/edit_files.html" %}
     {% elif sub_active_tab == 'edit_historic' %}
-      {% include "people/student/profile_tabs/edit_student_tabs/edit_historic.html" %}
+      {% include "people/student/profile_tabs/student_edit_tabs/edit_historic.html" %}
     {% elif sub_active_tab == 'edit_notes' %}
-      {% include "people/student/profile_tabs/edit_student_tabs/edit_notes.html" %}
+      {% include "people/student/profile_tabs/student_edit_tabs/edit_notes.html" %}
     {% endif %}
   </section>
 </div>

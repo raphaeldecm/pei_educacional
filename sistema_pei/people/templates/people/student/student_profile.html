@@ -142,13 +142,13 @@
     </nav>
     <section>
       {% if active_tab == 'general' %}
-        {% include "people/student/profile_tabs/general.html" %}
+        {% include "people/student/profile_tabs/student_tab_general.html" %}
       {% elif active_tab == 'historic' %}
-        {% include "people/student/profile_tabs/historic.html" %}
+        {% include "people/student/profile_tabs/student_tab_historic.html" %}
       {% elif active_tab == 'grades' %}
-        {% include "people/student/profile_tabs/student_grades.html" %}
+        {% include "people/student/profile_tabs/student_tab_grades.html" %}
       {% elif active_tab == 'edit_student_data' %}
-        {% include "people/student/profile_tabs/edit_student_data.html" %}
+        {% include "people/student/profile_tabs/student_tab_edit.html" %}
       {% endif %}
     </section>
   </div>

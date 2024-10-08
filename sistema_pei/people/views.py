@@ -167,7 +167,7 @@ class StudentCreateView(LoginRequiredMixin, CreateView):
 
 
 class ProfilePageView(LoginRequiredMixin, TemplateView):
-    template_name = "people/student/profile.html"
+    template_name = "people/student/student_profile.html"
     paginate_by = 10
 
     def get_context_data(self, **kwargs):
