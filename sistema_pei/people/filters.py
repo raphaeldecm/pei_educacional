@@ -23,7 +23,7 @@ class StudentFilter(django_filters.FilterSet):
 
     class Meta:
         model = Student
-        fields = ['registration']
+        fields = ['course']
 
     def multi_field_search(self, queryset, name, value):
         return queryset.filter(

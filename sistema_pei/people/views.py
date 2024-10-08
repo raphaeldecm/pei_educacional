@@ -132,7 +132,7 @@ class StudentDeleteView(ProtectedErrorMessageMixin, LoginRequiredMixin, SuccessM
         "Não é possível excluir o aluno, pois ele possui ofertas associadas.",
     )
 
-class StudentCreateView(CreateView):
+class StudentCreateView(LoginRequiredMixin, CreateView):
     model = Student
     form_class = ViewStudentForm
     template_name = "people/student/student_create.html"
@@ -166,7 +166,7 @@ class StudentCreateView(CreateView):
         return response
 
 
-class ProfilePageView(TemplateView):
+class ProfilePageView(LoginRequiredMixin, TemplateView):
     template_name = "people/student/profile.html"
     paginate_by = 10
 
@@ -273,7 +273,7 @@ class ProfilePageView(TemplateView):
         return context
 
 
-class UpdateStudentGradesView(View):
+class UpdateStudentGradesView(LoginRequiredMixin, View):
     """
     View para editar as notas de um Enrollment específico.
     """
@@ -298,7 +298,7 @@ class UpdateStudentGradesView(View):
             return redirect(request.headers.get("referer"))
 
 
-class EditPersonalDataView(View):
+class EditPersonalDataView(LoginRequiredMixin, View):
     """
     View para editar os dados pessoais de um aluno.
     """
@@ -323,7 +323,7 @@ class EditPersonalDataView(View):
         )
 
 
-class EditHistoricPersonalDataView(View):
+class EditHistoricPersonalDataView(LoginRequiredMixin, View):
     """
     View para editar o histórico pessoal de um aluno.
     """
@@ -348,7 +348,7 @@ class EditHistoricPersonalDataView(View):
         )
 
 
-class DeletePersonalFilesView(View):
+class DeletePersonalFilesView(LoginRequiredMixin, View):
     """
     View para deletar arquivos pessoais de um aluno.
     """
@@ -372,7 +372,7 @@ class DeletePersonalFilesView(View):
         )
 
 
-class UploadStudentFilesView(View):
+class UploadStudentFilesView(LoginRequiredMixin, View):
     """
     View para fazer upload de arquivos para um aluno.
     """
