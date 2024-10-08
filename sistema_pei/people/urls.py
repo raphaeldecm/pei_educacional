@@ -52,8 +52,18 @@ urlpatterns = [
         name="delete_personal_file",
     ),
     path(
+        "student/list/",
+        views.StudentListView.as_view(),
+        name="student_list",
+    ),
+    path(
         "student/create/",
         views.StudentCreateView.as_view(),
         name="student_create",
+    ),
+    path(
+        "student/delete/<int:pk>/",
+        views.StudentDeleteView.as_view(),
+        name="student_delete",
     ),
 ]

@@ -22,9 +22,9 @@ from django.core.paginator import Paginator
 from sistema_pei.academics.models import Enrollment
 from sistema_pei.core import constants
 from sistema_pei.core.forms import EnrollmentForm
-from sistema_pei.core.mixins import TitleViewMixin
+from sistema_pei.core.mixins import ProtectedErrorMessageMixin, TitleViewMixin
 from sistema_pei.educational_plan.models import Pei
-from sistema_pei.people.filters import TeacherFilter
+from sistema_pei.people.filters import StudentFilter, TeacherFilter
 from sistema_pei.people.models import Student
 from sistema_pei.people.models import StudentFile
 from sistema_pei.people.models import Teacher
@@ -112,12 +112,31 @@ class TeacherDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
     title = _("Detalhes do Docente")
     template_name = "people/teacher/teacher_detail.html"
 
+class StudentListView(
+    LoginRequiredMixin,
+    TitleViewMixin,
+    FilterView,
+    generic.ListView,
+):
+    model = Student
+    title = _("Alunos")
+    paginate_by = constants.DEFAULT_PAGE_SIZE
+    filterset_class = StudentFilter
+    template_name = "people/student/student_list.html"
+
+class StudentDeleteView(ProtectedErrorMessageMixin, LoginRequiredMixin, SuccessMessageMixin, generic.DeleteView):
+    model = Student
+    success_url = reverse_lazy("people:student_list")
+    success_message = _("O aluno foi excluído com sucesso.")
+    protected_warning_message = _(
+        "Não é possível excluir o aluno, pois ele possui ofertas associadas.",
+    )
 
 class StudentCreateView(CreateView):
     model = Student
     form_class = ViewStudentForm
     template_name = "people/student/student_create.html"
-    success_url = reverse_lazy("student_create")
+    success_url = reverse_lazy("people:student_create")
 
     def form_valid(self, form):
         student = form.save(commit=False)
@@ -269,7 +288,7 @@ class UpdateStudentGradesView(View):
             selected_period = request.POST.get("selectedPeriod", 1)
             messages.success(request, "Dados da disciplina atualizados!")
             return redirect(
-                f"/profile/{enrollment.student.id}?tab=edit_student_data&sub_tab=edit_notes&selectedPeriod={selected_period}",
+                f"/people/profile/{enrollment.student.id}?tab=edit_student_data&sub_tab=edit_notes&selectedPeriod={selected_period}",
             )
         else:
             messages.error(
@@ -300,7 +319,7 @@ class EditPersonalDataView(View):
             request.session["form_data"] = request.POST
 
         return redirect(
-            f"/profile/{student.id}?tab=edit_student_data&sub_tab=edit_personal_data#tab",
+            f"/people/profile/{student.id}?tab=edit_student_data&sub_tab=edit_personal_data#tab",
         )
 
 
@@ -325,7 +344,7 @@ class EditHistoricPersonalDataView(View):
             request.session["form_data"] = request.POST
 
         return redirect(
-            f"/profile/{student.id}?tab=edit_student_data&sub_tab=edit_historic#tab",
+            f"/people/profile/{student.id}?tab=edit_student_data&sub_tab=edit_historic#tab",
         )
 
 
@@ -349,7 +368,7 @@ class DeletePersonalFilesView(View):
             messages.error(self.request, error_message)
 
         return redirect(
-            f"/profile/{student.id}?tab=edit_student_data&sub_tab=edit_files#tab",
+            f"/people/profile/{student.id}?tab=edit_student_data&sub_tab=edit_files#tab",
         )
 
 
@@ -374,6 +393,6 @@ class UploadStudentFilesView(View):
             request.session["form_data"] = request.POST
 
         return redirect(
-            f"/profile/{student.id}?tab=edit_student_data&sub_tab=edit_files#tab",
+            f"/people/profile/{student.id}?tab=edit_student_data&sub_tab=edit_files#tab",
         )
 
