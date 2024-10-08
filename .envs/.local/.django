@@ -12,3 +12,7 @@ REDIS_URL=redis://redis:6379/0
 # Flower
 CELERY_FLOWER_USER=YVEjobvqZdzfzHjrXpAUvjbQdEznwMXq
 CELERY_FLOWER_PASSWORD=1acdPC5oIhap26KGa5TrEUmPPDmnAm1ObiHDj23sYzHNLDdrT9F6jtMEllNbcc7P
+
+CELERY_BROKER_URL=redis://redis:6379/0
+
+DATABASE_URL=postgres://HOKhwytFBXQeegPZDphDMDHwkNsxHwaJ:Ax83AL4vxxnNeWs3AicKnGDZx9c7kDGG5Bd70DiJgip9gqveKu7HMKtvkcka6DMs@postgres/sistema_pei
