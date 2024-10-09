@@ -11,6 +11,12 @@ from django.views import generic
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
 from django_filters.views import FilterView
+from django.views.generic import DetailView
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from django.views.generic import View
+from .models import Pei
 
 from sistema_pei.academics import filters
 from sistema_pei.academics import forms
@@ -135,3 +141,35 @@ class PeiMarkCompletedView(CoordinatorPermission, LoginRequiredMixin, View):
         messages.success(request, 'PEI marcado como concluído com sucesso.')
 
         return redirect('educational_plan:pei_list')
+
+
+
+
+class PeiExportPdfView(View):
+    template_name = 'educational_plan/peis/pei_export.html'
+
+    def get(self, request, *args, **kwargs):
+        pei_id = kwargs.get('pk')
+        pei = Pei.objects.get(id=pei_id)
+
+        template = get_template(self.template_name)
+        html = template.render({'object': pei})
+
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="pei_{pei_id}.pdf"'
+
+        pisa_status = pisa.CreatePDF(html, dest=response)
+
+        if pisa_status.err:
+            return HttpResponse('Erro ao gerar o PDF', status=500)
+
+        return response
+
+class PeiExportPreviewView(DetailView):
+    model = Pei
+    template_name = 'educational_plan/peis/pei_export.html'
+    context_object_name = 'pei'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context

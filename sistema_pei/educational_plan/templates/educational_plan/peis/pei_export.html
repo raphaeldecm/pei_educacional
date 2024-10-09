@@ -1,0 +1,58 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+        .header {
+            text-align: center;
+            background-color: #333;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+      <img src="../../../../static/images/logos/ifrn/ifrn_white.png"
+      alt=""
+      width="18px"
+      height="18px" />
+    </div>
+    <div>
+        <h1>Plano de Ensino Individualizado</h1>
+        <p>Nome do aluno: {{ object.enrollment.student.name }}</p>
+        <p>Professor: {{ object.enrollment.offer.teacher.name }}</p>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Objetivos:</div>
+        <p>{{ object.objective }}</p>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Objetivos Adaptados:</div>
+        <p>{{ object.adapted_objective }}</p>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Conteúdo:</div>
+        <p>{{ object.content }}</p>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Conteúdo Adaptado:</div>
+        <p>{{ object.adapted_content }}</p>
+    </div>
+</body>
+</html>

@@ -34,4 +34,14 @@ urlpatterns = [
         views.PeiMarkCompletedView.as_view(),
         name="pei_mark_completed",
     ),
+    path(
+        "peis/export/<int:pk>/",
+        views.PeiExportPdfView.as_view(),
+        name="pei_export",
+    ),
+    path(
+        "peis/export-preview/<int:pk>/",
+        views.PeiExportPreviewView.as_view(),
+        name="pei_export_preview",
+    ),
 ]

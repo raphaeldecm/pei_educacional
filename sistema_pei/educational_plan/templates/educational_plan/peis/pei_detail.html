@@ -152,7 +152,6 @@
   {% if not object.objective and not object.adapted_objective and not object.content and not object.adapted_content and not object.methodology and not object.adapted_methodology and not object.resources and not object.adapted_resources and not object.assessments and not object.adapted_assessments %}
     <p class="text-center text-[18px] pt-6 text-slate-400">Não há conteúdo preenchido</p>
   {% endif %}
-
   {% comment %} Parecer em andamento {% endcomment %}
   {% comment %} <div>
     <h2 class="text-[24px] font-medium">Parecer:</h2>
@@ -160,5 +159,16 @@
       {{object.adapted_objective}}
     </div>
   </div> {% endcomment %}
+  {% if object.status == "COMPLETED" %}
+  <a href="{% url 'educational_plan:pei_export' object.pk %}" target="_blank" class="flex gap-3 text-slate-300 w-full border border-slate-300 py-4 justify-center rounded-lg cursor-pointer hover:bg-green-500 group hover:text-white hover:border-green-500 transition-all">
+    <img src="{% static 'images/icons/icon-copy.svg' %}"
+         alt=""
+         class="group-hover:filter group-hover:brightness-0 group-hover:invert"
+         width="24px"
+         height="24px" />
+    Exportar como PDF
+  </a>
+  {% endif %}
+
 </div>
 {% endblock content %}
