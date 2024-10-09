@@ -207,7 +207,7 @@ class Student(Person):
     )
 
     abilities = models.TextField(
-        verbose_name=_("Conhecimentos, Habilidades,Capacidades e Interesses"),
+        verbose_name=_("Conhecimentos, Habilidades, Capacidades e Interesses"),
         blank=True,
     )
 
