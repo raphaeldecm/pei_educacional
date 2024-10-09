@@ -5,54 +5,83 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 12px;
-        }
-        .header {
-            text-align: center;
-            background-color: #333;
-        }
-        .section {
-            margin-bottom: 20px;
-        }
-        .section-title {
-            font-weight: bold;
-            text-decoration: underline;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+          font-family: Arial, sans-serif;
+          font-size: 12px;
+      }
+      .header {
+          text-align: center;
+          background-color: #333;
+      }
+      .section {
+          margin-bottom: 20px;
+      }
+      .section-title {
+          font-weight: medium;
+          font-size: 18px;
+      }
+      .section-content {
+        color: #94A3B8;
+        text-align: justify;
+      }
     </style>
 </head>
 <body>
-    <div class="header">
-      <img src="../../../../static/images/logos/ifrn/ifrn_white.png"
-      alt=""
-      width="18px"
-      height="18px" />
-    </div>
-    <div>
-        <h1>Plano de Ensino Individualizado</h1>
-        <p>Nome do aluno: {{ object.enrollment.student.name }}</p>
-        <p>Professor: {{ object.enrollment.offer.teacher.name }}</p>
-    </div>
+  <div class="header">
+    <img src="../../../../static/images/logos/ifrn/ifrn_white.png"
+    alt=""
+    width="18px"
+    height="18px" />
+  </div>
+  <div>
+      <h1>Plano de Ensino Individualizado</h1>
+      <p>Nome do aluno: {{ object.enrollment.student.name }}</p>
+      <p>Professor: {{ object.enrollment.offer.teacher.name }}</p>
+  </div>
 
-    <div class="section">
-        <div class="section-title">Objetivos:</div>
-        <p>{{ object.objective }}</p>
-    </div>
-
-    <div class="section">
-        <div class="section-title">Objetivos Adaptados:</div>
-        <p>{{ object.adapted_objective }}</p>
-    </div>
-
-    <div class="section">
-        <div class="section-title">Conteúdo:</div>
-        <p>{{ object.content }}</p>
-    </div>
-
-    <div class="section">
-        <div class="section-title">Conteúdo Adaptado:</div>
-        <p>{{ object.adapted_content }}</p>
-    </div>
+  <div class="section">
+      <div class="section-title">Objetivos:</div>
+      <p class="section-content">{{ object.objective }}</p>
+  </div>
+  <div class="section">
+    <div class="section-title">Objetivos Adaptados:</div>
+    <p class="section-content">{{object.adapted_objective}}</p>
+  </div>
+  <div class="section">
+      <div class="section-title">Conteúdo programático:</div>
+      <p class="section-content">{{object.content}}</p>
+  </div>
+  <div class="section">
+    <div class="section-title">Conteúdos Adaptados:</div>
+    <p class="section-content">{{object.adapted_content}}</p>
+  </div>
+  <div class="section">
+    <div class="section-title">Metodologias:</div>
+    <p class="section-content">{{object.methodology}}</p>
+  </div>
+  <div class="section">
+    <div class="section-title">Metodologias adaptadas:</div>
+    <p class="section-content">{{object.adapted_methodology}}</p>
+  </div>
+  <div class="section">
+    <div class="section-title">Recursos didáticos:</div>
+    <p class="section-content">{{object.resources}}</p>
+  </div>
+  <div class="section">
+    <div class="section-title">Recursos didáticos adaptados:</div>
+    <p class="section-content">{{object.adapted_resources}}</p>
+  </div>
+  <div class="section">
+    <div class="section-title">Avaliações:</div>
+    <p class="section-content">{{object.assessments}}</p>
+  </div>
+  <div class="section">
+    <div class="section-title">Avaliações Adaptadas:</div>
+    <p class="section-content">{{object.adapted_assessments}}</p>
+  </div>
 </body>
 </html>
