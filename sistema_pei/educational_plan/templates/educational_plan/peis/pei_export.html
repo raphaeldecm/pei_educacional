@@ -17,12 +17,14 @@
         font-weight: 500;
         text-align: center;
         font-weight: medium;
-        margin: 30px 0;
+        margin: 60px 0;
         display: block;
       }
       .header {
-          text-align: center;
-          background-color: #333;
+
+      }
+      .header p {
+        margin: 0;
       }
       .section-title {
         font-weight: medium;
@@ -30,40 +32,49 @@
         margin: 6px 0;
         display: block;
       }
+      .underline {
+        border-bottom: 1px solid #94A3B8;
+        margin-bottom: 24px;
+      }
       .section-content {
         color: #94A3B8;
         text-align: justify;
       }
-      .student-data {
+      .data-block {
         display: flex;
       }
-      .student-data p, .student-data li {
+      .data-block p, .data-block li {
         margin: 0;
         font-size: 12px;
         color: #94A3B8;
       }
-      .student-data strong {
+      .data-block strong {
         color: black;
       }
       .separator {
         margin: 20px 0;
       }
+      .export-info p {
+        margin: 0;
+        text-align: center;
+      }
     </style>
 </head>
 <body>
   <div class="header">
-    <img src="../../../../static/images/logos/ifrn/ifrn_white.png"
-    alt=""
-    width="18px"
-    height="18px" />
+    <div>
+      <p><strong>INSTITUTO FEDERAL DE EDUCAÇÃO, CIÊNCIA E TECNOLOGIA DO RIO GRANDE DO NORTE</strong></p>
+      <p>Campus Pau dos Ferros - Código INEP: 24328308</p>
+      <p>BR 405, KM 154, CEP 59.900-000, Pau dos Ferros (RN)</p>
+    </div>
   </div>
 
   <h1 class="page-title">Plano de Ensino Individualizado</h1>
 
-  <div class="student-data">
-    <h2 class="section-title">Informações do aluno:</h2>
+  <div class="data-block">
+    <h2 class="section-title underline">Informações do aluno:</h2>
+    <p><strong>Matricula:</strong> {{ object.enrollment.student.registration }}</p>
     <p><strong>Nome do aluno:</strong> {{ object.enrollment.student.name }}</p>
-    <p><strong>Professor:</strong> {{ object.enrollment.offer.teacher.name }}</p>
     <p><strong>Necessidades Educacionais Específicas:</strong>
       <ul>
         {% for necessitie in object.enrollment.student.educational_necessities.all %}
@@ -74,9 +85,15 @@
     <p><strong>Dificuldades:</strong></p>
     <p class="section-content">{{ object.enrollment.student.dificulties }}</p>
   </div>
-  <hr class="separator">
-
-
+  <br>
+  <div class="data-block">
+    <h2 class="section-title underline">Informações da disciplina:</h2>
+    <p><strong>Nome da disciplina:</strong> {{ object.enrollment.offer.subject.name }}</p>
+    <p><strong>Professor:</strong> {{ object.enrollment.offer.teacher.name }}</p>
+    <p><strong>Periodo de referência:</strong> {{ object.enrollment.offer.year }}.{{ object.enrollment.offer.semester }}</p>
+  </div>
+  <br>
+  <h2 class="section-title underline">Informações do Plano de ensino:</h2>
   <div class="section">
       <h2 class="section-title">Objetivos:</h2>
       <p class="section-content">{{ object.objective }}</p>
@@ -116,6 +133,11 @@
   <div class="section">
     <h2 class="section-title">Avaliações Adaptadas:</h2>
     <p class="section-content">{{object.adapted_assessments}}</p>
+  </div>
+  <br>
+  <div class="export-info">
+    <p>Documento emitido às {{ formatted_date }}.</p>
+    <p style="color: #94A3B8">© {{ current_year }} Gerenciador de Plano Educacional Individualizado</p>
   </div>
 </body>
 </html>
