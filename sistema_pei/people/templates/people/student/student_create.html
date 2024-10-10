@@ -161,7 +161,6 @@
         <select id="{{ form.sectors.id_for_label }}"
                 name="{{ form.sectors.name }}"
                 multiple
-                required
                 class="indeterminate:bg-gray-300 bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">
           {% for value, label in form.sectors.field.choices %}
             <option class="hover:bg-green-100"
