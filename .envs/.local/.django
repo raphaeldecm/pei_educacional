@@ -2,6 +2,11 @@
 # ------------------------------------------------------------------------------
 USE_DOCKER=yes
 IPYTHONDIR=/app/.ipython
+
+DJANGO_SECRET_KEY=BGS9KbnTSEYXiRZq0xkie2Xiu81XpjK7EM8wjcaOYkwY0Aa3e1ay4cgMs4aYK4FY
+DJANGO_ALLOWED_HOSTS=pei-hmg.nadic.ifrn.edu.br
+DJANGO_CSRF_TRUSTED_ORIGINS=https://pei-hmg.nadic.ifrn.edu.br
+
 # Redis
 # ------------------------------------------------------------------------------
 REDIS_URL=redis://redis:6379/0
@@ -12,3 +17,22 @@ REDIS_URL=redis://redis:6379/0
 # Flower
 CELERY_FLOWER_USER=YVEjobvqZdzfzHjrXpAUvjbQdEznwMXq
 CELERY_FLOWER_PASSWORD=1acdPC5oIhap26KGa5TrEUmPPDmnAm1ObiHDj23sYzHNLDdrT9F6jtMEllNbcc7P
+
+CELERY_BROKER_URL=redis://redis:6379/0
+
+DATABASE_URL=postgres://HOKhwytFBXQeegPZDphDMDHwkNsxHwaJ:Ax83AL4vxxnNeWs3AicKnGDZx9c7kDGG5Bd70DiJgip9gqveKu7HMKtvkcka6DMs@postgres/sistema_pei
+
+
+
+# Email 
+
+DJANGO_EMAIL_HOST_USER=sistema.peis.ifrn@gmail.com
+DJANGO_EMAIL_HOST_PASSWORD=jhnnirelpzwkqxkc
+DJANGO_EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+#SOCIAL_AUTH_SUAP_KEY=9czCe0jS79FCC1sLoGbMRRooJ3zEnUQ0sRlvknZG
+#SOCIAL_AUTH_SUAP_SECRET=eQXU0Md3CUFThvgzGp5E9soWnW4HauOUCJZ0mZoPeGBAjBDB5euhGr2JKKnrDOlpOTf4YOWaOjHETnUOEH8lbxUtrr4qApmvZbPB49REqbzYYYxieflLsTeT4K7oMMZH
+
+SOCIAL_AUTH_SUAP_KEY=hDsiKrEwHouxxjY309TfzcBsuFWEfiedfhK142LU
+SOCIAL_AUTH_SUAP_SECRET=FVuNCf5LWVVa8iRtxTUB5yrP0LjrPjPY6kFuVeaObLZA0LXHmQ3t3Qyr9jdDIFJKV9eXdw63cQp0zU35uHfYUzc710YPCfBAQkVSEUM8VroIFmjhvsmMprbYgHLHdpDf
+
+DJANGO_SETTINGS_MODULE=config.settings.production

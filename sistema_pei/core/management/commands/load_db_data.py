@@ -13,8 +13,9 @@ class CommandItem(NamedTuple):
 COMMANDS = [
     CommandItem("migrate", "Migrating database..."),
     CommandItem("create_admin_user", "Creating superuser..."),
-    CommandItem("create_user_groups", "Creating user groups..."),
+    CommandItem("update_user_profiles", "Updating user profiles..."),
     CommandItem("load_db_people", "Loading people data..."),
+    CommandItem("populate_courses", "Loading courses data..."),
 ]
 
 

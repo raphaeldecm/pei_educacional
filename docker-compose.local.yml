@@ -2,6 +2,8 @@ volumes:
   sistema_pei_local_postgres_data: {}
   sistema_pei_local_postgres_data_backups: {}
   sistema_pei_local_redis_data: {}
+  media_data: {}
+  static_data: {}
 
 services:
   django: &django
@@ -34,13 +36,23 @@ services:
     env_file:
       - ./.envs/.local/.postgres
 
+  nginx:
+    build:
+      context: .
+      dockerfile: ./compose/production/nginx/Dockerfile
+    volumes:
+      - static_data:/app/staticfiles
+      - media_data:/app/media
+    ports:
+      - 84:80
+    restart: unless-stopped  
+
   redis:
     image: docker.io/redis:6
     container_name: sistema_pei_local_redis
 
     volumes:
       - sistema_pei_local_redis_data:/data
-
 
   celeryworker:
     <<: *django
