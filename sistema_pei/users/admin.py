@@ -6,7 +6,6 @@ from django.utils.translation import gettext_lazy as _
 
 from .forms import UserAdminChangeForm
 from .forms import UserAdminCreationForm
-from .models import Sector
 from .models import User
 
 if settings.DJANGO_ADMIN_FORCE_ALLAUTH:
@@ -20,7 +19,7 @@ class UserAdmin(auth_admin.UserAdmin):
     form = UserAdminChangeForm
     add_form = UserAdminCreationForm
     fieldsets = (
-        (None, {"fields": ("email", "password", "sector")}),
+        (None, {"fields": ("email", "password")}),
         (_("Personal info"), {"fields": ("name",)}),
         (
             _("Permissions"),
@@ -48,6 +47,3 @@ class UserAdmin(auth_admin.UserAdmin):
             },
         ),
     )
-
-
-admin.site.register(Sector)
