@@ -49,7 +49,7 @@
         </div>
         <hr class="mt-6" />
         <div class="flex gap-6">
-          <a href="{% url 'profile' object.enrollment.student.id %}" class="w-max cursor-pointer flex items-center justify-center mt-6 gap-[10px] p-[10px] h-[44px] bg-green-500 rounded-[6px] text-neutral-50 hover:opacity-85">
+          <a href="{% url 'people:profile' object.enrollment.student.id %}" class="w-max cursor-pointer flex items-center justify-center mt-6 gap-[10px] p-[10px] h-[44px] bg-green-500 rounded-[6px] text-neutral-50 hover:opacity-85">
             <img src="{% static 'images/icons/icon-eye-white.svg' %}"
                  alt=""
                  width="24px"

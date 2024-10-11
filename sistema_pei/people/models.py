@@ -3,11 +3,14 @@ from django.contrib.auth import models
 from django.db import models
 from django.db import transaction
 from django.utils.translation import gettext_lazy as _
+from multiselectfield import MultiSelectField
 
+from sistema_pei import users
 from sistema_pei.core import constants
 from sistema_pei.core.models import BaseModel
 from sistema_pei.core.models import get_sentinel_user
 from sistema_pei.users.decorators import profile
+from sistema_pei.users.models import User
 
 User = get_user_model()
 
@@ -232,9 +235,10 @@ class Student(Person):
         verbose_name=_("Período de Referência"),
     )
 
-    sectors = models.ManyToManyField(
-        "users.Sector",
+    sectors = MultiSelectField(
+        choices=User.Sector.choices,
         verbose_name=_("Setores"),
+        blank=True
     )
 
     class Meta:

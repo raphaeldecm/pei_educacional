@@ -1,6 +1,7 @@
 import django_filters
 
-from .models import Campus
+from .models import Campus, Student
+from django.db.models import Q
 from .models import Teacher
 
 
@@ -16,3 +17,16 @@ class TeacherFilter(django_filters.FilterSet):
     class Meta:
         model = Teacher
         fields = ["name", "email", "campus", "code"]
+
+class StudentFilter(django_filters.FilterSet):
+    search = django_filters.CharFilter(method='multi_field_search', label="Search")
+
+    class Meta:
+        model = Student
+        fields = ['course']
+
+    def multi_field_search(self, queryset, name, value):
+        return queryset.filter(
+            Q(name__icontains=value) |
+            Q(registration__icontains=value)
+        )

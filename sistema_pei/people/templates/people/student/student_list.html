@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% load static i18n %}
+{% load breadcrumb_item %}
+
+{% block breadcrumb %}
+  {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
+  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" url="academics:dashboard" %}
+  {% breadcrumb_item text="Alunos" icon="images/icons/icon-user-green.svg" %}
+{% endblock breadcrumb %}
+
+{% block content %}
+  <div class="w-full">
+    <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
+    <form>
+      <div class="mb-[26px] flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
+        <img src="{% static 'images/icons/icon-search.svg' %}"
+             alt=""
+             width="18px"
+             height="18px" />
+        <input type="text"
+               name="search"
+               placeholder="Pesquisar..."
+               class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50"
+               value="{{ request.GET.search }}" />
+      </div>
+      <div class="flex gap-[8px] flex-wrap">
+        <div class="relative w-[322px] cursor-pointer flex-1">
+          <img class="absolute top-[12px] right-[10px]"
+               src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+               width="24px"
+               height="24px" />
+          <select name="course"
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-300 appearance-none bg-neutral-50">
+            <option value="default" selected disabled>Selecione o curso...</option>
+            {% for course in filter.form.course.field.queryset %}
+              <option value="{{ course.id }}"
+                      {% if course.id|stringformat:"s" == request.GET.course %}selected{% endif %}>
+                {{ course }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+        <button class="flex items-center justify-center gap-[10px] min-w-[100px] h-[48px] bg-green-500 rounded-[6px] text-neutral-50">
+          <img src="{% static 'images/icons/icon-filter.svg' %}"
+               alt=""
+               width="24px"
+               height="24px" />
+          <span>Filtrar</span>
+        </button>
+      </div>
+    </form>
+    <div class="flex mt-[56px] gap-[16px]">
+      <a href="{% url 'people:student_create' %}"
+         class=" text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer">
+        Cadastrar Novo Aluno
+      </a>
+    </div>
+    <div class="mt-[53px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg">
+      <table class="table-auto w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px]">
+        <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">
+          <tr>
+            <th class="pl-[76px]">Perfil</th>
+            <th>Matrícula</th>
+            <th>Nome</th>
+            <th>Curso</th>
+            <th style="text-align: center" class='pr-[30px]'>Ações</th>
+          </tr>
+        </thead>
+        <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
+          {% for object in object_list %}
+            <tr>
+              <td class="pl-[76px]">
+                <img src="{{ object.image.url }}"
+                     alt=""
+                     class="rounded-full w-16 h-16 aspect-square" />
+              </td>
+              <td>{{ object.registration }}</td>
+              <td>{{ object.name }}</td>
+              <td>{{object.course.name}}</td>
+              <td>
+                <span class="flex justify-center items-center h-full gap-[30px] pr-[26px]">
+                  <a href="{% url 'people:profile' object.id %}" class="hover:filter hover:brightness-0 transition-all">
+                    <img src="{% static 'images/icons/icon-eye.svg' %}"
+                         alt=""
+                         width="24px"
+                         height="24px"
+                         class="cursor-pointer" />
+                  </a>
+                  <a href="/people/profile/{{object.id}}?tab=edit_student_data#tab" class="hover:filter hover:brightness-0 transition-all">
+                    <img src="{% static 'images/icons/icon-edit-element.svg' %}"
+                         alt=""
+                         width="24px"
+                         height="24px"
+                         class="cursor-pointer" />
+                  </a>
+                  <button type="button"
+                          id="openModal{{ object.pk }}"
+                          data-modal-id="confirmationModal{{ object.pk }}" class="hover:filter hover:brightness-0 transition-all">
+                    <img src="{% static 'images/icons/icon-remove-element.svg' %}"
+                         alt=""
+                         height="24px"
+                         class="cursor-pointer" />
+                  </button>
+                </span>
+              </td>
+              {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão do aluno" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="people:student_delete" %}
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="7" class="text-center">Nenhum aluno cadastrado.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% include "_table_pagination.html" %}
+  </div>
+{% endblock content %}

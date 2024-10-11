@@ -1,7 +1,7 @@
 <div>
   <form id="updateForm"
         method="post"
-        action="{% url 'edit_personal_historic_data' student.id %}"
+        action="{% url 'people:student_update_historic' student.id %}"
         enctype="multipart/form-data">
     {% csrf_token %}
     <!-- Campo personal_history -->

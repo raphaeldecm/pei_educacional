@@ -8,28 +8,19 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from sistema_pei.core import constants
-
 from .managers import UserManager
 
-
-class Sector(models.Model):
-    name = models.CharField(_("Sector Name"), max_length=255)
-
-    def __str__(self):
-        return self.name
-
-
 class User(AbstractUser):
-    class Sector(models.TextChoices):
-        NAPNE = "NAPNE", _("NAPNE")
-        ETEP = "ETEP", _("ETEP")
-        DIAC = "DIAC", _("DIAC")
 
     """
     Default custom user model for sistema-pei.
     If adding fields that need to be filled at user signup,
     check forms.SignupForm and forms.SocialSignupForms accordingly.
     """
+    class Sector(models.TextChoices):
+        NAPNE = "NAPNE", _("NAPNE")
+        ETEP = "ETEP", _("ETEP")
+        DIAC = "DIAC", _("DIAC")
 
     # First and last name do not cover name patterns around the globe
     name = CharField(_("Name of User"), blank=True, max_length=255)

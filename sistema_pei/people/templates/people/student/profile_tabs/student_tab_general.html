@@ -138,13 +138,6 @@
               </button> {% endcomment %}
             </span>
           </td>
-          {% comment %} {% url 'educational_plan:pei_delete' pei.id as full_delete_url %}
-          {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão do PEI" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." full_delete_url=full_delete_url %}
-          </tr>
-        {% empty %}
-          <tr>
-            <td colspan="4" class="text-center">Nenhum PEI cadastrado.</td>
-          </tr> {% endcomment %}
       {% endfor %}
     </tbody>
   </table>
