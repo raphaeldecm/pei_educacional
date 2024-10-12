@@ -15,6 +15,7 @@ from django.views.generic import DetailView
 from django.http import HttpResponse
 from django.template.loader import get_template
 from datetime import datetime
+from sistema_pei.educational_plan.services import generatePeiExportHtml
 from xhtml2pdf import pisa
 from django.views.generic import View
 from .models import Pei
@@ -145,22 +146,9 @@ class PeiMarkCompletedView(CoordinatorPermission, LoginRequiredMixin, View):
 
 
 class PeiExportPdfView(View):
-    template_name = 'educational_plan/peis/pei_export.html'
-
     def get(self, request, *args, **kwargs):
         pei_id = kwargs.get('pk')
-        pei = Pei.objects.get(id=pei_id)
-
-        current_datetime = datetime.now()
-        formatted_date = current_datetime.strftime('%H:%Mh, em %d/%m/%Y')
-        current_year = current_datetime.strftime('%Y')
-
-        template = get_template(self.template_name)
-        html = template.render({
-            'object': pei,
-            'formatted_date': formatted_date,
-            'current_year': current_year
-        })
+        html = generatePeiExportHtml(pei_id)
 
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="pei_{pei_id}.pdf"'
