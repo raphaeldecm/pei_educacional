@@ -29,21 +29,3 @@ class SubjectForm(forms.ModelForm):
             "resources",
             "assessments"
         ]
-
-class PeiForm(forms.ModelForm):
-    class Meta:
-        model = Pei
-        fields = [
-            "enrollment",
-            "status",
-            "objective",
-            "adapted_objective",
-            "content",
-            "adapted_content",
-            "methodology",
-            "adapted_methodology",
-            "resources",
-            "adapted_resources",
-            "assessments",
-            "adapted_assessments",
-        ]

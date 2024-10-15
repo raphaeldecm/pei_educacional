@@ -179,7 +179,7 @@
       <div class="mb-4 col-span-2 flex-1">
         <textarea id="{{ form.objective.id_for_label }}"
                   name="{{ form.objective.name }}"
-                  placeholder="Escreva aqui!"
+                  placeholder="Escreva um comentário aqui!"
                   class="bg-transparent font-sans appearance-none border rounded-lg h-[177px] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.objective.value|default_if_none:'' }}</textarea>
         {% if form.objective.errors %}
           <ul class="list-disc p-2">
@@ -194,6 +194,7 @@
 
   <div class="flex flex-col gap-8">
 
+    {% comment %} Comentário {% endcomment %}
     <div class="p-10 border border-slate-200 rounded-lg flex gap-6">
       <div class="bg-green-500/50 w-20 h-20 flex justify-center items-center rounded-full">
         <i class="fas fa-solid fa-user fa-lg"></i>
@@ -203,32 +204,27 @@
         <p class="font-medium">19/07/2024 Há 9h</p>
         <pre class="text-justify text-wrap font-poppins ">Lorem Ipsum é simplesmente uma simulação de texto da  indústria tipográfica e de impressos, e vem sendo utilizado desde o  século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e  os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum  sobreviveu não só a cinco séculos, como também ao salto para a  editoração eletrônica, permanecendo essencialmente inalterado.
         </pre>
+        {% comment %} Subcomentários {% endcomment %}
+        <div class="flex flex-col gap-8">
+          <div class="p-10 border border-slate-200 rounded-lg flex gap-6">
+            <div class="bg-green-500/50 w-20 h-20 flex justify-center items-center rounded-full">
+              <i class="fas fa-solid fa-user fa-lg"></i>
+            </div>
+            <div class="text-[16px] flex-1 flex flex-col gap-4">
+              <p class="font-medium">Comentários</p>
+              <p class="font-medium">19/07/2024 Há 9h</p>
+              <pre class="text-justify text-wrap font-poppins ">Lorem Ipsum é simplesmente uma simulação de texto da  indústria tipográfica e de impressos, e vem sendo utilizado desde o  século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e  os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum  sobreviveu não só a cinco séculos, como também ao salto para a  editoração eletrônica, permanecendo essencialmente inalterado.
+              </pre>
+              {% comment %} Subcomentários {% endcomment %}
+              <div>
+
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="p-10 border border-slate-200 rounded-lg flex gap-6">
-      <div class="bg-green-500/50 w-20 h-20 flex justify-center items-center rounded-full">
-        <i class="fas fa-solid fa-user fa-lg"></i>
-      </div>
-      <div class="text-[16px] flex-1 flex flex-col gap-4">
-        <p class="font-medium">Comentários</p>
-        <p class="font-medium">19/07/2024 Há 9h</p>
-        <pre class="text-justify text-wrap font-poppins ">Lorem Ipsum é simplesmente uma simulação de texto da  indústria tipográfica e de impressos, e vem sendo utilizado desde o  século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e  os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum  sobreviveu não só a cinco séculos, como também ao salto para a  editoração eletrônica, permanecendo essencialmente inalterado.
-        </pre>
-      </div>
-    </div>
-
-    <div class="p-10 border border-slate-200 rounded-lg flex gap-6">
-      <div class="bg-green-500/50 w-20 h-20 flex justify-center items-center rounded-full">
-        <i class="fas fa-solid fa-user fa-lg"></i>
-      </div>
-      <div class="text-[16px] flex-1 flex flex-col gap-4">
-        <p class="font-medium">Comentários</p>
-        <p class="font-medium">19/07/2024 Há 9h</p>
-        <pre class="text-justify text-wrap font-poppins ">Lorem Ipsum é simplesmente uma simulação de texto da  indústria tipográfica e de impressos, e vem sendo utilizado desde o  século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e  os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum  sobreviveu não só a cinco séculos, como também ao salto para a  editoração eletrônica, permanecendo essencialmente inalterado.
-        </pre>
-      </div>
-    </div>
   </div>
 
 </div>

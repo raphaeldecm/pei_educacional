@@ -87,6 +87,7 @@
               <textarea id="{{ form.objective.id_for_label }}"
                         name="{{ form.objective.name }}"
                         placeholder="Escreva aqui!"
+                        disabled
                         class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.objective.value|default_if_none:'' }}</textarea>
               {% if form.objective.errors %}
                 <ul class="list-disc p-2">
@@ -119,6 +120,7 @@
               <textarea id="{{ form.content.id_for_label }}"
                         name="{{ form.content.name }}"
                         placeholder="Escreva aqui!"
+                        disabled
                         class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.content.value|default_if_none:'' }}</textarea>
               {% if form.content.errors %}
                 <ul class="list-disc p-2">
@@ -151,6 +153,7 @@
               <textarea id="{{ form.methodology.id_for_label }}"
                         name="{{ form.methodology.name }}"
                         placeholder="Escreva aqui!"
+                        disabled
                         class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.methodology.value|default_if_none:'' }}</textarea>
               {% if form.methodology.errors %}
                 <ul class="list-disc p-2">
@@ -183,6 +186,7 @@
               <textarea id="{{ form.resources.id_for_label }}"
                         name="{{ form.resources.name }}"
                         placeholder="Escreva aqui!"
+                        disabled
                         class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.resources.value|default_if_none:'' }}</textarea>
               {% if form.resources.errors %}
                 <ul class="list-disc p-2">
@@ -215,6 +219,7 @@
               <textarea id="{{ form.assessments.id_for_label }}"
                         name="{{ form.assessments.name }}"
                         placeholder="Escreva aqui!"
+                        disabled
                         class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.assessments.value|default_if_none:'' }}</textarea>
               {% if form.assessments.errors %}
                 <ul class="list-disc p-2">

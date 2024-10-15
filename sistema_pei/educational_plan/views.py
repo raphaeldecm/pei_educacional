@@ -13,15 +13,12 @@ from django.views.generic.edit import UpdateView
 from django_filters.views import FilterView
 from django.views.generic import DetailView
 from django.http import HttpResponse
-from django.template.loader import get_template
-from datetime import datetime
+from sistema_pei.educational_plan.forms import PeiForm
 from sistema_pei.educational_plan.services import generatePeiExportHtml
 from xhtml2pdf import pisa
 from django.views.generic import View
 from .models import Pei
 
-from sistema_pei.academics import filters
-from sistema_pei.academics import forms
 from sistema_pei.core import constants
 from sistema_pei.core.mixins import ProtectedErrorMessageMixin
 from sistema_pei.core.mixins import TitleViewMixin
@@ -61,7 +58,7 @@ class PeiCreateView(
 ):
     title = _("Cadastrar PEI")
     model = models.Pei
-    form_class = forms.PeiForm
+    form_class = PeiForm
     template_name = "educational_plan/peis/pei_form.html"
     success_message = _("PEI criado com sucesso!")
     success_url = reverse_lazy("educational_plan:pei_list")
@@ -86,7 +83,7 @@ class PeiUpdateView(
 ):
     title = _("Editar PEI")
     model = models.Pei
-    form_class = forms.PeiForm
+    form_class = PeiForm
     success_message = _("O PEI foi atualizado com sucesso.")
     template_name = "educational_plan/peis/pei_form.html"
     success_url = reverse_lazy("educational_plan:pei_list")
