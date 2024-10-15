@@ -170,7 +170,7 @@
   </a>
   {% endif %}
 
-  <div class="mt-20">
+  <div class="mt-20" id="comments">
     <h2 class="text-[18px] font-medium">Comentários</h2>
     <form method='post' action="{% url 'educational_plan:pei_comment_create' object.pk %}" class="mt-8 flex gap-4">
       {% csrf_token %}
@@ -200,35 +200,36 @@
   <div class="flex flex-col gap-8">
 
     {% comment %} Comentário {% endcomment %}
-    <div class="p-10 border border-slate-200 rounded-lg flex gap-6">
-      <div class="bg-green-500/50 w-20 h-20 flex justify-center items-center rounded-full">
-        <i class="fas fa-solid fa-user fa-lg"></i>
-      </div>
-      <div class="text-[16px] flex-1 flex flex-col gap-4">
-        <p class="font-medium">Comentários</p>
-        <p class="font-medium">19/07/2024 Há 9h</p>
-        <pre class="text-justify text-wrap font-poppins ">Lorem Ipsum é simplesmente uma simulação de texto da  indústria tipográfica e de impressos, e vem sendo utilizado desde o  século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e  os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum  sobreviveu não só a cinco séculos, como também ao salto para a  editoração eletrônica, permanecendo essencialmente inalterado.
-        </pre>
-        {% comment %} Subcomentários {% endcomment %}
-        <div class="flex flex-col gap-8">
-          <div class="p-10 border border-slate-200 rounded-lg flex gap-6">
-            <div class="bg-green-500/50 w-20 h-20 flex justify-center items-center rounded-full">
-              <i class="fas fa-solid fa-user fa-lg"></i>
-            </div>
-            <div class="text-[16px] flex-1 flex flex-col gap-4">
-              <p class="font-medium">Comentários</p>
-              <p class="font-medium">19/07/2024 Há 9h</p>
-              <pre class="text-justify text-wrap font-poppins ">Lorem Ipsum é simplesmente uma simulação de texto da  indústria tipográfica e de impressos, e vem sendo utilizado desde o  século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e  os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum  sobreviveu não só a cinco séculos, como também ao salto para a  editoração eletrônica, permanecendo essencialmente inalterado.
-              </pre>
-              {% comment %} Subcomentários {% endcomment %}
-              <div>
+    {% for comment in object.comments.all %}
+      <div class="p-10 border border-slate-200 rounded-lg flex gap-6">
+        <div class="bg-green-500/50 w-20 h-20 flex justify-center items-center rounded-full">
+          <i class="fas fa-solid fa-user fa-lg"></i>
+        </div>
+        <div class="text-[16px] flex-1 flex flex-col gap-4">
+          <p class="font-medium">{{comment.created_by.name}}</p>
+          <p class="font-medium">{{ comment.date|date:"d/m/Y \à\s H\h" }}</p>
+          <pre class="text-justify text-wrap font-poppins ">{{comment.text}}
+          </pre>
+          {% comment %} Subcomentários {% endcomment %}
+          {% comment %} <div class="flex flex-col gap-8">
+            <div class="p-10 border border-slate-200 rounded-lg flex gap-6">
+              <div class="bg-green-500/50 w-20 h-20 flex justify-center items-center rounded-full">
+                <i class="fas fa-solid fa-user fa-lg"></i>
+              </div>
+              <div class="text-[16px] flex-1 flex flex-col gap-4">
+                <p class="font-medium">Comentários</p>
+                <p class="font-medium">19/07/2024 Há 9h</p>
+                <pre class="text-justify text-wrap font-poppins ">Lorem Ipsum é simplesmente uma simulação de texto da  indústria tipográfica e de impressos, e vem sendo utilizado desde o  século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e  os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum  sobreviveu não só a cinco séculos, como também ao salto para a  editoração eletrônica, permanecendo essencialmente inalterado.
+                </pre>
+                <div>
 
+                </div>
               </div>
             </div>
-          </div>
+          </div> {% endcomment %}
         </div>
       </div>
-    </div>
+    {% endfor %}
 
   </div>
 

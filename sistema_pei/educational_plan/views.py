@@ -132,6 +132,12 @@ class PeiDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
     title = _("Detalhes do PEI")
     template_name = "educational_plan/peis/pei_detail.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["comments"] = Comment.objects.filter(pei=self.object)
+        return context
+
+
 class PeiMarkCompletedView(CoordinatorPermission, LoginRequiredMixin, View):
     def get(self, request, pk):
         pei = get_object_or_404(models.Pei, id=pk)
