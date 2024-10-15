@@ -13,10 +13,11 @@ from django.views.generic.edit import UpdateView
 from django_filters.views import FilterView
 from django.views.generic import DetailView
 from django.http import HttpResponse
-from sistema_pei.educational_plan.forms import PeiForm
+from sistema_pei.educational_plan.forms import CommentForm, PeiForm
 from sistema_pei.educational_plan.services import generatePeiExportHtml
 from xhtml2pdf import pisa
 from django.views.generic import View
+from sistema_pei.educational_plan.models import Comment
 from .models import Pei
 
 from sistema_pei.core import constants
@@ -165,3 +166,18 @@ class PeiExportPreviewView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+class CommentCreateView(View):
+    def post(self, request, *args, **kwargs):
+        pei = Pei.objects.get(pk=self.kwargs['pk'])
+        form = CommentForm(request.POST)
+
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.pei = pei
+            comment.updated_by = self.request.user
+            comment.created_by = self.request.user
+            comment.save()
+        else:
+            print(form.errors)
+        return redirect('educational_plan:pei_detail', pk=pei.pk)

@@ -160,7 +160,7 @@
     </div>
   </div> {% endcomment %}
   {% if object.status == "COMPLETED" %}
-  <a href="{% url 'educational_plan:pei_export' object.pk %}" target="_blank" class="flex gap-3 text-slate-300 w-full border border-slate-300 py-4 justify-center rounded-lg cursor-pointer hover:bg-green-500 group hover:text-white hover:border-green-500 transition-all">
+  <a href="{% url 'educational_plan:pei_export' object.pk %}" target="_blank" class="flex gap-3 text-slate-300 w-full border border-slate-200 py-4 justify-center rounded-lg cursor-pointer hover:bg-green-500 group hover:text-white hover:border-green-500 transition-all">
     <img src="{% static 'images/icons/icon-copy.svg' %}"
          alt=""
          class="group-hover:filter group-hover:brightness-0 group-hover:invert"
@@ -172,22 +172,27 @@
 
   <div class="mt-20">
     <h2 class="text-[18px] font-medium">Comentários</h2>
-    <div class="mt-8 flex gap-4">
+    <form method='post' action="{% url 'educational_plan:pei_comment_create' object.pk %}" class="mt-8 flex gap-4">
+      {% csrf_token %}
       <div class="bg-green-500/50 w-20 h-20 flex justify-center items-center rounded-full">
         <i class="fas fa-solid fa-user fa-lg"></i>
       </div>
       <div class="mb-4 col-span-2 flex-1">
-        <textarea id="{{ form.objective.id_for_label }}"
-                  name="{{ form.objective.name }}"
-                  placeholder="Escreva um comentário aqui!"
-                  class="bg-transparent font-sans appearance-none border rounded-lg h-[177px] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.objective.value|default_if_none:'' }}</textarea>
-        {% if form.objective.errors %}
-          <ul class="list-disc p-2">
-            {% for error in form.objective.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
-          </ul>
-        {% endif %}
+        <textarea
+          name="text"
+          required
+          placeholder="Escreva um comentário aqui!"
+          class="bg-transparent font-sans appearance-none border rounded-lg h-[177px] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"></textarea>
+        <button class="flex gap-3 text-slate-300 w-full border border-slate-200 py-4 justify-center items-center rounded-lg cursor-pointer hover:bg-green-500 group hover:text-white hover:border-green-500 transition-all mt-4">
+          <img src="{% static 'images/icons/icon-edit-element.svg' %}"
+               alt=""
+               class="group-hover:filter group-hover:brightness-0 group-hover:invert"
+               width="24px"
+               height="24px" />
+          Enviar comentário
+        </button>
       </div>
-    </div>
+    </form>
   </div>
 
   <hr class="my-8">
