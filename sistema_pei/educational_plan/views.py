@@ -149,7 +149,7 @@ class PeiMarkCompletedView(CoordinatorPermission, LoginRequiredMixin, View):
         return redirect('educational_plan:pei_list')
 
 
-class PeiExportPdfView(View):
+class PeiExportPdfView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         pei_id = kwargs.get('pk')
         html = generatePeiExportHtml(pei_id)
@@ -164,7 +164,7 @@ class PeiExportPdfView(View):
 
         return response
 
-class PeiExportPreviewView(DetailView):
+class PeiExportPreviewView(LoginRequiredMixin, DetailView):
     model = Pei
     template_name = 'educational_plan/peis/pei_export.html'
     context_object_name = 'pei'
@@ -173,7 +173,7 @@ class PeiExportPreviewView(DetailView):
         context = super().get_context_data(**kwargs)
         return context
 
-class CommentCreateView(View):
+class CommentCreateView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         pei = Pei.objects.get(pk=self.kwargs['pk'])
         form = CommentForm(request.POST)
@@ -190,9 +190,14 @@ class CommentCreateView(View):
             messages.success(request, 'Erro ao adicionar comentário.')
         return redirect('educational_plan:pei_detail', pk=pei.pk)
 
-class CommentDeleteView(View):
-    def post(self, request, *args, **kwargs):
+class CommentDeleteView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
         comment = get_object_or_404(Comment, pk=self.kwargs['pk'])
-        pei_id = comment.pei.id  # Captura o ID do PEI associado ao comentário
-        comment.delete()  # Remove o comentário
-        return redirect('pei_detail', pei_id=pei_id)  # Redireciona após a exclusão
+
+        if (comment.created_by == request.user):
+            comment.delete()
+            messages.success(request, 'Comentário removido com sucesso.')
+        else:
+            messages.error(request, 'Você não tem permissão para remover este comentário.')
+
+        return redirect('educational_plan:pei_detail', pk=comment.pei.pk)

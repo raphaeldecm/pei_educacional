@@ -45,8 +45,13 @@ urlpatterns = [
         name="pei_export_preview",
     ),
     path(
-        "peis/comment/<int:pk>/",
+        "peis/comment/create/<int:pk>/",
         views.CommentCreateView.as_view(),
         name="pei_comment_create",
+    ),
+    path(
+        "peis/comment/delete/<int:pk>/",
+        views.CommentDeleteView.as_view(),
+        name="pei_comment_delete",
     ),
 ]

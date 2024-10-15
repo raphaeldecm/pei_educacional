@@ -201,7 +201,7 @@
 
     {% comment %} Comentário {% endcomment %}
     {% for comment in object.comments.all %}
-      <div class="p-10 border border-slate-200 rounded-lg flex gap-6">
+      <div class="p-10 pb-6 border border-slate-200 rounded-lg flex gap-6">
         <div class="bg-green-500/50 w-20 h-20 flex justify-center items-center rounded-full">
           <i class="fas fa-solid fa-user fa-lg"></i>
         </div>
@@ -219,6 +219,12 @@
           <p class="font-medium">{{ comment.date|date:"d/m/Y \à\s H\h" }}</p>
           <pre class="text-justify text-wrap font-poppins ">{{comment.text}}
           </pre>
+          <div class="flex justify-end gap-6">
+            {% if comment.created_by == request.user %}
+              <a href="{% url 'educational_plan:pei_comment_delete' comment.pk %}" class="p-2 cursor-pointer transition-all text-slate-400 hover:text-red-600 hover:scale-105">Apagar</a>
+            {% endif %}
+            <button class="p-2 transition-all text-slate-400 hover:text-green-500 hover:scale-105">Responder</button>
+          </div>
           {% comment %} Subcomentários {% endcomment %}
           {% comment %} <div class="flex flex-col gap-8">
             <div class="p-10 border border-slate-200 rounded-lg flex gap-6">
