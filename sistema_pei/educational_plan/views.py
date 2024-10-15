@@ -134,7 +134,7 @@ class PeiDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["comments"] = Comment.objects.filter(pei=self.object)
+        context["comments"] = Comment.objects.filter(pei=self.object).order_by('-date')
         return context
 
 
@@ -184,6 +184,15 @@ class CommentCreateView(View):
             comment.updated_by = self.request.user
             comment.created_by = self.request.user
             comment.save()
+            messages.success(request, 'Comentário adicionado com sucesso.')
         else:
             print(form.errors)
+            messages.success(request, 'Erro ao adicionar comentário.')
         return redirect('educational_plan:pei_detail', pk=pei.pk)
+
+class CommentDeleteView(View):
+    def post(self, request, *args, **kwargs):
+        comment = get_object_or_404(Comment, pk=self.kwargs['pk'])
+        pei_id = comment.pei.id  # Captura o ID do PEI associado ao comentário
+        comment.delete()  # Remove o comentário
+        return redirect('pei_detail', pei_id=pei_id)  # Redireciona após a exclusão
