@@ -52,10 +52,11 @@ class SuapOAuth2(BaseOAuth2):
         first_name, last_name = splitted_name[0], ""
         if len(splitted_name) > 1:
             last_name = splitted_name[-1]
+        email = response.get("email") or response.get("email_preferencial")
         return {
             "username": response[self.ID_KEY],
             "first_name": first_name.strip(),
             "last_name": last_name.strip(),
-            "email": response["email"],
+            "email": email,
             "name": response["nome"],
         }

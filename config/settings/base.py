@@ -277,8 +277,8 @@ SOCIAL_AUTH_PIPELINE = (
     "social_core.pipeline.social_auth.associate_user",
     "social_core.pipeline.social_auth.load_extra_data",
     "social_core.pipeline.user.user_details",
+    "sistema_pei.suap_backend.pipeline.record_user_data",  # Registra informações do professor
     # "sistema_pei.suap_backend.pipeline.verifica_grupo_usuario",
-    "sistema_pei.suap_backend.pipeline.record_teacher_data",  # Registra informações do professor
 )
 
 # DJANGO SOCIALL LOGIN

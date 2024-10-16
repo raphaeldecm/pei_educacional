@@ -15,17 +15,42 @@ def verificar_tipo_usuario(strategy, details, backend, response, *args, **kwargs
     tipo_usuario = response.get("tipo_usuario")
     campus = response.get("campus")
 
-    if tipo_usuario != "Servidor (Docente)" or campus != "PF":
+    if (
+        tipo_usuario not in ["Servidor (Docente)",
+                             "Prestador de Serviço",
+                             "Servidor (Técnico-Administrativo)",
+                            ]
+        ):
         return HttpResponseRedirect(reverse("suap_login:erro_tipo_usuario"))
 
     return None
 
 
-def record_teacher_data(backend, user, response, *args, **kwargs):
+def record_user_data(backend, user, response, *args, **kwargs):
     """
-    Verifica se o usuário já pertence ao grupo 'Teacher'.
-    Se não pertencer, adiciona o usuário ao grupo 'Teacher'.
+    Verifica o tipo de usuário e chama a função específica para registrar os dados.
     """
+    tipo_usuario = response.get("tipo_usuario")
+
+    if tipo_usuario == "Servidor (Docente)":
+        process_teacher(user, response)
+    elif tipo_usuario in ("Prestador de Serviço", "Servidor (Técnico-Administrativo)"):
+        try:
+            group = Group.objects.get(name="Collaborator")
+        except Group.DoesNotExist:
+            pass
+        else:
+            user.groups.add(group)
+            user.sector = "NAPNE"
+            user.is_active = True
+            user.save(
+                update_fields=["is_active", "sector"],
+            )
+
+
+def process_teacher(user, response):
+    # Lógica para Docente
+
     try:
         group = Group.objects.get(name="Teacher")
     except Group.DoesNotExist:
