@@ -57,58 +57,6 @@ class Person(BaseModel):
 
 
 @profile
-class Coordinator(Person):
-    campus = models.ForeignKey(
-        Campus,
-        on_delete=models.SET_NULL,
-        verbose_name=_("Campus"),
-        null=True,
-        related_name="coordinators",
-    )
-    photo = models.ImageField(
-        upload_to="coordinators",
-        verbose_name=_("Foto"),
-        blank=True,
-    )
-    code = models.CharField(
-        verbose_name=_("Matrícula"),
-        max_length=constants.SMALL_CHAR_FIELD_NAME_LENGTH,
-        blank=True,
-        unique=True,
-    )
-
-    class Meta:
-        verbose_name = _("Coordenador")
-        verbose_name_plural = _("Coordenadores")
-
-    def __str__(self):
-        return self.name
-
-
-@profile
-class Assistant(Person):
-    campus = models.ForeignKey(
-        Campus,
-        on_delete=models.SET_NULL,
-        verbose_name=_("Campus"),
-        null=True,
-        related_name="assistants",
-    )
-    photo = models.ImageField(
-        upload_to="assistants",
-        verbose_name=_("Foto"),
-        blank=True,
-    )
-
-    class Meta:
-        verbose_name = _("Assistente")
-        verbose_name_plural = _("Assistentes")
-
-    def __str__(self):
-        return self.name
-
-
-@profile
 class Teacher(Person):
     user = models.OneToOneField(
         User,
