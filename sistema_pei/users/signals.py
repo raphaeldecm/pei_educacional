@@ -12,8 +12,7 @@ def check_user_group(sender, request, user, **kwargs):
         logout(request)
         messages.error(
             request,
-            "Você não pertence ao grupo necessário para acessar o sistema."
-            "Entre em contato com o administrador.",
+            "Você não pertence ao grupo necessário para acessar o sistema.",
         )
         return redirect("account_login")
     return None
