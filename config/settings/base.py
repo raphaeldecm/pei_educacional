@@ -160,6 +160,7 @@ MIDDLEWARE = [
     "django_browser_reload.middleware.BrowserReloadMiddleware",
     "allauth.account.middleware.AccountMiddleware",
     "social_django.middleware.SocialAuthExceptionMiddleware",
+    "sistema_pei.users.middleware.GroupRedirectMiddleware",
 ]
 
 # STATIC
