@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from sistema_pei.educational_plan.models import Comment, Pei
+from sistema_pei.educational_plan.models import Answer, Comment, Pei
 
 
 class PeiForm(forms.ModelForm):
@@ -25,6 +25,13 @@ class PeiForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
+        fields = [
+            "text",
+        ]
+
+class AnswerForm(forms.ModelForm):
+    class Meta:
+        model = Answer
         fields = [
             "text",
         ]

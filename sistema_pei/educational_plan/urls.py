@@ -54,4 +54,14 @@ urlpatterns = [
         views.CommentDeleteView.as_view(),
         name="pei_comment_delete",
     ),
+    path(
+        "peis/answer/create/<int:parent_pk>/",
+        views.AnswerCreateView.as_view(),
+        name="pei_answer_create",
+    ),
+    path(
+        "peis/answer/delete/<int:parent_pk>/",
+        views.AnswerDeleteView.as_view(),
+        name="pei_answer_delete",
+    ),
 ]

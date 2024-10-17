@@ -174,9 +174,18 @@
     <h2 class="text-[18px] font-medium">Comentários</h2>
     <form method='post' action="{% url 'educational_plan:pei_comment_create' object.pk %}" class="mt-8 flex gap-4">
       {% csrf_token %}
-      <div class="bg-green-500/50 w-20 h-20 flex justify-center items-center rounded-full">
-        <i class="fas fa-solid fa-user fa-lg"></i>
-      </div>
+      {% if user.teacher.photo %}
+        <div class="w-[80px] h-[80px] rounded-full overflow-hidden">
+          <img src="{{ user.teacher.photo }}"
+              class="object-cover w-full h-full"
+              alt="{{ user.teacher.full_name }}"
+              />
+        </div>
+      {% else %}
+        <div class="bg-green-500/50 w-20 h-20 flex justify-center items-center rounded-full">
+          <i class="fas fa-solid fa-user fa-lg"></i>
+        </div>
+      {% endif %}
       <div class="mb-4 col-span-2 flex-1">
         <textarea
           name="text"
@@ -202,9 +211,18 @@
     {% comment %} Comentário {% endcomment %}
     {% for comment in object.comments.all %}
       <div class="p-10 pb-6 border border-slate-200 rounded-lg flex gap-6">
-        <div class="bg-green-500/50 w-20 h-20 flex justify-center items-center rounded-full">
-          <i class="fas fa-solid fa-user fa-lg"></i>
-        </div>
+        {% if comment.created_by.teacher.photo %}
+          <div class="w-[80px] h-[80px] rounded-full overflow-hidden">
+            <img src="{{ comment.created_by.teacher.photo }}"
+                 class="object-cover w-full h-full"
+                 alt="{{ comment.created_by.teacher.full_name }}"
+                 />
+          </div>
+        {% else %}
+          <div class="bg-green-500/50 w-20 h-20 flex justify-center items-center rounded-full">
+            <i class="fas fa-solid fa-user fa-lg"></i>
+          </div>
+        {% endif %}
         <div class="text-[16px] flex-1 flex flex-col gap-4">
           <div class="text-lg text-black flex justify-start items-center gap-2">
             <p class="font-medium">{{comment.created_by.name}}</p>
@@ -223,25 +241,79 @@
             {% if comment.created_by == request.user %}
               <a href="{% url 'educational_plan:pei_comment_delete' comment.pk %}" class="p-2 cursor-pointer transition-all text-slate-400 hover:text-red-600 hover:scale-105">Apagar</a>
             {% endif %}
-            <button class="p-2 transition-all text-slate-400 hover:text-green-500 hover:scale-105">Responder</button>
+            <button id="replyButton-{{ comment.pk }}" class="p-2 transition-all text-slate-400 hover:text-green-500 hover:scale-105">Responder</button>
           </div>
-          {% comment %} Subcomentários {% endcomment %}
-          {% comment %} <div class="flex flex-col gap-8">
-            <div class="p-10 border border-slate-200 rounded-lg flex gap-6">
+
+          <form id="replyForm-{{ comment.pk }}" method='post' action="{% url 'educational_plan:pei_answer_create' comment.pk %}" class="mt-8 flex gap-4 hidden">
+            {% csrf_token %}
+            {% if user.teacher.photo %}
+              <div class="w-[80px] h-[80px] rounded-full overflow-hidden">
+                <img src="{{ user.teacher.photo }}"
+                    class="object-cover w-full h-full"
+                    alt="{{ user.teacher.full_name }}"
+                />
+              </div>
+            {% else %}
               <div class="bg-green-500/50 w-20 h-20 flex justify-center items-center rounded-full">
                 <i class="fas fa-solid fa-user fa-lg"></i>
               </div>
-              <div class="text-[16px] flex-1 flex flex-col gap-4">
-                <p class="font-medium">Comentários</p>
-                <p class="font-medium">19/07/2024 Há 9h</p>
-                <pre class="text-justify text-wrap font-poppins ">Lorem Ipsum é simplesmente uma simulação de texto da  indústria tipográfica e de impressos, e vem sendo utilizado desde o  século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e  os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum  sobreviveu não só a cinco séculos, como também ao salto para a  editoração eletrônica, permanecendo essencialmente inalterado.
-                </pre>
-                <div>
+            {% endif %}
+            <div class="mb-4 col-span-2 flex-1">
+              <textarea
+                name="text"
+                required
+                placeholder="Responda a este comentário aqui!"
+                class="bg-transparent font-sans appearance-none border rounded-lg h-[177px] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"></textarea>
+              <button class="flex gap-3 text-slate-300 w-full border border-slate-200 py-4 justify-center items-center rounded-lg cursor-pointer hover:bg-green-500 group hover:text-white hover:border-green-500 transition-all mt-4">
+                <img src="{% static 'images/icons/icon-edit-element.svg' %}"
+                     alt=""
+                     class="group-hover:filter group-hover:brightness-0 group-hover:invert"
+                     width="24px"
+                     height="24px" />
+                Enviar resposta
+              </button>
+            </div>
+          </form>
 
+          {% comment %} Subcomentários {% endcomment %}
+          {% for answer in comment.answers.all %}
+            <div class="flex flex-col gap-8">
+              <div class="p-10 border border-slate-200 rounded-lg flex gap-6">
+                {% if answer.created_by.teacher.photo %}
+                  <div class="w-[80px] h-[80px] rounded-full overflow-hidden">
+                    <img src="{{ answer.created_by.teacher.photo }}"
+                        class="object-cover w-full h-full"
+                        alt="{{ answer.created_by.teacher.full_name }}"
+                        />
+                  </div>
+                {% else %}
+                  <div class="bg-green-500/50 w-20 h-20 flex justify-center items-center rounded-full">
+                    <i class="fas fa-solid fa-user fa-lg"></i>
+                  </div>
+                {% endif %}
+                <div class="text-[16px] flex-1 flex flex-col gap-4">
+                  <div class="text-lg text-black flex justify-start items-center gap-2">
+                    <p class="font-medium">{{answer.created_by.name}}</p>
+                    {% if answer.created_by|has_group:"Coordinator" %}
+                      <span class="flex text-[11px] h-[21px] items-center justify-center px-[6px] rounded-md font-bold border border-green-300 text-green-600 bg-green-100">COORDENADOR</span>
+                    {% elif answer.created_by|has_group:"Teacher" %}
+                      <span class="flex text-[11px] h-[21px] items-center justify-center px-[6px] rounded-md font-bold border border-blue-300 text-blue-600 bg-blue-100">DOCENTE</span>
+                    {% elif answer.created_by|has_group:"Assistant" %}
+                      <span class="flex text-[11px] h-[21px] items-center justify-center px-[6px] rounded-md font-bold border border-yellow-300 text-yellow-600 bg-yellow-100">ASSISTENTE</span>
+                    {% endif %}
+                  </div>
+                  <p class="font-medium">{{ answer.date|date:"d/m/Y \à\s H\h" }}</p>
+                  <pre class="text-justify text-wrap font-poppins ">{{answer.text}}
+                  </pre>
+                  <div class="flex justify-end gap-6">
+                    {% if comment.created_by == request.user %}
+                      <a href="{% url 'educational_plan:pei_answer_delete' answer.pk %}" class="p-2 cursor-pointer transition-all text-slate-400 hover:text-red-600 hover:scale-105">Apagar</a>
+                    {% endif %}
+                  </div>
                 </div>
               </div>
             </div>
-          </div> {% endcomment %}
+          {% endfor %}
         </div>
       </div>
     {% endfor %}
@@ -250,3 +322,14 @@
 
 </div>
 {% endblock content %}
+{% block inline_javascript %}
+  <script>
+    document.querySelectorAll("[id^='replyButton']").forEach(button => {
+      button.addEventListener('click', function() {
+        const commentId = this.id.split('-')[1];
+        const form = document.getElementById(`replyForm-${commentId}`);
+        form.classList.toggle('hidden');
+      });
+    });
+  </script>
+{% endblock inline_javascript %}

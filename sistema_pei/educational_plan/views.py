@@ -13,12 +13,11 @@ from django.views.generic.edit import UpdateView
 from django_filters.views import FilterView
 from django.views.generic import DetailView
 from django.http import HttpResponse
-from sistema_pei.educational_plan.forms import CommentForm, PeiForm
+from sistema_pei.educational_plan.forms import AnswerForm, CommentForm, PeiForm
 from sistema_pei.educational_plan.services import generatePeiExportHtml
 from xhtml2pdf import pisa
 from django.views.generic import View
-from sistema_pei.educational_plan.models import Comment
-from .models import Pei
+from sistema_pei.educational_plan.models import Answer, Comment, Pei
 
 from sistema_pei.core import constants
 from sistema_pei.core.mixins import ProtectedErrorMessageMixin
@@ -201,3 +200,40 @@ class CommentDeleteView(LoginRequiredMixin, View):
             messages.error(request, 'Você não tem permissão para remover este comentário.')
 
         return redirect('educational_plan:pei_detail', pk=comment.pei.pk)
+
+class AnswerCreateView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        try:
+            parentComment = Comment.objects.get(pk=self.kwargs['parent_pk'])
+            print(f"Comment encontrado: {parentComment.text}, PEI: {parentComment.pei}")
+        except Comment.DoesNotExist:
+            messages.error(request, 'Comentário não encontrado.')
+            return redirect('educational_plan:pei_detail', pk=kwargs['pei_pk'])
+
+        form = AnswerForm(request.POST)
+
+        if form.is_valid():
+            answer = form.save(commit=False)
+            answer.comment = parentComment
+            answer.updated_by = request.user
+            answer.created_by = request.user
+            answer.save()
+            messages.success(request, 'Resposta adicionada com sucesso.')
+        else:
+            print(form.errors)  # Verifique os erros de validação
+            messages.error(request, 'Erro ao adicionar resposta.')
+
+        return redirect('educational_plan:pei_detail', pk=parentComment.pei.pk)
+
+
+class AnswerDeleteView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        answer = get_object_or_404(Answer, pk=self.kwargs['parent_pk'])
+
+        if (answer.created_by == request.user):
+            answer.delete()
+            messages.success(request, 'Comentário removido com sucesso.')
+        else:
+            messages.error(request, 'Você não tem permissão para remover este comentário.')
+
+        return redirect('educational_plan:pei_detail', pk=answer.comment.pei.pk)
