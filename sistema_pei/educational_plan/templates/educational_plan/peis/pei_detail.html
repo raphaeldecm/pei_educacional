@@ -306,7 +306,7 @@
                   <pre class="text-justify text-wrap font-poppins ">{{answer.text}}
                   </pre>
                   <div class="flex justify-end gap-6">
-                    {% if comment.created_by == request.user %}
+                    {% if answer.created_by == request.user %}
                       <a href="{% url 'educational_plan:pei_answer_delete' answer.pk %}" class="p-2 cursor-pointer transition-all text-slate-400 hover:text-red-600 hover:scale-105">Apagar</a>
                     {% endif %}
                   </div>
