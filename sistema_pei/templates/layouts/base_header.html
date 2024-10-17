@@ -66,10 +66,11 @@
          aria-expanded="true"
          aria-haspopup="true">
         {% if user.teacher.photo %}
-          <div class="">
+          <div class="w-[42px] h-[42px] rounded-full overflow-hidden">
             <img src="{{ user.teacher.photo }}"
-                 class="rounded-full"
-                 alt="{{ user.teacher.full_name }}" />
+                 class="object-cover w-full h-full"
+                 alt="{{ user.teacher.full_name }}"
+                 />
           </div>
         {% else %}
           <div class="bg-green-500/50 py-2.5 px-3 rounded-full">
