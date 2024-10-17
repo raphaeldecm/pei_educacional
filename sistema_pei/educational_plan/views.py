@@ -205,7 +205,6 @@ class AnswerCreateView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         try:
             parentComment = Comment.objects.get(pk=self.kwargs['parent_pk'])
-            print(f"Comment encontrado: {parentComment.text}, PEI: {parentComment.pei}")
         except Comment.DoesNotExist:
             messages.error(request, 'Comentário não encontrado.')
             return redirect('educational_plan:pei_detail', pk=kwargs['pei_pk'])
@@ -220,7 +219,6 @@ class AnswerCreateView(LoginRequiredMixin, View):
             answer.save()
             messages.success(request, 'Resposta adicionada com sucesso.')
         else:
-            print(form.errors)  # Verifique os erros de validação
             messages.error(request, 'Erro ao adicionar resposta.')
 
         return redirect('educational_plan:pei_detail', pk=parentComment.pei.pk)
