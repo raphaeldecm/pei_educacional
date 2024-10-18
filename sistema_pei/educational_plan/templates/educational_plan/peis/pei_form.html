@@ -20,7 +20,7 @@
           <select name="{{ form.enrollment.name }}"
                   id="{{ form.enrollment.id_for_label }}"
                   class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50 mt-[16px]">
-            <option value="default" selecte>Selecione a inscrição...</option>
+            <option value="default" selected>Selecione a inscrição...</option>
             {% for key, value in form.enrollment.field.choices %}
               <option value="{{ key }}"
                       {% if key == form.enrollment.value %}selected{% endif %}>{{ value }}</option>
@@ -34,7 +34,7 @@
           <select name="{{ form.status.name }}"
                   id="{{ form.status.id_for_label }}"
                   class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50 mt-[16px] pointer-events-none">
-            <option value="default" selecte>Selecione o status...</option>
+            <option value="default" selected>Selecione o status...</option>
             {% for key, value in form.status.field.choices %}
               <option value="{{ key }}"
                       {% if key == form.status.value %}selected{% endif %}>{{ value }}</option>
