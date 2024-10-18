@@ -44,4 +44,24 @@ urlpatterns = [
         views.PeiExportPreviewView.as_view(),
         name="pei_export_preview",
     ),
+    path(
+        "peis/comment/create/<int:pk>/",
+        views.CommentCreateView.as_view(),
+        name="pei_comment_create",
+    ),
+    path(
+        "peis/comment/delete/<int:pk>/",
+        views.CommentDeleteView.as_view(),
+        name="pei_comment_delete",
+    ),
+    path(
+        "peis/answer/create/<int:parent_pk>/",
+        views.AnswerCreateView.as_view(),
+        name="pei_answer_create",
+    ),
+    path(
+        "peis/answer/delete/<int:parent_pk>/",
+        views.AnswerDeleteView.as_view(),
+        name="pei_answer_delete",
+    ),
 ]
