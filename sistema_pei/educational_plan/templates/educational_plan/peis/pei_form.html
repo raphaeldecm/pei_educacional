@@ -242,7 +242,6 @@
             Salvar
           </button>
         </div>
-
         <div id="content-parecer" class="tab-content hidden">
           <div class="mb-4 col-span-2 flex-1">
             <label for="{{ form.academic_opinion_1.id_for_label }}"
@@ -274,36 +273,38 @@
               </ul>
             {% endif %}
           </div>
-          <div class="mb-4 col-span-2 flex-1">
-            <label for="{{ form.academic_opinion_3.id_for_label }}"
-                   class="font-sans font-medium text-lg text-ls block mb-4">
-                   Parecer (3° Bimestre)
-            </label>
-            <textarea id="{{ form.academic_opinion_3.id_for_label }}"
-                      name="{{ form.academic_opinion_3.name }}"
-                      placeholder="Escreva aqui!"
-                      class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.academic_opinion_3.value|default_if_none:'' }}</textarea>
-            {% if form.academic_opinion_3.errors %}
-              <ul class="list-disc p-2">
-                {% for error in form.academic_opinion_3.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
-              </ul>
-            {% endif %}
-          </div>
-          <div class="mb-4 col-span-2 flex-1">
-            <label for="{{ form.academic_opinion_4.id_for_label }}"
-                   class="font-sans font-medium text-lg text-ls block mb-4">
-                   Parecer (4° Bimestre)
-            </label>
-            <textarea id="{{ form.academic_opinion_4.id_for_label }}"
-                      name="{{ form.academic_opinion_4.name }}"
-                      placeholder="Escreva aqui!"
-                      class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.academic_opinion_4.value|default_if_none:'' }}</textarea>
-            {% if form.academic_opinion_4.errors %}
-              <ul class="list-disc p-2">
-                {% for error in form.academic_opinion_4.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
-              </ul>
-            {% endif %}
-          </div>
+          {% if object.enrollment.offer.subject.subject_type == "YEAR" %}
+            <div class="mb-4 col-span-2 flex-1">
+              <label for="{{ form.academic_opinion_3.id_for_label }}"
+                    class="font-sans font-medium text-lg text-ls block mb-4">
+                    Parecer (3° Bimestre)
+              </label>
+              <textarea id="{{ form.academic_opinion_3.id_for_label }}"
+                        name="{{ form.academic_opinion_3.name }}"
+                        placeholder="Escreva aqui!"
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.academic_opinion_3.value|default_if_none:'' }}</textarea>
+              {% if form.academic_opinion_3.errors %}
+                <ul class="list-disc p-2">
+                  {% for error in form.academic_opinion_3.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+            <div class="mb-4 col-span-2 flex-1">
+              <label for="{{ form.academic_opinion_4.id_for_label }}"
+                    class="font-sans font-medium text-lg text-ls block mb-4">
+                    Parecer (4° Bimestre)
+              </label>
+              <textarea id="{{ form.academic_opinion_4.id_for_label }}"
+                        name="{{ form.academic_opinion_4.name }}"
+                        placeholder="Escreva aqui!"
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.academic_opinion_4.value|default_if_none:'' }}</textarea>
+              {% if form.academic_opinion_4.errors %}
+                <ul class="list-disc p-2">
+                  {% for error in form.academic_opinion_4.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+          {% endif %}
           <hr class="mt-9">
           <div class="mb-4 col-span-2 flex-1 mt-6">
             <label for="{{ form.academic_opinion_final.id_for_label }}"

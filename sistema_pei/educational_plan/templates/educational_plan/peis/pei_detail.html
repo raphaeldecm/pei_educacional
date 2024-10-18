@@ -170,21 +170,23 @@
     </div>
   </div>
   {% endif %}
-  {% if object.academic_opinion_3 %}
-  <div>
-    <h2 class="text-[24px] font-medium">Parecer do 3º Bimestre:</h2>
-    <div class="whitespace-pre-wrap text-[18px] text-slate-400 text-justify">
-      {{object.academic_opinion_3}}
+  {% if object.enrollment.offer.subject.subject_type == "YEAR" %}
+    {% if object.academic_opinion_3 %}
+    <div>
+      <h2 class="text-[24px] font-medium">Parecer do 3º Bimestre:</h2>
+      <div class="whitespace-pre-wrap text-[18px] text-slate-400 text-justify">
+        {{object.academic_opinion_3}}
+      </div>
     </div>
-  </div>
-  {% endif %}
-  {% if object.academic_opinion_4 %}
-  <div>
-    <h2 class="text-[24px] font-medium">Parecer do 4º Bimestre:</h2>
-    <div class="whitespace-pre-wrap text-[18px] text-slate-400 text-justify">
-      {{object.academic_opinion_4}}
+    {% endif %}
+    {% if object.academic_opinion_4 %}
+    <div>
+      <h2 class="text-[24px] font-medium">Parecer do 4º Bimestre:</h2>
+      <div class="whitespace-pre-wrap text-[18px] text-slate-400 text-justify">
+        {{object.academic_opinion_4}}
+      </div>
     </div>
-  </div>
+    {% endif %}
   {% endif %}
   {% if object.academic_opinion_final %}
   <div>
