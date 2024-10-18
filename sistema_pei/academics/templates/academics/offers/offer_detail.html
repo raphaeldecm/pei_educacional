@@ -90,14 +90,14 @@
               <td>{{ object.student.email }}</td>
               <td>{{ object.student.registration }}</td>
               <td class="flex justify-center h-full gap-[30px] !mt-[32px] pr-[26px]">
-                <a href="{% url 'profile' object.student.id %}">
+                <a href="{% url 'people:profile' object.student.id %}">
                   <img src="{% static 'images/icons/icon-eye.svg' %}"
                        alt=""
                        width="24px"
                        height="24px"
                        class="cursor-pointer" />
                 </a>
-                <a href="{% url 'profile' object.student.id %}?tab=edit_student_data#tab">
+                <a href="{% url 'people:profile' object.student.id %}?tab=edit_student_data#tab">
                   <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                        alt=""
                        width="24px"
