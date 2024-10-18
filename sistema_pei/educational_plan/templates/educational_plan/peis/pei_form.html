@@ -20,7 +20,7 @@
           <select name="{{ form.enrollment.name }}"
                   id="{{ form.enrollment.id_for_label }}"
                   class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50 mt-[16px]">
-            <option value="default" selected disabled>Selecione a inscrição...</option>
+            <option value="default" selecte>Selecione a inscrição...</option>
             {% for key, value in form.enrollment.field.choices %}
               <option value="{{ key }}"
                       {% if key == form.enrollment.value %}selected{% endif %}>{{ value }}</option>
@@ -34,7 +34,7 @@
           <select name="{{ form.status.name }}"
                   id="{{ form.status.id_for_label }}"
                   class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50 mt-[16px] pointer-events-none">
-            <option value="default" selected disabled>Selecione o status...</option>
+            <option value="default" selecte>Selecione o status...</option>
             {% for key, value in form.status.field.choices %}
               <option value="{{ key }}"
                       {% if key == form.status.value %}selected{% endif %}>{{ value }}</option>
@@ -79,7 +79,7 @@
       <section>
         <div id="content-metodologia" class="tab-content">
           <div class="flex gap-6">
-            <div class="mb-4 col-span-2 flex-1">
+            <div class="mb-4 col-span-2 flex-1 pointer-events-none">
               <label for="{{ form.objective.id_for_label }}"
                      class="font-sans font-medium text-lg text-ls block mb-4">
                 Objetivos da disciplina:
@@ -87,7 +87,6 @@
               <textarea id="{{ form.objective.id_for_label }}"
                         name="{{ form.objective.name }}"
                         placeholder="Escreva aqui!"
-                        disabled
                         class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.objective.value|default_if_none:'' }}</textarea>
               {% if form.objective.errors %}
                 <ul class="list-disc p-2">
@@ -112,7 +111,7 @@
             </div>
           </div>
           <div class="flex gap-6">
-            <div class="mb-4 col-span-2 flex-1">
+            <div class="mb-4 col-span-2 flex-1 pointer-events-none">
               <label for="{{ form.content.id_for_label }}"
                      class="font-sans font-medium text-lg text-ls block mb-4">
                 Conteúdo programático:
@@ -120,7 +119,6 @@
               <textarea id="{{ form.content.id_for_label }}"
                         name="{{ form.content.name }}"
                         placeholder="Escreva aqui!"
-                        disabled
                         class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.content.value|default_if_none:'' }}</textarea>
               {% if form.content.errors %}
                 <ul class="list-disc p-2">
@@ -144,8 +142,8 @@
               {% endif %}
             </div>
           </div>
-          <div class="flex gap-6">
-            <div class="mb-4 col-span-2 flex-1">
+          <div class="flex gap-6 ">
+            <div class="mb-4 col-span-2 flex-1 pointer-events-none">
               <label for="{{ form.methodology.id_for_label }}"
                      class="font-sans font-medium text-lg text-ls block mb-4">
                      Metodologias:
@@ -153,7 +151,6 @@
               <textarea id="{{ form.methodology.id_for_label }}"
                         name="{{ form.methodology.name }}"
                         placeholder="Escreva aqui!"
-                        disabled
                         class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.methodology.value|default_if_none:'' }}</textarea>
               {% if form.methodology.errors %}
                 <ul class="list-disc p-2">
@@ -178,7 +175,7 @@
             </div>
           </div>
           <div class="flex gap-6">
-            <div class="mb-4 col-span-2 flex-1">
+            <div class="mb-4 col-span-2 flex-1 pointer-events-none">
               <label for="{{ form.resources.id_for_label }}"
                      class="font-sans font-medium text-lg text-ls block mb-4">
                      Recursos didáticos:
@@ -186,7 +183,6 @@
               <textarea id="{{ form.resources.id_for_label }}"
                         name="{{ form.resources.name }}"
                         placeholder="Escreva aqui!"
-                        disabled
                         class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.resources.value|default_if_none:'' }}</textarea>
               {% if form.resources.errors %}
                 <ul class="list-disc p-2">
@@ -211,7 +207,7 @@
             </div>
           </div>
           <div class="flex gap-6">
-            <div class="mb-4 col-span-2 flex-1">
+            <div class="mb-4 col-span-2 flex-1 pointer-events-none">
               <label for="{{ form.assessments.id_for_label }}"
                      class="font-sans font-medium text-lg text-ls block mb-4">
                      Avaliações:
@@ -219,7 +215,6 @@
               <textarea id="{{ form.assessments.id_for_label }}"
                         name="{{ form.assessments.name }}"
                         placeholder="Escreva aqui!"
-                        disabled
                         class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.assessments.value|default_if_none:'' }}</textarea>
               {% if form.assessments.errors %}
                 <ul class="list-disc p-2">
@@ -325,7 +320,7 @@
               </ul>
             {% endif %}
           </div>
-          <button class="text-[18px] py-[11px] w-full px-[44px] border border-slate-300 text-slate-500 rounded-lg font-medium cursor-pointer mt-6 hover:bg-green-500 hover:text-white transition-colors duration-300">
+            <button class="text-[18px] py-[11px] w-full px-[44px] border border-slate-300 text-slate-500 rounded-lg font-medium cursor-pointer mt-6 hover:bg-green-500 hover:text-white transition-colors duration-300">
             Salvar
           </button>
         </div>
