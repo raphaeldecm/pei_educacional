@@ -20,6 +20,11 @@ class PeiForm(forms.ModelForm):
             "adapted_resources",
             "assessments",
             "adapted_assessments",
+            "academic_opinion_1",
+            "academic_opinion_2",
+            "academic_opinion_3",
+            "academic_opinion_4",
+            "academic_opinion_final",
         ]
 
 class CommentForm(forms.ModelForm):

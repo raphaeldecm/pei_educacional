@@ -68,6 +68,27 @@ class Pei(BaseModel):
 
     objects = managers.PeiManager()
 
+    academic_opinion_1 = models.TextField(
+        verbose_name=_("Parecer do 1º Bimestre"),
+        blank=True,
+    )
+    academic_opinion_2 = models.TextField(
+        verbose_name=_("Parecer do 2º Bimestre"),
+        blank=True,
+    )
+    academic_opinion_3 = models.TextField(
+        verbose_name=_("Parecer do 3º Bimestre"),
+        blank=True,
+    )
+    academic_opinion_4 = models.TextField(
+        verbose_name=_("Parecer do 4º Bimestre"),
+        blank=True,
+    )
+    academic_opinion_final = models.TextField(
+        verbose_name=_("Parecer final"),
+        blank=True,
+    )
+
     def __str__(self):
         return (
             "("
