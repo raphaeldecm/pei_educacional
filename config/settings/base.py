@@ -358,7 +358,7 @@ ACCOUNT_USERNAME_REQUIRED = False
 # https://docs.allauth.org/en/latest/account/configuration.html
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 # https://docs.allauth.org/en/latest/account/configuration.html
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"  # Values: "mandatory", "optional", "none"
+ACCOUNT_EMAIL_VERIFICATION = "optional"  # Values: "mandatory", "optional", "none"
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True  # Evita login automático após a confirmação
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
 ACCOUNT_UNIQUE_EMAIL = True
