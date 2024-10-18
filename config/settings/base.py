@@ -160,6 +160,7 @@ MIDDLEWARE = [
     "django_browser_reload.middleware.BrowserReloadMiddleware",
     "allauth.account.middleware.AccountMiddleware",
     "social_django.middleware.SocialAuthExceptionMiddleware",
+    "sistema_pei.users.middleware.GroupRedirectMiddleware",
 ]
 
 # STATIC
@@ -277,8 +278,8 @@ SOCIAL_AUTH_PIPELINE = (
     "social_core.pipeline.social_auth.associate_user",
     "social_core.pipeline.social_auth.load_extra_data",
     "social_core.pipeline.user.user_details",
+    "sistema_pei.suap_backend.pipeline.record_user_data",  # Registra informações do professor
     # "sistema_pei.suap_backend.pipeline.verifica_grupo_usuario",
-    "sistema_pei.suap_backend.pipeline.record_teacher_data",  # Registra informações do professor
 )
 
 # DJANGO SOCIALL LOGIN
@@ -357,7 +358,7 @@ ACCOUNT_USERNAME_REQUIRED = False
 # https://docs.allauth.org/en/latest/account/configuration.html
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 # https://docs.allauth.org/en/latest/account/configuration.html
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"  # Values: "mandatory", "optional", "none"
+ACCOUNT_EMAIL_VERIFICATION = "optional"  # Values: "mandatory", "optional", "none"
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True  # Evita login automático após a confirmação
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
 ACCOUNT_UNIQUE_EMAIL = True

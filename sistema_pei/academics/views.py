@@ -22,12 +22,12 @@ from sistema_pei.core.mixins import ProtectedErrorMessageMixin
 from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.educational_plan.models import Pei
 from sistema_pei.people.models import Student, Teacher
-from sistema_pei.users.permissions import AssistentOrCoordinatorPermission, CoordinatorPermission
+from sistema_pei.users.permissions import CollaboratorOrCoordinatorPermission, CoordinatorPermission
 
 
 class AcademicsIndexView(
     LoginRequiredMixin,
-    AssistentOrCoordinatorPermission,
+    CollaboratorOrCoordinatorPermission,
     TitleViewMixin,
     generic.TemplateView,
 ):

@@ -2522,8 +2522,11 @@ msgstr ""
 #~ msgid "My Profile"
 #~ msgstr "Meu perfil"
 
-msgid "Assistant"
-msgstr "Assistente"
+msgid "Collaborator"
+msgstr "Colaborador"
+
+msgid "Pedagogue"
+msgstr "Pedagogo"
 
 msgid "Coordinator"
 msgstr "Coordenador"

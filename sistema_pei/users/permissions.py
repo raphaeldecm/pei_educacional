@@ -15,13 +15,13 @@ class CoordinatorPermission(UserPassesTestMixin):
         return self.request.user.groups.filter(name="Coordinator").exists()
 
 
-class AssistentOrCoordinatorPermission(UserPassesTestMixin):
+class CollaboratorOrCoordinatorPermission(UserPassesTestMixin):
     """ "Mixin that checks if the user is a assistant or coordinator"""
 
     def test_func(self):
         return (
             self.request.user.groups.filter(
-                name="Assistant",
+                name="Collaborator",
             ).exists()
             or self.request.user.groups.filter(
                 name="Coordinator",

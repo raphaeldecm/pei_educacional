@@ -26,14 +26,6 @@ class TeacherAdmin(admin.ModelAdmin):
     def is_active(self, obj):
         return obj.user.is_active if obj.user else False
 
-    # Sobrescreve o método save_model para garantir
-    # que o Teacher seja salvo corretamente
-    def save_model(self, request, obj, form, change):
-        # Chama o método save do modelo Teacher,
-        # que adiciona o grupo e sincroniza o email/nome
-        super().save_model(request, obj, form, change)
-
-    # Definir campos para exibir no formulário de edição do admin
     fieldsets = (
         (
             None,
@@ -42,12 +34,6 @@ class TeacherAdmin(admin.ModelAdmin):
             },
         ),
     )
-
-
-class CoordinatorAdmin(admin.ModelAdmin):
-    search_fields = ["name"]
-    readonly_fields = ["updated_by", "created_at"]
-    list_display = ["name", "email", "campus"]
 
 
 class SpecificNecessitieAdmin(admin.ModelAdmin):
@@ -81,8 +67,6 @@ class NotificationAdmin(admin.ModelAdmin):
 
 
 admin.site.register(models.Campus, CampusAdmin)
-# admin.site.register(models.Teacher, TeacherAdmin)
-admin.site.register(models.Coordinator, CoordinatorAdmin)
 admin.site.register(models.SpecificNecessitie, SpecificNecessitieAdmin)
 admin.site.register(models.Student, StudentAdmin)
 admin.site.register(models.StudentFile, StudentFileAdmin)

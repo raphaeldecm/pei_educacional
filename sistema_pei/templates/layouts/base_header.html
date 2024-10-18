@@ -111,8 +111,8 @@
               <span class="flex text-[11px] h-[21px] items-center justify-center px-[6px] rounded-md font-bold border border-green-300 text-green-600 bg-green-100">COORDENADOR</span>
             {% elif user|has_group:"Teacher" %}
               <span class="flex text-[11px] h-[21px] items-center justify-center px-[6px] rounded-md font-bold border border-blue-300 text-blue-600 bg-blue-100">DOCENTE</span>
-            {% elif user|has_group:"Assistant" %}
-              <span class="flex text-[11px] h-[21px] items-center justify-center px-[6px] rounded-md font-bold border border-yellow-300 text-yellow-600 bg-yellow-100">ASSISTENTE</span>
+            {% elif user|has_group:"Collaborator" %}
+              <span class="flex text-[11px] h-[21px] items-center justify-center px-[6px] rounded-md font-bold border border-yellow-300 text-yellow-600 bg-yellow-100">Colaborador</span>
             {% endif %}
           </p>
           <p class="text-base font-medium text-slate-400 whitespace-nowrap overflow-hidden text-ellipsis block">{{ user.email }}</p>
