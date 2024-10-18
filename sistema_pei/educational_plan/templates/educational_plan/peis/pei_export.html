@@ -138,23 +138,43 @@
   <h2 class="section-title underline">Pareceres:</h2>
   <div class="section">
     <h2 class="section-title">Parecer do 1º Bimestre:</h2>
-    <p class="section-content">{{object.academic_opinion_1}}</p>
+    {% if object.academic_opinion_1 %}
+      <p class="section-content">{{object.academic_opinion_1}}</p>
+    {% else %}
+      <p class="section-content">Não há parecer registrado para 1º Bimestre.</p>
+    {% endif %}
   </div>
   <div class="section">
     <h2 class="section-title">Parecer do 2º Bimestre:</h2>
-    <p class="section-content">{{object.academic_opinion_2}}</p>
+    {% if object.academic_opinion_2 %}
+      <p class="section-content">{{object.academic_opinion_2}}</p>
+    {% else %}
+      <p class="section-content">Não há parecer registrado para 2º Bimestre.</p>
+    {% endif %}
   </div>
   <div class="section">
     <h2 class="section-title">Parecer do 3º Bimestre:</h2>
-    <p class="section-content">{{object.academic_opinion_3}}</p>
+    {% if object.academic_opinion_3 %}
+      <p class="section-content">{{object.academic_opinion_3}}</p>
+    {% else %}
+      <p class="section-content">Não há parecer registrado para 3º Bimestre.</p>
+    {% endif %}
   </div>
   <div class="section">
     <h2 class="section-title">Parecer do 4º Bimestre:</h2>
-    <p class="section-content">{{object.academic_opinion_4}}</p>
+    {% if object.academic_opinion_4 %}
+      <p class="section-content">{{object.academic_opinion_4}}</p>
+    {% else %}
+      <p class="section-content">Não há parecer registrado para 4º Bimestre.</p>
+    {% endif %}
   </div>
   <div class="section">
     <h2 class="section-title">Parecer Final:</h2>
-    <p class="section-content">{{object.academic_opinion_final}}</p>
+    {% if object.academic_opinion_final %}
+      <p class="section-content">{{object.academic_opinion_final}}</p>
+    {% else %}
+      <p class="section-content">Não há parecer final registrado.</p>
+    {% endif %}
   </div>
   <br>
   <div class="export-info">
