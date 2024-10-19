@@ -71,13 +71,13 @@
       <div class="flex items-center gap-[3%] mt-[24px]">
         <div class="flex-1">
           <div class="flex">
-            <label for="{{ form.number_of_periods.id_for_label }}"
+            <label id="periods-label" for="{{ form.number_of_periods.id_for_label }}"
                    class="font-medium text-[18px]">Qtd. Períodos:</label>
-            <img class="ml-[10px] stroke-orange-400"
+            <img class="ml-[10px] stroke-orange-400 cursor-pointer"
                  alt="Informação"
                  src="{% static 'images/icons/icon_information.svg' %}"
                  width="24px"
-                 height="24px" />
+                 height="24px" title='Informe a quantidade de períodos do curso. Leve em consideração que esse campo corresponde ao tipo de duração selecionada.' />  
           </div>
           <input type="number"
                  name="{{ form.number_of_periods.name }}"
@@ -112,3 +112,26 @@
     </form>
   </div>
 {% endblock content %}
+{% block inline_javascript %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const durationSelect = document.getElementById('{{ form.duration_type.id_for_label }}');
+      const periodsLabel = document.getElementById('periods-label');
+
+      function updatePeriodsLabel() {
+        const selectedValue = durationSelect.value;
+        if (selectedValue === 'SEMESTER') {
+          periodsLabel.textContent = 'Qtd. de Semestres:';
+        } else if (selectedValue === 'YEAR') {
+          periodsLabel.textContent = 'Qtd. de Anos:';
+        } else {
+          periodsLabel.textContent = 'Qtd. Períodos:';
+        }
+      }
+
+      updatePeriodsLabel();
+
+      durationSelect.addEventListener('change', updatePeriodsLabel);
+    });
+  </script>
+{% endblock inline_javascript %}
