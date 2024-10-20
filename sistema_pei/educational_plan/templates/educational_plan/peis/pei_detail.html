@@ -152,13 +152,54 @@
   {% if not object.objective and not object.adapted_objective and not object.content and not object.adapted_content and not object.methodology and not object.adapted_methodology and not object.resources and not object.adapted_resources and not object.assessments and not object.adapted_assessments %}
     <p class="text-center text-[18px] pt-6 text-slate-400">Não há conteúdo preenchido</p>
   {% endif %}
-  {% comment %} Parecer em andamento {% endcomment %}
-  {% comment %} <div>
-    <h2 class="text-[24px] font-medium">Parecer:</h2>
+
+  <hr class="mb-6">
+  {% if object.academic_opinion_1 %}
+  <div>
+    <h2 class="text-[24px] font-medium">Parecer do 1º Bimestre:</h2>
     <div class="whitespace-pre-wrap text-[18px] text-slate-400 text-justify">
-      {{object.adapted_objective}}
+      {{object.academic_opinion_1}}
     </div>
-  </div> {% endcomment %}
+  </div>
+  {% endif %}
+  {% if object.academic_opinion_2 %}
+  <div>
+    <h2 class="text-[24px] font-medium">Parecer do 2º Bimestre:</h2>
+    <div class="whitespace-pre-wrap text-[18px] text-slate-400 text-justify">
+      {{object.academic_opinion_2}}
+    </div>
+  </div>
+  {% endif %}
+  {% if object.enrollment.offer.subject.subject_type == "YEAR" %}
+    {% if object.academic_opinion_3 %}
+    <div>
+      <h2 class="text-[24px] font-medium">Parecer do 3º Bimestre:</h2>
+      <div class="whitespace-pre-wrap text-[18px] text-slate-400 text-justify">
+        {{object.academic_opinion_3}}
+      </div>
+    </div>
+    {% endif %}
+    {% if object.academic_opinion_4 %}
+    <div>
+      <h2 class="text-[24px] font-medium">Parecer do 4º Bimestre:</h2>
+      <div class="whitespace-pre-wrap text-[18px] text-slate-400 text-justify">
+        {{object.academic_opinion_4}}
+      </div>
+    </div>
+    {% endif %}
+  {% endif %}
+  {% if object.academic_opinion_final %}
+  <div>
+    <h2 class="text-[24px] font-medium">Parecer Final:</h2>
+    <div class="whitespace-pre-wrap text-[18px] text-slate-400 text-justify">
+      {{object.academic_opinion_final}}
+    </div>
+  </div>
+  {% endif %}
+  {% if not object.academic_opinion_1 and not object.academic_opinion_2 and not object.academic_opinion_3 and not object.academic_opinion_4 and not object.academic_opinion_final %}
+    <p class="text-center text-[18px] pt-6 text-slate-400 mb-9">Não há parecer registrado.</p>
+  {% endif %}
+
   {% if object.status == "COMPLETED" %}
   <a href="{% url 'educational_plan:pei_export' object.pk %}" target="_blank" class="flex gap-3 text-slate-300 w-full border border-slate-200 py-4 justify-center rounded-lg cursor-pointer hover:bg-green-500 group hover:text-white hover:border-green-500 transition-all">
     <img src="{% static 'images/icons/icon-copy.svg' %}"
