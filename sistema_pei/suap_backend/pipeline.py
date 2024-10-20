@@ -9,7 +9,8 @@ from sistema_pei.people.models import Teacher
 def verificar_tipo_usuario(strategy, details, backend, response, *args, **kwargs):
     """
     Verifica o tipo de usuário retornado pelo SUAP e interrompe o processo
-    se o tipo de usuário não for 'Servidor (Docente)' e o campus não for 'PF'.
+    se o tipo de usuário não for 'Docente', 'Técnico-Administrativo' ou
+    'Prestador de Serviço'.
     """
 
     tipo_usuario = response.get("tipo_usuario")

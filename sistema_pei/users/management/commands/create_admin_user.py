@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, models
 from django.core.management.base import BaseCommand
 
 User = get_user_model()
@@ -17,10 +17,12 @@ class Command(BaseCommand):
         if User.objects.filter(is_superuser=True).exists():
             self.stdout.write("The superuser already exists")
         else:
-            User.objects.create(
+            group = models.Group.objects.get(name="Coordinator")
+            user = User.objects.create(
                 name=self.ADMIN_NAME,
                 email=self.ADMIN_EMAIL,
                 password=self.ADMIN_PASSWORD,
                 is_superuser=True,
                 is_staff=True,
             )
+            user.groups.add(group)
