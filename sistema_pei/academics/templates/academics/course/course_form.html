@@ -73,11 +73,6 @@
           <div class="flex">
             <label id="periods-label" for="{{ form.number_of_periods.id_for_label }}"
                    class="font-medium text-[18px]">Qtd. Períodos:</label>
-            <img class="ml-[10px] stroke-orange-400 cursor-pointer"
-                 alt="Informação"
-                 src="{% static 'images/icons/icon_information.svg' %}"
-                 width="24px"
-                 height="24px" title='Informe a quantidade de períodos do curso. Leve em consideração que esse campo corresponde ao tipo de duração selecionada.' />  
           </div>
           <input type="number"
                  name="{{ form.number_of_periods.name }}"
@@ -117,21 +112,26 @@
     document.addEventListener('DOMContentLoaded', function() {
       const durationSelect = document.getElementById('{{ form.duration_type.id_for_label }}');
       const periodsLabel = document.getElementById('periods-label');
+      const periodsInput = document.getElementById('{{ form.number_of_periods.id_for_label }}');
 
-      function updatePeriodsLabel() {
+      function updatePeriodsLabelAndValue() {
         const selectedValue = durationSelect.value;
         if (selectedValue === 'SEMESTER') {
           periodsLabel.textContent = 'Qtd. de Semestres:';
+          periodsInput.value = 7;
         } else if (selectedValue === 'YEAR') {
           periodsLabel.textContent = 'Qtd. de Anos:';
+          periodsInput.value = 4;
         } else {
           periodsLabel.textContent = 'Qtd. Períodos:';
+          periodsInput.value = '';
         }
       }
 
-      updatePeriodsLabel();
+      updatePeriodsLabelAndValue();
 
-      durationSelect.addEventListener('change', updatePeriodsLabel);
+      durationSelect.addEventListener('change', updatePeriodsLabelAndValue);
     });
+
   </script>
 {% endblock inline_javascript %}
