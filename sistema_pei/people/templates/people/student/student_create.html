@@ -318,7 +318,7 @@
         {% endif %}
       </div>
       <!-- Campo creation_reasons -->
-      <div class="mb-4 col-span-2">
+      <div class="col-span-2">
         <label for="{{ form.creation_reasons.id_for_label }}"
                class="font-sans font-medium text-lg text-ls block mb-4">
           Questões Geradoras para criação do pei/Adaptações
@@ -333,10 +333,7 @@
           </ul>
         {% endif %}
       </div>
-      <button type="submit"
-              class="col-span-2 font-sans bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded transition duration-300 ease-in-out">
-        Salvar
-      </button>
+    {% include "_save_back_edit_buttons.html" with link_to_back="people:student_list" no_margin=True  %}
     </form>
   </div>
 {% endblock content %}
