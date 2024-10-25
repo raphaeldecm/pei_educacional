@@ -8,7 +8,7 @@
   </button>
   
   <!-- Menu lateral mobile -->
-  <div id="mobileMenu" tabindex="0" onblur="handleToggleNav()" class="w-[80vw] h-[105vh] overflow-hidden fixed left-[-100%] top-0 z-10 bg-slate-50 shadow-2xl flex flex-col p-4 duration-500">
+  <div id="mobileMenu" tabindex="0" onblur="handleToggleNav()" class="hidden max-sm:flex w-[80vw] h-[105vh] overflow-hidden fixed left-[-100%] top-0 z-10 bg-slate-50 shadow-2xl flex-col p-4 duration-500">
     <a href="{% url 'home' %}"
        class="flex gap-[10px] py-[20px] rounded-lg px-4 border border-transparent {% if request.resolver_match.url_name == 'home' %}text-green-500  !border-green-500{% endif %}">
       <img src="{% if request.resolver_match.url_name == 'home' %}{% static 'images/icons/icon-home-green.svg' %}{% else %}{% static 'images/icons/icon-home.svg' %}{% endif %}"
