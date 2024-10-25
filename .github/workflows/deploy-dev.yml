@@ -1,0 +1,25 @@
+name: CICD - Deploy em Develop
+
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install SSH Key
+      uses: shimataro/ssh-key-action@v2
+      with:
+        key: ${{ secrets.SSH_PRIVATE_KEY_DEV }}
+        known_hosts: |
+          ${{ secrets.KNOWN_HOSTS_DEV }}  # Current server
+          ${{ secrets.KNOWN_HOSTS_TAVOS_DEV }}  # New server
+        if_key_exists: replace
+    - name: Deploy to host
+      run: ${{ vars.SSH_CMD_DEV }} ${{ vars.DEPLOY_CMD_DEV }}
+
+    # Run the deploy command on the new dedicated server for tavos dev
+    - name: Deploy to second server
+      run: ${{ vars.SSH_CMD_DEV }} ${{ vars.DEPLOY_CMD_DEV }}
