@@ -93,7 +93,7 @@ LOCAL_APPS = [
     "sistema_pei.academics",
     "sistema_pei.people",
     "sistema_pei.educational_plan",
-    "suap_backend",
+    "sistema_pei.suap_backend",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -242,7 +242,10 @@ EMAIL_BACKEND = env(
     "DJANGO_EMAIL_BACKEND",
     default="django.core.mail.backends.smtp.EmailBackend",
 )
-
+DEFAULT_FROM_EMAIL = env(
+    "DJANGO_DEFAULT_FROM_EMAIL",
+    default="PEI <noreply@ifrn.edu.br>",
+)
 EMAIL_HOST = env("DJANGO_EMAIL_HOST", default="smtp.gmail.com")
 EMAIL_PORT = env("DJANGO_EMAIL_PORT", default=587)
 EMAIL_USE_SSL = env("DJANGO_EMAIL_USE_SSL", default=False)
