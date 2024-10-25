@@ -277,6 +277,8 @@ sistema_pei/media/
 .env
 .envs/*
 !.envs/.local/
+.envs/.local/.django
+.envs/.local/.postgres
 
 # Tailwind CSS output
 /sistema_pei/static/css/output.css
