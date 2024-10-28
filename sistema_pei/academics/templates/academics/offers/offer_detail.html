@@ -123,11 +123,15 @@
     </div>
     {% include "_table_pagination.html" %}
     <div class="flex mt-[56px] gap-[16px]">
-      <a href="{% url 'academics:offer_delete' offer.id %}"
-         onclick="return confirm('Tem certeza que deseja excluir esta oferta?')"
-         class="text-[18px] py-[11px] px-[44px] border border-red-500 rounded-lg font-medium cursor-pointer">
-        Excluir Oferta
+      <a href="{% url 'academics:offer_list' %}"
+      class="mr-2 text-[18px] py-[11px] px-[44px] border border-orange-400 rounded-lg font-medium cursor-pointer hover:bg-orange-500 transition-colors duration-300">
+        Voltar
       </a>
+      <button type="button" id="openModal{{ object.pk }}" data-modal-id="confirmationModal{{ object.pk }}" class="text-[18px] py-[11px] px-[44px] border border-red-500 hover:bg-red-500 transition-colors duration-300rounded-lg font-medium cursor-pointer rounded-lg" >
+        Excluir Oferta
+      </button>
     </div>
+    {% url 'academics:offer_delete' offer.id as full_delete_url_page %}
+    {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão de oferta" body_text="Tem certeza de que deseja excluir esta oferta? Esta ação não pode ser desfeita." full_delete_url=full_delete_url_page %}
   </div>
 {% endblock content %}
