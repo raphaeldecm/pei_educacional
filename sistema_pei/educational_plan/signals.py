@@ -17,6 +17,7 @@ def pei_created(sender, instance, created, **kwargs):
             notify_teacher.delay(
                 instance.enrollment.offer.teacher.id,
                 subject="[Sistema PEI] Novo PEI criado.",
+
                 message=(
                     f"Um novo PEI foi criado para a disciplina "
                     f"{instance.enrollment.offer.subject.name}."
