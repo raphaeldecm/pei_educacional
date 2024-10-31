@@ -256,6 +256,8 @@ class AddStudentToOfferView(LoginRequiredMixin, View):
                 offer=offer,
                 student=student,
                 YearSemesterReference=student.reference_period,
+                created_by=self.request.user,
+                updated_by=self.request.user
             )
 
         return redirect(f"/academics/offers/detail/{offer.id}/")
