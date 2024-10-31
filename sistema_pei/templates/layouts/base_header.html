@@ -85,11 +85,11 @@
          id="menu-button"
          aria-expanded="true"
          aria-haspopup="true">
-        {% if user.teacher.photo %}
+        {% if user.photo %}
           <div class="w-[42px] h-[42px] rounded-full overflow-hidden">
-            <img src="{{ user.teacher.photo }}"
+            <img src="{{ user.photo }}"
                  class="object-cover w-full h-full"
-                 alt="{{ user.teacher.full_name }}"
+                 alt="{{ user.name }}"
                  />
           </div>
         {% else %}
@@ -112,10 +112,10 @@
           id="menu-item-0"
           class="flex gap-3 items-center"
       >
-        {% if user.teacher.photo %}
-            <img src="{{ user.teacher.photo }}"
+        {% if user.photo %}
+            <img src="{{ user.photo }}"
                   class="w-10 h-10 rounded-full"
-                  alt="{{ user.teacher.full_name }}" />
+                  alt="{{ user.name }}" />
         {% else %}
             <div class="bg-green-500/50 w-10 h-10 flex justify-center items-center rounded-full">
               <i class="fas fa-solid fa-user fa-lg"></i>

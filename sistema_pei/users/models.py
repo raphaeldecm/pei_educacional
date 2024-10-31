@@ -34,6 +34,11 @@ class User(AbstractUser):
         max_length=constants.SMALL_CHAR_FIELD_NAME_LENGTH,
         blank=True,
     )
+    photo = models.URLField(
+        verbose_name=_("Foto"),
+        blank=True,
+        max_length=constants.URL_LENGTH,
+    )
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
