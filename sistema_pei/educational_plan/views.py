@@ -109,6 +109,7 @@ class PeiDeleteView(
     ProtectedErrorMessageMixin,
     SuccessMessageMixin,
     generic.DeleteView,
+    CoordinatorPermission,
 ):
     model = models.Pei
     success_url = reverse_lazy("educational_plan:pei_list")
