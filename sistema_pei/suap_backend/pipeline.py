@@ -33,35 +33,31 @@ def record_user_data(backend, user, response, *args, **kwargs):
     """
     tipo_usuario = response.get("tipo_usuario")
 
-    if tipo_usuario == "Servidor (Docente)":
-        process_teacher(user, response)
-    elif tipo_usuario in ("Prestador de Serviço", "Servidor (Técnico-Administrativo)"):
-        try:
-            group = Group.objects.get(name="Collaborator")
-        except Group.DoesNotExist:
-            pass
-        else:
-            user.groups.add(group)
-            user.sector = "NAPNE"
-            user.is_active = True
+    try:
+        collaborator_group = Group.objects.get(name="Collaborator")
+        teacher_group = Group.objects.get(name="Teacher")
+    except Group.DoesNotExist:
+        pass
+    else:
+        if tipo_usuario == "Servidor (Docente)":
+            user.groups.add(teacher_group)
+            user.sector = "DIAC"
+            user.photo = response.get("foto")
             user.save(
-                update_fields=["is_active", "sector"],
+                update_fields=["is_active", "sector", "photo"],
+            )
+            process_teacher(user, response)
+        else:
+            user.groups.add(collaborator_group)
+            user.sector = "NAPNE"
+            user.photo = response.get("foto")
+            user.save(
+                update_fields=["is_active", "sector", "photo"],
             )
 
 
 def process_teacher(user, response):
     # Lógica para Docente
-
-    try:
-        group = Group.objects.get(name="Teacher")
-    except Group.DoesNotExist:
-        pass
-    else:
-        user.groups.add(group)
-        user.sector = "DIAC"
-        user.save(
-            update_fields=["is_active", "sector"],
-        )
 
     teacher, created = Teacher.objects.get_or_create(
         code=response.get("identificacao"),
