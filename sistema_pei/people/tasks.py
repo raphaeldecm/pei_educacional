@@ -12,7 +12,7 @@ def notify_teacher(teacher_id, subject, message):
         send_mail(
             subject,
             message,
-            None,
+            settings.DEFAULT_FROM_EMAIL,
             [recipient.email],
             fail_silently=False,
         )
