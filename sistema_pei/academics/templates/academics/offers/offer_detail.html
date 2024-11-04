@@ -45,7 +45,7 @@
             {% endfor %}
           </div>
           <div id="noResultsMessage" class="text-center text-gray-500 mt-2 hidden">
-            Nenhum aluno encontrado.
+            Nenhum discente encontrado.
           </div>
         </div>
 
@@ -69,7 +69,7 @@
                height="18px" />
           <input type="text"
                  name="search"
-                 placeholder="Pesquisar alunos..."
+                 placeholder="Pesquisar discentes..."
                  class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50"
                  value="{{ request.GET.search }}" />
         </div>
@@ -132,7 +132,7 @@
                 </button>
               </td>
               {% url 'academics:remove_student_from_offer' offer.id object.student.id as full_delete_url %}
-              {% include "_confirm_delete_modal.html" with title="Confirmar remoção de aluno" body_text="Tem certeza de que deseja remover este aluno? Esta ação não pode ser desfeita." full_delete_url=full_delete_url %}
+              {% include "_confirm_delete_modal.html" with title="Confirmar remoção de discente" body_text="Tem certeza de que deseja remover este discente? Esta ação não pode ser desfeita." full_delete_url=full_delete_url %}
             </tr>
           {% endfor %}
         </tbody>

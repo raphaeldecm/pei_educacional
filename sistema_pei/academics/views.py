@@ -218,7 +218,7 @@ class OfferDeleteView(
     success_message = _("A oferta foi excluída com sucesso.")
     protected_warning_message = _(
         "Não é possível excluir a oferta, pois ele possui"
-        "um ou mais alunos associados.",
+        "um ou mais discentes associados.",
     )
 
 
@@ -234,11 +234,11 @@ class RemoveStudentFromOfferView(SuccessMessageMixin, LoginRequiredMixin, View):
                 student=student,
             )
             enrollment.delete()
-            messages.success(request, "Aluno removido com sucesso da oferta.")
+            messages.success(request, "Discente removido com sucesso da oferta.")
         except ProtectedError:
             messages.error(
                 request,
-                "Não é possível remover o aluno desta oferta "
+                "Não é possível remover o discente desta oferta "
                 "porque existem PEIs associados.",
             )
 
