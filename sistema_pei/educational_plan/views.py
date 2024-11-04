@@ -117,15 +117,6 @@ class PeiDeleteView(
         "Não é possível excluir o pei, pois ele possui " "itens associados.",
     )
 
-    def dispatch(self, request, *args, **kwargs):
-        # Verificar se o usuário logado é o professor associado ao PEI
-        pei = self.get_object()
-        if pei.enrollment.offer.teacher.email != request.user.email:
-            messages.error(request, 'Você não tem permissão para deletar este PEI.')
-            return redirect('educational_plan:pei_list')
-
-        return super().dispatch(request, *args, **kwargs)
-
 class PeiDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
     model = models.Pei
     title = _("Detalhes do PEI")
