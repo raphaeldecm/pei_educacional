@@ -16,23 +16,40 @@
     <form action="{% url 'academics:add_student_to_offer' offer.id %}"
           method="post">
       {% csrf_token %}
-      <p class="text-[22px] uppercase font-medium mb-[25px]">Incluir Discente:</p>
-      <div class="flex items-center gap-4">
+      <p class="text-[22px] uppercase font-medium">Incluir Discente:</p>
+      <div class="flex gap-4 mt-[32px]">
         <div class="flex-1">
-          <div class="relative w-full cursor-pointer">
-            <img class="absolute top-[12px] right-[10px]"
-                 alt=""
-                 src="{% static 'images/icons/icon-updown-arrow.svg' %}"
-                 width="24px"
-                 height="24px" />
-            <select name="student"
-                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
-                    required>
-              <option value="" disabled selected >Selecione o discente...</option>
-              {% for student in selector_students %}<option value="{{ student.id }}">{{ student }}</option>{% endfor %}
-            </select>
+          <!-- Campo de Busca -->
+          <input
+            type="text"
+            id="studentSearch"
+            placeholder="Buscar aluno..."
+            class="mb-3 px-3 py-2 border border-slate-300 rounded-lg w-full"
+            oninput="filterStudents()"
+          />
+
+          <!-- Lista de Seleção Múltipla -->
+          <div class="border border-slate-300 rounded-lg py-2 px-3 max-h-[150px] min-h-6 overflow-y-auto gap-6" id="studentList">
+            {% for student in selector_students %}
+              <div class="student-item flex flex-row-reverse justify-end items-center gap-3">
+                <input id="{{ student.id }}" type="checkbox" class="hidden peer" name="students" value="{{ student.id }}" />
+                <span class="text-[16px] student-name">{{ student.name }}</span>
+                <label for="{{ student.id }}" class="flex items-center cursor-pointer w-[20px] h-[20px] rounded-[5px] peer-checked:[&_img]:block bg-slate-300">
+                  <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}"
+                       width="20px"
+                       height="20px"
+                       class="hidden"
+                       alt="Checkmark" />
+                </label>
+              </div>
+            {% endfor %}
+          </div>
+          <div id="noResultsMessage" class="text-center text-gray-500 mt-2 hidden">
+            Nenhum aluno encontrado.
           </div>
         </div>
+
+
         <button class="flex items-center justify-center gap-[10px] min-w-[181px] h-[48px] bg-green-500 rounded-[6px] text-neutral-50 px-[35px]">
           <img src="{% static 'images/icons/icon-arrow.svg' %}"
                width="24px"
@@ -135,3 +152,26 @@
     {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão de oferta" body_text="Tem certeza de que deseja excluir esta oferta? Esta ação não pode ser desfeita." full_delete_url=full_delete_url_page %}
   </div>
 {% endblock content %}
+{% block inline_javascript %}
+  <script>
+    function filterStudents() {
+      const searchValue = document.getElementById("studentSearch").value.toLowerCase();
+      const students = document.querySelectorAll(".student-item");
+      let hasResults = false;
+
+      students.forEach(student => {
+        const studentName = student.querySelector(".student-name").textContent.toLowerCase();
+        if (studentName.includes(searchValue)) {
+          student.style.display = "flex"; // Mostra o item
+          hasResults = true;
+        } else {
+          student.style.display = "none"; // Oculta o item
+        }
+      });
+
+      // Exibe a mensagem de "Nenhum resultado encontrado" caso não tenha resultados
+      document.getElementById("noResultsMessage").style.display = hasResults ? "none" : "block";
+      document.getElementById("studentList").style.display = !hasResults ? "none" : "block";
+    }
+  </script>
+{% endblock inline_javascript %}

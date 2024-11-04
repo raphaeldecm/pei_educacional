@@ -248,15 +248,16 @@ class RemoveStudentFromOfferView(SuccessMessageMixin, LoginRequiredMixin, View):
 class AddStudentToOfferView(LoginRequiredMixin, View):
     def post(self, request, pk):
         offer = get_object_or_404(models.Offer, id=pk)
-        student_id = request.POST.get("student")
-        student = get_object_or_404(Student, id=student_id)
+        student_ids = request.POST.getlist("students")  # Recebe todos os IDs selecionados
 
-        if not models.Enrollment.objects.filter(offer=offer, student=student).exists():
-            models.Enrollment.objects.create(
-                offer=offer,
-                student=student,
-                YearSemesterReference=student.reference_period,
-            )
+        for student_id in student_ids:
+            student = get_object_or_404(Student, id=student_id)
+            if not models.Enrollment.objects.filter(offer=offer, student=student).exists():
+                models.Enrollment.objects.create(
+                    offer=offer,
+                    student=student,
+                    YearSemesterReference=student.reference_period,
+                )
 
         return redirect(f"/academics/offers/detail/{offer.id}/")
 
