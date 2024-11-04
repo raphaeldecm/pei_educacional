@@ -28,7 +28,7 @@
             <select name="student"
                     class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
                     required>
-              <option value="default" selected disabled>Selecione o discente...</option>
+              <option value="" disabled selected >Selecione o discente...</option>
               {% for student in selector_students %}<option value="{{ student.id }}">{{ student }}</option>{% endfor %}
             </select>
           </div>
@@ -37,7 +37,7 @@
           <img src="{% static 'images/icons/icon-arrow.svg' %}"
                width="24px"
                height="24px" />
-          <span>Cadastrar</span>
+          <span>Incluir</span>
         </button>
       </div>
     </form>
