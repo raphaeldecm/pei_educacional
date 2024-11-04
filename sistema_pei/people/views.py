@@ -119,7 +119,7 @@ class StudentListView(
     generic.ListView,
 ):
     model = Student
-    title = _("Alunos")
+    title = _("Discentes")
     paginate_by = constants.DEFAULT_PAGE_SIZE
     filterset_class = StudentFilter
     template_name = "people/student/student_list.html"
