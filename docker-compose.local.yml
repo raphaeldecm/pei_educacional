@@ -16,12 +16,13 @@ services:
       - postgres
       - redis
     volumes:
-      - .:/app:z
+      - static_data:/app/staticfiles
+#      - .:/app:z
     env_file:
       - ./.envs/.local/.django
       - ./.envs/.local/.postgres
-    ports:
-      - '8000:8000'
+#    ports:
+#      - '8000:8000'
     command: /start
 
   postgres:

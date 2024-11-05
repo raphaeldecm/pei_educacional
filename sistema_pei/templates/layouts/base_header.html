@@ -2,15 +2,35 @@
 {% load has_group %}
 
 <div class="flex justify-center items-center gap-[40px]">
-  <button class="block md:hidden" onclick="handleToggleNav()">
+
+  <button class="hidden max-sm:block" onclick="handleToggleNav()">
     <i class="fas fa-regular fa-bars text-2xl"></i>
   </button>
+  
+  <!-- Menu lateral mobile -->
+  <div id="mobileMenu" tabindex="0" onblur="handleToggleNav()" class="hidden max-sm:flex w-[80vw] h-[105vh] overflow-hidden fixed left-[-100%] top-0 z-10 bg-slate-50 shadow-2xl flex-col p-4 duration-500">
+    <a href="{% url 'home' %}"
+       class="flex gap-[10px] py-[20px] rounded-lg px-4 border border-transparent {% if request.resolver_match.url_name == 'home' %}text-green-500  !border-green-500{% endif %}">
+      <img src="{% if request.resolver_match.url_name == 'home' %}{% static 'images/icons/icon-home-green.svg' %}{% else %}{% static 'images/icons/icon-home.svg' %}{% endif %}"
+           alt="" />
+      <span class="text-[20px]">Início</span>
+    </a>
+    <a href="{% url 'academics:dashboard' %}" class="flex gap-[10px] py-[20px] rounded-lg px-4 border border-transparent {% if 'academics' in request.resolver_match.app_names or 'people' in request.resolver_match.app_names %}text-green-500 !border-green-500{% endif %}">
+      <img src="{% if 'academics' in request.resolver_match.app_names or 'people' in request.resolver_match.app_names %}{% static 'images/icons/icon-courses-green.svg' %}{% else %}{% static 'images/icons/icon-courses.svg' %}{% endif %}"
+           alt="" />
+      <span class="text-[20px]">Acadêmico</span>
+    </a>
+    <a href="{% url 'users:list' %}"
+       class="flex gap-[10px] py-[20px] rounded-lg px-4 border border-transparent {% if request.resolver_match.url_name == 'list' %}text-green-500  !border-green-500{% endif %}">
+      <img src="{% if request.resolver_match.url_name == 'list' %}{% static 'images/icons/icon-users-green.svg' %}{% else %}{% static 'images/icons/icon-users.svg' %}{% endif %}"
+           alt="" />
+      <span class="text-[20px]">Usuários</span>
+    </a>
+  </div>
+
   <h1>
     <a href="{% url 'home' %}">
-      <img src="{% static 'images/icons/green-logo.svg' %}"
-           alt=""
-           width="85px"
-           height="30px" />
+      <img src="{% static 'images/icons/green-logo.svg' %}" alt="Logo" class="min-w-[85px] min-h-[30px] max-w-full" />
     </a>
   </h1>
   <nav class="hidden md:flex flex-col">
@@ -20,7 +40,7 @@
            class="flex gap-[10px] py-[10px] {% if request.resolver_match.url_name == 'home' %}text-green-500 border border-transparent border-b-green-500{% endif %}">
           <img src="{% if request.resolver_match.url_name == 'home' %}{% static 'images/icons/icon-home-green.svg' %}{% else %}{% static 'images/icons/icon-home.svg' %}{% endif %}"
                alt="" />
-          <span>Início</span>
+          <span class="max-lg:hidden">Início</span>
         </a>
       </li>
       {% if not user|has_group:"Teacher" %}
@@ -29,7 +49,7 @@
              class="flex gap-[10px] py-[10px] {% if 'academics' in request.resolver_match.app_names or 'people' in request.resolver_match.app_names %}text-green-500 border border-transparent border-b-green-500{% endif %}">
             <img src="{% if 'academics' in request.resolver_match.app_names or 'people' in request.resolver_match.app_names %}{% static 'images/icons/icon-courses-green.svg' %}{% else %}{% static 'images/icons/icon-courses.svg' %}{% endif %}"
                  alt="" />
-            <span>Acadêmico</span>
+            <span class="max-lg:hidden">Acadêmico</span>
           </a>
         </li>
         <li>
@@ -37,7 +57,7 @@
              class="flex gap-[10px] py-[10px] {% if request.resolver_match.url_name == 'list' %}text-green-500 border border-transparent border-b-green-500{% endif %}">
             <img src="{% if request.resolver_match.url_name == 'list' %}{% static 'images/icons/icon-users-green.svg' %}{% else %}{% static 'images/icons/icon-users.svg' %}{% endif %}"
                  alt="" />
-            <span>Usuários</span>
+            <span class="max-lg:hidden">Usuários</span>
           </a>
         </li>
       {% endif %}
@@ -45,8 +65,8 @@
   </nav>
 </div>
 {% if user.is_authenticated %}
-  <div class="flex items-center relative text-left gap-6">
-    <div class="flex w-full max-w-[400px] h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
+  <div class="flex items-center justify-end relative text-left gap-6">
+    <div class="flex w-full max-w-[300px] max-lg:max-w-[250px] max-md:max-w-full ml-4 h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2 max-sm:hidden">
       <img src="{% static 'images/icons/icon-search.svg' %}"
            alt=""
            width="18px"
@@ -56,28 +76,25 @@
              class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50" />
     </div>
     <div class="cursor-pointer">
-      <img src="{% static 'images/icons/icon-notification.svg' %}" alt="" />
+      <img src="{% static 'images/icons/icon-notification.svg' %}" class="min-w-[31px] min-h-[33px] max-w-full" alt="" />
     </div>
     <div>
       <a onclick="toggleDropdown()"
          type="button"
-         class="inline-flex w-full justify-center items-center gap-x-1.5 rounded-md py-2 text-sm font-semibold hover:cursor-pointer hover:bg-zinc-200/10"
+         class="inline-flex w-max justify-center items-center rounded-md py-2 text-sm font-semibold hover:cursor-pointer hover:bg-zinc-200/10"
          id="menu-button"
          aria-expanded="true"
          aria-haspopup="true">
-        {% if user.teacher.photo %}
+        {% if user.photo %}
           <div class="w-[42px] h-[42px] rounded-full overflow-hidden">
-            <img src="{{ user.teacher.photo }}"
+            <img src="{{ user.photo }}"
                  class="object-cover w-full h-full"
-                 alt="{{ user.teacher.full_name }}"
+                 alt="{{ user.name }}"
                  />
           </div>
         {% else %}
           <div class="bg-green-500/50 py-2.5 px-3 rounded-full">
             <i class="fas fa-solid fa-user fa-lg"></i>
-          </div>
-          <div class="ml-2 text-zinc-50">
-            <i class="fas fa-solid fa-angle-down"></i>
           </div>
         {% endif %}
       </a>
@@ -95,10 +112,10 @@
           id="menu-item-0"
           class="flex gap-3 items-center"
       >
-        {% if user.teacher.photo %}
-            <img src="{{ user.teacher.photo }}"
+        {% if user.photo %}
+            <img src="{{ user.photo }}"
                   class="w-10 h-10 rounded-full"
-                  alt="{{ user.teacher.full_name }}" />
+                  alt="{{ user.name }}" />
         {% else %}
             <div class="bg-green-500/50 w-10 h-10 flex justify-center items-center rounded-full">
               <i class="fas fa-solid fa-user fa-lg"></i>
@@ -144,102 +161,73 @@
           <p class="text-[18px] font-medium text-red-700">Encerrar Sessão</p>
         </div>
       </a>
-      {% comment %} <div class="flex items-center justify-between w-full px-4 py-2 text-left text-sm font-sans align-baseline font-light cursor-pointer hover:text-green-700"
-           role="none">
-        <a href="{% url 'users:detail' user.pk %}"
-           role="menuitem"
-           aria-haspopup="true"
-           tabindex="-1"
-           id="menu-item-0">
-          {% if user.teacher.photo %}
-            <div class="flex flex-col">
-              <img src="{{ user.teacher.photo }}"
-                   class="w-10 h-10 rounded-full"
-                   alt="{{ user.teacher.full_name }}" />
-              <span class="text-slate-900-700 font-semibold">{{ user.teacher.name }}</span>
-              <span class="text-slate-900-700 font-light">{{ user.email }}</span>
-            </div>
-          {% else %}
-            <div class="flex flex-col">
-              <div class="bg-green-500/50 w-10 h-10 py-2.5 px-3 rounded-full">
-                <i class="fas fa-solid fa-user fa-lg"></i>
-              </div>
-              <div class="ml-2 text-zinc-50">
-                <i class="fas fa-solid fa-angle-down"></i>
-              </div>
-              <span class="text-slate-900-700 font-semibold">{{ user.name }}</span>
-              <span class="text-slate-900-700 font-light">{{ user.email }}</span>
-            </div>
-          {% endif %}
-        </a>
-      </div>
-      <div class="flex justify-between items-center border-t border-slate-10 text-slate-900-700 w-full px-4 py-2 text-left text-sm cursor-pointer font-sans align-baseline font-light hover:text-green-700"
-           role="none">
-        <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-        <a id="logoutButton"
-           class=""
-           role="menuitem"
-           aria-haspopup="true"
-           tabindex="-1"
-           id="menu-item-0">{% trans "Sign Out" %}
-          <img src="{% static 'images/icons/icon_logout.svg' %}"
-               width="24px"
-               height="24px"
-               alt="" />
-        </a>
-      </div>
-    </div> {% endcomment %}
   </div>
 {% endif %}
 <!-- Modal de Logout -->
 {% include "../account/logout.html" %}
-<script>
-  function toggleDropdown() {
-    const dropdown = document.getElementById("dropdown");
-    dropdown.classList.toggle("hidden");
-  }
 
-  document.addEventListener("click", function(event) {
-    /**
-     * Lida com interações com um modal de logout.
-     * Mostra e oculta o modal com base nas ações do usuário.
-     **/
-
-    const dropdown = document.getElementById("dropdown");
-    const menuButton = document.getElementById("menu-button");
-
-    if (
-      !dropdown.classList.contains("hidden") &&
-      !dropdown.contains(event.target) &&
-      !menuButton.contains(event.target)
-    ) {
-      dropdown.classList.add("hidden");
+{% block inline_javascript %}
+  <script>
+    function toggleDropdown() {
+      const dropdown = document.getElementById("dropdown");
+      dropdown.classList.toggle("hidden");
     }
-  });
 
-  document.addEventListener("DOMContentLoaded", function() {
-    /**
-     * Lida com interações com um modal de logout.
-     * Mostra e oculta o modal com base nas ações do usuário.
-     **/
+    document.addEventListener("click", function(event) {
+      /**
+      * Lida com interações com um modal de logout.
+      * Mostra e oculta o modal com base nas ações do usuário.
+      **/
 
-    var logoutButton = document.getElementById("logoutButton");
-    var logoutModal = document.getElementById("logoutModal");
-    var closeModalButton = document.getElementById("closeModalButton");
+      const dropdown = document.getElementById("dropdown");
+      const menuButton = document.getElementById("menu-button");
 
-    logoutButton.addEventListener("click", function() {
-      logoutModal.classList.remove("hidden");
-    });
-
-    closeModalButton.addEventListener("click", function() {
-      logoutModal.classList.add("hidden");
-    });
-
-    // Caso o ususario click fora do modal vai fechar.
-    window.addEventListener("click", function(event) {
-      if (event.target == logoutModal) {
-        logoutModal.classList.add("hidden");
+      if (
+        !dropdown.classList.contains("hidden") &&
+        !dropdown.contains(event.target) &&
+        !menuButton.contains(event.target)
+      ) {
+        dropdown.classList.add("hidden");
       }
     });
-  });
-</script>
+
+    document.addEventListener("DOMContentLoaded", function() {
+      /**
+      * Lida com interações com um modal de logout.
+      * Mostra e oculta o modal com base nas ações do usuário.
+      **/
+
+      var logoutButton = document.getElementById("logoutButton");
+      var logoutModal = document.getElementById("logoutModal");
+      var closeModalButton = document.getElementById("closeModalButton");
+
+      logoutButton.addEventListener("click", function() {
+        logoutModal.classList.remove("hidden");
+      });
+
+      closeModalButton.addEventListener("click", function() {
+        logoutModal.classList.add("hidden");
+      });
+
+      // Caso o ususario click fora do modal vai fechar.
+      window.addEventListener("click", function(event) {
+        if (event.target == logoutModal) {
+          logoutModal.classList.add("hidden");
+        }
+      });
+    });
+
+    function handleToggleNav() {
+      const menu = document.getElementById('mobileMenu');
+      // Toggle between hidden and block classes to open/close the menu
+      if (menu.classList.contains('left-[-100%]')) {
+        menu.classList.remove('left-[-100%]');
+        menu.classList.add('left-0');
+        menu.focus();
+      } else {
+        menu.classList.remove('left-0');
+        menu.classList.add('left-[-100%]');
+      }
+    }
+  </script>
+{% endblock inline_javascript %}

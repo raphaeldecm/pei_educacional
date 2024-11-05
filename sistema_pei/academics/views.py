@@ -218,7 +218,7 @@ class OfferDeleteView(
     success_message = _("A oferta foi excluída com sucesso.")
     protected_warning_message = _(
         "Não é possível excluir a oferta, pois ele possui"
-        "um ou mais alunos associados.",
+        "um ou mais discentes associados.",
     )
 
 
@@ -234,11 +234,11 @@ class RemoveStudentFromOfferView(SuccessMessageMixin, LoginRequiredMixin, View):
                 student=student,
             )
             enrollment.delete()
-            messages.success(request, "Aluno removido com sucesso da oferta.")
+            messages.success(request, "Discente removido com sucesso da oferta.")
         except ProtectedError:
             messages.error(
                 request,
-                "Não é possível remover o aluno desta oferta "
+                "Não é possível remover o discente desta oferta "
                 "porque existem PEIs associados.",
             )
 
@@ -248,15 +248,18 @@ class RemoveStudentFromOfferView(SuccessMessageMixin, LoginRequiredMixin, View):
 class AddStudentToOfferView(LoginRequiredMixin, View):
     def post(self, request, pk):
         offer = get_object_or_404(models.Offer, id=pk)
-        student_id = request.POST.get("student")
-        student = get_object_or_404(Student, id=student_id)
+        student_ids = request.POST.getlist("students")  # Recebe todos os IDs selecionados
 
-        if not models.Enrollment.objects.filter(offer=offer, student=student).exists():
-            models.Enrollment.objects.create(
-                offer=offer,
-                student=student,
-                YearSemesterReference=student.reference_period,
-            )
+        for student_id in student_ids:
+            student = get_object_or_404(Student, id=student_id)
+            if not models.Enrollment.objects.filter(offer=offer, student=student).exists():
+                models.Enrollment.objects.create(
+                    offer=offer,
+                    student=student,
+                    YearSemesterReference=student.reference_period,
+                    created_by=self.request.user,
+                    updated_by=self.request.user
+                )
 
         return redirect(f"/academics/offers/detail/{offer.id}/")
 

@@ -16,4 +16,6 @@ def createPeiForEnrollment(sender, instance, created, **kwargs):
             methodology=instance.offer.subject.methodology,
             resources=instance.offer.subject.resources,
             assessments=instance.offer.subject.assessments,
+            created_by=instance.created_by,
+            updated_by=instance.updated_by
         )

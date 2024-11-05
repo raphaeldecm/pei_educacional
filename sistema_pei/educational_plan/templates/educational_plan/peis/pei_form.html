@@ -306,11 +306,14 @@
             </div>
           {% endif %}
           <hr class="mt-9">
-          <div class="mb-4 col-span-2 flex-1 mt-6">
+          <div class="mb-4 col-span-2 flex-1 mt-6 {% if user.sector != "NAPNE" %}pointer-events-none {% endif %}">
             <label for="{{ form.academic_opinion_final.id_for_label }}"
                    class="font-sans font-medium text-lg text-ls block mb-4">
                    Parecer Final
             </label>
+            {% if user.sector != "NAPNE"  %}
+              <p class="text-slate-300 mb-3">Parecer final é adicionado exclusivamente por membros da NAPNE.</p>
+            {% endif %}
             <textarea id="{{ form.academic_opinion_final.id_for_label }}"
                       name="{{ form.academic_opinion_final.name }}"
                       placeholder="Escreva aqui!"
