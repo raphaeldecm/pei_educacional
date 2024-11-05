@@ -153,7 +153,7 @@ class Offer(BaseModel):
 
 class Enrollment(BaseModel):
     offer = models.ForeignKey(
-        "academics.Offer",
+        Offer,
         verbose_name=_("Oferta"),
         on_delete=models.PROTECT,
         related_name="enrollments",
