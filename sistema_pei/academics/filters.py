@@ -49,7 +49,7 @@ class OfferFilter(django_filters.FilterSet):
 
     class Meta:
         model = models.Offer
-        fields = ["teacher", "subject", "semester", "year"]
+        fields = ["teachers", "subject", "semester", "year"]
 
     def filter_by_search(self, queryset, name, value):
         return queryset.filter(

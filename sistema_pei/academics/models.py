@@ -125,10 +125,9 @@ class Offer(BaseModel):
         on_delete=models.PROTECT,
         related_name="courses",
     )
-    teacher = models.ForeignKey(
+    teachers = models.ManyToManyField(
         Teacher,
         verbose_name=_("Professor"),
-        on_delete=models.PROTECT,
         related_name="offers",
     )
 

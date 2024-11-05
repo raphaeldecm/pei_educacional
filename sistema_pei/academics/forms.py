@@ -13,7 +13,7 @@ class CourseForm(forms.ModelForm):
 class OfferForm(forms.ModelForm):
     class Meta:
         model = models.Offer
-        fields = ["status", "subject", "year", "teacher", "course", "semester"]
+        fields = ["status", "subject", "year", "teachers", "course", "semester"]
 
 
 class SubjectForm(forms.ModelForm):
