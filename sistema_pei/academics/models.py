@@ -147,7 +147,7 @@ class Offer(BaseModel):
         return self.enrollments.count()
 
     def __str__(self):
-        return self.subject.name + " - " + self.teacher.name
+        return self.subject.name
 
 
 class Enrollment(BaseModel):
