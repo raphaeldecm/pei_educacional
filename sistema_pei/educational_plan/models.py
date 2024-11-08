@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from sistema_pei.academics.models import Enrollment
 from sistema_pei.core.models import BaseModel
 from sistema_pei.educational_plan import managers
+from sistema_pei.people.models import Teacher
 
 
 # Create your models here.
@@ -20,6 +21,14 @@ class Pei(BaseModel):
         on_delete=models.PROTECT,
         related_name="peis",
     )
+
+    responsible_teacher = models.ForeignKey(
+        Teacher,
+        verbose_name=_("Professor Responsável"),
+        on_delete=models.PROTECT,
+        related_name="Teachers",
+    )
+
     status = models.CharField(
         max_length=30,
         choices=StatusChoice.choices,

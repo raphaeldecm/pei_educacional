@@ -92,7 +92,7 @@
             <br />
             <span class="text-sm text-slate-600/50">{{ pei.enrollment.student.course.name }}</span>
           </td>
-          <td>{{ pei.enrollment.offer.teacher }}</td>
+          <td>{{ pei.responsible_teacher }}</td>
           <td>
             {% if pei.status == 'NOT_START' %}
               <div class="bg-red-300 text-red-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-red-700">

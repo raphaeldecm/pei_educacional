@@ -15,21 +15,20 @@ logger = logging.getLogger(__name__)
 def pei_created(sender, instance, created, **kwargs):
     if created:
         try:
-            teachers = instance.enrollment.offer.teachers.all()
+            teacher = instance.responsible_teacher
             subject_name = instance.enrollment.offer.subject.name
             student_name = instance.enrollment.student.name
             year_semester = instance.enrollment.YearSemesterReference
 
-            for teacher in teachers:
-                subject, message = NotificationEmailContent.created_pei(
-                    teacher.name, subject_name, student_name, year_semester,
-                )
+            subject, message = NotificationEmailContent.created_pei(
+                teacher.name, subject_name, student_name, year_semester,
+            )
 
-                notify_teacher.delay(
-                    teacher.id,
-                    subject=subject,
-                    message=message,
-                )
+            notify_teacher.delay(
+                teacher.id,
+                subject=subject,
+                message=message,
+            )
 
         except CeleryError as e:
             logger.exception(
@@ -40,21 +39,21 @@ def pei_created(sender, instance, created, **kwargs):
 @receiver(post_delete, sender=Pei)
 def pei_deleted(sender, instance, **kwargs):
     try:
-        teachers = instance.enrollment.offer.teachers.all()
+        teacher = instance.responsible_teacher
         subject_name = instance.enrollment.offer.subject.name
         student_name = instance.enrollment.student.name
         year_semester = instance.enrollment.YearSemesterReference
 
-        for teacher in teachers:
-            subject, message = NotificationEmailContent.deleted_pei(
-                teacher, subject_name, student_name, year_semester,
-            )
+        subject, message = NotificationEmailContent.deleted_pei(
+            teacher, subject_name, student_name, year_semester,
+        )
 
-            notify_teacher.delay(
-                teacher.id,
-                subject=subject,
-                message=message,
-            )
+        notify_teacher.delay(
+            teacher.id,
+            subject=subject,
+            message=message,
+        )
+
     except CeleryError as e:
         logger.exception(
             "Failed to send task to notify professor for PEI removal",
