@@ -101,7 +101,7 @@
           <tr>
             <th class="pl-[76px]">Nome da Disciplina</th>
             <th>Curso</th>
-            <th>Professor</th>
+            <th>Professor(es)</th>
             <th>Ano</th>
             <th>Situação</th>
             <th colspan="3" style="text-align: center" class='pr-[30px]'>Ações</th>
@@ -112,7 +112,14 @@
             <tr>
               <td class="pl-[76px]">{{ object.subject.name }}</td>
               <td>{{ object.course.name }}</td>
-              <td>{{ object.teacher }}</td>
+              <td class="py-2">
+                {% for teacher in object.teachers.all|slice:":3" %}
+                  {{ teacher.name }}
+                  {% if not forloop.last %},<br />
+                  {% endif %}
+                {% endfor %}
+                {% if object.teachers.all|length > 3 %}...{% endif %}
+              </td>
               <td>{{ object.year }}.{{ object.semester }}</td>
               <td>{{ object.status }}</td>
               <td class="flex justify-center h-full gap-[30px] !mt-[32px] pr-[26px]">

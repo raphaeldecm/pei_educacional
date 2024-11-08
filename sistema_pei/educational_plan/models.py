@@ -91,10 +91,9 @@ class Pei(BaseModel):
 
     def __str__(self):
         return (
-            "("
+            "PEI -"
+            + self.enrollment.offer.subject.name
             + self.enrollment.student.name
-            + "-"
-            + self.enrollment.offer.teacher.name
         )
 
     def update_status(self):
