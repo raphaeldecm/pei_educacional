@@ -66,4 +66,9 @@ urlpatterns = [
         views.StudentDeleteView.as_view(),
         name="student_delete",
     ),
+    path(
+        "notification/mark_as_viewed/<int:pk>/",
+        views.mark_notification_as_viewed,
+        name="notification_mark_as_viewed",
+    ),
 ]

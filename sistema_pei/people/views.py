@@ -4,6 +4,7 @@ from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.messages.views import SuccessMessageMixin
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -25,7 +26,7 @@ from sistema_pei.core.forms import EnrollmentForm
 from sistema_pei.core.mixins import ProtectedErrorMessageMixin, TitleViewMixin
 from sistema_pei.educational_plan.models import Pei
 from sistema_pei.people.filters import StudentFilter, TeacherFilter
-from sistema_pei.people.models import Student
+from sistema_pei.people.models import Notification, Student
 from sistema_pei.people.models import StudentFile
 from sistema_pei.people.models import Teacher
 from sistema_pei.people.models import User
@@ -396,3 +397,14 @@ class UploadStudentFilesView(LoginRequiredMixin, View):
             f"/people/profile/{student.id}?tab=edit_student_data&sub_tab=edit_files#tab",
         )
 
+def mark_notification_as_viewed(request, pk):
+    if request.user.is_authenticated:
+        notification = get_object_or_404(Notification, id=pk, user=request.user)
+        
+        # Atualiza o campo 'viewed' para True
+        notification.viewed = True
+        notification.save()
+        messages.success(request, 'Notificação marcada como vista!')
+        return JsonResponse({'success': True})
+    
+    return JsonResponse({'success': False}, status=401)

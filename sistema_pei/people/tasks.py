@@ -7,7 +7,7 @@ from .models import Teacher
 
 
 @shared_task
-def notify_teacher(teacher_id, subject, message):
+def notify_teacher_email(teacher_id, subject, message):
         recipient = get_object_or_404(Teacher, id=teacher_id)
         send_mail(
             subject,

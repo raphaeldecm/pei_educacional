@@ -75,9 +75,53 @@
              placeholder="Pesquisar..."
              class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50" />
     </div>
-    <div class="cursor-pointer">
+
+    <div id="notificationIcon" class="cursor-pointer relative">
+      {% if notifications %}
+        <div id="notificationCount" class="h-5 w-5 bg-green-500 rounded-full text-[10px] text-white flex items-center justify-center absolute top-[-10px] right-[-5px]">
+          {% if notifications|length > 9 %}
+              9+
+          {% else %}
+              {{ notifications|length }}
+          {% endif %}
+        </div>
+      {% endif %}
       <img src="{% static 'images/icons/icon-notification.svg' %}" class="min-w-[31px] min-h-[33px] max-w-full" alt="" />
+      
+      <!-- Modal -->
+      <div id="notificationModal" class="absolute right-0 top-14 bg-white shadow-lg z-20 rounded-lg p-4 max-w-[600px] w-[35vw] h-[500px] hidden">
+          <h2 class="text-lg font-medium text-black">Notificações</h2>
+          <hr class="mt-[18px]">
+          {% if notifications %}
+            <div class="h-[400px] overflow-y-auto mt-2 mb-4">
+            
+              {% for notification in notifications %}
+                <div id="notification-{{ notification.pk }}" class="flex gap-4 p-2 px-4 border border-none border-b border-slate-300 rounded-lg hover:bg-slate-50 hover:cursor-pointer transition-all">
+                  <img src="{% static 'images/icons/icon-register-student.svg' %}"
+                      class="w-[32px] h-[32px] mt-3"
+                      alt="" />
+                  <div class="flex-1">
+                    <p class="text-[18px] font-semibold">{{ notification.title }}</p>
+                    <p>{{ notification.text }}</p>
+                  </div>
+                  <button onclick="markAsViewed({{ notification.pk }})" class="flex items-start">
+                    <img src="{% static 'images/icons/icon-checked.svg' %}"
+                        class="w-[30px] h-[30px] mt-3 "
+                        alt="Marcar como lido" />
+                  </button>
+                </div>
+              {% endfor %}
+
+            </div>
+          {% else %}
+            <div class="w-full h-full flex justify-center">
+              <p class="mt-20">Não há notificações</p>
+            </div>
+          {% endif %}
+      </div>
     </div>
+    
+
     <div>
       <a onclick="toggleDropdown()"
          type="button"
@@ -168,6 +212,27 @@
 
 {% block inline_javascript %}
   <script>
+    function markAsViewed(notificationId) {
+      fetch(`/people/notification/mark_as_viewed/${notificationId}/`, {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}',
+          'Content-Type': 'application/json'
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Atualizar a interface para indicar que foi marcada como lida
+          window.location.reload();
+        } else {
+          console.error('Erro ao marcar como visualizado:', data.error);
+        }
+      })
+      .catch(error => console.error('Erro:', error));
+    }
+
+
     function toggleDropdown() {
       const dropdown = document.getElementById("dropdown");
       dropdown.classList.toggle("hidden");
@@ -229,5 +294,31 @@
         menu.classList.add('left-[-100%]');
       }
     }
+
+
+    //Dropdown de notificações
+    const notificationIcon = document.getElementById('notificationIcon');
+    const notificationModal = document.getElementById('notificationModal');
+    const closeModalButton = document.getElementById('closeModalButton');
+
+    // Abre/fecha o modal ao clicar na div
+    notificationIcon.addEventListener('click', (event) => {
+        event.stopPropagation(); // Impede o evento de se propagar para evitar o fechamento imediato
+        notificationModal.classList.toggle('hidden');
+    });
+
+    // Fecha o modal se clicar fora dele
+    document.addEventListener('click', (event) => {
+        if (!notificationIcon.contains(event.target)) {
+            notificationModal.classList.add('hidden');
+        }
+    });
+
+    // Esconder contador de notificações ao clicar
+    const notificationCount = document.getElementById('notificationCount');
+    notificationIcon.addEventListener('click', (event) => {
+        notificationCount.classList.add('hidden');
+    });
+  
   </script>
 {% endblock inline_javascript %}
