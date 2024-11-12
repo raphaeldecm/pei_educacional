@@ -51,22 +51,22 @@
           </select>
         </div>
       </div>
-      <div class="mt-[24px]">
-        <label for="{{ form.teacher.id_for_label }}" class="font-medium text-[18px]">Professor:</label>
-        <div class="relative w-full cursor-pointer mt-[16px]">
-          <img class="absolute top-[12px] right-[10px]"
-               src="{% static 'images/icons/icon-updown-arrow.svg' %}"
-               width="24px"
-               height="24px" />
-          <select name="{{ form.teacher.name }}"
-                  id="{{ form.teacher.id_for_label }}"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
-            <option value="default" selected disabled>Selecione o professor...</option>
-            {% for key, value in form.teacher.field.choices %}
-              <option value="{{ key }}"
-                      {% if key == form.teacher.value %}selected{% endif %}>{{ value }}</option>
-            {% endfor %}
-          </select>
+      <div class="mt-[32px]">
+        <label class="font-medium text-[18px]">Professores:</label>
+        <div class="mt-[16px] border border-slate-300 rounded-lg py-2 px-3 max-h-[150px] overflow-y-auto gap-6 teachers-container" data-selected-values="{{ form.teachers.value|join:',' }}">
+          {% for teacher in form.teachers.field.queryset %}
+            <div class="flex flex-row-reverse justify-end items-center gap-1">
+              <input id={{ teacher.id }} type="checkbox" class="hidden peer" name="teachers" value="{{ teacher.id }}" {% if teacher.id in form.teachers.value %}checked{% endif %} />
+              {{ teacher.name }}
+              <label for={{ teacher.id }} class="flex items-center cursor-pointer w-[20px] h-[20px] rounded-[5px] peer-checked:[&_img]:block bg-slate-300">
+                <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}"
+                     width="20px"
+                     height="20px"
+                     class="hidden"
+                     alt="Checkmark" />
+              </label>
+            </div>
+          {% endfor %}
         </div>
       </div>
       <div class="flex gap-8">
@@ -118,55 +118,3 @@
     </form>
   </div>
 {% endblock content %}
-{% block inline_javascript %}
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const courseSelect = document.getElementById('id_course');
-      const subjectSelect = document.getElementById('id_subject');
-
-      subjectSelect.disabled = true;
-      subjectSelect.innerHTML = '<option value="default" selected disabled>Selecione o curso primeiro...</option>';
-
-      if (courseSelect.value !== 'default') {
-        subjectSelect.disabled = false;
-        fetch(`/academics/offers/get_subjects_by_course_id/${courseSelect.value}/`)
-          .then(response => response.json())
-          .then(data => {
-            subjectSelect.innerHTML = '<option value="default" selected disabled>Selecione a disciplina...</option>';
-            data.subjects.forEach(subject => {
-              const option = document.createElement('option');
-              option.value = subject.id;
-              option.textContent = subject.name;
-              subjectSelect.appendChild(option);
-            });
-            if (subjectSelect.dataset.selectedValue) {
-              subjectSelect.value = subjectSelect.dataset.selectedValue;
-            }
-          });
-      }
-
-      courseSelect.addEventListener('change', function() {
-        const courseId = this.value;
-        if (courseId !== 'default') {
-          subjectSelect.disabled = false;
-          subjectSelect.innerHTML = '<option value="default" selected disabled>Selecione a disciplina...</option>';
-
-          fetch(`/academics/offers/get_subjects_by_course_id/${courseId}/`)
-            .then(response => response.json())
-            .then(data => {
-              subjectSelect.innerHTML = '<option value="default" selected disabled>Selecione a disciplina...</option>';
-              data.subjects.forEach(subject => {
-                const option = document.createElement('option');
-                option.value = subject.id;
-                option.textContent = subject.name;
-                subjectSelect.appendChild(option);
-              });
-            });
-        } else {
-          subjectSelect.disabled = true;
-          subjectSelect.innerHTML = '<option value="default" selected disabled>Selecione a disciplina...</option>';
-        }
-      });
-    });
-  </script>
-{% endblock inline_javascript %}

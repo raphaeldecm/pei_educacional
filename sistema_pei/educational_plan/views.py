@@ -91,7 +91,7 @@ class PeiUpdateView(
     def dispatch(self, request, *args, **kwargs):
         # Verificar se o usuário logado é o professor associado ao PEI
         pei = self.get_object()
-        if pei.enrollment.offer.teacher.email != request.user.email:
+        if pei.responsible_teacher.email != request.user.email:
             messages.error(request, 'Você não tem permissão para editar este PEI.')
             return redirect('educational_plan:pei_list')
 
