@@ -6,7 +6,7 @@
   <button class="hidden max-sm:block" onclick="handleToggleNav()">
     <i class="fas fa-regular fa-bars text-2xl"></i>
   </button>
-  
+
   <!-- Menu lateral mobile -->
   <div id="mobileMenu" tabindex="0" onblur="handleToggleNav()" class="hidden max-sm:flex w-[80vw] h-[105vh] overflow-hidden fixed left-[-100%] top-0 z-10 bg-slate-50 shadow-2xl flex-col p-4 duration-500">
     <a href="{% url 'home' %}"
@@ -87,27 +87,31 @@
         </div>
       {% endif %}
       <img src="{% static 'images/icons/icon-notification.svg' %}" class="min-w-[31px] min-h-[33px] max-w-full" alt="" />
-      
+
       <!-- Modal -->
-      <div id="notificationModal" class="absolute right-0 top-14 bg-white shadow-lg z-20 rounded-lg p-4 max-w-[600px] w-[35vw] h-[500px] hidden">
-          <h2 class="text-lg font-medium text-black">Notificações</h2>
+      <div id="notificationModal" class="absolute right-0 top-14 bg-white shadow-lg z-20 rounded-lg p-4 px-6 max-w-[700px] w-[35vw] h-[500px] hidden">
+          <h2 class="text-xl font-medium text-black">Notificações</h2>
           <hr class="mt-[18px]">
           {% if notifications %}
-            <div class="h-[400px] overflow-y-auto mt-2 mb-4">
-            
+            <div class="h-[400px] overflow-y-auto flex flex-col mb-3">
+
               {% for notification in notifications %}
-                <div id="notification-{{ notification.pk }}" class="flex gap-4 p-2 px-4 border border-none border-b border-slate-300 rounded-lg hover:bg-slate-50 hover:cursor-pointer transition-all">
-                  <img src="{% static 'images/icons/icon-register-student.svg' %}"
-                      class="w-[32px] h-[32px] mt-3"
+                <div id="notification-{{ notification.pk }}" class="flex gap-6 p-4 border-b border-slate-200 hover:bg-slate-100 cursor-pointer">
+                  <img src="{% static 'images/icons/icon-message.svg' %}"
+                      class="w-[32px] h-[32px] mt-2"
                       alt="" />
                   <div class="flex-1">
                     <p class="text-[18px] font-semibold">{{ notification.title }}</p>
                     <p>{{ notification.text }}</p>
+                    <p class="text-[12px] mt-3">{{notification.created_at}}</p>
                   </div>
-                  <button onclick="markAsViewed({{ notification.pk }})" class="flex items-start">
+                  <button onclick="markAsViewed({{ notification.pk }})" class="flex flex-col items-center">
                     <img src="{% static 'images/icons/icon-checked.svg' %}"
-                        class="w-[30px] h-[30px] mt-3 "
+                        class="w-[30px] h-[30px] mt-2"
                         alt="Marcar como lido" />
+                    <p class="text-[10px] mt-2">Marcar</p>
+                    <p class="text-[10px]">como</p>
+                    <p class="text-[10px]">Lido</p>
                   </button>
                 </div>
               {% endfor %}
@@ -120,7 +124,7 @@
           {% endif %}
       </div>
     </div>
-    
+
 
     <div>
       <a onclick="toggleDropdown()"
@@ -319,6 +323,6 @@
     notificationIcon.addEventListener('click', (event) => {
         notificationCount.classList.add('hidden');
     });
-  
+
   </script>
 {% endblock inline_javascript %}
