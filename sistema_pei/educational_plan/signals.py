@@ -34,7 +34,7 @@ def pei_created(sender, instance, created, **kwargs):
             Notification.objects.create(
                 title="Novo PEI adicionado!",
                 text=f"O PEI do aluno {student_name}, na disciplina {subject_name} - {year_semester} foi adicionado, e você é o responsável.",
-                user=instance.enrollment.offer.teacher,
+                user=teacher.user,
                 type="Alert"
             )
 
@@ -65,7 +65,7 @@ def pei_deleted(sender, instance, **kwargs):
         Notification.objects.create(
             title="PEI removido!",
             text=f"O PEI do aluno {student_name}, na disciplina {subject_name} - {year_semester}, que você estava participando foi removido pelo coordenador.",
-            user=instance.enrollment.offer.teacher,
+            user=teacher.user,
             type="Alert"
         )
 
