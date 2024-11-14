@@ -408,3 +408,14 @@ def mark_notification_as_viewed(request, pk):
         return JsonResponse({'success': True})
     
     return JsonResponse({'success': False}, status=401)
+
+def mark_all_notifications_as_viewed(request):
+    if request.user.is_authenticated:
+        notifications = Notification.objects.filter(user=request.user, viewed=False)
+        notifications.update(viewed=True)
+        
+        messages.success(request, 'Todas as notificações foram marcadas como vistas!')
+        return JsonResponse({'success': True})
+    
+    return JsonResponse({'success': False}, status=401)
+

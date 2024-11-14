@@ -89,11 +89,14 @@
       <img src="{% static 'images/icons/icon-notification.svg' %}" class="min-w-[31px] min-h-[33px] max-w-full" alt="" />
 
       <!-- Modal -->
-      <div id="notificationModal" class="absolute right-0 top-14 bg-white shadow-lg z-20 rounded-lg p-4 px-6 max-w-[700px] w-[35vw] h-[500px] hidden">
-          <h2 class="text-xl font-medium text-black">Notificações</h2>
-          <hr class="mt-[18px]">
+      <div id="notificationModal" class="absolute right-0 top-14 bg-white shadow-lg z-20 rounded-lg p-4 max-w-[600px] w-[35vw] hidden min-h-[250px]">
+          <h2 class="text-lg font-medium text-black">Notificações</h2>
+
           {% if notifications %}
-            <div class="h-[400px] overflow-y-auto flex flex-col mb-3">
+            <button onclick="markAllAsViewed()" class="p-4 flex items-center justify-center rounded-lg bg-slate-50 hover:bg-slate-100 transition-all hover:text-slate-700 shadow-sm my-4 w-full">
+                <p>Marcar tudo como lido</p>
+            </button>
+            <div class="max-h-[400px] overflow-y-auto mb-4 flex flex-col gap-2">
 
               {% for notification in notifications %}
                 <div id="notification-{{ notification.pk }}" class="flex gap-6 p-4 border-b border-slate-200 hover:bg-slate-100 cursor-pointer">
@@ -218,6 +221,26 @@
   <script>
     function markAsViewed(notificationId) {
       fetch(`/people/notification/mark_as_viewed/${notificationId}/`, {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}',
+          'Content-Type': 'application/json'
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Atualizar a interface para indicar que foi marcada como lida
+          window.location.reload();
+        } else {
+          console.error('Erro ao marcar como visualizado:', data.error);
+        }
+      })
+      .catch(error => console.error('Erro:', error));
+    }
+
+    function markAllAsViewed(notificationId) {
+      fetch(`/people/notification/mark_all_viewed/`, {
         method: 'POST',
         headers: {
           'X-CSRFToken': '{{ csrf_token }}',
