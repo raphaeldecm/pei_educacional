@@ -89,7 +89,7 @@
   <div class="data-block">
     <h2 class="section-title underline">Informações da disciplina:</h2>
     <p><strong>Nome da disciplina:</strong> {{ object.enrollment.offer.subject.name }}</p>
-    <p><strong>Professor:</strong> {{ object.enrollment.offer.teacher.name }}</p>
+    <p><strong>Professor:</strong> {{ object.responsible_teacher }}</p>
     <p><strong>Periodo de referência:</strong> {{ object.enrollment.offer.year }}.{{ object.enrollment.offer.semester }}</p>
   </div>
   <br>

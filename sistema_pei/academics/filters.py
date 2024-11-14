@@ -5,7 +5,6 @@ from django.utils import timezone
 from sistema_pei.academics import models
 from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.educational_plan.models import Pei
-from sistema_pei.people.models import Teacher
 
 
 class CourseFilter(django_filters.FilterSet):
@@ -49,7 +48,7 @@ class OfferFilter(django_filters.FilterSet):
 
     class Meta:
         model = models.Offer
-        fields = ["teacher", "subject", "semester", "year"]
+        fields = ["teachers", "subject", "semester", "year"]
 
     def filter_by_search(self, queryset, name, value):
         return queryset.filter(

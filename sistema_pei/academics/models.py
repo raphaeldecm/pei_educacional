@@ -125,10 +125,9 @@ class Offer(BaseModel):
         on_delete=models.PROTECT,
         related_name="courses",
     )
-    teacher = models.ForeignKey(
+    teachers = models.ManyToManyField(
         Teacher,
         verbose_name=_("Professor"),
-        on_delete=models.PROTECT,
         related_name="offers",
     )
 
@@ -148,7 +147,7 @@ class Offer(BaseModel):
         return self.enrollments.count()
 
     def __str__(self):
-        return self.subject.name + " - " + self.teacher.name
+        return self.subject.name
 
 
 class Enrollment(BaseModel):
