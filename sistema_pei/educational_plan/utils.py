@@ -39,3 +39,18 @@ class NotificationEmailContent:
             "Esta é uma mensagem automática, por favor, não responda a este e-mail."
         )
         return subject, message
+
+    def changed_history(professor_name, student_name):
+        subject = "[Sistema PEI] O histórico de um aluno foi alterado!"
+        message = (
+            f"Olá, Professor(a) {professor_name},\n\n"
+            f"Informamos que o historico do o(a) aluno(a) {student_name} foi alterado no sistema."
+            "para mais detalhes verifique o perfil do aluno.\n\n"
+
+            "Caso tenha dúvidas ou precise de informações adicionais, estamos à disposição para auxiliar.\n\n"
+            "Atenciosamente,\n"
+            "Equipe de Gestão Educacional\n\n"
+            "---\n"
+            "Esta é uma mensagem automática, por favor, não responda a este e-mail."
+        )
+        return subject, message
