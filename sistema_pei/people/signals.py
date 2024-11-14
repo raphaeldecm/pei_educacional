@@ -51,7 +51,7 @@ def fields_changed(sender, instance, **kwargs):
                 )
 
                 notify_teacher_email.delay(
-                    instance.enrollment.offer.teacher.id,
+                    teacher.id,
                     subject=subject,
                     message=message,
                 )
@@ -68,7 +68,27 @@ def fields_changed(sender, instance, **kwargs):
 
 @receiver(m2m_changed, sender=Student.educational_necessities.through)
 def educational_necessities_changed(sender, instance, action, **kwargs):
-    # Ação disparada para mudanças em campos ManyToManyField
     if action in ["post_add", "post_remove", "post_clear"]:
-        print("Necessidades Educacionais Específicas foram alteradas.")
-        # Adicione a lógica necessária para tratar a mudança no campo ManyToMany
+        
+        teachersList = Teacher.objects.filter(
+            offers__enrollments__student_id=instance.id
+        ).distinct()
+        
+        for teacher in teachersList:
+            
+            subject, message = NotificationEmailContent.changed_history(
+                teacher.name, instance.name
+            )
+
+            notify_teacher_email.delay(
+                teacher.id,
+                subject=subject,
+                message=message,
+            )
+            
+            Notification.objects.create(
+                title="Necessidades Específicas de um aluno foram alteradas!",
+                text=f"As necessidades educacionais específicas do aluno {instance.name} foram alteradas. Verfique o perfil do aluno para mais detalhes.",
+                user=teacher.user,
+                type="Alert"
+            )

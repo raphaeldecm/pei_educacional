@@ -25,16 +25,16 @@ def pei_created(sender, instance, created, **kwargs):
                 professor_name, subject_name, student_name, year_semester,
             )
 
-            # notify_teacher_email.delay(
-            #     instance.enrollment.offer.teacher.id,
-            #     subject=subject,
-            #     message=message,
-            # )
+            notify_teacher_email.delay(
+                instance.enrollment.offer.teacher.id,
+                subject=subject,
+                message=message,
+            )
             
             Notification.objects.create(
                 title="Novo PEI adicionado!",
                 text=f"O PEI do aluno {student_name}, na disciplina {subject_name} - {year_semester} foi adicionado, e você é o responsável.",
-                user=instance.enrollment.offer.teacher,
+                user=instance.enrollment.offer.teacher.user,
                 type="Alert"
             )
             
@@ -56,16 +56,16 @@ def pei_deleted(sender, instance, **kwargs):
             professor_name, subject_name, student_name, year_semester,
         )
 
-        # notify_teacher_email.delay(
-        #     instance.enrollment.offer.teacher.id,
-        #     subject=subject,
-        #     message=message,
-        # )
+        notify_teacher_email.delay(
+            instance.enrollment.offer.teacher.id,
+            subject=subject,
+            message=message,
+        )
         
         Notification.objects.create(
             title="PEI removido!",
             text=f"O PEI do aluno {student_name}, na disciplina {subject_name} - {year_semester}, que você estava participando foi removido pelo coordenador.",
-            user=instance.enrollment.offer.teacher,
+            user=instance.enrollment.offer.teacher.user,
             type="Alert"
         )
 
