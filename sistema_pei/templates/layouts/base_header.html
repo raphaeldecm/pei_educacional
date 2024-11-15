@@ -90,16 +90,16 @@
 
       <!-- Modal -->
       <div id="notificationModal" class="absolute right-0 top-14 bg-white shadow-lg z-20 rounded-lg p-4 max-w-[600px] w-[35vw] hidden min-h-[250px]">
-          <h2 class="text-lg font-medium text-black">Notificações</h2>
+          <h2 class="text-lg font-medium">Notificações</h2>
 
           {% if notifications %}
-            <button onclick="markAllAsViewed()" class="p-4 flex items-center justify-center rounded-lg bg-slate-50 hover:bg-slate-100 transition-all hover:text-slate-700 shadow-sm my-4 w-full">
+            <button onclick="markAllAsViewed()" class="p-4 flex items-center justify-center rounded-lg border border-slate-100 hover:bg-slate-50 transition-all hover:text-slate-700 shadow-sm my-4 w-full">
                 <p>Marcar tudo como lido</p>
             </button>
             <div class="max-h-[400px] overflow-y-auto mb-4 flex flex-col gap-2">
 
               {% for notification in notifications %}
-                <div id="notification-{{ notification.pk }}" class="flex gap-6 p-4 border-b border-slate-200 hover:bg-slate-100 cursor-pointer">
+                <div id="notification-{{ notification.pk }}" class="flex gap-6 p-4 border border-slate-100 hover:bg-slate-100 cursor-pointer rounded-lg">
                   <img src="{% static 'images/icons/icon-message.svg' %}"
                       class="w-[32px] h-[32px] mt-2"
                       alt="" />
