@@ -83,15 +83,23 @@ def pei_created(sender, instance, created, **kwargs):
             teacher = instance.pei.responsible_teacher
             author = instance.created_by
 
-            # subject, message = NotificationEmailContent.created_pei(
-            #     teacher.name, subject_name, student_name, year_semester,
-            # )
+            # Não não notificar caso o próprio usuário/professor criou o comentário
+            if teacher.user.id == author.id:
+                return
 
-            # notify_teacher_email.delay(
-            #     teacher.id,
-            #     subject=subject,
-            #     message=message,
-            # )
+            subject = instance.pei.enrollment.offer.subject
+            student = instance.pei.enrollment.student
+
+
+            subject, message = NotificationEmailContent.created_comment(
+                teacher.name, subject.name, student.name
+            )
+
+            notify_teacher_email.delay(
+                teacher.id,
+                subject=subject,
+                message=message,
+            )
 
             Notification.objects.create(
                 title=f"Novo comentário em PEI do aluno {instance.pei.enrollment.student}",
@@ -110,18 +118,26 @@ def pei_created(sender, instance, created, **kwargs):
 def pei_created(sender, instance, created, **kwargs):
     if created:
         try:
-            teacher = instance.comment.pei.responsible_teacher
+            teacher = instance.pei.responsible_teacher
             author = instance.created_by
 
-            # subject, message = NotificationEmailContent.created_pei(
-            #     teacher.name, subject_name, student_name, year_semester,
-            # )
+            # Não notificar caso o professor que criou a resposta seja o mesmo que criou o comentário
+            if teacher.user.id == author.id:
+                return
 
-            # notify_teacher_email.delay(
-            #     teacher.id,
-            #     subject=subject,
-            #     message=message,
-            # )
+            subject = instance.pei.enrollment.offer.subject
+            student = instance.pei.enrollment.student
+
+
+            subject, message = NotificationEmailContent.created_answer(
+                teacher.name, subject.name, student.name
+            )
+
+            notify_teacher_email.delay(
+                teacher.id,
+                subject=subject,
+                message=message,
+            )
 
             Notification.objects.create(
                 title=f"Usuário {author.name} respondeu seu comentário",

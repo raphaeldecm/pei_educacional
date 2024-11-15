@@ -40,12 +40,45 @@ class NotificationEmailContent:
         )
         return subject, message
 
+    @staticmethod
     def changed_history(professor_name, student_name):
         subject = "[Sistema PEI] O histórico de um aluno foi alterado!"
         message = (
             f"Olá, Professor(a) {professor_name},\n\n"
             f"Informamos que o historico do o(a) aluno(a) {student_name} foi alterado no sistema."
             "para mais detalhes verifique o perfil do aluno.\n\n"
+
+            "Caso tenha dúvidas ou precise de informações adicionais, estamos à disposição para auxiliar.\n\n"
+            "Atenciosamente,\n"
+            "Equipe de Gestão Educacional\n\n"
+            "---\n"
+            "Esta é uma mensagem automática, por favor, não responda a este e-mail."
+        )
+        return subject, message
+
+    @staticmethod
+    def created_comment(professor_name, subject_name, student_name):
+        subject = "[Sistema PEI] Novo comentário adicionado!"
+        message = (
+            f"Olá, Professor(a) {professor_name},\n\n"
+            f"Informamos que um novo comentário foi adicionado no pei do o(a) aluno(a) {student_name} na disciplina {subject_name}."
+            "para mais detalhes verifique o PEI do aluno.\n\n"
+
+            "Caso tenha dúvidas ou precise de informações adicionais, estamos à disposição para auxiliar.\n\n"
+            "Atenciosamente,\n"
+            "Equipe de Gestão Educacional\n\n"
+            "---\n"
+            "Esta é uma mensagem automática, por favor, não responda a este e-mail."
+        )
+        return subject, message
+
+    @staticmethod
+    def created_answer(professor_name, subject_name, student_name):
+        subject = "[Sistema PEI] Seu comentário foi respondido!"
+        message = (
+            f"Olá, Professor(a) {professor_name},\n\n"
+            f"Informamos que seu comentário foi respondido no pei do o(a) aluno(a) {student_name} na disciplina {subject_name}."
+            "para mais detalhes verifique o PEI do aluno.\n\n"
 
             "Caso tenha dúvidas ou precise de informações adicionais, estamos à disposição para auxiliar.\n\n"
             "Atenciosamente,\n"
