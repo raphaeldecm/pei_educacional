@@ -87,3 +87,19 @@ class NotificationEmailContent:
             "Esta é uma mensagem automática, por favor, não responda a este e-mail."
         )
         return subject, message
+
+    @staticmethod
+    def monthly_pei(professor_name, total_pending):
+        subject = "[Sistema PEI] Há PEIs para serem preenchidos"
+        message = (
+            f"Olá, Professor(a) {professor_name},\n\n"
+            f"Informamos que há {total_pending} PEIs pendentes para serem preenchidos."
+            "Por favor, revise os PEIs pendentes.\n\n"
+
+            "Caso tenha dúvidas ou precise de informações adicionais, estamos à disposição para auxiliar.\n\n"
+            "Atenciosamente,\n"
+            "Equipe de Gestão Educacional\n\n"
+            "---\n"
+            "Esta é uma mensagem automática, por favor, não responda a este e-mail."
+        )
+        return subject, message
