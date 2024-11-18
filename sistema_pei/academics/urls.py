@@ -16,6 +16,11 @@ urlpatterns = [
         name="course_create",
     ),
     path(
+        "course/import/",
+        views.CourseImportView.as_view(),
+        name="course_import",
+    ),
+    path(
         "course/update/<int:pk>/",
         views.CourseUpdateView.as_view(),
         name="course_update",

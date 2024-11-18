@@ -63,10 +63,14 @@
         </button>
       </div>
     </form>
-    <div class="mt-[53px]">
+    <div class="mt-[53px] flex gap-4">
       <a href="{% url 'academics:course_create' %}"
          class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer hover:bg-green-500 hover:text-white transition-colors duration-300 mt-[2px]">
         Cadastrar Novo Curso
+      </a>
+      <a href="{% url 'academics:course_import' %}"
+         class="text-[18px] py-[11px] px-[44px] border border-blue-600 rounded-lg font-medium cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-300 mt-[2px]">
+        Importar Cursos
       </a>
     </div>
     <div class="mt-[53px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg">

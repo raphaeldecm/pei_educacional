@@ -77,6 +77,23 @@ class CourseCreateView(
         form.instance.updated_by = self.request.user
         return super().form_valid(form)
 
+class CourseImportView(
+    LoginRequiredMixin,
+    TitleViewMixin,
+    SuccessMessageMixin,
+    generic.CreateView,
+):
+    model = models.Course
+    form_class = forms.CourseForm
+    title = _("Importar Cursos")
+    template_name = "academics/course/course_import_form.html"
+    success_url = reverse_lazy("academics:course_list")
+    success_message = _("O arquivo foi importado com sucesso.")
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        form.instance.updated_by = self.request.user
+        return super().form_valid(form)
 
 class CourseUpdateView(
     LoginRequiredMixin,
