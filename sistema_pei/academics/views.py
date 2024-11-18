@@ -85,7 +85,6 @@ class CourseImportView(TitleViewMixin, LoginRequiredMixin, SuccessMessageMixin, 
     title = _("Importar Cursos")
     template_name = "academics/course/course_import_form.html"
     success_url = reverse_lazy("academics:course_list")
-    success_message = _("O arquivo foi importado com sucesso.")
 
     def form_valid(self, form):
         uploaded_file = form.cleaned_data["file"]

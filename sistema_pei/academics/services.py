@@ -5,37 +5,41 @@ from django.shortcuts import redirect
 from sistema_pei.academics.models import Course
 
 def import_courses_csv(self, uploaded_file):
-        try:
-            data = pd.read_csv(uploaded_file)
-            required_columns = {"name", "period", "course_type", "duration_type", "number_of_periods"}
+    insert_counter = 0
+    error_counter = 0
 
-            if not required_columns.issubset(data.columns):
-                missing_columns = required_columns - set(data.columns)
-                messages.error(self.request, _("O arquivo CSV está faltando as seguintes colunas: ") + ", ".join(missing_columns))
-                return redirect(self.success_url)
+    try:
+        data = pd.read_csv(uploaded_file)
 
-            period_mapping = {
-                "Matutino": Course.CoursePeriod.MORNING,
-                "Vespertino": Course.CoursePeriod.AFTERNOON,
-                "Noturno": Course.CoursePeriod.NIGHT,
-            }
-            duration_mapping = {
-                "Semestral": Course.CourseDurationType.SEMESTER,
-                "Anual": Course.CourseDurationType.YEAR,
-            }
+        required_columns = {"name", "period", "course_type", "duration_type", "number_of_periods"}
 
-            for _, row in data.iterrows():
-                # Verifica e mapeia o turno (period)
+        if not required_columns.issubset(data.columns):
+            missing_columns = required_columns - set(data.columns)
+            messages.error(self.request, _("O arquivo CSV está faltando as seguintes colunas: ") + ", ".join(missing_columns))
+            return redirect(self.success_url)
+
+        period_mapping = {
+            "Matutino": Course.CoursePeriod.MORNING,
+            "Vespertino": Course.CoursePeriod.AFTERNOON,
+            "Noturno": Course.CoursePeriod.NIGHT,
+        }
+        duration_mapping = {
+            "Semestral": Course.CourseDurationType.SEMESTER,
+            "Anual": Course.CourseDurationType.YEAR,
+        }
+
+        for _, row in data.iterrows():
+            try:
                 period = period_mapping.get(row["period"].capitalize())
                 if not period:
-                    raise ValueError(f"Valor inválido para 'period': {row['period']}")
+                    error_counter += 1
+                    continue
 
-                # Verifica e mapeia o tipo de duração (duration_type)
                 duration_type = duration_mapping.get(row["duration_type"].capitalize())
                 if not duration_type:
-                    raise ValueError(f"Valor inválido para 'duration_type': {row['duration_type']}")
+                    error_counter += 1
+                    continue
 
-                # Atualiza ou cria o curso
                 Course.objects.update_or_create(
                     name=row["name"],
                     defaults={
@@ -45,9 +49,24 @@ def import_courses_csv(self, uploaded_file):
                         "number_of_periods": row["number_of_periods"],
                     },
                 )
+                insert_counter += 1
 
-            messages.success(self.request, _("Cursos importados com sucesso!"))
+            except Exception as e:
+                error_counter += 1
+                continue
 
-        except Exception as e:
-            print(f"Erro ao processar o arquivo: {str(e)}")
-            return redirect(self.success_url)
+
+        success_message = f"Cursos inseridos: {insert_counter}, Cursos com erro: {error_counter}"
+        messages.success(self.request, success_message)
+
+        return redirect(self.success_url)
+
+    except Exception as e:
+        error_message = f"Erro ao processar o arquivo:\n{str(e)}"
+        messages.error(self.request, error_message)
+        return redirect(self.success_url)
+
+
+
+
+
