@@ -13,10 +13,12 @@ from django.views import generic
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
 from django_filters.views import FilterView
+from django.shortcuts import redirect
 
 from sistema_pei.academics import filters
 from sistema_pei.academics import forms
 from sistema_pei.academics import models
+from sistema_pei.academics.services import import_courses_csv
 from sistema_pei.core import constants
 from sistema_pei.core.mixins import ProtectedErrorMessageMixin
 from sistema_pei.core.mixins import TitleViewMixin
@@ -77,22 +79,19 @@ class CourseCreateView(
         form.instance.updated_by = self.request.user
         return super().form_valid(form)
 
-class CourseImportView(
-    LoginRequiredMixin,
-    TitleViewMixin,
-    SuccessMessageMixin,
-    generic.CreateView,
-):
-    model = models.Course
-    form_class = forms.CourseForm
+
+class CourseImportView(TitleViewMixin, LoginRequiredMixin, SuccessMessageMixin, generic.FormView):
+    form_class = forms.CSVImportForm
     title = _("Importar Cursos")
     template_name = "academics/course/course_import_form.html"
     success_url = reverse_lazy("academics:course_list")
     success_message = _("O arquivo foi importado com sucesso.")
 
     def form_valid(self, form):
-        form.instance.created_by = self.request.user
-        form.instance.updated_by = self.request.user
+        uploaded_file = form.cleaned_data["file"]
+
+        import_courses_csv(self, uploaded_file)
+
         return super().form_valid(form)
 
 class CourseUpdateView(

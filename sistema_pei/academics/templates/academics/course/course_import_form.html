@@ -14,10 +14,9 @@
 {% endblock alerts %}
 {% block content %}
   <div class="w-full">
-    <h1 class="text-[32px] font-medium mb-[38px]">{{title}}</h1>
-    <form method="post" autocomplete="off">
+    <h1 class="text-[32px] font-medium mb-[38px]">Importar Cursos</h1>
+    <form method="post" enctype="multipart/form-data" autocomplete="off">
       {% csrf_token %}
-
       <div>
         <div>
           <ol class="list-decimal ml-5">
@@ -41,11 +40,12 @@
           <p class="text-slate-400">Observação: Verifique se todos os campos estão preenchidos corretamente antes de enviar para evitar erros na importação.</p>
         </div>
         <div class="w-full flex gap-8 mt-8">
-          <div class="w-full rounded-lg flex-1 border border-green-600 p-4 flex flex-col items-center justify-center gap-4 cursor-pointer hover:text-white hover:bg-green-600 transition-all">
-            <a href="{% static 'csv_templates/import_course_example.csv' %}" download>
-              Enviar planilha preechida
-            </a>
-          </div>
+          <label for="file-upload" class="cursor-pointer w-[50%]">
+            <div id="upload-div" class="w-full rounded-lg flex-1 border border-green-600 p-4 flex flex-col items-center justify-center gap-4 hover:text-white hover:bg-green-600 transition-all">
+              <span id="upload-label">Enviar planilha preenchida</span>
+              <input id="file-upload" name="file" type="file" class="hidden" onchange="updateUploadLabel()">
+            </div>
+          </label>
           <a href="{% static 'csv_templates/import_course_example.csv' %}" class="w-[50%]" download>
             <div class="rounded-lg flex-1 border border-blue-600 p-4 flex flex-col items-center justify-center gap-4 cursor-pointer hover:text-white hover:bg-blue-600 transition-all">
                 Baixar modelo de planilha
@@ -57,3 +57,20 @@
     </form>
   </div>
 {% endblock content %}
+{% block inline_javascript %}
+  <script>
+    function updateUploadLabel() {
+      const input = document.getElementById('file-upload');
+      const label = document.getElementById('upload-label');
+      const div = document.getElementById('upload-div');
+
+      if (input.files && input.files.length > 0) {
+        label.textContent = "✅ Planilha adicionada";
+        div.classList.remove('hover:bg-green-600', 'hover:text-white', 'cursor-pointer');
+      } else {
+        label.textContent = "Enviar planilha preenchida";
+        div.classList.add('hover:bg-green-600', 'hover:text-white', 'cursor-pointer');
+      }
+    }
+  </script>
+{% endblock inline_javascript %}
