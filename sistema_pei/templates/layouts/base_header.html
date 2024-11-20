@@ -6,7 +6,7 @@
   <button class="hidden max-sm:block" onclick="handleToggleNav()">
     <i class="fas fa-regular fa-bars text-2xl"></i>
   </button>
-  
+
   <!-- Menu lateral mobile -->
   <div id="mobileMenu" tabindex="0" onblur="handleToggleNav()" class="hidden max-sm:flex w-[80vw] h-[105vh] overflow-hidden fixed left-[-100%] top-0 z-10 bg-slate-50 shadow-2xl flex-col p-4 duration-500">
     <a href="{% url 'home' %}"
@@ -75,9 +75,60 @@
              placeholder="Pesquisar..."
              class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50" />
     </div>
-    <div class="cursor-pointer">
+
+    <div id="notificationIcon" class="cursor-pointer relative">
+      {% if notifications %}
+        <div id="notificationCount" class="h-5 w-5 bg-green-500 rounded-full text-[10px] text-white flex items-center justify-center absolute top-[-10px] right-[-5px]">
+          {% if notifications|length > 9 %}
+              9+
+          {% else %}
+              {{ notifications|length }}
+          {% endif %}
+        </div>
+      {% endif %}
       <img src="{% static 'images/icons/icon-notification.svg' %}" class="min-w-[31px] min-h-[33px] max-w-full" alt="" />
+
+      <!-- Modal -->
+      <div id="notificationModal" class="absolute right-0 top-14 bg-white shadow-lg z-20 rounded-lg p-4 max-w-[600px] w-[35vw] hidden min-h-[250px]">
+          <h2 class="text-lg font-medium">Notificações</h2>
+
+          {% if notifications %}
+            <button onclick="markAllAsViewed()" class="p-4 flex items-center justify-center rounded-lg border border-slate-100 hover:bg-slate-100 transition-all shadow-sm my-4 w-full">
+                <p>Marcar tudo como lido</p>
+            </button>
+            <div class="max-h-[400px] overflow-y-auto mb-4 flex flex-col gap-2">
+
+              {% for notification in notifications %}
+                <div id="notification-{{ notification.pk }}" class="flex gap-6 p-4 border border-slate-100 hover:bg-slate-100 cursor-pointer rounded-lg">
+                  <img src="{% static 'images/icons/icon-message.svg' %}"
+                      class="w-[32px] h-[32px] mt-2"
+                      alt="" />
+                  <div class="flex-1">
+                    <p class="text-[18px] font-semibold">{{ notification.title }}</p>
+                    <p>{{ notification.text }}</p>
+                    <p class="text-[12px] mt-3">{{notification.created_at}}</p>
+                  </div>
+                  <button onclick="markAsViewed({{ notification.pk }})" class="flex flex-col items-center">
+                    <img src="{% static 'images/icons/icon-checked.svg' %}"
+                        class="w-[30px] h-[30px] mt-2"
+                        alt="Marcar como lido" />
+                    <p class="text-[10px] mt-2">Marcar</p>
+                    <p class="text-[10px]">como</p>
+                    <p class="text-[10px]">Lido</p>
+                  </button>
+                </div>
+              {% endfor %}
+
+            </div>
+          {% else %}
+            <div class="w-full h-full flex justify-center">
+              <p class="mt-20">Não há notificações</p>
+            </div>
+          {% endif %}
+      </div>
     </div>
+
+
     <div>
       <a onclick="toggleDropdown()"
          type="button"
@@ -168,6 +219,47 @@
 
 {% block inline_javascript %}
   <script>
+    function markAsViewed(notificationId) {
+      fetch(`/people/notification/mark_as_viewed/${notificationId}/`, {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}',
+          'Content-Type': 'application/json'
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Atualizar a interface para indicar que foi marcada como lida
+          window.location.reload();
+        } else {
+          console.error('Erro ao marcar como visualizado:', data.error);
+        }
+      })
+      .catch(error => console.error('Erro:', error));
+    }
+
+    function markAllAsViewed(notificationId) {
+      fetch(`/people/notification/mark_all_viewed/`, {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}',
+          'Content-Type': 'application/json'
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Atualizar a interface para indicar que foi marcada como lida
+          window.location.reload();
+        } else {
+          console.error('Erro ao marcar como visualizado:', data.error);
+        }
+      })
+      .catch(error => console.error('Erro:', error));
+    }
+
+
     function toggleDropdown() {
       const dropdown = document.getElementById("dropdown");
       dropdown.classList.toggle("hidden");
@@ -229,5 +321,31 @@
         menu.classList.add('left-[-100%]');
       }
     }
+
+
+    //Dropdown de notificações
+    const notificationIcon = document.getElementById('notificationIcon');
+    const notificationModal = document.getElementById('notificationModal');
+    const closeModalButton = document.getElementById('closeModalButton');
+
+    // Abre/fecha o modal ao clicar na div
+    notificationIcon.addEventListener('click', (event) => {
+        event.stopPropagation(); // Impede o evento de se propagar para evitar o fechamento imediato
+        notificationModal.classList.toggle('hidden');
+    });
+
+    // Fecha o modal se clicar fora dele
+    document.addEventListener('click', (event) => {
+        if (!notificationIcon.contains(event.target)) {
+            notificationModal.classList.add('hidden');
+        }
+    });
+
+    // Esconder contador de notificações ao clicar
+    const notificationCount = document.getElementById('notificationCount');
+    notificationIcon.addEventListener('click', (event) => {
+        notificationCount.classList.add('hidden');
+    });
+
   </script>
 {% endblock inline_javascript %}

@@ -66,4 +66,16 @@ urlpatterns = [
         views.StudentDeleteView.as_view(),
         name="student_delete",
     ),
+    path(
+        "notification/mark_as_viewed/<int:pk>/",
+        views.mark_notification_as_viewed,
+        name="notification_mark_as_viewed",
+    ),
+    path(
+        "notification/mark_all_viewed/",
+        views.mark_all_notifications_as_viewed,
+        name="notification_mark_all_as_viewed",
+    ),
 ]
+
+

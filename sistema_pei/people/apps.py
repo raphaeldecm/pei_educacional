@@ -4,3 +4,6 @@ from django.apps import AppConfig
 class PeopleConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
     name = "sistema_pei.people"
+
+    def ready(self):
+        import sistema_pei.people.signals
