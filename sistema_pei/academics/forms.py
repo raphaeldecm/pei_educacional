@@ -29,3 +29,6 @@ class SubjectForm(forms.ModelForm):
             "resources",
             "assessments"
         ]
+
+class CSVImportForm(forms.Form):
+    file = forms.FileField(label="Arquivo CSV")
