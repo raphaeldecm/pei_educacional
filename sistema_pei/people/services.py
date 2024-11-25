@@ -38,7 +38,7 @@ def import_student_csv(self, uploaded_file):
             )
             return redirect(self.success_url)
 
-        default_image_path = static("images/default_student.jpg")
+        default_image_path = static("images/img/login-cover.webp")
 
         for index, row in data.iterrows():
             try:
