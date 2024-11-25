@@ -73,7 +73,6 @@ def import_subject_csv(self, uploaded_file):
     try:
         data = pd.read_csv(uploaded_file)
 
-        # Colunas obrigatórias da planilha
         required_columns = {
             "Nome",
             "Duração",
@@ -92,22 +91,18 @@ def import_subject_csv(self, uploaded_file):
             )
             return redirect(self.success_url)
 
-        # Mapeamento de duração
         duration_mapping = {
             "Semestral": Subject.SubjectsDuration.SEMESTER,
             "Anual": Subject.SubjectsDuration.YEAR,
         }
 
-        # Processar linhas do CSV
         for index, row in data.iterrows():
             try:
-                # Obter e validar duração
                 subject_type = duration_mapping.get(row["Duração"])
                 if not subject_type:
                     error_counter += 1
                     continue
 
-                # Criar ou atualizar disciplina
                 Subject.objects.update_or_create(
                     name=row["Nome"],
                     defaults={
@@ -125,14 +120,12 @@ def import_subject_csv(self, uploaded_file):
                 error_counter += 1
                 continue
 
-        # Mensagem de sucesso
         success_message = f"Disciplinas inseridas: {insert_counter}, Disciplinas com erro: {error_counter}"
         messages.success(self.request, success_message)
 
         return redirect(self.success_url)
 
     except Exception as e:
-        # Mensagem de erro geral
         error_message = f"Erro ao processar o arquivo:\n{e}"
         messages.error(self.request, error_message)
         return redirect(self.success_url)

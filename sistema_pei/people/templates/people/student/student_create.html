@@ -6,12 +6,12 @@
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
   {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" url="academics:dashboard" %}
-  {% breadcrumb_item text="Alunos" url="people:student_list" icon="images/icons/icon-user-green.svg" %}
-  {% breadcrumb_item text="Cadastrar Aluno" icon="images/icons/icon-edit-green.svg" %}
+  {% breadcrumb_item text="Discentes" url="people:student_list" icon="images/icons/icon-user-green.svg" %}
+  {% breadcrumb_item text="Cadastrar Discente" icon="images/icons/icon-edit-green.svg" %}
 {% endblock breadcrumb %}
 {% block content %}
   <div class="w-10/12 my-10">
-    <h2 class="font-sans text-slate-900 text-3xl font-medium">Cadastrar Aluno</h2>
+    <h2 class="font-sans text-slate-900 text-3xl font-medium">Cadastrar Discente</h2>
     <form action="{% url 'people:student_create' %}"
           method="post"
           enctype="multipart/form-data"
