@@ -2,7 +2,7 @@ import pandas as pd
 from django.contrib import messages
 from django.shortcuts import redirect
 
-from sistema_pei.academics.models import Course
+from sistema_pei.academics.models import Course, Subject
 
 def import_courses_csv(self, uploaded_file):
     insert_counter = 0
@@ -65,6 +65,78 @@ def import_courses_csv(self, uploaded_file):
         error_message = f"Erro ao processar o arquivo:\n{e}"
         messages.error(self.request, error_message)
         return redirect(self.success_url)
+
+def import_subject_csv(self, uploaded_file):
+    insert_counter = 0
+    error_counter = 0
+
+    try:
+        data = pd.read_csv(uploaded_file)
+
+        # Colunas obrigatórias da planilha
+        required_columns = {
+            "Nome",
+            "Duração",
+            "Objetivos da disciplina",
+            "Conteúdo programático",
+            "Metodologias",
+            "Recursos didáticos",
+            "Avaliações",
+        }
+
+        if not required_columns.issubset(data.columns):
+            missing_columns = required_columns - set(data.columns)
+            messages.error(
+                self.request,
+                "O arquivo CSV está faltando as seguintes colunas: " + ", ".join(missing_columns)
+            )
+            return redirect(self.success_url)
+
+        # Mapeamento de duração
+        duration_mapping = {
+            "Semestral": Subject.SubjectsDuration.SEMESTER,
+            "Anual": Subject.SubjectsDuration.YEAR,
+        }
+
+        # Processar linhas do CSV
+        for index, row in data.iterrows():
+            try:
+                # Obter e validar duração
+                subject_type = duration_mapping.get(row["Duração"])
+                if not subject_type:
+                    error_counter += 1
+                    continue
+
+                # Criar ou atualizar disciplina
+                Subject.objects.update_or_create(
+                    name=row["Nome"],
+                    defaults={
+                        "subject_type": subject_type,
+                        "objective": row["Objetivos da disciplina"],
+                        "content": row["Conteúdo programático"],
+                        "methodology": row["Metodologias"],
+                        "resources": row["Recursos didáticos"],
+                        "assessments": row["Avaliações"],
+                    },
+                )
+                insert_counter += 1
+
+            except Exception as e:
+                error_counter += 1
+                continue
+
+        # Mensagem de sucesso
+        success_message = f"Disciplinas inseridas: {insert_counter}, Disciplinas com erro: {error_counter}"
+        messages.success(self.request, success_message)
+
+        return redirect(self.success_url)
+
+    except Exception as e:
+        # Mensagem de erro geral
+        error_message = f"Erro ao processar o arquivo:\n{e}"
+        messages.error(self.request, error_message)
+        return redirect(self.success_url)
+
 
 
 

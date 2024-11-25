@@ -46,6 +46,11 @@ urlpatterns = [
         name="subject_create",
     ),
     path(
+        "subject/import/",
+        views.SubjectImportView.as_view(),
+        name="subject_import",
+    ),
+    path(
         "subjects/update/<int:pk>",
         views.EditSubjectPageView.as_view(),
         name="subject_update",
