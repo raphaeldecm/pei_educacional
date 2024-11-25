@@ -70,7 +70,7 @@ def import_student_csv(self, uploaded_file):
                 error_counter += 1
                 continue
 
-        success_message = f"Estudantes inseridos: {insert_counter}, Estudantes com erro: {error_counter}"
+        success_message = f"Discentes inseridos: {insert_counter}, Discentes com erro: {error_counter}"
         messages.success(self.request, success_message)
         return redirect(self.success_url)
 
