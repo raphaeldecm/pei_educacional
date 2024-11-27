@@ -4,32 +4,41 @@ from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.messages.views import SuccessMessageMixin
+from django.core.paginator import EmptyPage
+from django.core.paginator import PageNotAnInteger
+from django.core.paginator import Paginator
+from django.db.models import Q
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.http import urlsafe_base64_decode
 from django.utils.translation import gettext_lazy as _
-from django.views import View, generic
+from django.views import View
+from django.views import generic
+from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView
 from django_filters.views import FilterView
-from sistema_pei.people.forms import StudentFilesForm, ViewEditDataStudentForm, ViewEdithistoricStudentForm
-from django.db.models import Q
-from django.views.generic import TemplateView
-from django.core.paginator import EmptyPage
-from django.core.paginator import PageNotAnInteger
-from django.core.paginator import Paginator
 
+from sistema_pei.academics.forms import CSVImportForm
 from sistema_pei.academics.models import Enrollment
 from sistema_pei.core import constants
 from sistema_pei.core.forms import EnrollmentForm
-from sistema_pei.core.mixins import ProtectedErrorMessageMixin, TitleViewMixin
+from sistema_pei.core.mixins import ProtectedErrorMessageMixin
+from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.educational_plan.models import Pei
-from sistema_pei.people.filters import StudentFilter, TeacherFilter
-from sistema_pei.people.models import Notification, Student
+from sistema_pei.people.filters import StudentFilter
+from sistema_pei.people.filters import TeacherFilter
+from sistema_pei.people.forms import StudentFilesForm
+from sistema_pei.people.forms import ViewEditDataStudentForm
+from sistema_pei.people.forms import ViewEdithistoricStudentForm
+from sistema_pei.people.models import Notification
+from sistema_pei.people.models import Student
 from sistema_pei.people.models import StudentFile
 from sistema_pei.people.models import Teacher
 from sistema_pei.people.models import User
+from sistema_pei.people.services import teachers_import
 
 from .forms import TeacherForm
 from .forms import ViewStudentForm
@@ -80,6 +89,25 @@ class TeacherCreateView(
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         form.instance.updated_by = self.request.user
+        return super().form_valid(form)
+
+
+class TeacherImportView(
+    LoginRequiredMixin,
+    TitleViewMixin,
+    SuccessMessageMixin,
+    generic.FormView,
+):
+    model = Teacher
+    title = _("Importar Docentes")
+    form_class = CSVImportForm
+    template_name = "people/teacher/teacher_import_form.html"
+    success_url = reverse_lazy("people:teacher_list")
+
+
+    def form_valid(self, form):
+        file = form.cleaned_data["file"]
+        teachers_import(self, file)
         return super().form_valid(form)
 
 
