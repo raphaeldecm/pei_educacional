@@ -17,7 +17,7 @@ def fields_changed(sender, instance, **kwargs):
         try:
             previous_instance = Student.objects.get(pk=instance.pk)
         except ObjectDoesNotExist:
-            return 
+            return
 
 
 
@@ -39,13 +39,13 @@ def fields_changed(sender, instance, **kwargs):
         # Exibe ou processa as alterações, se houver alguma
         if altered_fields:
 
-            
+
             teachersList = Teacher.objects.filter(
                 offers__enrollments__student_id=instance.id
             ).distinct()
-            
+
             for teacher in teachersList:
-                
+
                 subject, message = NotificationEmailContent.changed_history(
                     teacher.name, instance.name
                 )
@@ -55,27 +55,26 @@ def fields_changed(sender, instance, **kwargs):
                     subject=subject,
                     message=message,
                 )
-                
-                
-                
+
                 Notification.objects.create(
                     title="Historico de um aluno foi alterado!",
                     text=f"O histórico do aluno {instance.name} foi alterado. Verfique o perfil do aluno para mais detalhes.",
                     user=teacher.user,
-                    type="Alert"
+                    type="Alert",
+                    action=f"/people/profile/{instance.id}?tab=historic#tab"
                 )
-            
+
 
 @receiver(m2m_changed, sender=Student.educational_necessities.through)
 def educational_necessities_changed(sender, instance, action, **kwargs):
     if action in ["post_add", "post_remove", "post_clear"]:
-        
+
         teachersList = Teacher.objects.filter(
             offers__enrollments__student_id=instance.id
         ).distinct()
-        
+
         for teacher in teachersList:
-            
+
             subject, message = NotificationEmailContent.changed_history(
                 teacher.name, instance.name
             )
@@ -85,10 +84,11 @@ def educational_necessities_changed(sender, instance, action, **kwargs):
                 subject=subject,
                 message=message,
             )
-            
+
             Notification.objects.create(
                 title="Necessidades Específicas de um aluno foram alteradas!",
                 text=f"As necessidades educacionais específicas do aluno {instance.name} foram alteradas. Verfique o perfil do aluno para mais detalhes.",
                 user=teacher.user,
-                type="Alert"
+                type="Alert",
+                action=f"/people/profile/{instance.id}"
             )

@@ -103,11 +103,13 @@
                   <img src="{% static 'images/icons/icon-message.svg' %}"
                       class="w-[32px] h-[32px] mt-2"
                       alt="" />
-                  <div class="flex-1">
-                    <p class="text-[18px] font-semibold">{{ notification.title }}</p>
-                    <p>{{ notification.text }}</p>
-                    <p class="text-[12px] mt-3">{{notification.created_at}}</p>
-                  </div>
+                  <a href="{{notification.action}}">
+                    <div class="flex-1">
+                      <p class="text-[18px] font-semibold">{{ notification.title }}</p>
+                      <p>{{ notification.text }}</p>
+                      <p class="text-[12px] mt-3">{{notification.created_at}}</p>
+                    </div>
+                  </a>
                   <button onclick="markAsViewed({{ notification.pk }})" class="flex flex-col items-center">
                     <img src="{% static 'images/icons/icon-checked.svg' %}"
                         class="w-[30px] h-[30px] mt-2"
