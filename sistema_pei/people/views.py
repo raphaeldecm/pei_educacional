@@ -4,7 +4,6 @@ from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -20,16 +19,12 @@ from django.views import generic
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView
 from django_filters.views import FilterView
-<<<<<<< HEAD
 from sistema_pei.academics import forms
 from sistema_pei.people.forms import StudentFilesForm, ViewEditDataStudentForm, ViewEdithistoricStudentForm
 from django.db.models import Q
 from django.views.generic import TemplateView
-from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
 from django.core.paginator import Paginator
-=======
->>>>>>> 22d7e6715bf3a4a24f6c92d88f1fd14374104053
 
 from sistema_pei.academics.forms import CSVImportForm
 from sistema_pei.academics.models import Enrollment
@@ -48,11 +43,8 @@ from sistema_pei.people.models import Student
 from sistema_pei.people.models import StudentFile
 from sistema_pei.people.models import Teacher
 from sistema_pei.people.models import User
-<<<<<<< HEAD
 from sistema_pei.people.services import import_student_csv
-=======
 from sistema_pei.people.services import teachers_import
->>>>>>> 22d7e6715bf3a4a24f6c92d88f1fd14374104053
 
 from .forms import TeacherForm
 from .forms import ViewStudentForm
