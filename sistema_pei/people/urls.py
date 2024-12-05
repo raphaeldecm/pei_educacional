@@ -65,6 +65,11 @@ urlpatterns = [
         name="student_create",
     ),
     path(
+        "student/import/",
+        views.StudentImportView.as_view(),
+        name="student_import",
+    ),
+    path(
         "student/delete/<int:pk>/",
         views.StudentDeleteView.as_view(),
         name="student_delete",

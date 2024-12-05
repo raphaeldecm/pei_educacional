@@ -4,7 +4,6 @@ from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -20,6 +19,12 @@ from django.views import generic
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView
 from django_filters.views import FilterView
+from sistema_pei.academics import forms
+from sistema_pei.people.forms import StudentFilesForm, ViewEditDataStudentForm, ViewEdithistoricStudentForm
+from django.db.models import Q
+from django.views.generic import TemplateView
+from django.core.paginator import PageNotAnInteger
+from django.core.paginator import Paginator
 
 from sistema_pei.academics.forms import CSVImportForm
 from sistema_pei.academics.models import Enrollment
@@ -38,6 +43,7 @@ from sistema_pei.people.models import Student
 from sistema_pei.people.models import StudentFile
 from sistema_pei.people.models import Teacher
 from sistema_pei.people.models import User
+from sistema_pei.people.services import import_student_csv
 from sistema_pei.people.services import teachers_import
 
 from .forms import TeacherForm
@@ -194,6 +200,18 @@ class StudentCreateView(LoginRequiredMixin, CreateView):
 
         return response
 
+class StudentImportView(TitleViewMixin, LoginRequiredMixin, SuccessMessageMixin, generic.FormView):
+    form_class = forms.CSVImportForm
+    title = _("Importar Discentes")
+    template_name = "people/student/student_import_form.html"
+    success_url = reverse_lazy("people:student_list")
+
+    def form_valid(self, form):
+        uploaded_file = form.cleaned_data["file"]
+
+        import_student_csv(self, uploaded_file)
+
+        return super().form_valid(form)
 
 class ProfilePageView(LoginRequiredMixin, TemplateView):
     template_name = "people/student/student_profile.html"
@@ -428,22 +446,22 @@ class UploadStudentFilesView(LoginRequiredMixin, View):
 def mark_notification_as_viewed(request, pk):
     if request.user.is_authenticated:
         notification = get_object_or_404(Notification, id=pk, user=request.user)
-        
+
         # Atualiza o campo 'viewed' para True
         notification.viewed = True
         notification.save()
         messages.success(request, 'Notificação marcada como vista!')
         return JsonResponse({'success': True})
-    
+
     return JsonResponse({'success': False}, status=401)
 
 def mark_all_notifications_as_viewed(request):
     if request.user.is_authenticated:
         notifications = Notification.objects.filter(user=request.user, viewed=False)
         notifications.update(viewed=True)
-        
+
         messages.success(request, 'Todas as notificações foram marcadas como vistas!')
         return JsonResponse({'success': True})
-    
+
     return JsonResponse({'success': False}, status=401)
 
