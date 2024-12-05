@@ -36,7 +36,8 @@ def pei_created(sender, instance, created, **kwargs):
                 title="Novo PEI adicionado!",
                 text=f"O PEI do aluno {student_name}, na disciplina {subject_name} - {year_semester} foi adicionado, e você é o responsável.",
                 user=teacher.user,
-                type="Alert"
+                type="Alert",
+                action=f"/educational_plan/peis/detail/{instance.id}"
             )
 
         except CeleryError as e:
@@ -67,7 +68,8 @@ def pei_deleted(sender, instance, **kwargs):
             title="PEI removido!",
             text=f"O PEI do aluno {student_name}, na disciplina {subject_name} - {year_semester}, que você estava participando foi removido pelo coordenador.",
             user=teacher.user,
-            type="Alert"
+            type="Alert",
+            action="/educational_plan/peis/list/"
         )
 
     except CeleryError as e:
@@ -105,7 +107,8 @@ def pei_created(sender, instance, created, **kwargs):
                 title=f"Novo comentário em PEI do aluno {instance.pei.enrollment.student}",
                 text=f"{author.name} comentou no PEI da disciplina {instance.pei.enrollment.offer.subject}: {instance.text}",
                 user=teacher.user,
-                type="Alert"
+                type="Alert",
+                action=f"/educational_plan/peis/detail/{instance.id}"
             )
 
         except CeleryError as e:
@@ -143,7 +146,8 @@ def pei_created(sender, instance, created, **kwargs):
                 title=f"Usuário {author.name} respondeu seu comentário",
                 text=f"{instance.comment.created_by.name}: {instance.comment.text} >>> {instance.created_by.name}: {instance.text}",
                 user=teacher.user,
-                type="Alert"
+                type="Alert",
+                action=f"/educational_plan/peis/detail/{instance.id}"
             )
 
         except CeleryError as e:
