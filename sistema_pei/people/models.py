@@ -235,6 +235,12 @@ class Notification(BaseModel):
         choices=Type.choices,
         max_length=constants.SMALL_CHAR_FIELD_NAME_LENGTH,
     )
+    action=models.CharField(
+        verbose_name=_("Link de ação ao clicar"),
+        max_length=constants.SMALL_CHAR_FIELD_NAME_LENGTH,
+        null=True,
+        blank=True,
+    )
 
     def __str__(self) -> str:
         return super().__str__()

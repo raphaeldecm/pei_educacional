@@ -18,7 +18,7 @@ from django.shortcuts import redirect
 from sistema_pei.academics import filters
 from sistema_pei.academics import forms
 from sistema_pei.academics import models
-from sistema_pei.academics.services import import_courses_csv
+from sistema_pei.academics.services import import_courses_csv, import_subject_csv
 from sistema_pei.core import constants
 from sistema_pei.core.mixins import ProtectedErrorMessageMixin
 from sistema_pei.core.mixins import TitleViewMixin
@@ -347,6 +347,18 @@ class CreateSubjectPageView(
         messages.error(self.request, "Erro ao criar oferta")
         return redirect(self.request.headers.get("referer", "/"))
 
+class SubjectImportView(TitleViewMixin, LoginRequiredMixin, SuccessMessageMixin, generic.FormView):
+    form_class = forms.CSVImportForm
+    title = _("Importar Disciplinas")
+    template_name = "academics/subjects/subject_import_form.html"
+    success_url = reverse_lazy("academics:subject_list")
+
+    def form_valid(self, form):
+        uploaded_file = form.cleaned_data["file"]
+
+        import_subject_csv(self, uploaded_file)
+
+        return super().form_valid(form)
 
 class EditSubjectPageView(
     SuccessMessageMixin,
