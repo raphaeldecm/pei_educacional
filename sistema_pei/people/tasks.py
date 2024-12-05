@@ -7,9 +7,7 @@ from celery.exceptions import CeleryError
 
 from sistema_pei.educational_plan.models import Pei
 
-from .models import Pei, Teacher
-from sistema_pei.people.models import Notification
-from sistema_pei.people.tasks import notify_teacher_email
+from sistema_pei.people.models import Notification, Teacher
 from sistema_pei.educational_plan.utils import NotificationEmailContent
 
 from celery import shared_task
