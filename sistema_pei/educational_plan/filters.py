@@ -24,7 +24,7 @@ class PeiFilter(django_filters.FilterSet):
 
     teacher = django_filters.ModelChoiceFilter(
         queryset=Teacher.objects.all(),
-        field_name='enrollment__offer__teacher',
+        field_name='enrollment__offer__teachers',
         label="teacher",
     )
 
