@@ -65,7 +65,7 @@ class HomeListView(
         queryset = Pei.objects.all()
 
         if self.request.user.groups.filter(name="Teacher").exists():
-            queryset = Pei.objects.filter(enrollment__offer__teacher__email=self.request.user.email)
+            queryset = Pei.objects.filter(enrollment__offer__teachers__email=self.request.user.email)
 
         context["pending_peis"] = queryset.filter(status="NOT_START").count()
         context["in_progress_peis"] = queryset.filter(status="IN_PROGRESS").count()
