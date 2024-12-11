@@ -50,9 +50,13 @@ class HomeListView(
         #Filtro por professor logado
         if self.request.user.groups.filter(name="Teacher").exists():
             if not filter_data or not any(filter_data.values()):
-                queryset = Pei.objects.filter(enrollment__offer__teacher__email=self.request.user.email)
+                queryset = Pei.objects.filter(
+                    enrollment__offer__teachers__email=self.request.user.email
+                )
+
 
         return self.filterset_class(self.request.GET, queryset=queryset, request=self.request).qs
+
 
     # Cards
     def get_context_data(self, **kwargs):
