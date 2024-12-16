@@ -12,9 +12,7 @@ def verificar_tipo_usuario(strategy, details, backend, response, *args, **kwargs
     se o tipo de usuário não for 'Docente', 'Técnico-Administrativo' ou
     'Prestador de Serviço'.
     """
-
     tipo_usuario = response.get("tipo_usuario")
-    campus = response.get("campus")
 
     if (
         tipo_usuario not in ["Servidor (Docente)",
@@ -50,7 +48,8 @@ def record_user_data(backend, user, response, *args, **kwargs):
         else:
             user.groups.add(collaborator_group)
             user.sector = "NAPNE"
-            user.photo = response.get("foto")
+            user.photo = response.get("foto") or ""
+            user.is_active = True
             user.save(
                 update_fields=["is_active", "sector", "photo"],
             )
