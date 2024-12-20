@@ -8,7 +8,6 @@
   {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" url="academics:dashboard" %}
   {% breadcrumb_item text="Alunos" icon="images/icons/icon-user-green.svg" %}
 {% endblock breadcrumb %}
-
 {% block content %}
   <div class="w-full">
     <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
@@ -56,7 +55,7 @@
         Cadastrar Novo Discente
       </a>
       <a href="{% url 'people:student_import' %}"
-      class="text-[18px] py-[11px] px-[44px] border border-blue-600 rounded-lg font-medium cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-300 mt-[2px]">
+         class="text-[18px] py-[11px] px-[44px] border border-blue-600 rounded-lg font-medium cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-300 mt-[2px]">
         Importar Discentes
       </a>
     </div>
@@ -81,17 +80,19 @@
               </td>
               <td>{{ object.registration }}</td>
               <td>{{ object.name }}</td>
-              <td>{{object.course.name}}</td>
+              <td>{{ object.course.name }}</td>
               <td>
                 <span class="flex justify-center items-center h-full gap-[30px] pr-[26px]">
-                  <a href="{% url 'people:profile' object.id %}" class="hover:filter hover:brightness-0 transition-all">
+                  <a href="{% url 'people:profile' object.id %}"
+                     class="hover:filter hover:brightness-0 transition-all">
                     <img src="{% static 'images/icons/icon-eye.svg' %}"
                          alt=""
                          width="24px"
                          height="24px"
                          class="cursor-pointer" />
                   </a>
-                  <a href="/people/profile/{{object.id}}?tab=edit_student_data#tab" class="hover:filter hover:brightness-0 transition-all">
+                  <a href="/people/profile/{{ object.id }}?tab=edit_student_data#tab"
+                     class="hover:filter hover:brightness-0 transition-all">
                     <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                          alt=""
                          width="24px"
@@ -100,7 +101,8 @@
                   </a>
                   <button type="button"
                           id="openModal{{ object.pk }}"
-                          data-modal-id="confirmationModal{{ object.pk }}" class="hover:filter hover:brightness-0 transition-all">
+                          data-modal-id="confirmationModal{{ object.pk }}"
+                          class="hover:filter hover:brightness-0 transition-all">
                     <img src="{% static 'images/icons/icon-remove-element.svg' %}"
                          alt=""
                          height="24px"

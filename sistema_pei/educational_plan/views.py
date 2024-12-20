@@ -2,28 +2,32 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views import generic
+from django.views.generic import DetailView
+from django.views.generic import View
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
 from django_filters.views import FilterView
-from django.views.generic import DetailView
-from django.http import HttpResponse
-from sistema_pei.educational_plan.forms import AnswerForm, CommentForm, PeiForm
-from sistema_pei.educational_plan.services import generatePeiExportHtml
 from xhtml2pdf import pisa
-from django.views.generic import View
-from sistema_pei.educational_plan.models import Answer, Comment, Pei
 
 from sistema_pei.core import constants
 from sistema_pei.core.mixins import ProtectedErrorMessageMixin
 from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.educational_plan import models
 from sistema_pei.educational_plan.filters import PeiFilter
+from sistema_pei.educational_plan.forms import AnswerForm
+from sistema_pei.educational_plan.forms import CommentForm
+from sistema_pei.educational_plan.forms import PeiForm
+from sistema_pei.educational_plan.models import Answer
+from sistema_pei.educational_plan.models import Comment
+from sistema_pei.educational_plan.models import Pei
+from sistema_pei.educational_plan.services import generatePeiExportHtml
 from sistema_pei.users.permissions import CoordinatorPermission
 
 
@@ -92,8 +96,8 @@ class PeiUpdateView(
         # Verificar se o usuário logado é o professor associado ao PEI
         pei = self.get_object()
         if pei.responsible_teacher.email != request.user.email:
-            messages.error(request, 'Você não tem permissão para editar este PEI.')
-            return redirect('educational_plan:pei_list')
+            messages.error(request, "Você não tem permissão para editar este PEI.")
+            return redirect("educational_plan:pei_list")
 
         return super().dispatch(request, *args, **kwargs)
 
@@ -103,6 +107,7 @@ class PeiUpdateView(
     def form_valid(self, form):
         form.instance.updated_by = self.request.user
         return super().form_valid(form)
+
 
 class PeiDeleteView(
     LoginRequiredMixin,
@@ -115,8 +120,9 @@ class PeiDeleteView(
     success_url = reverse_lazy("educational_plan:pei_list")
     success_message = _("O pei foi removido com sucesso.")
     protected_warning_message = _(
-        "Não é possível excluir o pei, pois ele possui " "itens associados.",
+        "Não é possível excluir o pei, pois ele possui itens associados.",
     )
+
 
 class PeiDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
     model = models.Pei
@@ -125,7 +131,7 @@ class PeiDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["comments"] = Comment.objects.filter(pei=self.object).order_by('-date')
+        context["comments"] = Comment.objects.filter(pei=self.object).order_by("-date")
         return context
 
 
@@ -135,38 +141,40 @@ class PeiMarkCompletedView(CoordinatorPermission, LoginRequiredMixin, View):
 
         pei.status = models.Pei.StatusChoice.COMPLETED
         pei.save()
-        messages.success(request, 'PEI marcado como concluído com sucesso.')
+        messages.success(request, "PEI marcado como concluído com sucesso.")
 
-        return redirect('educational_plan:pei_list')
+        return redirect("educational_plan:pei_list")
 
 
 class PeiExportPdfView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        pei_id = kwargs.get('pk')
+        pei_id = kwargs.get("pk")
         html = generatePeiExportHtml(pei_id)
 
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename="pei_{pei_id}.pdf"'
+        response = HttpResponse(content_type="application/pdf")
+        response["Content-Disposition"] = f'attachment; filename="pei_{pei_id}.pdf"'
 
         pisa_status = pisa.CreatePDF(html, dest=response)
 
         if pisa_status.err:
-            return HttpResponse('Erro ao gerar o PDF', status=500)
+            return HttpResponse("Erro ao gerar o PDF", status=500)
 
         return response
 
+
 class PeiExportPreviewView(LoginRequiredMixin, DetailView):
     model = Pei
-    template_name = 'educational_plan/peis/pei_export.html'
-    context_object_name = 'pei'
+    template_name = "educational_plan/peis/pei_export.html"
+    context_object_name = "pei"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
 
+
 class CommentCreateView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
-        pei = Pei.objects.get(pk=self.kwargs['pk'])
+        pei = Pei.objects.get(pk=self.kwargs["pk"])
         form = CommentForm(request.POST)
 
         if form.is_valid():
@@ -175,31 +183,35 @@ class CommentCreateView(LoginRequiredMixin, View):
             comment.updated_by = self.request.user
             comment.created_by = self.request.user
             comment.save()
-            messages.success(request, 'Comentário adicionado com sucesso.')
+            messages.success(request, "Comentário adicionado com sucesso.")
         else:
             print(form.errors)
-            messages.success(request, 'Erro ao adicionar comentário.')
-        return redirect('educational_plan:pei_detail', pk=pei.pk)
+            messages.success(request, "Erro ao adicionar comentário.")
+        return redirect("educational_plan:pei_detail", pk=pei.pk)
+
 
 class CommentDeleteView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        comment = get_object_or_404(Comment, pk=self.kwargs['pk'])
+        comment = get_object_or_404(Comment, pk=self.kwargs["pk"])
 
-        if (comment.created_by == request.user):
+        if comment.created_by == request.user:
             comment.delete()
-            messages.success(request, 'Comentário removido com sucesso.')
+            messages.success(request, "Comentário removido com sucesso.")
         else:
-            messages.error(request, 'Você não tem permissão para remover este comentário.')
+            messages.error(
+                request, "Você não tem permissão para remover este comentário."
+            )
 
-        return redirect('educational_plan:pei_detail', pk=comment.pei.pk)
+        return redirect("educational_plan:pei_detail", pk=comment.pei.pk)
+
 
 class AnswerCreateView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         try:
-            parentComment = Comment.objects.get(pk=self.kwargs['parent_pk'])
+            parentComment = Comment.objects.get(pk=self.kwargs["parent_pk"])
         except Comment.DoesNotExist:
-            messages.error(request, 'Comentário não encontrado.')
-            return redirect('educational_plan:pei_detail', pk=kwargs['pei_pk'])
+            messages.error(request, "Comentário não encontrado.")
+            return redirect("educational_plan:pei_detail", pk=kwargs["pei_pk"])
 
         form = AnswerForm(request.POST)
 
@@ -209,21 +221,23 @@ class AnswerCreateView(LoginRequiredMixin, View):
             answer.updated_by = request.user
             answer.created_by = request.user
             answer.save()
-            messages.success(request, 'Resposta adicionada com sucesso.')
+            messages.success(request, "Resposta adicionada com sucesso.")
         else:
-            messages.error(request, 'Erro ao adicionar resposta.')
+            messages.error(request, "Erro ao adicionar resposta.")
 
-        return redirect('educational_plan:pei_detail', pk=parentComment.pei.pk)
+        return redirect("educational_plan:pei_detail", pk=parentComment.pei.pk)
 
 
 class AnswerDeleteView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        answer = get_object_or_404(Answer, pk=self.kwargs['parent_pk'])
+        answer = get_object_or_404(Answer, pk=self.kwargs["parent_pk"])
 
-        if (answer.created_by == request.user):
+        if answer.created_by == request.user:
             answer.delete()
-            messages.success(request, 'Comentário removido com sucesso.')
+            messages.success(request, "Comentário removido com sucesso.")
         else:
-            messages.error(request, 'Você não tem permissão para remover este comentário.')
+            messages.error(
+                request, "Você não tem permissão para remover este comentário."
+            )
 
-        return redirect('educational_plan:pei_detail', pk=answer.comment.pei.pk)
+        return redirect("educational_plan:pei_detail", pk=answer.comment.pei.pk)

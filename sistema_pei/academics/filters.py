@@ -4,7 +4,6 @@ from django.utils import timezone
 
 from sistema_pei.academics import models
 from sistema_pei.academics.constants import COURSE_TYPE
-from sistema_pei.educational_plan.models import Pei
 
 
 class CourseFilter(django_filters.FilterSet):

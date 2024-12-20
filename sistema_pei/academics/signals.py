@@ -1,7 +1,9 @@
-from django.db.models.signals import post_save, m2m_changed
+from django.db.models.signals import m2m_changed
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from sistema_pei.academics.models import Enrollment, Offer
+from sistema_pei.academics.models import Enrollment
+from sistema_pei.academics.models import Offer
 from sistema_pei.educational_plan.models import Pei
 
 
@@ -10,7 +12,9 @@ def createPeiForEnrollment(sender, instance, created, **kwargs):
     if created:
         for teacher in instance.offer.teachers.all():
             # Verifica se já existe um PEI para esse teacher e enrollment
-            if not Pei.objects.filter(responsible_teacher=teacher, enrollment=instance).exists():
+            if not Pei.objects.filter(
+                responsible_teacher=teacher, enrollment=instance
+            ).exists():
                 Pei.objects.create(
                     enrollment=instance,
                     responsible_teacher=teacher,
@@ -21,8 +25,9 @@ def createPeiForEnrollment(sender, instance, created, **kwargs):
                     resources=instance.offer.subject.resources,
                     assessments=instance.offer.subject.assessments,
                     created_by=instance.created_by,
-                    updated_by=instance.updated_by
+                    updated_by=instance.updated_by,
                 )
+
 
 @receiver(m2m_changed, sender=Offer.teachers.through)
 def createPeiForNewTeachers(sender, instance, action, reverse, model, pk_set, **kwargs):
@@ -31,7 +36,9 @@ def createPeiForNewTeachers(sender, instance, action, reverse, model, pk_set, **
             teacher = model.objects.get(id=teacher_id)
             for enrollment in instance.enrollments.all():
                 # Verifica se já existe um PEI para esse teacher e enrollment
-                if not Pei.objects.filter(responsible_teacher=teacher, enrollment=enrollment).exists():
+                if not Pei.objects.filter(
+                    responsible_teacher=teacher, enrollment=enrollment
+                ).exists():
                     Pei.objects.create(
                         enrollment=enrollment,
                         responsible_teacher=teacher,
@@ -42,5 +49,5 @@ def createPeiForNewTeachers(sender, instance, action, reverse, model, pk_set, **
                         resources=instance.subject.resources,
                         assessments=instance.subject.assessments,
                         created_by=enrollment.created_by,
-                        updated_by=enrollment.updated_by
+                        updated_by=enrollment.updated_by,
                     )

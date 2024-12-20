@@ -1,7 +1,6 @@
 from django import forms
 
 from sistema_pei.academics import models
-from sistema_pei.educational_plan.models import Pei
 
 
 class CourseForm(forms.ModelForm):
@@ -27,8 +26,9 @@ class SubjectForm(forms.ModelForm):
             "content",
             "methodology",
             "resources",
-            "assessments"
+            "assessments",
         ]
+
 
 class CSVImportForm(forms.Form):
     file = forms.FileField(label="Arquivo CSV")

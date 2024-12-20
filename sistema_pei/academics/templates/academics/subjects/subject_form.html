@@ -86,12 +86,10 @@
           </div>
         </div>
       </div>
-      <hr class="mt-8">
+      <hr class="mt-8" />
       <div class="mb-4 col-span-2 flex-1 mt-8">
         <label for="{{ form.objective.id_for_label }}"
-                class="font-sans font-medium text-lg text-ls block mb-4">
-          Objetivos da disciplina:
-        </label>
+               class="font-sans font-medium text-lg text-ls block mb-4">Objetivos da disciplina:</label>
         <textarea id="{{ form.objective.id_for_label }}"
                   name="{{ form.objective.name }}"
                   placeholder="Defina os objetivos da disciplina. Serão utilizados como base ao gerar os planos de ensino relacionados..."
@@ -104,9 +102,7 @@
       </div>
       <div class="mb-4 col-span-2 flex-1 mt-[18px]">
         <label for="{{ form.content.id_for_label }}"
-                class="font-sans font-medium text-lg text-ls block mb-4">
-          Conteúdo programático:
-        </label>
+               class="font-sans font-medium text-lg text-ls block mb-4">Conteúdo programático:</label>
         <textarea id="{{ form.content.id_for_label }}"
                   name="{{ form.content.name }}"
                   placeholder="Defina o conteúdo programático. Será utilizado como base ao gerar os planos de ensino relacionados..."
@@ -119,9 +115,7 @@
       </div>
       <div class="mb-4 col-span-2 flex-1 mt-[18px]">
         <label for="{{ form.methodology.id_for_label }}"
-                class="font-sans font-medium text-lg text-ls block mb-4">
-          Metodologias:
-        </label>
+               class="font-sans font-medium text-lg text-ls block mb-4">Metodologias:</label>
         <textarea id="{{ form.methodology.id_for_label }}"
                   name="{{ form.methodology.name }}"
                   placeholder="Defina as metodologias. Serão utilizadas como base ao gerar os planos de ensino relacionados..."
@@ -134,31 +128,31 @@
       </div>
       <div class="mb-4 col-span-2 flex-1 mt-[18px]">
         <label for="{{ form.resources.id_for_label }}"
-                class="font-sans font-medium text-lg text-ls block mb-4">
-          Recursos didáticos:
-        </label>
+               class="font-sans font-medium text-lg text-ls block mb-4">Recursos didáticos:</label>
         <textarea id="{{ form.resources.id_for_label }}"
                   name="{{ form.resources.name }}"
                   placeholder="Defina os recursos didáticos. Serão utilizados como base ao gerar os planos de ensino relacionados..."
                   class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.resources.value|default_if_none:'' }}</textarea>
         {% if form.resources.errors %}
           <ul class="list-disc p-2">
-            {% for error in form.resources.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+            {% for error in form.resources.errors %}
+              <li class="text-red-500 ml-2">{{ error }}</li>
+            {% endfor %}
           </ul>
         {% endif %}
       </div>
       <div class="mb-4 col-span-2 flex-1 mt-[18px]">
         <label for="{{ form.assessments.id_for_label }}"
-                class="font-sans font-medium text-lg text-ls block mb-4">
-          Avaliações
-        </label>
+               class="font-sans font-medium text-lg text-ls block mb-4">Avaliações</label>
         <textarea id="{{ form.assessments.id_for_label }}"
                   name="{{ form.assessments.name }}"
                   placeholder="Defina as avaliações. Serão utilizadas como base ao gerar os planos de ensino relacionados..."
                   class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.assessments.value|default_if_none:'' }}</textarea>
         {% if form.assessments.errors %}
           <ul class="list-disc p-2">
-            {% for error in form.assessments.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+            {% for error in form.assessments.errors %}
+              <li class="text-red-500 ml-2">{{ error }}</li>
+            {% endfor %}
           </ul>
         {% endif %}
       </div>

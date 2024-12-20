@@ -13,18 +13,19 @@ from django.views import generic
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
 from django_filters.views import FilterView
-from django.shortcuts import redirect
 
 from sistema_pei.academics import filters
 from sistema_pei.academics import forms
 from sistema_pei.academics import models
-from sistema_pei.academics.services import import_courses_csv, import_subject_csv
+from sistema_pei.academics.services import import_courses_csv
+from sistema_pei.academics.services import import_subject_csv
 from sistema_pei.core import constants
 from sistema_pei.core.mixins import ProtectedErrorMessageMixin
 from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.educational_plan.models import Pei
-from sistema_pei.people.models import Student, Teacher
-from sistema_pei.users.permissions import CollaboratorOrCoordinatorPermission, CoordinatorPermission
+from sistema_pei.people.models import Student
+from sistema_pei.people.models import Teacher
+from sistema_pei.users.permissions import CollaboratorOrCoordinatorPermission
 
 
 class AcademicsIndexView(
@@ -80,7 +81,9 @@ class CourseCreateView(
         return super().form_valid(form)
 
 
-class CourseImportView(TitleViewMixin, LoginRequiredMixin, SuccessMessageMixin, generic.FormView):
+class CourseImportView(
+    TitleViewMixin, LoginRequiredMixin, SuccessMessageMixin, generic.FormView
+):
     form_class = forms.CSVImportForm
     title = _("Importar Cursos")
     template_name = "academics/course/course_import_form.html"
@@ -92,6 +95,7 @@ class CourseImportView(TitleViewMixin, LoginRequiredMixin, SuccessMessageMixin, 
         import_courses_csv(self, uploaded_file)
 
         return super().form_valid(form)
+
 
 class CourseUpdateView(
     LoginRequiredMixin,
@@ -263,17 +267,21 @@ class RemoveStudentFromOfferView(SuccessMessageMixin, LoginRequiredMixin, View):
 class AddStudentToOfferView(LoginRequiredMixin, View):
     def post(self, request, pk):
         offer = get_object_or_404(models.Offer, id=pk)
-        student_ids = request.POST.getlist("students")  # Recebe todos os IDs selecionados
+        student_ids = request.POST.getlist(
+            "students"
+        )  # Recebe todos os IDs selecionados
 
         for student_id in student_ids:
             student = get_object_or_404(Student, id=student_id)
-            if not models.Enrollment.objects.filter(offer=offer, student=student).exists():
+            if not models.Enrollment.objects.filter(
+                offer=offer, student=student
+            ).exists():
                 models.Enrollment.objects.create(
                     offer=offer,
                     student=student,
                     YearSemesterReference=student.reference_period,
                     created_by=self.request.user,
-                    updated_by=self.request.user
+                    updated_by=self.request.user,
                 )
 
         return redirect(f"/academics/offers/detail/{offer.id}/")
@@ -347,7 +355,10 @@ class CreateSubjectPageView(
         messages.error(self.request, "Erro ao criar oferta")
         return redirect(self.request.headers.get("referer", "/"))
 
-class SubjectImportView(TitleViewMixin, LoginRequiredMixin, SuccessMessageMixin, generic.FormView):
+
+class SubjectImportView(
+    TitleViewMixin, LoginRequiredMixin, SuccessMessageMixin, generic.FormView
+):
     form_class = forms.CSVImportForm
     title = _("Importar Disciplinas")
     template_name = "academics/subjects/subject_import_form.html"
@@ -359,6 +370,7 @@ class SubjectImportView(TitleViewMixin, LoginRequiredMixin, SuccessMessageMixin,
         import_subject_csv(self, uploaded_file)
 
         return super().form_valid(form)
+
 
 class EditSubjectPageView(
     SuccessMessageMixin,

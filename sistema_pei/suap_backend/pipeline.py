@@ -14,12 +14,11 @@ def verificar_tipo_usuario(strategy, details, backend, response, *args, **kwargs
     """
     tipo_usuario = response.get("tipo_usuario")
 
-    if (
-        tipo_usuario not in ["Servidor (Docente)",
-                             "Prestador de Serviço",
-                             "Servidor (Técnico-Administrativo)",
-                            ]
-        ):
+    if tipo_usuario not in [
+        "Servidor (Docente)",
+        "Prestador de Serviço",
+        "Servidor (Técnico-Administrativo)",
+    ]:
         return HttpResponseRedirect(reverse("suap_login:erro_tipo_usuario"))
 
     return None
@@ -78,6 +77,7 @@ def process_teacher(user, response):
     if created or not teacher.user:
         teacher.user = user
         teacher.save()
+
 
 def update_teacher_data(teacher, response):
     """

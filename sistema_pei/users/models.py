@@ -18,13 +18,14 @@ GROUP_TRANSLATIONS = {
     "Teacher": _("Professor"),
 }
 
-class User(AbstractUser):
 
+class User(AbstractUser):
     """
     Default custom user model for sistema-pei.
     If adding fields that need to be filled at user signup,
     check forms.SignupForm and forms.SocialSignupForms accordingly.
     """
+
     class Sector(models.TextChoices):
         NAPNE = "NAPNE", _("NAPNE")
         ETEP = "ETEP", _("ETEP")
@@ -63,5 +64,7 @@ class User(AbstractUser):
 
     @property
     def translated_groups(self):
-        return [GROUP_TRANSLATIONS.get(group.name, group.name) for group in self.groups.all()]
-
+        return [
+            GROUP_TRANSLATIONS.get(group.name, group.name)
+            for group in self.groups.all()
+        ]

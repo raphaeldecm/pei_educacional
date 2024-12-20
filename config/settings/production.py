@@ -11,7 +11,9 @@ from .base import env
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["pei.com"])
-CSRF_TRUSTED_ORIGINS = env.list("DJANGO_CSRF_TRUSTED_ORIGINS", default=["http://localhost:8000"])
+CSRF_TRUSTED_ORIGINS = env.list(
+    "DJANGO_CSRF_TRUSTED_ORIGINS", default=["http://localhost:8000"]
+)
 
 DEBUG = False
 
@@ -62,12 +64,10 @@ SECURE_CONTENT_TYPE_NOSNIFF = env.bool(
 )
 
 
-
-
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL regex.
-#ADMIN_URL = env("DJANGO_ADMIN_URL")
+# ADMIN_URL = env("DJANGO_ADMIN_URL")
 
 
 # Collectfast

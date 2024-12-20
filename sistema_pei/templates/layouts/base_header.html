@@ -2,20 +2,22 @@
 {% load has_group %}
 
 <div class="flex justify-center items-center gap-[40px]">
-
   <button class="hidden max-sm:block" onclick="handleToggleNav()">
     <i class="fas fa-regular fa-bars text-2xl"></i>
   </button>
-
   <!-- Menu lateral mobile -->
-  <div id="mobileMenu" tabindex="0" onblur="handleToggleNav()" class="hidden max-sm:flex w-[80vw] h-[105vh] overflow-hidden fixed left-[-100%] top-0 z-10 bg-slate-50 shadow-2xl flex-col p-4 duration-500">
+  <div id="mobileMenu"
+       tabindex="0"
+       onblur="handleToggleNav()"
+       class="hidden max-sm:flex w-[80vw] h-[105vh] overflow-hidden fixed left-[-100%] top-0 z-10 bg-slate-50 shadow-2xl flex-col p-4 duration-500">
     <a href="{% url 'home' %}"
        class="flex gap-[10px] py-[20px] rounded-lg px-4 border border-transparent {% if request.resolver_match.url_name == 'home' %}text-green-500  !border-green-500{% endif %}">
       <img src="{% if request.resolver_match.url_name == 'home' %}{% static 'images/icons/icon-home-green.svg' %}{% else %}{% static 'images/icons/icon-home.svg' %}{% endif %}"
            alt="" />
       <span class="text-[20px]">Início</span>
     </a>
-    <a href="{% url 'academics:dashboard' %}" class="flex gap-[10px] py-[20px] rounded-lg px-4 border border-transparent {% if 'academics' in request.resolver_match.app_names or 'people' in request.resolver_match.app_names %}text-green-500 !border-green-500{% endif %}">
+    <a href="{% url 'academics:dashboard' %}"
+       class="flex gap-[10px] py-[20px] rounded-lg px-4 border border-transparent {% if 'academics' in request.resolver_match.app_names or 'people' in request.resolver_match.app_names %}text-green-500 !border-green-500{% endif %}">
       <img src="{% if 'academics' in request.resolver_match.app_names or 'people' in request.resolver_match.app_names %}{% static 'images/icons/icon-courses-green.svg' %}{% else %}{% static 'images/icons/icon-courses.svg' %}{% endif %}"
            alt="" />
       <span class="text-[20px]">Acadêmico</span>
@@ -27,10 +29,11 @@
       <span class="text-[20px]">Usuários</span>
     </a>
   </div>
-
   <h1>
     <a href="{% url 'home' %}">
-      <img src="{% static 'images/icons/green-logo.svg' %}" alt="Logo" class="min-w-[85px] min-h-[30px] max-w-full" />
+      <img src="{% static 'images/icons/green-logo.svg' %}"
+           alt="Logo"
+           class="min-w-[85px] min-h-[30px] max-w-full" />
     </a>
   </h1>
   <nav class="hidden md:flex flex-col">
@@ -75,62 +78,62 @@
              placeholder="Pesquisar..."
              class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50" />
     </div>
-
     <div id="notificationIcon" class="cursor-pointer relative">
       {% if notifications %}
-        <div id="notificationCount" class="h-5 w-5 bg-green-500 rounded-full text-[10px] text-white flex items-center justify-center absolute top-[-10px] right-[-5px]">
+        <div id="notificationCount"
+             class="h-5 w-5 bg-green-500 rounded-full text-[10px] text-white flex items-center justify-center absolute top-[-10px] right-[-5px]">
           {% if notifications|length > 9 %}
-              9+
+            9+
           {% else %}
-              {{ notifications|length }}
+            {{ notifications|length }}
           {% endif %}
         </div>
       {% endif %}
-      <img src="{% static 'images/icons/icon-notification.svg' %}" class="min-w-[31px] min-h-[33px] max-w-full" alt="" />
-
+      <img src="{% static 'images/icons/icon-notification.svg' %}"
+           class="min-w-[31px] min-h-[33px] max-w-full"
+           alt="" />
       <!-- Modal -->
-      <div id="notificationModal" class="absolute right-0 top-14 bg-white shadow-lg z-20 rounded-lg p-4 max-w-[600px] w-[35vw] hidden min-h-[250px]">
-          <h2 class="text-lg font-medium">Notificações</h2>
-
-          {% if notifications %}
-            <button onclick="markAllAsViewed()" class="p-4 flex items-center justify-center rounded-lg border border-slate-100 hover:bg-slate-100 transition-all shadow-sm my-4 w-full">
-                <p>Marcar tudo como lido</p>
-            </button>
-            <div class="max-h-[400px] overflow-y-auto mb-4 flex flex-col gap-2">
-
-              {% for notification in notifications %}
-                <div id="notification-{{ notification.pk }}" class="flex gap-6 p-4 border border-slate-100 hover:bg-slate-100 cursor-pointer rounded-lg">
-                  <img src="{% static 'images/icons/icon-message.svg' %}"
-                      class="w-[32px] h-[32px] mt-2"
-                      alt="" />
-                  <a href="{{notification.action}}">
-                    <div class="flex-1">
-                      <p class="text-[18px] font-semibold">{{ notification.title }}</p>
-                      <p>{{ notification.text }}</p>
-                      <p class="text-[12px] mt-3">{{notification.created_at}}</p>
-                    </div>
-                  </a>
-                  <button onclick="markAsViewed({{ notification.pk }})" class="flex flex-col items-center">
-                    <img src="{% static 'images/icons/icon-checked.svg' %}"
-                        class="w-[30px] h-[30px] mt-2"
-                        alt="Marcar como lido" />
-                    <p class="text-[10px] mt-2">Marcar</p>
-                    <p class="text-[10px]">como</p>
-                    <p class="text-[10px]">Lido</p>
-                  </button>
-                </div>
-              {% endfor %}
-
-            </div>
-          {% else %}
-            <div class="w-full h-full flex justify-center">
-              <p class="mt-20">Não há notificações</p>
-            </div>
-          {% endif %}
+      <div id="notificationModal"
+           class="absolute right-0 top-14 bg-white shadow-lg z-20 rounded-lg p-4 max-w-[600px] w-[35vw] hidden min-h-[250px]">
+        <h2 class="text-lg font-medium">Notificações</h2>
+        {% if notifications %}
+          <button onclick="markAllAsViewed()"
+                  class="p-4 flex items-center justify-center rounded-lg border border-slate-100 hover:bg-slate-100 transition-all shadow-sm my-4 w-full">
+            <p>Marcar tudo como lido</p>
+          </button>
+          <div class="max-h-[400px] overflow-y-auto mb-4 flex flex-col gap-2">
+            {% for notification in notifications %}
+              <div id="notification-{{ notification.pk }}"
+                   class="flex gap-6 p-4 border border-slate-100 hover:bg-slate-100 cursor-pointer rounded-lg">
+                <img src="{% static 'images/icons/icon-message.svg' %}"
+                     class="w-[32px] h-[32px] mt-2"
+                     alt="" />
+                <a href="{{ notification.action }}">
+                  <div class="flex-1">
+                    <p class="text-[18px] font-semibold">{{ notification.title }}</p>
+                    <p>{{ notification.text }}</p>
+                    <p class="text-[12px] mt-3">{{ notification.created_at }}</p>
+                  </div>
+                </a>
+                <button onclick="markAsViewed({{ notification.pk }})"
+                        class="flex flex-col items-center">
+                  <img src="{% static 'images/icons/icon-checked.svg' %}"
+                       class="w-[30px] h-[30px] mt-2"
+                       alt="Marcar como lido" />
+                  <p class="text-[10px] mt-2">Marcar</p>
+                  <p class="text-[10px]">como</p>
+                  <p class="text-[10px]">Lido</p>
+                </button>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="w-full h-full flex justify-center">
+            <p class="mt-20">Não há notificações</p>
+          </div>
+        {% endif %}
       </div>
     </div>
-
-
     <div>
       <a onclick="toggleDropdown()"
          type="button"
@@ -142,8 +145,7 @@
           <div class=" py-2.5 px-3 rounded-full">
             <img src="{{ user.photo }}"
                  class="rounded-full w-16 h-16"
-                 alt="{{ user.name }}"
-                />
+                 alt="{{ user.name }}" />
           </div>
         {% else %}
           <div class="bg-green-500/50 py-2.5 px-3 rounded-full">
@@ -159,20 +161,19 @@
          aria-labelledby="menu-button"
          tabindex="-1">
       <a href="{% url 'users:detail' user.pk %}"
-          role="menuitem"
-          aria-haspopup="true"
-          tabindex="-1"
-          id="menu-item-0"
-          class="flex gap-3 items-center"
-      >
+         role="menuitem"
+         aria-haspopup="true"
+         tabindex="-1"
+         id="menu-item-0"
+         class="flex gap-3 items-center">
         {% if user.photo %}
-            <img src="{{ user.photo }}"
-                  class="w-10 h-10 rounded-full"
-                  alt="{{ user.name }}" />
+          <img src="{{ user.photo }}"
+               class="w-10 h-10 rounded-full"
+               alt="{{ user.name }}" />
         {% else %}
-            <div class="bg-green-500/50 w-10 h-10 flex justify-center items-center rounded-full">
-              <i class="fas fa-solid fa-user fa-lg"></i>
-            </div>
+          <div class="bg-green-500/50 w-10 h-10 flex justify-center items-center rounded-full">
+            <i class="fas fa-solid fa-user fa-lg"></i>
+          </div>
         {% endif %}
         <div class="min-w-0">
           <p class="text-lg text-black flex justify-start items-center gap-2">
@@ -185,169 +186,169 @@
               <span class="flex text-[11px] h-[21px] items-center justify-center px-[6px] rounded-md font-bold border border-yellow-300 text-yellow-600 bg-yellow-100">Colaborador</span>
             {% endif %}
           </p>
-          <p class="text-base font-medium text-slate-400 whitespace-nowrap overflow-hidden text-ellipsis block">{{ user.email }}</p>
+          <p class="text-base font-medium text-slate-400 whitespace-nowrap overflow-hidden text-ellipsis block">
+            {{ user.email }}
+          </p>
         </div>
       </a>
-      <hr class="mt-[18px]">
+      <hr class="mt-[18px]" />
       <a href="{% url 'users:detail' user.pk %}">
         <div class="flex gap-4 items-center py-4 px-[14px] hover:bg-slate-100 transition-colors">
           <img src="{% static 'images/icons/icon-settings.svg' %}"
-          class="w-[24px] h-[24px]"
-          alt="" />
+               class="w-[24px] h-[24px]"
+               alt="" />
           <p class="text-black text-[18px] font-medium">Meu Perfil</p>
         </div>
       </a>
       <a href="#">
         <div class="flex gap-4 items-center py-4 px-[14px] hover:bg-slate-100 transition-colors">
           <img src="{% static 'images/icons/icon-help.svg' %}"
-          class="w-[24px] h-[24px]"
-          alt="" />
+               class="w-[24px] h-[24px]"
+               alt="" />
           <p class="text-black text-[18px] font-medium">Ajuda</p>
         </div>
       </a>
-      <hr>
+      <hr />
       <a id="logoutButton" class="cursor-pointer">
         <div class="flex gap-4 items-center py-6 px-[14px] hover:bg-slate-100 transition-colors">
           <img src="{% static 'images/icons/icon_logout.svg' %}"
-          class="w-[24px] h-[24px]"
-          alt="" />
+               class="w-[24px] h-[24px]"
+               alt="" />
           <p class="text-[18px] font-medium text-red-700">Encerrar Sessão</p>
         </div>
       </a>
-  </div>
-{% endif %}
-<!-- Modal de Logout -->
-{% include "../account/logout.html" %}
-
-{% block inline_javascript %}
-  <script>
-    function markAsViewed(notificationId) {
-      fetch(`/people/notification/mark_as_viewed/${notificationId}/`, {
-        method: 'POST',
-        headers: {
-          'X-CSRFToken': '{{ csrf_token }}',
-          'Content-Type': 'application/json'
-        },
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          // Atualizar a interface para indicar que foi marcada como lida
-          window.location.reload();
-        } else {
-          console.error('Erro ao marcar como visualizado:', data.error);
-        }
-      })
-      .catch(error => console.error('Erro:', error));
-    }
-
-    function markAllAsViewed(notificationId) {
-      fetch(`/people/notification/mark_all_viewed/`, {
-        method: 'POST',
-        headers: {
-          'X-CSRFToken': '{{ csrf_token }}',
-          'Content-Type': 'application/json'
-        },
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          // Atualizar a interface para indicar que foi marcada como lida
-          window.location.reload();
-        } else {
-          console.error('Erro ao marcar como visualizado:', data.error);
-        }
-      })
-      .catch(error => console.error('Erro:', error));
-    }
-
-
-    function toggleDropdown() {
-      const dropdown = document.getElementById("dropdown");
-      dropdown.classList.toggle("hidden");
-    }
-
-    document.addEventListener("click", function(event) {
-      /**
-      * Lida com interações com um modal de logout.
-      * Mostra e oculta o modal com base nas ações do usuário.
-      **/
-
-      const dropdown = document.getElementById("dropdown");
-      const menuButton = document.getElementById("menu-button");
-
-      if (
-        !dropdown.classList.contains("hidden") &&
-        !dropdown.contains(event.target) &&
-        !menuButton.contains(event.target)
-      ) {
-        dropdown.classList.add("hidden");
+    </div>
+  {% endif %}
+  <!-- Modal de Logout -->
+  {% include "../account/logout.html" %}
+  {% block inline_javascript %}
+    <script>
+      function markAsViewed(notificationId) {
+        fetch(`/people/notification/mark_as_viewed/${notificationId}/`, {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': '{{ csrf_token }}',
+              'Content-Type': 'application/json'
+            },
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              // Atualizar a interface para indicar que foi marcada como lida
+              window.location.reload();
+            } else {
+              console.error('Erro ao marcar como visualizado:', data.error);
+            }
+          })
+          .catch(error => console.error('Erro:', error));
       }
-    });
 
-    document.addEventListener("DOMContentLoaded", function() {
-      /**
-      * Lida com interações com um modal de logout.
-      * Mostra e oculta o modal com base nas ações do usuário.
-      **/
+      function markAllAsViewed(notificationId) {
+        fetch(`/people/notification/mark_all_viewed/`, {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': '{{ csrf_token }}',
+              'Content-Type': 'application/json'
+            },
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              // Atualizar a interface para indicar que foi marcada como lida
+              window.location.reload();
+            } else {
+              console.error('Erro ao marcar como visualizado:', data.error);
+            }
+          })
+          .catch(error => console.error('Erro:', error));
+      }
 
-      var logoutButton = document.getElementById("logoutButton");
-      var logoutModal = document.getElementById("logoutModal");
-      var closeModalButton = document.getElementById("closeModalButton");
 
-      logoutButton.addEventListener("click", function() {
-        logoutModal.classList.remove("hidden");
+      function toggleDropdown() {
+        const dropdown = document.getElementById("dropdown");
+        dropdown.classList.toggle("hidden");
+      }
+
+      document.addEventListener("click", function(event) {
+        /**
+         * Lida com interações com um modal de logout.
+         * Mostra e oculta o modal com base nas ações do usuário.
+         **/
+
+        const dropdown = document.getElementById("dropdown");
+        const menuButton = document.getElementById("menu-button");
+
+        if (
+          !dropdown.classList.contains("hidden") &&
+          !dropdown.contains(event.target) &&
+          !menuButton.contains(event.target)
+        ) {
+          dropdown.classList.add("hidden");
+        }
       });
 
-      closeModalButton.addEventListener("click", function() {
-        logoutModal.classList.add("hidden");
-      });
+      document.addEventListener("DOMContentLoaded", function() {
+        /**
+         * Lida com interações com um modal de logout.
+         * Mostra e oculta o modal com base nas ações do usuário.
+         **/
 
-      // Caso o ususario click fora do modal vai fechar.
-      window.addEventListener("click", function(event) {
-        if (event.target == logoutModal) {
+        var logoutButton = document.getElementById("logoutButton");
+        var logoutModal = document.getElementById("logoutModal");
+        var closeModalButton = document.getElementById("closeModalButton");
+
+        logoutButton.addEventListener("click", function() {
+          logoutModal.classList.remove("hidden");
+        });
+
+        closeModalButton.addEventListener("click", function() {
           logoutModal.classList.add("hidden");
-        }
+        });
+
+        // Caso o ususario click fora do modal vai fechar.
+        window.addEventListener("click", function(event) {
+          if (event.target == logoutModal) {
+            logoutModal.classList.add("hidden");
+          }
+        });
       });
-    });
 
-    function handleToggleNav() {
-      const menu = document.getElementById('mobileMenu');
-      // Toggle between hidden and block classes to open/close the menu
-      if (menu.classList.contains('left-[-100%]')) {
-        menu.classList.remove('left-[-100%]');
-        menu.classList.add('left-0');
-        menu.focus();
-      } else {
-        menu.classList.remove('left-0');
-        menu.classList.add('left-[-100%]');
+      function handleToggleNav() {
+        const menu = document.getElementById('mobileMenu');
+        // Toggle between hidden and block classes to open/close the menu
+        if (menu.classList.contains('left-[-100%]')) {
+          menu.classList.remove('left-[-100%]');
+          menu.classList.add('left-0');
+          menu.focus();
+        } else {
+          menu.classList.remove('left-0');
+          menu.classList.add('left-[-100%]');
+        }
       }
-    }
 
 
-    //Dropdown de notificações
-    const notificationIcon = document.getElementById('notificationIcon');
-    const notificationModal = document.getElementById('notificationModal');
-    const closeModalButton = document.getElementById('closeModalButton');
+      //Dropdown de notificações
+      const notificationIcon = document.getElementById('notificationIcon');
+      const notificationModal = document.getElementById('notificationModal');
+      const closeModalButton = document.getElementById('closeModalButton');
 
-    // Abre/fecha o modal ao clicar na div
-    notificationIcon.addEventListener('click', (event) => {
+      // Abre/fecha o modal ao clicar na div
+      notificationIcon.addEventListener('click', (event) => {
         event.stopPropagation(); // Impede o evento de se propagar para evitar o fechamento imediato
         notificationModal.classList.toggle('hidden');
-    });
+      });
 
-    // Fecha o modal se clicar fora dele
-    document.addEventListener('click', (event) => {
+      // Fecha o modal se clicar fora dele
+      document.addEventListener('click', (event) => {
         if (!notificationIcon.contains(event.target)) {
-            notificationModal.classList.add('hidden');
+          notificationModal.classList.add('hidden');
         }
-    });
+      });
 
-    // Esconder contador de notificações ao clicar
-    const notificationCount = document.getElementById('notificationCount');
-    notificationIcon.addEventListener('click', (event) => {
+      // Esconder contador de notificações ao clicar
+      const notificationCount = document.getElementById('notificationCount');
+      notificationIcon.addEventListener('click', (event) => {
         notificationCount.classList.add('hidden');
-    });
-
-  </script>
-{% endblock inline_javascript %}
+      });
+    </script>
+  {% endblock inline_javascript %}

@@ -18,8 +18,8 @@ app.config_from_object("django.conf:settings", namespace="CELERY")
 app.autodiscover_tasks()
 
 app.conf.beat_schedule = {
-    'send-monthly-pei-summary': {
-        'task': 'people.tasks.send_monthly_pei',
-        'schedule': crontab(day_of_month=1, hour=8, minute=0),
+    "send-monthly-pei-summary": {
+        "task": "people.tasks.send_monthly_pei",
+        "schedule": crontab(day_of_month=1, hour=8, minute=0),
     },
 }

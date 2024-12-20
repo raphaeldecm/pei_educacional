@@ -128,36 +128,31 @@
                      height="24px"
                      class="cursor-pointer" />
               </a>
-              {% comment %} <button type="button"
-                id="openModal{{ pei.id }}"
-                data-modal-id="confirmationModal{{ pei.id }}">
-                <img src="{% static 'images/icons/icon-remove-element.svg' %}"
-                    alt=""
-                    height="24px"
-                    class="cursor-pointer" />
+              {% comment %} <button type="button" id="openModal{{ pei.id }}" data-modal-id="confirmationModal{{ pei.id }}">
+                <img src="{% static 'images/icons/icon-remove-element.svg' %}" alt="" height="24px" class="cursor-pointer" />
               </button> {% endcomment %}
             </span>
           </td>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
-<div class="mt-[50px] mb-[26px] w-full flex items-center justify-between text-[18px]">
-  <span class="font-semibold">Página {{ student_peis.number }} de {{ student_peis.paginator.num_pages }}</span>
-  <div class="flex gap-[36px]">
-    {% if student_peis.has_previous %}
-      <a href="?{% if request.GET.course %}course={{ request.GET.course }}&{% endif %}{% if request.GET.teacher %}teacher={{ request.GET.teacher }}&{% endif %}{% if request.GET.period %}period={{ request.GET.period }}&{% endif %}{% if request.GET.status %}status={{ request.GET.status }}&{% endif %}{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}page={{ student_peis.previous_page_number }}">
-        <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-400 border border-slate-400 rounded-lg">
-          Anterior
-        </div>
-      </a>
-    {% endif %}
-    {% if student_peis.has_next %}
-      <a href="?{% if request.GET.course %}course={{ request.GET.course }}&{% endif %}{% if request.GET.teacher %}teacher={{ request.GET.teacher }}&{% endif %}{% if request.GET.period %}period={{ request.GET.period }}&{% endif %}{% if request.GET.status %}status={{ request.GET.status }}&{% endif %}{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}page={{ student_peis.next_page_number }}">
-        <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-400 border border-slate-400 rounded-lg">
-          Próximo
-        </div>
-      </a>
-    {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
-</div>
+  <div class="mt-[50px] mb-[26px] w-full flex items-center justify-between text-[18px]">
+    <span class="font-semibold">Página {{ student_peis.number }} de {{ student_peis.paginator.num_pages }}</span>
+    <div class="flex gap-[36px]">
+      {% if student_peis.has_previous %}
+        <a href="?{% if request.GET.course %}course={{ request.GET.course }}&{% endif %}{% if request.GET.teacher %}teacher={{ request.GET.teacher }}&{% endif %}{% if request.GET.period %}period={{ request.GET.period }}&{% endif %}{% if request.GET.status %}status={{ request.GET.status }}&{% endif %}{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}page={{ student_peis.previous_page_number }}">
+          <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-400 border border-slate-400 rounded-lg">
+            Anterior
+          </div>
+        </a>
+      {% endif %}
+      {% if student_peis.has_next %}
+        <a href="?{% if request.GET.course %}course={{ request.GET.course }}&{% endif %}{% if request.GET.teacher %}teacher={{ request.GET.teacher }}&{% endif %}{% if request.GET.period %}period={{ request.GET.period }}&{% endif %}{% if request.GET.status %}status={{ request.GET.status }}&{% endif %}{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}page={{ student_peis.next_page_number }}">
+          <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-400 border border-slate-400 rounded-lg">
+            Próximo
+          </div>
+        </a>
+      {% endif %}
+    </div>
+  </div>

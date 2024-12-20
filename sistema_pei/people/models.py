@@ -5,7 +5,6 @@ from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 from multiselectfield import MultiSelectField
 
-from sistema_pei import users
 from sistema_pei.core import constants
 from sistema_pei.core.models import BaseModel
 from sistema_pei.core.models import get_sentinel_user
@@ -186,7 +185,7 @@ class Student(Person):
     sectors = MultiSelectField(
         choices=User.Sector.choices,
         verbose_name=_("Setores"),
-        blank=True
+        blank=True,
     )
 
     class Meta:
@@ -235,7 +234,7 @@ class Notification(BaseModel):
         choices=Type.choices,
         max_length=constants.SMALL_CHAR_FIELD_NAME_LENGTH,
     )
-    action=models.CharField(
+    action = models.CharField(
         verbose_name=_("Link de ação ao clicar"),
         max_length=constants.SMALL_CHAR_FIELD_NAME_LENGTH,
         null=True,

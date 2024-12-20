@@ -2,7 +2,9 @@ import pandas as pd
 from django.contrib import messages
 from django.shortcuts import redirect
 
-from sistema_pei.academics.models import Course, Subject
+from sistema_pei.academics.models import Course
+from sistema_pei.academics.models import Subject
+
 
 def import_courses_csv(self, uploaded_file):
     insert_counter = 0
@@ -11,12 +13,19 @@ def import_courses_csv(self, uploaded_file):
     try:
         data = pd.read_csv(uploaded_file)
 
-        required_columns = {"Nome", "Tipo do Curso", "Turno", "Tipo de duração", "Quantidade de periodos"}
+        required_columns = {
+            "Nome",
+            "Tipo do Curso",
+            "Turno",
+            "Tipo de duração",
+            "Quantidade de periodos",
+        }
         if not required_columns.issubset(data.columns):
             missing_columns = required_columns - set(data.columns)
             messages.error(
                 self.request,
-                "O arquivo CSV está faltando as seguintes colunas: " + ", ".join(missing_columns)
+                "O arquivo CSV está faltando as seguintes colunas: "
+                + ", ".join(missing_columns),
             )
             return redirect(self.success_url)
 
@@ -57,7 +66,9 @@ def import_courses_csv(self, uploaded_file):
                 error_counter += 1
                 continue
 
-        success_message = f"Cursos inseridos: {insert_counter}, Cursos com erro: {error_counter}"
+        success_message = (
+            f"Cursos inseridos: {insert_counter}, Cursos com erro: {error_counter}"
+        )
         messages.success(self.request, success_message)
         return redirect(self.success_url)
 
@@ -65,6 +76,7 @@ def import_courses_csv(self, uploaded_file):
         error_message = f"Erro ao processar o arquivo:\n{e}"
         messages.error(self.request, error_message)
         return redirect(self.success_url)
+
 
 def import_subject_csv(self, uploaded_file):
     insert_counter = 0
@@ -87,7 +99,8 @@ def import_subject_csv(self, uploaded_file):
             missing_columns = required_columns - set(data.columns)
             messages.error(
                 self.request,
-                "O arquivo CSV está faltando as seguintes colunas: " + ", ".join(missing_columns)
+                "O arquivo CSV está faltando as seguintes colunas: "
+                + ", ".join(missing_columns),
             )
             return redirect(self.success_url)
 
@@ -116,7 +129,7 @@ def import_subject_csv(self, uploaded_file):
                 )
                 insert_counter += 1
 
-            except Exception as e:
+            except Exception:
                 error_counter += 1
                 continue
 
@@ -129,10 +142,3 @@ def import_subject_csv(self, uploaded_file):
         error_message = f"Erro ao processar o arquivo:\n{e}"
         messages.error(self.request, error_message)
         return redirect(self.success_url)
-
-
-
-
-
-
-

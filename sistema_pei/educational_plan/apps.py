@@ -6,4 +6,4 @@ class EducationalPlanConfig(AppConfig):
     name = "sistema_pei.educational_plan"
 
     def ready(self):
-        import sistema_pei.educational_plan.signals
+        pass

@@ -29,8 +29,7 @@
           <p class="mt-2 text-slate-300">Inscrições podem ser criadas através da página de ofertas.</p>
         </div>
         <div class="flex-1">
-          <label for="{{ form.status.id_for_label }}"
-                 class="font-medium text-[18px]">Status:</label>
+          <label for="{{ form.status.id_for_label }}" class="font-medium text-[18px]">Status:</label>
           <select name="{{ form.status.name }}"
                   id="{{ form.status.id_for_label }}"
                   class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50 mt-[16px] pointer-events-none">
@@ -81,31 +80,31 @@
           <div class="flex gap-6">
             <div class="mb-4 col-span-2 flex-1 pointer-events-none">
               <label for="{{ form.objective.id_for_label }}"
-                     class="font-sans font-medium text-lg text-ls block mb-4">
-                Objetivos da disciplina:
-              </label>
+                     class="font-sans font-medium text-lg text-ls block mb-4">Objetivos da disciplina:</label>
               <textarea id="{{ form.objective.id_for_label }}"
                         name="{{ form.objective.name }}"
                         placeholder="Escreva aqui!"
                         class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.objective.value|default_if_none:'' }}</textarea>
               {% if form.objective.errors %}
                 <ul class="list-disc p-2">
-                  {% for error in form.objective.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                  {% for error in form.objective.errors %}
+                    <li class="text-red-500 ml-2">{{ error }}</li>
+                  {% endfor %}
                 </ul>
               {% endif %}
             </div>
             <div class="mb-4 col-span-2 flex-1">
               <label for="{{ form.adapted_objective.id_for_label }}"
-                     class="font-sans font-medium text-lg text-ls block mb-4">
-                Objetivos Adptados:
-              </label>
+                     class="font-sans font-medium text-lg text-ls block mb-4">Objetivos Adptados:</label>
               <textarea id="{{ form.adapted_objective.id_for_label }}"
                         name="{{ form.adapted_objective.name }}"
                         placeholder="Escreva aqui!"
                         class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.adapted_objective.value|default_if_none:'' }}</textarea>
               {% if form.adapted_objective.errors %}
                 <ul class="list-disc p-2">
-                  {% for error in form.adapted_objective.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                  {% for error in form.adapted_objective.errors %}
+                    <li class="text-red-500 ml-2">{{ error }}</li>
+                  {% endfor %}
                 </ul>
               {% endif %}
             </div>
@@ -113,31 +112,31 @@
           <div class="flex gap-6">
             <div class="mb-4 col-span-2 flex-1 pointer-events-none">
               <label for="{{ form.content.id_for_label }}"
-                     class="font-sans font-medium text-lg text-ls block mb-4">
-                Conteúdo programático:
-              </label>
+                     class="font-sans font-medium text-lg text-ls block mb-4">Conteúdo programático:</label>
               <textarea id="{{ form.content.id_for_label }}"
                         name="{{ form.content.name }}"
                         placeholder="Escreva aqui!"
                         class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.content.value|default_if_none:'' }}</textarea>
               {% if form.content.errors %}
                 <ul class="list-disc p-2">
-                  {% for error in form.content.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                  {% for error in form.content.errors %}
+                    <li class="text-red-500 ml-2">{{ error }}</li>
+                  {% endfor %}
                 </ul>
               {% endif %}
             </div>
             <div class="mb-4 col-span-2 flex-1">
               <label for="{{ form.adapted_content.id_for_label }}"
-                     class="font-sans font-medium text-lg text-ls block mb-4">
-                  Conteúdos Adaptados:
-              </label>
+                     class="font-sans font-medium text-lg text-ls block mb-4">Conteúdos Adaptados:</label>
               <textarea id="{{ form.adapted_content.id_for_label }}"
                         name="{{ form.adapted_content.name }}"
                         placeholder="Escreva aqui!"
                         class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.adapted_content.value|default_if_none:'' }}</textarea>
               {% if form.adapted_content.errors %}
                 <ul class="list-disc p-2">
-                  {% for error in form.adapted_content.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                  {% for error in form.adapted_content.errors %}
+                    <li class="text-red-500 ml-2">{{ error }}</li>
+                  {% endfor %}
                 </ul>
               {% endif %}
             </div>
@@ -145,24 +144,22 @@
           <div class="flex gap-6 ">
             <div class="mb-4 col-span-2 flex-1 pointer-events-none">
               <label for="{{ form.methodology.id_for_label }}"
-                     class="font-sans font-medium text-lg text-ls block mb-4">
-                     Metodologias:
-              </label>
+                     class="font-sans font-medium text-lg text-ls block mb-4">Metodologias:</label>
               <textarea id="{{ form.methodology.id_for_label }}"
                         name="{{ form.methodology.name }}"
                         placeholder="Escreva aqui!"
                         class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.methodology.value|default_if_none:'' }}</textarea>
               {% if form.methodology.errors %}
                 <ul class="list-disc p-2">
-                  {% for error in form.methodology.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+                  {% for error in form.methodology.errors %}
+                    <li class="text-red-500 ml-2">{{ error }}</li>
+                  {% endfor %}
                 </ul>
               {% endif %}
             </div>
             <div class="mb-4 col-span-2 flex-1">
               <label for="{{ form.adapted_methodology.id_for_label }}"
-                     class="font-sans font-medium text-lg text-ls block mb-4">
-                     Metodologias adaptadas:
-              </label>
+                     class="font-sans font-medium text-lg text-ls block mb-4">Metodologias adaptadas:</label>
               <textarea id="{{ form.adapted_methodology.id_for_label }}"
                         name="{{ form.adapted_methodology.name }}"
                         placeholder="Escreva aqui!"
@@ -177,9 +174,7 @@
           <div class="flex gap-6">
             <div class="mb-4 col-span-2 flex-1 pointer-events-none">
               <label for="{{ form.resources.id_for_label }}"
-                     class="font-sans font-medium text-lg text-ls block mb-4">
-                     Recursos didáticos:
-              </label>
+                     class="font-sans font-medium text-lg text-ls block mb-4">Recursos didáticos:</label>
               <textarea id="{{ form.resources.id_for_label }}"
                         name="{{ form.resources.name }}"
                         placeholder="Escreva aqui!"
@@ -192,9 +187,7 @@
             </div>
             <div class="mb-4 col-span-2 flex-1">
               <label for="{{ form.adapted_resources.id_for_label }}"
-                     class="font-sans font-medium text-lg text-ls block mb-4">
-                     Recursos didáticos adaptados:
-              </label>
+                     class="font-sans font-medium text-lg text-ls block mb-4">Recursos didáticos adaptados:</label>
               <textarea id="{{ form.adapted_resources.id_for_label }}"
                         name="{{ form.adapted_resources.name }}"
                         placeholder="Escreva aqui!"
@@ -209,9 +202,7 @@
           <div class="flex gap-6">
             <div class="mb-4 col-span-2 flex-1 pointer-events-none">
               <label for="{{ form.assessments.id_for_label }}"
-                     class="font-sans font-medium text-lg text-ls block mb-4">
-                     Avaliações:
-              </label>
+                     class="font-sans font-medium text-lg text-ls block mb-4">Avaliações:</label>
               <textarea id="{{ form.assessments.id_for_label }}"
                         name="{{ form.assessments.name }}"
                         placeholder="Escreva aqui!"
@@ -224,9 +215,7 @@
             </div>
             <div class="mb-4 col-span-2 flex-1">
               <label for="{{ form.adapted_assessments.id_for_label }}"
-                     class="font-sans font-medium text-lg text-ls block mb-4">
-                     Avaliações Adaptadas:
-              </label>
+                     class="font-sans font-medium text-lg text-ls block mb-4">Avaliações Adaptadas:</label>
               <textarea id="{{ form.adapted_assessments.id_for_label }}"
                         name="{{ form.adapted_assessments.name }}"
                         placeholder="Escreva aqui!"
@@ -245,9 +234,7 @@
         <div id="content-parecer" class="tab-content hidden">
           <div class="mb-4 col-span-2 flex-1">
             <label for="{{ form.academic_opinion_1.id_for_label }}"
-                   class="font-sans font-medium text-lg text-ls block mb-4">
-                   Parecer (1° Bimestre)
-            </label>
+                   class="font-sans font-medium text-lg text-ls block mb-4">Parecer (1° Bimestre)</label>
             <textarea id="{{ form.academic_opinion_1.id_for_label }}"
                       name="{{ form.academic_opinion_1.name }}"
                       placeholder="Escreva aqui!"
@@ -260,9 +247,7 @@
           </div>
           <div class="mb-4 col-span-2 flex-1">
             <label for="{{ form.academic_opinion_2.id_for_label }}"
-                   class="font-sans font-medium text-lg text-ls block mb-4">
-                   Parecer (2° Bimestre)
-            </label>
+                   class="font-sans font-medium text-lg text-ls block mb-4">Parecer (2° Bimestre)</label>
             <textarea id="{{ form.academic_opinion_2.id_for_label }}"
                       name="{{ form.academic_opinion_2.name }}"
                       placeholder="Escreva aqui!"
@@ -276,9 +261,7 @@
           {% if object.enrollment.offer.subject.subject_type == "YEAR" %}
             <div class="mb-4 col-span-2 flex-1">
               <label for="{{ form.academic_opinion_3.id_for_label }}"
-                    class="font-sans font-medium text-lg text-ls block mb-4">
-                    Parecer (3° Bimestre)
-              </label>
+                     class="font-sans font-medium text-lg text-ls block mb-4">Parecer (3° Bimestre)</label>
               <textarea id="{{ form.academic_opinion_3.id_for_label }}"
                         name="{{ form.academic_opinion_3.name }}"
                         placeholder="Escreva aqui!"
@@ -291,9 +274,7 @@
             </div>
             <div class="mb-4 col-span-2 flex-1">
               <label for="{{ form.academic_opinion_4.id_for_label }}"
-                    class="font-sans font-medium text-lg text-ls block mb-4">
-                    Parecer (4° Bimestre)
-              </label>
+                     class="font-sans font-medium text-lg text-ls block mb-4">Parecer (4° Bimestre)</label>
               <textarea id="{{ form.academic_opinion_4.id_for_label }}"
                         name="{{ form.academic_opinion_4.name }}"
                         placeholder="Escreva aqui!"
@@ -305,13 +286,11 @@
               {% endif %}
             </div>
           {% endif %}
-          <hr class="mt-9">
-          <div class="mb-4 col-span-2 flex-1 mt-6 {% if user.sector != "NAPNE" %}pointer-events-none {% endif %}">
+          <hr class="mt-9" />
+          <div class="mb-4 col-span-2 flex-1 mt-6 {% if user.sector != "NAPNE" %}pointer-events-none{% endif %}">
             <label for="{{ form.academic_opinion_final.id_for_label }}"
-                   class="font-sans font-medium text-lg text-ls block mb-4">
-                   Parecer Final
-            </label>
-            {% if user.sector != "NAPNE"  %}
+                   class="font-sans font-medium text-lg text-ls block mb-4">Parecer Final</label>
+            {% if user.sector != "NAPNE" %}
               <p class="text-slate-300 mb-3">Parecer final é adicionado exclusivamente por membros da NAPNE.</p>
             {% endif %}
             <textarea id="{{ form.academic_opinion_final.id_for_label }}"
@@ -324,7 +303,7 @@
               </ul>
             {% endif %}
           </div>
-            <button class="text-[18px] py-[11px] w-full px-[44px] border border-slate-300 text-slate-500 rounded-lg font-medium cursor-pointer mt-6 hover:bg-green-500 hover:text-white transition-colors duration-300">
+          <button class="text-[18px] py-[11px] w-full px-[44px] border border-slate-300 text-slate-500 rounded-lg font-medium cursor-pointer mt-6 hover:bg-green-500 hover:text-white transition-colors duration-300">
             Salvar
           </button>
         </div>

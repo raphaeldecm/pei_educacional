@@ -89,7 +89,6 @@ class Subject(BaseModel):
         blank=True,
     )
 
-
     class Meta:
         verbose_name = _("Disciplina")
         verbose_name_plural = _("Disciplinas")

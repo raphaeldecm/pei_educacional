@@ -20,6 +20,7 @@ from rest_framework_simplejwt.views import (
 from sistema_pei.core.views import (
     HomeListView,
 )
+
 urlpatterns = [
     path(
         "people/",
@@ -58,7 +59,10 @@ urlpatterns = [
     # Your stuff: custom urls includes go here
     # ...
     path("social/", include("social_django.urls", namespace="social")),
-    path("suap_backend/", include("sistema_pei.suap_backend.urls", namespace="suap_login")),
+    path(
+        "suap_backend/",
+        include("sistema_pei.suap_backend.urls", namespace="suap_login"),
+    ),
     # Media files
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
 ]

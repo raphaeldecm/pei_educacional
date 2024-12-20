@@ -6,8 +6,10 @@ app_name = "people"
 urlpatterns = [
     path("teacher/list/", views.TeacherListView.as_view(), name="teacher_list"),
     path("teacher/create/", views.TeacherCreateView.as_view(), name="teacher_create"),
-    path("teacher/import/", views.TeacherImportView.as_view(),
-    name="teacher_import",
+    path(
+        "teacher/import/",
+        views.TeacherImportView.as_view(),
+        name="teacher_import",
     ),
     path(
         "teacher/update/<int:pk>/",
@@ -85,5 +87,3 @@ urlpatterns = [
         name="notification_mark_all_as_viewed",
     ),
 ]
-
-

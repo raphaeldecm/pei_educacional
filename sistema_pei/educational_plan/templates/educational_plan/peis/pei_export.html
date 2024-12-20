@@ -2,16 +2,18 @@
 
 <!DOCTYPE html>
 <html lang="pt">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <style>
       * {
         margin: 0;
         padding: 0;
       }
+
       body {
         font-size: 12px;
       }
+
       .page-title {
         font-size: 26px;
         font-weight: 500;
@@ -20,168 +22,188 @@
         margin: 60px 0;
         display: block;
       }
-      .header {
 
-      }
+      .header {}
+
       .header p {
         margin: 0;
       }
+
       .section-title {
         font-weight: medium;
         font-size: 18px;
         margin: 6px 0;
         display: block;
       }
+
       .underline {
         border-bottom: 1px solid #94A3B8;
         margin-bottom: 24px;
       }
+
       .section-content {
         color: #94A3B8;
         text-align: justify;
       }
+
       .data-block {
         display: flex;
       }
-      .data-block p, .data-block li {
+
+      .data-block p,
+      .data-block li {
         margin: 0;
         font-size: 12px;
         color: #94A3B8;
       }
+
       .data-block strong {
         color: black;
       }
+
       .separator {
         margin: 20px 0;
       }
+
       .export-info p {
         margin: 0;
         text-align: center;
       }
     </style>
-</head>
-<body>
-  <div class="header">
-    <div>
-      <p><strong>INSTITUTO FEDERAL DE EDUCAÇÃO, CIÊNCIA E TECNOLOGIA DO RIO GRANDE DO NORTE</strong></p>
-      <p>Campus Pau dos Ferros - Código INEP: 24328308</p>
-      <p>BR 405, KM 154, CEP 59.900-000, Pau dos Ferros (RN)</p>
+  </head>
+  <body>
+    <div class="header">
+      <div>
+        <p>
+          <strong>INSTITUTO FEDERAL DE EDUCAÇÃO, CIÊNCIA E TECNOLOGIA DO RIO GRANDE DO NORTE</strong>
+        </p>
+        <p>Campus Pau dos Ferros - Código INEP: 24328308</p>
+        <p>BR 405, KM 154, CEP 59.900-000, Pau dos Ferros (RN)</p>
+      </div>
     </div>
-  </div>
-
-  <h1 class="page-title">Plano de Ensino Individualizado</h1>
-
-  <div class="data-block">
-    <h2 class="section-title underline">Informações do aluno:</h2>
-    <p><strong>Matricula:</strong> {{ object.enrollment.student.registration }}</p>
-    <p><strong>Nome do aluno:</strong> {{ object.enrollment.student.name }}</p>
-    <p><strong>Necessidades Educacionais Específicas:</strong>
-      <ul>
-        {% for necessitie in object.enrollment.student.educational_necessities.all %}
-          <li>{{ necessitie }}</li>
-        {% endfor %}
-      </ul>
-    </p>
-    <p><strong>Dificuldades:</strong></p>
-    <p class="section-content">{{ object.enrollment.student.dificulties }}</p>
-  </div>
-  <br>
-  <div class="data-block">
-    <h2 class="section-title underline">Informações da disciplina:</h2>
-    <p><strong>Nome da disciplina:</strong> {{ object.enrollment.offer.subject.name }}</p>
-    <p><strong>Professor:</strong> {{ object.responsible_teacher }}</p>
-    <p><strong>Periodo de referência:</strong> {{ object.enrollment.offer.year }}.{{ object.enrollment.offer.semester }}</p>
-  </div>
-  <br>
-  <h2 class="section-title underline">Informações do Plano de ensino:</h2>
-  <div class="section">
+    <h1 class="page-title">Plano de Ensino Individualizado</h1>
+    <div class="data-block">
+      <h2 class="section-title underline">Informações do aluno:</h2>
+      <p>
+        <strong>Matricula:</strong> {{ object.enrollment.student.registration }}
+      </p>
+      <p>
+        <strong>Nome do aluno:</strong> {{ object.enrollment.student.name }}
+      </p>
+      <p>
+        <strong>Necessidades Educacionais Específicas:</strong>
+        <ul>
+          {% for necessitie in object.enrollment.student.educational_necessities.all %}<li>{{ necessitie }}</li>{% endfor %}
+        </ul>
+      </p>
+      <p>
+        <strong>Dificuldades:</strong>
+      </p>
+      <p class="section-content">{{ object.enrollment.student.dificulties }}</p>
+    </div>
+    <br />
+    <div class="data-block">
+      <h2 class="section-title underline">Informações da disciplina:</h2>
+      <p>
+        <strong>Nome da disciplina:</strong> {{ object.enrollment.offer.subject.name }}
+      </p>
+      <p>
+        <strong>Professor:</strong> {{ object.responsible_teacher }}
+      </p>
+      <p>
+        <strong>Periodo de referência:</strong> {{ object.enrollment.offer.year }}.{{ object.enrollment.offer.semester }}
+      </p>
+    </div>
+    <br />
+    <h2 class="section-title underline">Informações do Plano de ensino:</h2>
+    <div class="section">
       <h2 class="section-title">Objetivos:</h2>
       <p class="section-content">{{ object.objective }}</p>
-  </div>
-  <div class="section">
-    <h2 class="section-title">Objetivos Adaptados:</h2>
-    <p class="section-content">{{object.adapted_objective}}</p>
-  </div>
-  <div class="section">
+    </div>
+    <div class="section">
+      <h2 class="section-title">Objetivos Adaptados:</h2>
+      <p class="section-content">{{ object.adapted_objective }}</p>
+    </div>
+    <div class="section">
       <h2 class="section-title">Conteúdo programático:</h2>
-      <p class="section-content">{{object.content}}</p>
-  </div>
-  <div class="section">
-    <h2 class="section-title">Conteúdos Adaptados:</h2>
-    <p class="section-content">{{object.adapted_content}}</p>
-  </div>
-  <div class="section">
-    <h2 class="section-title">Metodologias:</h2>
-    <p class="section-content">{{object.methodology}}</p>
-  </div>
-  <div class="section">
-    <h2 class="section-title">Metodologias adaptadas:</h2>
-    <p class="section-content">{{object.adapted_methodology}}</p>
-  </div>
-  <div class="section">
-    <h2 class="section-title">Recursos didáticos:</h2>
-    <p class="section-content">{{object.resources}}</p>
-  </div>
-  <div class="section">
-    <h2 class="section-title">Recursos didáticos adaptados:</h2>
-    <p class="section-content">{{object.adapted_resources}}</p>
-  </div>
-  <div class="section">
-    <h2 class="section-title">Avaliações:</h2>
-    <p class="section-content">{{object.assessments}}</p>
-  </div>
-  <div class="section">
-    <h2 class="section-title">Avaliações Adaptadas:</h2>
-    <p class="section-content">{{object.adapted_assessments}}</p>
-  </div>
-  <br>
-  <h2 class="section-title underline">Pareceres:</h2>
-  <div class="section">
-    <h2 class="section-title">Parecer do 1º Bimestre:</h2>
-    {% if object.academic_opinion_1 %}
-      <p class="section-content">{{object.academic_opinion_1}}</p>
-    {% else %}
-      <p class="section-content">Não há parecer registrado para 1º Bimestre.</p>
-    {% endif %}
-  </div>
-  <div class="section">
-    <h2 class="section-title">Parecer do 2º Bimestre:</h2>
-    {% if object.academic_opinion_2 %}
-      <p class="section-content">{{object.academic_opinion_2}}</p>
-    {% else %}
-      <p class="section-content">Não há parecer registrado para 2º Bimestre.</p>
-    {% endif %}
-  </div>
-  {% if object.enrollment.offer.subject.subject_type == "YEAR" %}
+      <p class="section-content">{{ object.content }}</p>
+    </div>
     <div class="section">
-      <h2 class="section-title">Parecer do 3º Bimestre:</h2>
-      {% if object.academic_opinion_3 %}
-        <p class="section-content">{{object.academic_opinion_3}}</p>
+      <h2 class="section-title">Conteúdos Adaptados:</h2>
+      <p class="section-content">{{ object.adapted_content }}</p>
+    </div>
+    <div class="section">
+      <h2 class="section-title">Metodologias:</h2>
+      <p class="section-content">{{ object.methodology }}</p>
+    </div>
+    <div class="section">
+      <h2 class="section-title">Metodologias adaptadas:</h2>
+      <p class="section-content">{{ object.adapted_methodology }}</p>
+    </div>
+    <div class="section">
+      <h2 class="section-title">Recursos didáticos:</h2>
+      <p class="section-content">{{ object.resources }}</p>
+    </div>
+    <div class="section">
+      <h2 class="section-title">Recursos didáticos adaptados:</h2>
+      <p class="section-content">{{ object.adapted_resources }}</p>
+    </div>
+    <div class="section">
+      <h2 class="section-title">Avaliações:</h2>
+      <p class="section-content">{{ object.assessments }}</p>
+    </div>
+    <div class="section">
+      <h2 class="section-title">Avaliações Adaptadas:</h2>
+      <p class="section-content">{{ object.adapted_assessments }}</p>
+    </div>
+    <br />
+    <h2 class="section-title underline">Pareceres:</h2>
+    <div class="section">
+      <h2 class="section-title">Parecer do 1º Bimestre:</h2>
+      {% if object.academic_opinion_1 %}
+        <p class="section-content">{{ object.academic_opinion_1 }}</p>
       {% else %}
-        <p class="section-content">Não há parecer registrado para 3º Bimestre.</p>
+        <p class="section-content">Não há parecer registrado para 1º Bimestre.</p>
       {% endif %}
     </div>
     <div class="section">
-      <h2 class="section-title">Parecer do 4º Bimestre:</h2>
-      {% if object.academic_opinion_4 %}
-        <p class="section-content">{{object.academic_opinion_4}}</p>
+      <h2 class="section-title">Parecer do 2º Bimestre:</h2>
+      {% if object.academic_opinion_2 %}
+        <p class="section-content">{{ object.academic_opinion_2 }}</p>
       {% else %}
-        <p class="section-content">Não há parecer registrado para 4º Bimestre.</p>
+        <p class="section-content">Não há parecer registrado para 2º Bimestre.</p>
       {% endif %}
     </div>
-  {% endif %}
-  <div class="section">
-    <h2 class="section-title">Parecer Final:</h2>
-    {% if object.academic_opinion_final %}
-      <p class="section-content">{{object.academic_opinion_final}}</p>
-    {% else %}
-      <p class="section-content">Não há parecer final registrado.</p>
+    {% if object.enrollment.offer.subject.subject_type == "YEAR" %}
+      <div class="section">
+        <h2 class="section-title">Parecer do 3º Bimestre:</h2>
+        {% if object.academic_opinion_3 %}
+          <p class="section-content">{{ object.academic_opinion_3 }}</p>
+        {% else %}
+          <p class="section-content">Não há parecer registrado para 3º Bimestre.</p>
+        {% endif %}
+      </div>
+      <div class="section">
+        <h2 class="section-title">Parecer do 4º Bimestre:</h2>
+        {% if object.academic_opinion_4 %}
+          <p class="section-content">{{ object.academic_opinion_4 }}</p>
+        {% else %}
+          <p class="section-content">Não há parecer registrado para 4º Bimestre.</p>
+        {% endif %}
+      </div>
     {% endif %}
-  </div>
-  <br>
-  <div class="export-info">
-    <p>Documento emitido às {{ formatted_date }}.</p>
-    <p style="color: #94A3B8">© {{ current_year }} Gerenciador de Plano Educacional Individualizado</p>
-  </div>
-</body>
+    <div class="section">
+      <h2 class="section-title">Parecer Final:</h2>
+      {% if object.academic_opinion_final %}
+        <p class="section-content">{{ object.academic_opinion_final }}</p>
+      {% else %}
+        <p class="section-content">Não há parecer final registrado.</p>
+      {% endif %}
+    </div>
+    <br />
+    <div class="export-info">
+      <p>Documento emitido às {{ formatted_date }}.</p>
+      <p style="color: #94A3B8">© {{ current_year }} Gerenciador de Plano Educacional Individualizado</p>
+    </div>
+  </body>
 </html>

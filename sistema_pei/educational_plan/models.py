@@ -100,9 +100,7 @@ class Pei(BaseModel):
 
     def __str__(self):
         return (
-            "PEI -"
-            + self.enrollment.offer.subject.name
-            + self.enrollment.student.name
+            "PEI -" + self.enrollment.offer.subject.name + self.enrollment.student.name
         )
 
     def update_status(self):
@@ -120,7 +118,7 @@ class Pei(BaseModel):
                 self.resources,
                 self.adapted_resources,
                 self.assessments,
-                self.adapted_assessments
+                self.adapted_assessments,
             ]
 
             filled_fields = [field for field in fields_to_check if field]

@@ -4,7 +4,7 @@
   <div class="flex flex-col gap-[16px] text-[18px] text-slate-300 w-full max-w-[218px]">
     {% for i in "x"|rjust:student.course.number_of_periods %}
       <a href="{% url 'people:profile' student.id %}?tab=grades&selectedPeriod={{ forloop.counter }}"
-      class="p-[10px] rounded-lg cursor-pointer hover:bg-green-500 hover:text-white transition duration-300 ease-in-out {% if request.GET.selectedPeriod == forloop.counter|slugify or forloop.first and request.GET.selectedPeriod is null %} bg-green-500 text-slate-50{% endif %}">
+         class="p-[10px] rounded-lg cursor-pointer hover:bg-green-500 hover:text-white transition duration-300 ease-in-out {% if request.GET.selectedPeriod == forloop.counter|slugify or forloop.first and request.GET.selectedPeriod is null %} bg-green-500 text-slate-50{% endif %}">
         {{ forloop.counter }}°
         {% if student.course.duration_type == "SEMESTER" %}
           semestre
@@ -117,9 +117,9 @@
     const fixedGrade = {
       ...grades,
       data: [
-      ...grades.data
-      .map((grade, i) => i % 2 == 0 ? grade : null)
-      .filter((grade) => grade != null)
+        ...grades.data
+        .map((grade, i) => i % 2 == 0 ? grade : null)
+        .filter((grade) => grade != null)
       ]
     }
 
@@ -131,11 +131,14 @@
     data: {
       labels: [
         '1° Bimestre',
-        '2° Bimestre',
-        {% if student.course.duration_type != "SEMESTER" %}
-          '3° Bimestre',
-          '4° Bimestre'
-        {% endif %}
+        '2° Bimestre', {
+          %
+          if student.course.duration_type != "SEMESTER" %
+        }
+        '3° Bimestre',
+        '4° Bimestre' {
+          % endif %
+        }
       ],
       datasets: [...data]
     },

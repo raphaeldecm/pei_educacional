@@ -53,7 +53,8 @@
       </div>
       <div class="mt-[32px]">
         <label class="font-medium text-[18px]">Professores:</label>
-        <div class="mt-[16px] border border-slate-300 rounded-lg py-2 px-3 max-h-[150px] overflow-y-auto gap-6 teachers-container" data-selected-values="{{ form.teachers.value|join:',' }}">
+        <div class="mt-[16px] border border-slate-300 rounded-lg py-2 px-3 max-h-[150px] overflow-y-auto gap-6 teachers-container"
+             data-selected-values="{{ form.teachers.value|join:',' }}">
           {% for teacher in form.teachers.field.queryset %}
             <div class="flex flex-row-reverse justify-end items-center gap-1">
               <input id={{ teacher.id }} type="checkbox" class="hidden peer" name="teachers" value="{{ teacher.id }}" {% if teacher.id in form.teachers.value %}checked{% endif %} />

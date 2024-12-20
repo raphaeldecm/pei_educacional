@@ -3,6 +3,7 @@
 
 {% load static %}
 {% load breadcrumb_item %}
+
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
   {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" url="academics:dashboard" %}
@@ -153,7 +154,7 @@
       <div class="mb-4 col-span-2">
         <label for="{{ form.sectors.id_for_label }}"
                class="font-sans font-medium text-lg text-ls block mb-4">
-            Equipe multiprofissional responsável <span class="text-red-500">*</span>
+          Equipe multiprofissional responsável <span class="text-red-500">*</span>
         </label>
         <p class="my-4 font-sans text-slate-400">
           Selecione uma ou mais opções pressionando 'Ctrl' (ou 'Cmd' no Mac) e clicando nos itens desejados. Você também pode arrastar o mouse para selecionar um grupo de opções consecutivas.
@@ -333,7 +334,7 @@
           </ul>
         {% endif %}
       </div>
-    {% include "_save_back_edit_buttons.html" with link_to_back="people:student_list" no_margin=True  %}
+      {% include "_save_back_edit_buttons.html" with link_to_back="people:student_list" no_margin=True %}
     </form>
   </div>
 {% endblock content %}

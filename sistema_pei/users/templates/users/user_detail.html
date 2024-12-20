@@ -14,14 +14,14 @@
     <div class="flex justify-center items-center gap-6 p-2 [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px] border border-slate-300">
       <div class="flex flex-col items-center m-4">
         {% if object.photo %}
-            <img src="{{ object.photo }}"
-                  class="h-64 w-64 rounded-full bg-transparent border object-cover text-transparent"
-                  alt="{{ object.name }}" />
+          <img src="{{ object.photo }}"
+               class="h-64 w-64 rounded-full bg-transparent border object-cover text-transparent"
+               alt="{{ object.name }}" />
         {% else %}
-        <img id="profileImage"
-          src="{% static 'images/img/boy_user-profile.svg' %}"
-          alt="imagem de perfil"
-          class="h-64 w-64 rounded-full bg-transparent border object-cover text-transparent" />
+          <img id="profileImage"
+               src="{% static 'images/img/boy_user-profile.svg' %}"
+               alt="imagem de perfil"
+               class="h-64 w-64 rounded-full bg-transparent border object-cover text-transparent" />
         {% endif %}
       </label>
     </div>
@@ -58,25 +58,24 @@
       <div class="flex items-center">
         <div class="flex-1 my-4 mr-3">
           <label for="{{ object.is_active.id_for_label }}"
-                  class="font-medium text-[18px]">Situação:</label>
+                 class="font-medium text-[18px]">Situação:</label>
           <input type="text"
-                  name="{{ object.is_active.name }}"
-                  id="{{ object.is_active.id_for_label }}"
-                  class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
-                  value="{% if object.is_active %}Ativo{% else %}Inativo{% endif %}"
-                  readonly />
+                 name="{{ object.is_active.name }}"
+                 id="{{ object.is_active.id_for_label }}"
+                 class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+                 value="{% if object.is_active %}Ativo{% else %}Inativo{% endif %}"
+                 readonly />
         </div>
         <div class="flex-1 my-4">
           <label for="{{ form.sector.id_for_label }}" class="font-medium text-[18px]">Setor:</label>
           <input type="text"
-                  name="{{ object.sector.name }}"
-                  id="{{ object.sector.id_for_label }}"
-                  class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
-                  value="{{ object.sector }}"
-                  readonly />
+                 name="{{ object.sector.name }}"
+                 id="{{ object.sector.id_for_label }}"
+                 class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+                 value="{{ object.sector }}"
+                 readonly />
         </div>
       </div>
-
       <div class="flex items-center">
         <div class="flex-1 my-4 mr-3">
           <label for="{{ object.groups.id_for_label }}"
@@ -110,21 +109,20 @@
           <label for="{{ form.sector.id_for_label }}" class="font-medium text-[18px]">Senha:</label>
           <div class="flex items-center">
             <input type="text"
-                    name="{{ object.sector.name }}"
-                    id="{{ object.sector.id_for_label }}"
-                    class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
-                    value="{% if user.has_usable_password %}Definida{% else %}Usuário sem senha{% endif %}"
-                    readonly />
-            <a href="{% url 'account_reset_password' %}" class="font-sans inline-block align-baseline font-light text-sm text-green-500 hover:text-green-700 ml-2 mt-[16px]">
+                   name="{{ object.sector.name }}"
+                   id="{{ object.sector.id_for_label }}"
+                   class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+                   value="{% if user.has_usable_password %}Definida{% else %}Usuário sem senha{% endif %}"
+                   readonly />
+            <a href="{% url 'account_reset_password' %}"
+               class="font-sans inline-block align-baseline font-light text-sm text-green-500 hover:text-green-700 ml-2 mt-[16px]">
               Definir senha
             </a>
           </div>
         </div>
-
-      </div>
-
       </div>
     </div>
   </div>
-  {% include "_save_back_edit_buttons.html" with link_to_back="users:list" edit_url="users:manage_user" %}
+</div>
+{% include "_save_back_edit_buttons.html" with link_to_back="users:list" edit_url="users:manage_user" %}
 {% endblock content %}

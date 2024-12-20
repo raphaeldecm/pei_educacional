@@ -1,17 +1,20 @@
 import logging
 
 from celery.exceptions import CeleryError
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_delete
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from sistema_pei.educational_plan.utils import NotificationEmailContent
 from sistema_pei.educational_plan.models import Comment
+from sistema_pei.educational_plan.utils import NotificationEmailContent
 from sistema_pei.people.models import Notification
 from sistema_pei.people.tasks import notify_teacher_email
 
-from .models import Answer, Pei
+from .models import Answer
+from .models import Pei
 
 logger = logging.getLogger(__name__)
+
 
 @receiver(post_save, sender=Pei)
 def pei_created(sender, instance, created, **kwargs):
@@ -23,7 +26,10 @@ def pei_created(sender, instance, created, **kwargs):
             year_semester = instance.enrollment.YearSemesterReference
 
             subject, message = NotificationEmailContent.created_pei(
-                teacher.name, subject_name, student_name, year_semester,
+                teacher.name,
+                subject_name,
+                student_name,
+                year_semester,
             )
 
             notify_teacher_email.delay(
@@ -37,7 +43,7 @@ def pei_created(sender, instance, created, **kwargs):
                 text=f"O PEI do aluno {student_name}, na disciplina {subject_name} - {year_semester} foi adicionado, e você é o responsável.",
                 user=teacher.user,
                 type="Alert",
-                action=f"/educational_plan/peis/detail/{instance.id}"
+                action=f"/educational_plan/peis/detail/{instance.id}",
             )
 
         except CeleryError as e:
@@ -45,6 +51,7 @@ def pei_created(sender, instance, created, **kwargs):
                 "Failed to send task to notify professor for PEI association",
                 exc_info=e,
             )
+
 
 @receiver(post_delete, sender=Pei)
 def pei_deleted(sender, instance, **kwargs):
@@ -55,7 +62,10 @@ def pei_deleted(sender, instance, **kwargs):
         year_semester = instance.enrollment.YearSemesterReference
 
         subject, message = NotificationEmailContent.deleted_pei(
-            teacher, subject_name, student_name, year_semester,
+            teacher,
+            subject_name,
+            student_name,
+            year_semester,
         )
 
         notify_teacher_email.delay(
@@ -69,7 +79,7 @@ def pei_deleted(sender, instance, **kwargs):
             text=f"O PEI do aluno {student_name}, na disciplina {subject_name} - {year_semester}, que você estava participando foi removido pelo coordenador.",
             user=teacher.user,
             type="Alert",
-            action="/educational_plan/peis/list/"
+            action="/educational_plan/peis/list/",
         )
 
     except CeleryError as e:
@@ -77,6 +87,7 @@ def pei_deleted(sender, instance, **kwargs):
             "Failed to send task to notify professor for PEI removal",
             exc_info=e,
         )
+
 
 @receiver(post_save, sender=Comment)
 def pei_created(sender, instance, created, **kwargs):
@@ -92,9 +103,10 @@ def pei_created(sender, instance, created, **kwargs):
             subject = instance.pei.enrollment.offer.subject
             student = instance.pei.enrollment.student
 
-
             subject, message = NotificationEmailContent.created_comment(
-                teacher.name, subject.name, student.name
+                teacher.name,
+                subject.name,
+                student.name,
             )
 
             notify_teacher_email.delay(
@@ -108,7 +120,7 @@ def pei_created(sender, instance, created, **kwargs):
                 text=f"{author.name} comentou no PEI da disciplina {instance.pei.enrollment.offer.subject}: {instance.text}",
                 user=teacher.user,
                 type="Alert",
-                action=f"/educational_plan/peis/detail/{instance.id}"
+                action=f"/educational_plan/peis/detail/{instance.id}",
             )
 
         except CeleryError as e:
@@ -116,6 +128,7 @@ def pei_created(sender, instance, created, **kwargs):
                 "Failed to send task to notify professor for PEI association",
                 exc_info=e,
             )
+
 
 @receiver(post_save, sender=Answer)
 def pei_created(sender, instance, created, **kwargs):
@@ -131,9 +144,10 @@ def pei_created(sender, instance, created, **kwargs):
             subject = instance.pei.enrollment.offer.subject
             student = instance.pei.enrollment.student
 
-
             subject, message = NotificationEmailContent.created_answer(
-                teacher.name, subject.name, student.name
+                teacher.name,
+                subject.name,
+                student.name,
             )
 
             notify_teacher_email.delay(
@@ -147,7 +161,7 @@ def pei_created(sender, instance, created, **kwargs):
                 text=f"{instance.comment.created_by.name}: {instance.comment.text} >>> {instance.created_by.name}: {instance.text}",
                 user=teacher.user,
                 type="Alert",
-                action=f"/educational_plan/peis/detail/{instance.id}"
+                action=f"/educational_plan/peis/detail/{instance.id}",
             )
 
         except CeleryError as e:

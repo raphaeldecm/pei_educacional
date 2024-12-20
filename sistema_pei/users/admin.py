@@ -30,7 +30,7 @@ class UserAdmin(auth_admin.UserAdmin):
                     "is_superuser",
                     "groups",
                     "user_permissions",
-                    "sector"
+                    "sector",
                 ),
             },
         ),

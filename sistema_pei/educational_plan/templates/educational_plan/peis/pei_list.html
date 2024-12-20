@@ -8,7 +8,6 @@
   {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" url="academics:dashboard" %}
   {% breadcrumb_item text="PEIs" icon="images/icons/icon-pei.svg" %}
 {% endblock breadcrumb %}
-
 {% block content %}
   <div class="w-full">
     <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
@@ -152,7 +151,7 @@
               </td>
               <td>{{ object.enrollment.student.registration }}</td>
               <td>{{ object.enrollment.student.name }}</td>
-              <td>{{object.responsible_teacher}}</td>
+              <td>{{ object.responsible_teacher }}</td>
               <td>
                 {{ object.enrollment.offer.subject }}
                 <br />
@@ -179,14 +178,16 @@
               </td>
               <td>
                 <span class="flex justify-center items-center h-full gap-[30px] pr-[26px]">
-                  <a href="{% url 'educational_plan:pei_detail' object.id %}" class="hover:filter hover:brightness-0 transition-all">
+                  <a href="{% url 'educational_plan:pei_detail' object.id %}"
+                     class="hover:filter hover:brightness-0 transition-all">
                     <img src="{% static 'images/icons/icon-eye.svg' %}"
                          alt=""
                          width="24px"
                          height="24px"
                          class="cursor-pointer" />
                   </a>
-                  <a href="{% url 'educational_plan:pei_update' object.id %}" class="hover:filter hover:brightness-0 transition-all">
+                  <a href="{% url 'educational_plan:pei_update' object.id %}"
+                     class="hover:filter hover:brightness-0 transition-all">
                     <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                          alt=""
                          width="24px"
@@ -195,7 +196,8 @@
                   </a>
                   <button type="button"
                           id="openModal{{ object.pk }}"
-                          data-modal-id="confirmationModal{{ object.pk }}" class="hover:filter hover:brightness-0 transition-all">
+                          data-modal-id="confirmationModal{{ object.pk }}"
+                          class="hover:filter hover:brightness-0 transition-all">
                     <img src="{% static 'images/icons/icon-remove-element.svg' %}"
                          alt=""
                          height="24px"

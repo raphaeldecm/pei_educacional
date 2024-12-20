@@ -19,13 +19,8 @@ from django.views import generic
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView
 from django_filters.views import FilterView
-from sistema_pei.academics import forms
-from sistema_pei.people.forms import StudentFilesForm, ViewEditDataStudentForm, ViewEdithistoricStudentForm
-from django.db.models import Q
-from django.views.generic import TemplateView
-from django.core.paginator import PageNotAnInteger
-from django.core.paginator import Paginator
 
+from sistema_pei.academics import forms
 from sistema_pei.academics.forms import CSVImportForm
 from sistema_pei.academics.models import Enrollment
 from sistema_pei.core import constants
@@ -110,7 +105,6 @@ class TeacherImportView(
     template_name = "people/teacher/teacher_import_form.html"
     success_url = reverse_lazy("people:teacher_list")
 
-
     def form_valid(self, form):
         file = form.cleaned_data["file"]
         teachers_import(self, file)
@@ -147,6 +141,7 @@ class TeacherDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
     title = _("Detalhes do Docente")
     template_name = "people/teacher/teacher_detail.html"
 
+
 class StudentListView(
     LoginRequiredMixin,
     TitleViewMixin,
@@ -159,13 +154,20 @@ class StudentListView(
     filterset_class = StudentFilter
     template_name = "people/student/student_list.html"
 
-class StudentDeleteView(ProtectedErrorMessageMixin, LoginRequiredMixin, SuccessMessageMixin, generic.DeleteView):
+
+class StudentDeleteView(
+    ProtectedErrorMessageMixin,
+    LoginRequiredMixin,
+    SuccessMessageMixin,
+    generic.DeleteView,
+):
     model = Student
     success_url = reverse_lazy("people:student_list")
     success_message = _("O aluno foi excluído com sucesso.")
     protected_warning_message = _(
         "Não é possível excluir o aluno, pois ele possui ofertas associadas.",
     )
+
 
 class StudentCreateView(LoginRequiredMixin, CreateView):
     model = Student
@@ -200,7 +202,10 @@ class StudentCreateView(LoginRequiredMixin, CreateView):
 
         return response
 
-class StudentImportView(TitleViewMixin, LoginRequiredMixin, SuccessMessageMixin, generic.FormView):
+
+class StudentImportView(
+    TitleViewMixin, LoginRequiredMixin, SuccessMessageMixin, generic.FormView
+):
     form_class = forms.CSVImportForm
     title = _("Importar Discentes")
     template_name = "people/student/student_import_form.html"
@@ -212,6 +217,7 @@ class StudentImportView(TitleViewMixin, LoginRequiredMixin, SuccessMessageMixin,
         import_student_csv(self, uploaded_file)
 
         return super().form_valid(form)
+
 
 class ProfilePageView(LoginRequiredMixin, TemplateView):
     template_name = "people/student/student_profile.html"
@@ -443,6 +449,7 @@ class UploadStudentFilesView(LoginRequiredMixin, View):
             f"/people/profile/{student.id}?tab=edit_student_data&sub_tab=edit_files#tab",
         )
 
+
 def mark_notification_as_viewed(request, pk):
     if request.user.is_authenticated:
         notification = get_object_or_404(Notification, id=pk, user=request.user)
@@ -450,18 +457,18 @@ def mark_notification_as_viewed(request, pk):
         # Atualiza o campo 'viewed' para True
         notification.viewed = True
         notification.save()
-        messages.success(request, 'Notificação marcada como vista!')
-        return JsonResponse({'success': True})
+        messages.success(request, "Notificação marcada como vista!")
+        return JsonResponse({"success": True})
 
-    return JsonResponse({'success': False}, status=401)
+    return JsonResponse({"success": False}, status=401)
+
 
 def mark_all_notifications_as_viewed(request):
     if request.user.is_authenticated:
         notifications = Notification.objects.filter(user=request.user, viewed=False)
         notifications.update(viewed=True)
 
-        messages.success(request, 'Todas as notificações foram marcadas como vistas!')
-        return JsonResponse({'success': True})
+        messages.success(request, "Todas as notificações foram marcadas como vistas!")
+        return JsonResponse({"success": True})
 
-    return JsonResponse({'success': False}, status=401)
-
+    return JsonResponse({"success": False}, status=401)

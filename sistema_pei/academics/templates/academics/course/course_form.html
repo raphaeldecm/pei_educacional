@@ -71,7 +71,8 @@
       <div class="flex items-center gap-[3%] mt-[24px]">
         <div class="flex-1">
           <div class="flex">
-            <label id="periods-label" for="{{ form.number_of_periods.id_for_label }}"
+            <label id="periods-label"
+                   for="{{ form.number_of_periods.id_for_label }}"
                    class="font-medium text-[18px]">Qtd. Períodos:</label>
           </div>
           <input type="number"
@@ -132,6 +133,5 @@
 
       durationSelect.addEventListener('change', updatePeriodsLabelAndValue);
     });
-
   </script>
 {% endblock inline_javascript %}

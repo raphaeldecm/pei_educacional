@@ -20,21 +20,24 @@
       <div class="flex gap-4 mt-[32px]">
         <div class="flex-1">
           <!-- Campo de Busca -->
-          <input
-            type="text"
-            id="studentSearch"
-            placeholder="Buscar discente..."
-            class="mb-3 px-3 py-2 border border-slate-300 rounded-lg w-full"
-            oninput="filterStudents()"
-          />
-
+          <input type="text"
+                 id="studentSearch"
+                 placeholder="Buscar discente..."
+                 class="mb-3 px-3 py-2 border border-slate-300 rounded-lg w-full"
+                 oninput="filterStudents()" />
           <!-- Lista de Seleção Múltipla -->
-          <div class="border border-slate-300 rounded-lg py-2 px-3 max-h-[150px] min-h-6 overflow-y-auto gap-6" id="studentList">
+          <div class="border border-slate-300 rounded-lg py-2 px-3 max-h-[150px] min-h-6 overflow-y-auto gap-6"
+               id="studentList">
             {% for student in selector_students %}
               <div class="student-item flex flex-row-reverse justify-end items-center gap-3">
-                <input id="{{ student.id }}" type="checkbox" class="hidden peer" name="students" value="{{ student.id }}" />
+                <input id="{{ student.id }}"
+                       type="checkbox"
+                       class="hidden peer"
+                       name="students"
+                       value="{{ student.id }}" />
                 <span class="text-[16px] student-name">{{ student.name }}</span>
-                <label for="{{ student.id }}" class="flex items-center cursor-pointer w-[20px] h-[20px] rounded-[5px] peer-checked:[&_img]:block bg-slate-300">
+                <label for="{{ student.id }}"
+                       class="flex items-center cursor-pointer w-[20px] h-[20px] rounded-[5px] peer-checked:[&_img]:block bg-slate-300">
                   <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}"
                        width="20px"
                        height="20px"
@@ -44,12 +47,8 @@
               </div>
             {% endfor %}
           </div>
-          <div id="noResultsMessage" class="text-center text-gray-500 mt-2 hidden">
-            Nenhum discente encontrado.
-          </div>
+          <div id="noResultsMessage" class="text-center text-gray-500 mt-2 hidden">Nenhum discente encontrado.</div>
         </div>
-
-
         <button class="flex items-center justify-center gap-[10px] min-w-[181px] h-[42px] bg-green-500 rounded-[6px] text-neutral-50 px-[35px]">
           <img src="{% static 'images/icons/icon-arrow.svg' %}"
                width="24px"
@@ -141,10 +140,13 @@
     {% include "_table_pagination.html" %}
     <div class="flex mt-[56px] gap-[16px]">
       <a href="{% url 'academics:offer_list' %}"
-      class="mr-2 text-[18px] py-[11px] px-[44px] border border-orange-400 rounded-lg font-medium cursor-pointer hover:bg-orange-500 transition-colors duration-300">
+         class="mr-2 text-[18px] py-[11px] px-[44px] border border-orange-400 rounded-lg font-medium cursor-pointer hover:bg-orange-500 transition-colors duration-300">
         Voltar
       </a>
-      <button type="button" id="openModal{{ object.pk }}" data-modal-id="confirmationModal{{ object.pk }}" class="text-[18px] py-[11px] px-[44px] border border-red-500 hover:bg-red-500 transition-colors duration-300rounded-lg font-medium cursor-pointer rounded-lg" >
+      <button type="button"
+              id="openModal{{ object.pk }}"
+              data-modal-id="confirmationModal{{ object.pk }}"
+              class="text-[18px] py-[11px] px-[44px] border border-red-500 hover:bg-red-500 transition-colors duration-300rounded-lg font-medium cursor-pointer rounded-lg">
         Excluir Oferta
       </button>
     </div>

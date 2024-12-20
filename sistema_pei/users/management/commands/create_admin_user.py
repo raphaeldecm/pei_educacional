@@ -1,4 +1,5 @@
-from django.contrib.auth import get_user_model, models
+from django.contrib.auth import get_user_model
+from django.contrib.auth import models
 from django.core.management.base import BaseCommand
 
 User = get_user_model()

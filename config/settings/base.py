@@ -209,7 +209,7 @@ TEMPLATES = [
                 "sistema_pei.users.context_processors.allauth_settings",
                 "social_django.context_processors.backends",
                 "social_django.context_processors.login_redirect",
-                'sistema_pei.people.context_processors.notifications',
+                "sistema_pei.people.context_processors.notifications",
             ],
         },
     },
