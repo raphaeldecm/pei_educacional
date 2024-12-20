@@ -27,7 +27,7 @@ class UserDetailView(
     model = User
     slug_field = "id"
     slug_url_kwarg = "id"
-    title = _("User Details")
+    title = _("Detalhes do usuário")
 
 
 user_detail_view = UserDetailView.as_view()
@@ -69,7 +69,7 @@ class UsersManageAccess(
     template_name = "users/user_list.html"
     model = User
     context_object_name = "users"
-    title = _("Manage Users Access")
+    title = _("Gerenciar acesso de usuários")
     paginate_by = constants.DEFAULT_PAGE_SIZE
     filterset_class = UserFilter
     ordering = ["name"]

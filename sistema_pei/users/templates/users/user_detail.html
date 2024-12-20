@@ -10,7 +10,7 @@
 {% endblock breadcrumb %}
 {% block content %}
   <div class="w-full">
-    <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
+    <h1 class="text-[32px] font-medium mb-[38px]">{% translate title %}</h1>
     <div class="flex justify-center items-center gap-6 p-2 [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px] border border-slate-300">
       <div class="flex flex-col items-center m-4">
         {% if object.photo %}
@@ -76,12 +76,13 @@
                   readonly />
         </div>
       </div>
+
       <div class="flex items-center">
         <div class="flex-1 my-4 mr-3">
           <label for="{{ object.groups.id_for_label }}"
                  class="font-medium text-[18px]">Tipo de usuário:</label>
           <div class="mt-[16px] border border-slate-300 rounded-lg py-2 px-3 max-h-[150px] overflow-y-auto gap-6">
-            {% for group in object.groups.all %}
+            {% for group in object.translated_groups %}
               <div class="flex flex-row-reverse justify-end items-center gap-1">
                 <input id="{{ group.id }}"
                        type="checkbox"
@@ -90,7 +91,7 @@
                        value="{{ group.id }}"
                        disabled
                        checked />
-                {% translate group.name %}
+                {{ group }}
                 <label for="{{ group.id }}"
                        class="flex items-center cursor-pointer w-[20px] h-[20px] rounded-[5px] peer-checked:[&_img]:block bg-slate-300">
                   <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}"

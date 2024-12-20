@@ -8,7 +8,15 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from sistema_pei.core import constants
+
 from .managers import UserManager
+
+GROUP_TRANSLATIONS = {
+    "Coordinator": _("Coordenador"),
+    "Collaborator": _("Colaborador"),
+    "Pedagogue": _("Pedagogo"),
+    "Teacher": _("Professor"),
+}
 
 class User(AbstractUser):
 
@@ -52,3 +60,8 @@ class User(AbstractUser):
 
         """
         return reverse("users:detail", kwargs={"pk": self.id})
+
+    @property
+    def translated_groups(self):
+        return [GROUP_TRANSLATIONS.get(group.name, group.name) for group in self.groups.all()]
+
