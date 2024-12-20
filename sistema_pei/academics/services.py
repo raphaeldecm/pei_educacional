@@ -39,7 +39,7 @@ def import_courses_csv(self, uploaded_file):
             "Anual": Course.CourseDurationType.YEAR,
         }
 
-        for index, row in data.iterrows():
+        for index, row in data.iterrows():  # noqa: B007
             try:
                 period = period_mapping.get(row["Turno"])
                 if not period:
@@ -62,7 +62,7 @@ def import_courses_csv(self, uploaded_file):
                 )
                 insert_counter += 1
 
-            except Exception:
+            except Exception:  # noqa: BLE001
                 error_counter += 1
                 continue
 
@@ -72,7 +72,7 @@ def import_courses_csv(self, uploaded_file):
         messages.success(self.request, success_message)
         return redirect(self.success_url)
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         error_message = f"Erro ao processar o arquivo:\n{e}"
         messages.error(self.request, error_message)
         return redirect(self.success_url)
@@ -109,7 +109,7 @@ def import_subject_csv(self, uploaded_file):
             "Anual": Subject.SubjectsDuration.YEAR,
         }
 
-        for index, row in data.iterrows():
+        for index, row in data.iterrows():  # noqa: B007
             try:
                 subject_type = duration_mapping.get(row["Duração"])
                 if not subject_type:
@@ -129,16 +129,19 @@ def import_subject_csv(self, uploaded_file):
                 )
                 insert_counter += 1
 
-            except Exception:
+            except Exception:  # noqa: BLE001
                 error_counter += 1
                 continue
 
-        success_message = f"Disciplinas inseridas: {insert_counter}, Disciplinas com erro: {error_counter}"
+        success_message = (
+            f"Disciplinas inseridas: {insert_counter}, "
+            f"Disciplinas com erro: {error_counter}"
+        )
         messages.success(self.request, success_message)
 
         return redirect(self.success_url)
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         error_message = f"Erro ao processar o arquivo:\n{e}"
         messages.error(self.request, error_message)
         return redirect(self.success_url)
