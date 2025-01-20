@@ -177,11 +177,17 @@
             action="{% url 'educational_plan:pei_comment_create' object.pk %}"
             class="mt-8 flex gap-4">
         {% csrf_token %}
-        {% if user.teacher.photo %}
+        {% if user.teacher.photoAlt or user.teacher.photo %}
           <div class="w-[80px] h-[80px] rounded-full overflow-hidden">
-            <img src="{{ user.teacher.photo }}"
-                 class="object-cover w-full h-full"
-                 alt="{{ user.teacher.full_name }}" />
+            {% if user.teacher.photoAlt %}
+              <img src="{{ user.teacher.photoAlt }}"
+                  class="object-cover w-full h-full"
+                  alt="{{ user.teacher.full_name }}" />
+            {% else %}
+              <img src="{{ user.teacher.photo }}"
+                class="object-cover w-full h-full"
+                alt="{{ user.teacher.full_name }}" />
+            {% endif %}
           </div>
         {% else %}
           <div class="bg-green-500/50 w-20 h-20 flex justify-center items-center rounded-full">

@@ -72,7 +72,17 @@ class Teacher(Person):
         null=True,
         related_name="teachers",
     )
-    photo = models.ImageField(upload_to="teachers", verbose_name=_("Foto"))
+    photo = models.URLField(
+        verbose_name=_("Foto"),
+        blank=True,
+        max_length=constants.URL_LENGTH,
+    )
+    photoAlt = models.ImageField(
+        upload_to="teachers",
+        blank=True,
+        null=True,
+        verbose_name=_("Foto alternativa")
+    )
     code = models.CharField(
         verbose_name=_("Matrícula"),
         max_length=constants.SMALL_CHAR_FIELD_NAME_LENGTH,
