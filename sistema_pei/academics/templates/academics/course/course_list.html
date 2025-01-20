@@ -85,16 +85,15 @@
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
           {% for object in object_list %}
-            <tr class="hover:bg-slate-200">
+            <tr>
               <td class="pl-[76px]">{{ object.name }}</td>
               <td>{{ object.get_period_display }}</td>
               <td>{{ object.course_type }}</td>
-              <td class="flex justify-center h-full gap-[30px] !mt-[32px]">
+              <td class="flex justify-center h-full gap-4 !mt-[32px]">
                 <a class="hover:bg-slate-100 p-2 rounded-full"
                    href="{% url 'academics:course_detail' object.pk %}">
                   <img src="{% static 'images/icons/icon-eye.svg' %}"
                        alt=""
-                       width="24px"
                        height="24px"
                        class="cursor-pointer" />
                 </a>
@@ -102,7 +101,6 @@
                    href="{% url 'academics:course_update' object.pk %}">
                   <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                        alt=""
-                       width="24px"
                        height="24px"
                        class="cursor-pointer" />
                 </a>
@@ -112,7 +110,6 @@
                         data-modal-id="confirmationModal{{ object.pk }}">
                   <img src="{% static 'images/icons/icon-remove-element.svg' %}"
                        alt=""
-                       width="24px"
                        height="24px"
                        class="cursor-pointer" />
                 </button>

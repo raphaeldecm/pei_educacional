@@ -177,27 +177,25 @@
                 {% endif %}
               </td>
               <td>
-                <span class="flex justify-center items-center h-full gap-[30px] pr-[26px]">
-                  <a href="{% url 'educational_plan:pei_detail' object.id %}"
-                     class="hover:filter hover:brightness-0 transition-all">
+                <span class="flex justify-center items-center h-full gap-4 pr-[26px]">
+                  <a class="hover:bg-slate-100 p-2 rounded-full"
+                   href="{% url 'educational_plan:pei_detail' object.id %}">
                     <img src="{% static 'images/icons/icon-eye.svg' %}"
                          alt=""
-                         width="24px"
                          height="24px"
                          class="cursor-pointer" />
                   </a>
-                  <a href="{% url 'educational_plan:pei_update' object.id %}"
-                     class="hover:filter hover:brightness-0 transition-all">
+                  <a class="hover:bg-slate-100 p-2 rounded-full"
+                    href="{% url 'educational_plan:pei_update' object.id %}">
                     <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                          alt=""
-                         width="24px"
                          height="24px"
                          class="cursor-pointer" />
                   </a>
                   <button type="button"
                           id="openModal{{ object.pk }}"
                           data-modal-id="confirmationModal{{ object.pk }}"
-                          class="hover:filter hover:brightness-0 transition-all">
+                          class="hover:bg-slate-100 p-2 rounded-full">
                     <img src="{% static 'images/icons/icon-remove-element.svg' %}"
                          alt=""
                          height="24px"
