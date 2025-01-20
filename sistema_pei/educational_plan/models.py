@@ -136,6 +136,9 @@ class Pei(BaseModel):
         self.update_status()
         super().save(*args, **kwargs)
 
+    class Meta:
+        ordering = ['id']
+
 
 class FeedbackPei(BaseModel):
     feedback = models.TextField(verbose_name=_("Parecer"))
