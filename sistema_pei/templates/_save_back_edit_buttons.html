@@ -1,10 +1,10 @@
 {% load static %}
 
 <div class="flex items-center justify-start gap-5">
-  <a href="{% url link_to_back %}"
+  <button onclick="history.back()"
      class="mr-2 text-[18px] py-[11px] px-[44px] border border-orange-400 rounded-lg font-medium cursor-pointer {% if not no_margin %}mt-[56px]{% endif %} hover:bg-orange-500 transition-colors duration-300">
     Voltar
-  </a>
+  </button>
   {% if not no_save %}
     {% if edit_url %}
       <a href="{% url edit_url object.pk %}"
