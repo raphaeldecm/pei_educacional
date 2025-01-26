@@ -77,6 +77,12 @@ class Teacher(Person):
         blank=True,
         max_length=constants.URL_LENGTH,
     )
+    photoAlt = models.ImageField(
+        upload_to="teachers",
+        blank=True,
+        null=True,
+        verbose_name=_("Foto alternativa")
+    )
     code = models.CharField(
         verbose_name=_("Matrícula"),
         max_length=constants.SMALL_CHAR_FIELD_NAME_LENGTH,

@@ -141,11 +141,17 @@
          id="menu-button"
          aria-expanded="true"
          aria-haspopup="true">
-        {% if user.photo %}
+        {% if user.photoAlt or user.photo %}
           <div class=" py-2.5 px-3 rounded-full">
-            <img src="{{ user.photo }}"
-                 class="rounded-full w-16 h-16"
-                 alt="{{ user.name }}" />
+            {% if user.photoAlt %}
+              <img src="{{ user.photoAlt }}"
+                  class="rounded-full w-16 h-16"
+                  alt="{{ user.name }}" />
+            {% else %}
+              <img src="{{ user.photo }}"
+              class="rounded-full w-16 h-16"
+              alt="{{ user.name }}" />
+            {% endif %}
           </div>
         {% else %}
           <div class="bg-green-500/50 py-2.5 px-3 rounded-full">
@@ -161,15 +167,20 @@
          aria-labelledby="menu-button"
          tabindex="-1">
       <a href="{% url 'users:detail' user.pk %}"
-         role="menuitem"
-         aria-haspopup="true"
-         tabindex="-1"
-         id="menu-item-0"
-         class="flex gap-3 items-center">
-        {% if user.photo %}
-          <img src="{{ user.photo }}"
+        role="menuitem"
+        aria-haspopup="true"
+        tabindex="-1"
+        id="menu-item-0"
+        class="flex gap-3 items-center">
+        
+        {% if user.photoAlt %}
+          <img src="{{ user.photoAlt }}"
                class="w-10 h-10 rounded-full"
                alt="{{ user.name }}" />
+        {% elif user.photo %}
+          <img src="{{ user.photo }}"
+            class="w-10 h-10 rounded-full"
+            alt="{{ user.name }}" />
         {% else %}
           <div class="bg-green-500/50 w-10 h-10 flex justify-center items-center rounded-full">
             <i class="fas fa-solid fa-user fa-lg"></i>

@@ -27,6 +27,8 @@ class Pei(BaseModel):
         verbose_name=_("Professor Responsável"),
         on_delete=models.PROTECT,
         related_name="Teachers",
+        null=True,
+        blank=True
     )
 
     status = models.CharField(
@@ -133,6 +135,9 @@ class Pei(BaseModel):
     def save(self, *args, **kwargs):
         self.update_status()
         super().save(*args, **kwargs)
+
+    class Meta:
+        ordering = ['id']
 
 
 class FeedbackPei(BaseModel):

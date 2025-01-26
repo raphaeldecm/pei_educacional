@@ -67,7 +67,7 @@ class TeacherForm(forms.ModelForm):
             "name",
             "email",
             "campus",
-            "photo",
+            "photoAlt",
             "code",
         )
         widgets = {
@@ -83,10 +83,10 @@ class TeacherForm(forms.ModelForm):
                     "placeholder": "Digite o email do docente...",
                 },
             ),
-            "photo": forms.FileInput(
+            "photoAlt": forms.FileInput(
                 attrs={
                     "class": "font-sans text-slate-900 block file:cursor-pointer text-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-green-200 file:text-green-700 hover:file:bg-green-300",  # noqa: E501
-                    "id": "photo",
+                    "id": "photoAlt",
                     "accept": "image/png, image/jpeg",
                     "onchange": "previewImage(event)",
                 },
