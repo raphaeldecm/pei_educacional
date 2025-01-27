@@ -144,6 +144,18 @@
 {% endblock content %}
 {% block inline_javascript %}
 <script>
+  // Recupera o ID do curso da URL e preenche o campo de busca com o nome
+  const urlParams = new URLSearchParams(window.location.search);
+  const selectedCourseId = urlParams.get('course');
+  
+  if (selectedCourseId) {
+    const selectedCourseLabel = document.querySelector(`label[for="course_${selectedCourseId}"]`);
+    if (selectedCourseLabel) {
+      courseSearch.value = selectedCourseLabel.textContent.trim();  // Preenche o campo de busca
+    }
+  }
+
+
   function filterCourses() {
     const searchValue = document.getElementById("courseSearch").value.toLowerCase();
     const courseList = document.getElementById("courseList");
