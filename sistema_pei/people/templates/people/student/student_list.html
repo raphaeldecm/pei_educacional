@@ -24,22 +24,41 @@
                value="{{ request.GET.search }}" />
       </div>
       <div class="flex gap-[8px] flex-wrap">
-        <div class="relative w-[322px] cursor-pointer flex-1">
-          <img class="absolute top-[12px] right-[10px]"
-               src="{% static 'images/icons/icon-updown-arrow.svg' %}"
-               width="24px"
-               height="24px" />
-          <select name="course"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-300 appearance-none bg-neutral-50">
-            <option value="default" selected disabled>Selecione o curso...</option>
+        <div class="flex-1">
+          <!-- Campo de Busca -->
+          <input type="text"
+                 id="courseSearch"
+                 placeholder="Buscar curso..."
+                 class="mb-3 px-3 py-2 border border-slate-300 rounded-lg w-full"
+                 oninput="filterCourses()"
+                 value="{{ selected_course_name|default:'' }}" />
+        
+          <!-- Lista de Seleção -->
+          <div class="border border-slate-300 rounded-lg py-2 px-3 max-h-[150px] min-h-[48px] overflow-y-auto hidden"
+               id="courseList">
             {% for course in filter.form.course.field.queryset %}
-              <option value="{{ course.id }}"
-                      {% if course.id|stringformat:"s" == request.GET.course %}selected{% endif %}>
-                {{ course }}
-              </option>
+              <div class="course-item flex items-center gap-3">
+                <input id="course_{{ course.id }}"
+                       type="radio"
+                       class="hidden peer"
+                       name="course"
+                       value="{{ course.id }}"
+                       {% if course.id|stringformat:"s" == request.GET.course %}checked{% endif %} />
+                <label for="course_{{ course.id }}"
+                       class="flex items-center cursor-pointer w-full text-[16px] rounded-[5px] peer-checked:bg-green-100"
+                       onclick="selectCourse('{{ course.name }}')">
+                  {{ course.name }}
+                </label>
+              </div>
             {% endfor %}
-          </select>
+          </div>
+        
+          <!-- Mensagem de "Nenhum resultado encontrado" -->
+          <div id="noCourseResults" class="text-center text-gray-500 mt-2 hidden">Nenhum curso encontrado.</div>
         </div>
+
+
+
         <button class="flex items-center justify-center gap-[10px] min-w-[100px] h-[48px] bg-green-500 rounded-[6px] text-neutral-50">
           <img src="{% static 'images/icons/icon-filter.svg' %}"
                alt=""
@@ -123,3 +142,38 @@
     {% include "_table_pagination.html" %}
   </div>
 {% endblock content %}
+{% block inline_javascript %}
+<script>
+  function filterCourses() {
+    const searchValue = document.getElementById("courseSearch").value.toLowerCase();
+    const courseList = document.getElementById("courseList");
+    const courses = document.querySelectorAll(".course-item");
+    let hasResults = false;
+
+    courses.forEach(course => {
+      const courseName = course.querySelector("label").textContent.toLowerCase();
+      if (courseName.includes(searchValue)) {
+        course.style.display = "flex"; // Mostra o item
+        hasResults = true;
+      } else {
+        course.style.display = "none"; // Oculta o item
+      }
+    });
+
+    // Exibe ou oculta a lista e mensagem com base nos resultados
+    courseList.style.display = searchValue && hasResults ? "block" : "none";
+    document.getElementById("noCourseResults").style.display = searchValue && !hasResults ? "block" : "none";
+  }
+
+  function selectCourse(courseName) {
+    const searchInput = document.getElementById("courseSearch");
+    const courseList = document.getElementById("courseList");
+
+    // Preenche o campo de busca com o nome do curso selecionado
+    searchInput.value = courseName;
+
+    // Esconde a lista de sugestões
+    courseList.style.display = "none";
+  }
+</script>
+{% endblock inline_javascript %}
