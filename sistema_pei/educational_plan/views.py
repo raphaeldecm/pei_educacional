@@ -54,31 +54,6 @@ class PeiListView(
         return self.filterset_class(self.request.GET, queryset=queryset).qs
 
 
-# class PeiCreateView(
-#     SuccessMessageMixin,
-#     LoginRequiredMixin,
-#     TitleViewMixin,
-#     CreateView,
-# ):
-#     title = _("Cadastrar PEI")
-#     model = models.Pei
-#     form_class = PeiForm
-#     template_name = "educational_plan/peis/pei_form.html"
-#     success_message = _("PEI criado com sucesso!")
-#     success_url = reverse_lazy("educational_plan:pei_list")
-
-#     def form_valid(self, form):
-#         form.instance.created_by = self.request.user
-#         form.instance.updated_by = self.request.user
-
-#         return super().form_valid(form)
-
-#     def form_invalid(self, form):
-#         context = self.get_context_data(form=form)
-#         messages.error(self.request, "Erro ao criar PEI")
-#         return redirect(self.request.headers.get("referer", "/"))
-
-
 class PeiUpdateView(
     SuccessMessageMixin,
     LoginRequiredMixin,
