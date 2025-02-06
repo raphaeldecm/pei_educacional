@@ -87,10 +87,10 @@
         <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">
           <tr>
             <th class="pl-[76px]">Nome</th>
-            <th>Email</th>
+            <th class="hidden lg:table-cell">Email</th>
             <th>Setor</th>
-            <th>Tipo</th>
-            <th>Situação</th>
+            <th class="hidden md:table-cell">Tipo</th>
+            <th class="hidden md:table-cell">Situação</th>
             <th colspan="3" style="text-align: center" class='pr-[26px]'>Ações</th>
           </tr>
         </thead>
@@ -98,9 +98,9 @@
           {% for object in object_list %}
             <tr class="hover:bg-slate-200">
               <td class="pl-[76px]">{{ object.name }}</td>
-              <td>{{ object.email }}</td>
+              <td class="hidden lg:table-cell">{{ object.email }}</td>
               <td>{{ object.sector }}</td>
-              <td>
+              <td class="hidden md:table-cell">
                 {% for group in object.groups.all %}
                   {% translate group.name %}
                   {% if not forloop.last %}
@@ -109,7 +109,7 @@
                   {% endif %}
                 {% endfor %}
               </td>
-              <td>
+              <td class="hidden md:table-cell">
                 {% if object.is_active %}
                   <img src="{% static 'images/icons/icon-user-green.svg' %}"
                        alt=""
