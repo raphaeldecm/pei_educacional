@@ -26,7 +26,7 @@
                  class="mb-3 px-3 py-2 border border-slate-300 rounded-lg w-full"
                  oninput="filterStudents()" />
           <!-- Lista de Seleção Múltipla -->
-          <div class="border border-slate-300 rounded-lg py-2 px-3 max-h-[150px] min-h-6 overflow-y-auto gap-6"
+          <div class="hidden border border-slate-300 rounded-lg py-2 px-3 max-h-[150px] min-h-6 overflow-y-auto gap-6"
                id="studentList">
             {% for student in selector_students %}
               <div class="student-item flex flex-row-reverse justify-end items-center gap-3">
@@ -173,7 +173,7 @@
 
       // Exibe a mensagem de "Nenhum resultado encontrado" caso não tenha resultados
       document.getElementById("noResultsMessage").style.display = hasResults ? "none" : "block";
-      document.getElementById("studentList").style.display = !hasResults ? "none" : "block";
+      document.getElementById("studentList").style.display = searchValue && hasResults ? "block" : "none";
     }
   </script>
 {% endblock inline_javascript %}

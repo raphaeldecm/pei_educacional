@@ -9,11 +9,11 @@ urlpatterns = [
         views.PeiListView.as_view(),
         name="pei_list",
     ),
-    path(
-        "peis/create/",
-        views.PeiCreateView.as_view(),
-        name="pei_create",
-    ),
+    # path(
+    #     "peis/create/",
+    #     views.PeiCreateView.as_view(),
+    #     name="pei_create",
+    # ),
     path(
         "peis/update/<int:pk>/",
         views.PeiUpdateView.as_view(),
