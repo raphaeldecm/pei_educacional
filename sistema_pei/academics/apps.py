@@ -6,4 +6,4 @@ class AcademicsConfig(AppConfig):
     name = "sistema_pei.academics"
 
     def ready(self):
-        pass
+        import sistema_pei.academics.signals

@@ -27,8 +27,6 @@ class Pei(BaseModel):
         verbose_name=_("Professor Responsável"),
         on_delete=models.PROTECT,
         related_name="Teachers",
-        null=True,
-        blank=True
     )
 
     status = models.CharField(
