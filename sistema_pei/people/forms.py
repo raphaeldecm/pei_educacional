@@ -56,7 +56,7 @@ class TeacherForm(forms.ModelForm):
         empty_label=_("Selecione um campus..."),
         widget=forms.Select(
             attrs={
-                "class": "outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-300 appearance-none bg-neutral-50",  # noqa: E501
+                "class": "outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-400 appearance-none bg-neutral-50",  # noqa: E501
             },
         ),
     )
@@ -73,13 +73,13 @@ class TeacherForm(forms.ModelForm):
         widgets = {
             "name": forms.TextInput(
                 attrs={
-                    "class": "outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]",  # noqa: E501
+                    "class": "outline-none placeholder:text-[18px] placeholder:text-slate-400 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]",  # noqa: E501
                     "placeholder": "Digite o nome do docente...",
                 },
             ),
             "email": forms.EmailInput(
                 attrs={
-                    "class": "outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]",  # noqa: E501
+                    "class": "outline-none placeholder:text-[18px] placeholder:text-slate-400 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]",  # noqa: E501
                     "placeholder": "Digite o email do docente...",
                 },
             ),
@@ -93,7 +93,7 @@ class TeacherForm(forms.ModelForm):
             ),
             "code": forms.TextInput(
                 attrs={
-                    "class": "outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]",  # noqa: E501
+                    "class": "outline-none placeholder:text-[18px] placeholder:text-slate-400 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]",  # noqa: E501
                     "placeholder": "Digite a matrícula...",
                 },
             ),

@@ -30,7 +30,7 @@
                width="24px"
                height="24px" />
           <select name="course"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-300 appearance-none bg-neutral-50">
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-400 appearance-none bg-neutral-50">
             <option value="default" selected disabled>Selecione o curso...</option>
             {% for course in filter.form.course.field.queryset %}
               <option value="{{ course.id }}"
@@ -47,7 +47,7 @@
                  width="24px"
                  height="24px" />
             <select name="subject"
-                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-300 appearance-none bg-neutral-50">
+                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-400 appearance-none bg-neutral-50">
               <option value="default" selected disabled>Selecione a disciplina...</option>
               {% for subject in filter.form.subject.field.queryset %}
                 <option value="{{ subject.id }}"
@@ -65,7 +65,7 @@
                  width="24px"
                  height="24px" />
             <select name="teacher"
-                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-300 appearance-none bg-neutral-50">
+                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-400 appearance-none bg-neutral-50">
               <option value="default" selected disabled>Selecione o professor...</option>
               {% for teacher in filter.form.teacher.field.queryset %}
                 <option value="{{ teacher.id }}"
@@ -82,7 +82,7 @@
                width="24px"
                height="24px" />
           <select name="status"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-400 appearance-none bg-neutral-50">
             <option value="default" selected disabled>Selecione o status...</option>
             {% for key, value in filter.form.status.field.choices %}
               <option value="{{ key }}"
@@ -94,7 +94,7 @@
           <input type="number"
                  name="year"
                  placeholder="Digite o ano..."
-                 class="placeholder:text-slate-300 outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50"
+                 class="placeholder:text-slate-400 outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50"
                  value="{{ filter.form.year.value }}" />
         </div>
         <div class="relative cursor-pointer w-full max-w-xs">
@@ -103,7 +103,7 @@
                width="24px"
                height="24px" />
           <select name="semester"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-400 appearance-none bg-neutral-50">
             <option value="default" selected disabled>Selecione o semestre...</option>
             {% for semester_value, semester_label in filter.form.fields.semester.choices %}
               <option value="{{ semester_value }}"
