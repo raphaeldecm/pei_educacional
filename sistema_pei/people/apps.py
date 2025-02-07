@@ -6,4 +6,4 @@ class PeopleConfig(AppConfig):
     name = "sistema_pei.people"
 
     def ready(self):
-        pass
+        import sistema_pei.people.signals
