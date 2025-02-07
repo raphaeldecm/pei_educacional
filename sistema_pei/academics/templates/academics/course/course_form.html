@@ -24,7 +24,7 @@
                  name="{{ form.name.name }}"
                  id="{{ form.name.id_for_label }}"
                  placeholder="Digite o nome do curso..."
-                 class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+                 class="outline-none placeholder:text-[18px] placeholder:text-slate-400 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
                  value="{{ form.name.value|default_if_none:'' }}" />
         </div>
       </div>
@@ -38,7 +38,7 @@
                  height="24px" />
             <select name="{{ form.period.name }}"
                     id="{{ form.period.id_for_label }}"
-                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
+                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-400 appearance-none bg-neutral-50">
               <option value="default" selected disabled>Selecione o turno...</option>
               {% for key, value in form.period.field.choices %}
                 <option value="{{ key }}"
@@ -57,7 +57,7 @@
                  height="24px" />
             <select name="{{ form.duration_type.name }}"
                     id="{{ form.duration_type.id_for_label }}"
-                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
+                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-400 appearance-none bg-neutral-50"
                     required>
               <option value="default" selected disabled>Selecione a duração...</option>
               {% for key, value in form.duration_type.field.choices %}
@@ -78,7 +78,7 @@
           <input type="number"
                  name="{{ form.number_of_periods.name }}"
                  id="{{ form.number_of_periods.id_for_label }}"
-                 class="outline-none placeholder:text-[18px] placeholder:text-slate-300 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+                 class="outline-none placeholder:text-[18px] placeholder:text-slate-400 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
                  value="{{ form.number_of_periods.value|default_if_none:'' }}"
                  placeholder="Digite a quantidade de períodos..."
                  min="1" />
@@ -93,7 +93,7 @@
                  height="24px" />
             <select name="{{ form.course_type.name }}"
                     id="{{ form.course_type.id_for_label }}"
-                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50"
+                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-400 appearance-none bg-neutral-50"
                     required>
               <option value="default" selected disabled>Selecione o tipo...</option>
               {% for key, value in form.course_type.field.choices %}
