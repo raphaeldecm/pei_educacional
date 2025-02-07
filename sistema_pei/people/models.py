@@ -63,7 +63,6 @@ class Teacher(Person):
         related_name="teacher",
         null=True,
         on_delete=models.SET_NULL,
-        editable=False,
     )
     campus = models.ForeignKey(
         Campus,

@@ -17,7 +17,7 @@ class TeacherAdmin(admin.ModelAdmin):
     list_display = ("name", "code", "campus", "email", "user", "is_active")
     search_fields = ("name", "code", "email")
     list_filter = ("campus",)
-    readonly_fields = ("user",)
+    readonly_fields = ()
 
     @admin.display(
         description="Usuário Ativo",
