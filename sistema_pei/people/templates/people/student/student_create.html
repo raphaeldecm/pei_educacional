@@ -159,16 +159,29 @@
         <p class="my-4 font-sans text-slate-400">
           Selecione uma ou mais opções pressionando 'Ctrl' (ou 'Cmd' no Mac) e clicando nos itens desejados. Você também pode arrastar o mouse para selecionar um grupo de opções consecutivas.
         </p>
-        <select id="{{ form.sectors.id_for_label }}"
-                name="{{ form.sectors.name }}"
-                multiple
-                class="indeterminate:bg-gray-300 bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">
+        <div class="mt-[16px] border border-slate-300 rounded-lg py-2 px-3 max-h-[150px] overflow-y-auto gap-6">
           {% for value, label in form.sectors.field.choices %}
-            <option class="hover:bg-green-100"
-                    value="{{ value }}"
-                    {% if value|stringformat:"s" in form.sectors.value %}selected{% endif %}>{{ label }}</option>
+            <div class="flex items-center gap-1">
+              <input id="sector_{{ value }}" 
+                     type="checkbox" 
+                     class="hidden peer" 
+                     name="{{ form.sectors.html_name }}" 
+                     value="{{ value }}" 
+                     {% if value|stringformat:"s" in form.sectors.value|stringformat:"s" %}checked{% endif %} />
+              <label for="sector_{{ value }}" 
+                     class="flex items-center cursor-pointer w-[20px] h-[20px] rounded-[5px] peer-checked:[&_img]:block bg-slate-300">
+                <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}"
+                     width="20px"
+                     height="20px"
+                     class="hidden"
+                     alt="Checkmark" />
+              </label>
+              <span>{{ label }}</span>
+            </div>
           {% endfor %}
-        </select>
+        </div>
+        
+
         {% if form.sectors.errors %}
           <ul class="list-disc p-2">
             {% for error in form.sectors.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
@@ -182,22 +195,24 @@
                class="font-sans font-medium text-lg text-ls block mb-4">
           Necessidades especiais especificas <span class="text-red-500">*</span>
         </label>
-        <p class="my-4 font-sans text-slate-400">
-          Selecione uma ou mais opções pressionando 'Ctrl' (ou 'Cmd' no Mac) e clicando nos itens desejados. Você também pode arrastar o mouse para selecionar um grupo de opções consecutivas.
-        </p>
-        <select id="{{ form.educational_necessities.id_for_label }}"
-                name="{{ form.educational_necessities.name }}"
-                multiple
-                required
-                class="indeterminate:bg-gray-300 bg-transparent font-sans appearance-none border rounded-lg h-[20vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">
-          {% for value, label in form.educational_necessities.field.choices %}
-            <option class="hover:bg-green-100"
-                    value="{{ value }}"
-                    {% if value|stringformat:"s" in form.educational_necessities.value %}selected{% endif %}>
-              {{ label }}
-            </option>
+        <div class="mt-[16px] border border-slate-300 rounded-lg py-2 px-3 max-h-[150px] overflow-y-auto gap-6">
+          {% for educational_necessitie in form.educational_necessities.field.queryset %}
+            <div class="flex flex-row-reverse justify-end items-center gap-1">
+              <input id={{ educational_necessitie.id }} type="checkbox" class="hidden peer" name="educational_necessities" value="{{ educational_necessitie.id }}" {% if educational_necessitie.id in form.educational_necessities.value %}checked{% endif %} />
+              {{ educational_necessitie.name }}
+              <label for={{ educational_necessitie.id }} class="flex items-center cursor-pointer w-[20px] h-[20px] rounded-[5px] peer-checked:[&_img]:block bg-slate-300">
+                <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}"
+                     width="20px"
+                     height="20px"
+                     class="hidden"
+                     alt="Checkmark" />
+              </label>
+            </div>
           {% endfor %}
-        </select>
+        </div>
+
+
+
         {% if form.educational_necessities.errors %}
           <ul class="list-disc p-2">
             {% for error in form.educational_necessities.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}

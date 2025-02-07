@@ -98,22 +98,22 @@
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
           {% for object in object_list %}
-            <tr class="hover:bg-slate-200">
+            <tr>
               <td class="pl-[76px]">{{ object.name }}</td>
               <td>{{ object.code }}</td>
               <td>{{ object.email }}</td>
               <td>{{ object.campus.abbreviation }}</td>
               <td>
-                <span class="flex justify-center items-center h-full gap-[30px] pr-[26px]">
+                <span class="flex justify-center items-center h-full gap-4 pr-[26px]">
                   <a href="{% url 'people:teacher_detail' object.pk %}"
-                     class="hover:filter hover:brightness-0 transition-all">
+                    class="hover:bg-slate-100 p-2 rounded-full">
                     <img src="{% static 'images/icons/icon-eye.svg' %}"
                          alt=""
                          height="24px"
                          class="cursor-pointer" />
                   </a>
                   <a href="{% url 'people:teacher_update' object.pk %}"
-                     class="hover:filter hover:brightness-0 transition-all">
+                    class="hover:bg-slate-100 p-2 rounded-full">
                     <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                          alt=""
                          height="24px"
@@ -122,7 +122,7 @@
                   <button type="button"
                           id="openModal{{ object.pk }}"
                           data-modal-id="confirmationModal{{ object.pk }}"
-                          class="hover:filter hover:brightness-0 transition-all">
+                          class="hover:bg-slate-100 p-2 rounded-full">
                     <img src="{% static 'images/icons/icon-remove-element.svg' %}"
                          alt=""
                          height="24px"
