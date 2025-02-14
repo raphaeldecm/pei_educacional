@@ -1,7 +1,7 @@
 {% load static %}
 
 {% for message in messages %}
-  <article class="alert-message inline-flex flex-wrap items-center gap-2 text-sm p-4 text-white rounded-lg bg-blue-700 shadow-sm animate-fade"
+  <article class="alert-message inline-flex flex-wrap items-center gap-2 text-sm p-4 text-white rounded-lg bg-blue-700 shadow-sm"
            role="alert">
     <img src="{% static 'images/icons/information_circle.svg' %}"
          alt="Ícone de um i em volta de um círculo representando informação."
@@ -9,21 +9,27 @@
     <section class="text-base font-light">
       <p>{{ message|safe }}</p>
     </section>
+    <button class="close-btn ml-auto p-2 text-white" aria-label="Fechar">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
   </article>
 {% endfor %}
+
 {% block inline_javascript %}
   <script>
-    setTimeout(() => {
-      /**
-       * Controla o comportamento da mensagem
-       * Remove todas as mensagens após um período.
-       **/
+    document.addEventListener("DOMContentLoaded", function() {
+      const closeButtons = document.querySelectorAll('.close-btn');
 
-      const alerts = document.querySelectorAll('.alert-message');
-
-      alerts.forEach(alert => {
-        alert.remove();
+      closeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const alertMessage = this.closest('.alert-message');
+          if (alertMessage) {
+            alertMessage.remove();
+          }
+        });
       });
-    }, 4000);
+    });
   </script>
 {% endblock inline_javascript %}
