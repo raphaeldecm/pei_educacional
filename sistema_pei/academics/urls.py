@@ -76,11 +76,6 @@ urlpatterns = [
         name="offer_list",
     ),
     path(
-        "offers/create/",
-        views.OfferCreateView.as_view(),
-        name="offer_create",
-    ),
-    path(
         "offers/update/<int:pk>/",
         views.OfferUpdateView.as_view(),
         name="offer_update",
