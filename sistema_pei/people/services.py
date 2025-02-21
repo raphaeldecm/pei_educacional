@@ -18,21 +18,23 @@ def import_student_csv(self, uploaded_file):
     error_counter = 0
 
     try:
-        data = pd.read_csv(uploaded_file)
+        data = pd.read_csv(uploaded_file, encoding='utf-8')
+
+        data.columns = data.columns.str.strip().str.lower()
 
         required_columns = {
-            "Nome",
-            "E-mail",
-            "Curso",
-            "Matrícula",
-            "Período de Referência (Periodo atual do aluno)",
-            "Necessidades especiais específicas",
-            "Histórico",
-            "Necessidades Educacionais Especificas",
-            "Aptidão e dificuldades Apresentadas",
-            "Dificuldades",
-            "Outras necessidades educacionais especificas do(a) estudante",
-            "Questões Geradoras para criação do pei/Adaptações",
+            "nome",
+            "e-mail",
+            "curso",
+            "matrícula",
+            "período de referência (periodo atual do aluno)",
+            "necessidades especiais específicas",
+            "histórico",
+            "necessidades educacionais especificas",
+            "aptidão e dificuldades apresentadas",
+            "dificuldades",
+            "outras necessidades educacionais especificas do(a) estudante",
+            "questões geradoras para criação do pei/adaptações",
         }
 
         if not required_columns.issubset(data.columns):
@@ -48,32 +50,24 @@ def import_student_csv(self, uploaded_file):
 
         for index, row in data.iterrows():
             try:
-                course = Course.objects.filter(name=row["Curso"]).first()
+                course = Course.objects.filter(name=row["curso"]).first()
                 if not course:
                     error_counter += 1
                     continue
 
                 Student.objects.update_or_create(
-                    email=row["E-mail"],
+                    email=row["e-mail"],
                     defaults={
-                        "name": row["Nome"],
-                        "registration": row["Matrícula"],
-                        "personal_history": row["Histórico"],
-                        "specific_necessities": row[
-                            "Necessidades especiais específicas"
-                        ],
-                        "general_necessitie": row[
-                            "Outras necessidades educacionais especificas do(a) estudante"
-                        ],
-                        "creation_reasons": row[
-                            "Questões Geradoras para criação do pei/Adaptações"
-                        ],
-                        "dificulties": row["Dificuldades"],
-                        "abilities": row["Aptidão e dificuldades Apresentadas"],
+                        "name": row["nome"],
+                        "registration": row["matrícula"],
+                        "personal_history": row["histórico"],
+                        "specific_necessities": row["necessidades especiais específicas"],
+                        "general_necessitie": row["outras necessidades educacionais especificas do(a) estudante"],
+                        "creation_reasons": row["questões geradoras para criação do pei/adaptações"],
+                        "dificulties": row["dificuldades"],
+                        "abilities": row["aptidão e dificuldades apresentadas"],
                         "course": course,
-                        "reference_period": row[
-                            "Período de Referência (Periodo atual do aluno)"
-                        ],
+                        "reference_period": row["período de referência (periodo atual do aluno)"],
                         "sectors": [User.Sector.NAPNE],
                         "image": default_image_path,
                     },
