@@ -130,9 +130,9 @@ class Offer(BaseModel):
         related_name="offers",
     )
 
-    year = models.PositiveSmallIntegerField(verbose_name=_("Ano referência"))
+    year = models.PositiveSmallIntegerField(verbose_name=_("Ano referência do período letivo"))
     semester = models.PositiveSmallIntegerField(
-        verbose_name=_("Semestre referência"),
+        verbose_name=_("Semestre referência do período letivo"),
         choices=Semester.choices,
     )
 
@@ -194,7 +194,7 @@ class Enrollment(BaseModel):
         blank=True,
     )
 
-    YearSemesterReference = models.IntegerField(_("Semestre/Ano de referência"))
+    YearSemesterReference = models.IntegerField(_("Cursado no semestre/ano do curso"))
 
     class Meta:
         unique_together = ("offer", "student")
