@@ -134,7 +134,7 @@ def pei_created(sender, instance, created, **kwargs):
 def pei_created(sender, instance, created, **kwargs):
     if created:
         try:
-            teacher = instance.pei.responsible_teacher
+            teacher = instance.comment.pei.responsible_teacher
             author = instance.created_by
 
             # Não notificar caso o professor que criou a resposta seja o mesmo que criou o comentário
