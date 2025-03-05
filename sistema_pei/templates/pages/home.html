@@ -196,9 +196,9 @@
       </form>
     </div>
     <div class="mt-[36px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg">
-      <table class="table-auto w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[14px] [&_th]:px-[8px]">
+      <table class="table-fixed w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[14px] [&_th]:px-[8px]">
         <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">
-          <th class="!pl-[76px]">Perfil</th>
+          <th class="!pl-[5%]">Perfil</th>
           <th>Matrícula</th>
           <th>Nome</th>
           <th>Professor</th>
@@ -210,13 +210,12 @@
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px] [&_td]:px-[8px]">
           {% for object in object_list %}
             <tr>
-              <td class="!pl-[70px]">
-                <div class="w-[64px] h-[64px]">
+              <td class="!pl-[5%]">
+                <div class="w-[48px] h-[48px]">
                   <img src="{{ object.enrollment.student.image.url }}"
                        alt=""
                        class="rounded-full w-full h-full object-cover"
-                       width="64px"
-                       height="64px" />
+                   />
                 </div>
               </td>              
               <td class="max-w-[100px] overflow-hidden text-ellipsis text-nowrap">{{ object.enrollment.student.registration }}</td>
