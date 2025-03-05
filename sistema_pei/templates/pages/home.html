@@ -8,7 +8,7 @@
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
 {% endblock breadcrumb %}
 {% block content %}
-  <div class="w-full">
+<div class="w-full">
     <div>
       <h1 class="font-semibold text-[24px]">Olá 👋, {{ request.user.name }}!</h1>
       <p class="text-[14px]">Seja bem-vindo (a)</p>
@@ -196,9 +196,9 @@
       </form>
     </div>
     <div class="mt-[36px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg">
-      <table class="table-auto w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[14px]">
+      <table class="table-auto w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[14px] [&_th]:px-[8px]">
         <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">
-          <th class="pl-[76px]">Perfil</th>
+          <th class="!pl-[76px]">Perfil</th>
           <th>Matrícula</th>
           <th>Nome</th>
           <th>Professor</th>
@@ -206,82 +206,86 @@
           <th>Status</th>
           <th style="text-align: center" class='pr-[30px]'>Ações</th>
         </tr>
-      </thead>
-      <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
-        {% for object in object_list %}
-          <tr>
-            <td class="pl-[76px]">
-              <img src="{{ object.enrollment.student.image.url }}"
-                   alt=""
-                   class="rounded-full w-16 h-16 aspect-square" />
-            </td>
-            <td>{{ object.enrollment.student.registration }}</td>
-            <td>{{ object.enrollment.student.name }}</td>
-            <td>{{ object.responsible_teacher }}</td>
-            <td>
-              {{ object.enrollment.offer.subject }}
-              <br />
-              <span class="text-sm text-slate-600/50">{{ object.enrollment.student.course.name }}</span>
-            </td>
-            <td>
-              {% if object.status == 'NOT_START' %}
-                <div class=" bg-red-300 text-red-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-red-700">
-                  PEI Não iniciado
-                </div>
-              {% elif object.status == 'IN_PROGRESS' %}
-                <div class=" bg-amber-300 text-amber-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-amber-700">
-                  PEI em andamento
-                </div>
-              {% elif object.status == 'FEEDBACK' %}
-                <div class=" bg-blue-300 text-blue-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-blue-700">
-                  PEI Preenchido
-                </div>
-              {% elif object.status == 'COMPLETED' %}
-                <div class=" bg-green-300 text-green-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-green-700">
-                  PEI Finalizado
-                </div>
-              {% endif %}
-            </td>
-            <td>
-              <span class="flex justify-center items-center h-full gap-[30px] pr-[26px]">
-                <a href="{% url 'educational_plan:pei_detail' object.id %}">
-                  <img src="{% static 'images/icons/icon-eye.svg' %}"
+        </thead>
+        <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px] [&_td]:px-[8px]">
+          {% for object in object_list %}
+            <tr>
+              <td class="!pl-[70px]">
+                <div class="w-[64px] h-[64px]">
+                  <img src="{{ object.enrollment.student.image.url }}"
                        alt=""
-                       width="24px"
-                       height="24px"
-                       class="cursor-pointer" />
-                </a>
-                <a href="{% url 'educational_plan:pei_update' object.id %}">
-                  <img src="{% static 'images/icons/icon-edit-element.svg' %}"
-                       alt=""
-                       width="24px"
-                       height="24px"
-                       class="cursor-pointer" />
-                </a>
-                {% if user|has_group:"Coordinator" %}
-                  <button type="button"
-                          id="openModal{{ object.pk }}"
-                          data-modal-id="confirmationModal{{ object.pk }}">
-                    <img src="{% static 'images/icons/icon-remove-element.svg' %}"
-                         alt=""
-                         height="24px"
-                         class="cursor-pointer" />
-                  </button>
+                       class="rounded-full w-full h-full object-cover"
+                       width="64px"
+                       height="64px" />
+                </div>
+              </td>              
+              <td class="max-w-[100px] overflow-hidden text-ellipsis text-nowrap">{{ object.enrollment.student.registration }}</td>
+              <td class="max-w-[100px] overflow-hidden text-ellipsis text-nowrap" >{{ object.enrollment.student.name }}</td>
+              <td class="max-w-[100px] overflow-hidden text-ellipsis text-nowrap">{{ object.responsible_teacher }}</td>
+              <td class="max-w-[100px] overflow-hidden text-ellipsis text-nowrap">
+                {{ object.enrollment.offer.subject }}
+                <br />
+                <span class="text-sm text-slate-600/50">{{ object.enrollment.student.course.name }}</span>
+              </td>
+              <td>
+                {% if object.status == 'NOT_START' %}
+                  <div class=" bg-red-300 text-red-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-red-700">
+                    PEI Não iniciado
+                  </div>
+                {% elif object.status == 'IN_PROGRESS' %}
+                  <div class=" bg-amber-300 text-amber-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-amber-700">
+                    PEI em andamento
+                  </div>
+                {% elif object.status == 'FEEDBACK' %}
+                  <div class=" bg-blue-300 text-blue-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-blue-700">
+                    PEI Preenchido
+                  </div>
+                {% elif object.status == 'COMPLETED' %}
+                  <div class=" bg-green-300 text-green-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-green-700">
+                    PEI Finalizado
+                  </div>
                 {% endif %}
-              </span>
-            </td>
-            {% if user|has_group:"Coordinator" %}
-              {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão do PEI" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="educational_plan:pei_delete" %}
-            {% endif %}
-          </tr>
-        {% empty %}
-          <tr>
-            <td colspan="7" class="text-center">Nenhum PEI cadastrado.</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+              </td>
+              <td>
+                <span class="flex justify-center items-center h-full gap-[30px] pr-[26px]">
+                  <a href="{% url 'educational_plan:pei_detail' object.id %}">
+                    <img src="{% static 'images/icons/icon-eye.svg' %}"
+                        alt=""
+                        width="24px"
+                        height="24px"
+                        class="cursor-pointer" />
+                  </a>
+                  <a href="{% url 'educational_plan:pei_update' object.id %}">
+                    <img src="{% static 'images/icons/icon-edit-element.svg' %}"
+                        alt=""
+                        width="24px"
+                        height="24px"
+                        class="cursor-pointer" />
+                  </a>
+                  {% if user|has_group:"Coordinator" %}
+                    <button type="button"
+                            id="openModal{{ object.pk }}"
+                            data-modal-id="confirmationModal{{ object.pk }}">
+                      <img src="{% static 'images/icons/icon-remove-element.svg' %}"
+                          alt=""
+                          height="24px"
+                          class="cursor-pointer" />
+                    </button>
+                  {% endif %}
+                </span>
+              </td>
+              {% if user|has_group:"Coordinator" %}
+                {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão do PEI" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="educational_plan:pei_delete" %}
+              {% endif %}
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="7" class="text-center">Nenhum PEI cadastrado.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   {% include "_table_pagination.html" %}
 </div>
 {% endblock content %}
