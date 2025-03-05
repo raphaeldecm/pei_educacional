@@ -218,10 +218,13 @@
                    />
                 </div>
               </td>              
-              <td class="max-w-[100px] overflow-hidden text-ellipsis text-nowrap">{{ object.enrollment.student.registration }}</td>
-              <td class="max-w-[100px] overflow-hidden text-ellipsis text-nowrap" >{{ object.enrollment.student.name }}</td>
-              <td class="max-w-[100px] overflow-hidden text-ellipsis text-nowrap">{{ object.responsible_teacher }}</td>
-              <td class="max-w-[100px] overflow-hidden text-ellipsis text-nowrap">
+              <td title="{{ object.enrollment.student.registration }}" class="max-w-[100px] overflow-hidden text-ellipsis text-nowrap">{{ object.enrollment.student.registration }}</td>
+
+              <td title="{{ object.enrollment.student.name }}" class="max-w-[100px] overflow-hidden text-ellipsis text-nowrap" >{{ object.enrollment.student.name }}</td>
+
+              <td title="{{ object.responsible_teacher }}" class="max-w-[100px] overflow-hidden text-ellipsis text-nowrap">{{ object.responsible_teacher }}</td>
+
+              <td title="{{ object.enrollment.offer.subject }} - {{ object.enrollment.student.course.name }}" class="max-w-[100px] overflow-hidden text-ellipsis text-nowrap">
                 {{ object.enrollment.offer.subject }}
                 <br />
                 <span class="text-sm text-slate-600/50">{{ object.enrollment.student.course.name }}</span>
