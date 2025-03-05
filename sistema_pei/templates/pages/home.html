@@ -190,7 +190,7 @@
                  alt=""
                  width="24px"
                  height="24px" />
-            <span>Filtrar</span>
+            <span class="text-[14px]">Filtrar</span>
           </button>
         </div>
       </form>
@@ -253,24 +253,25 @@
                   <a href="{% url 'educational_plan:pei_detail' object.id %}">
                     <img src="{% static 'images/icons/icon-eye.svg' %}"
                         alt=""
-                        width="24px"
-                        height="24px"
+                        height="18px"
                         class="cursor-pointer" />
                   </a>
-                  <a href="{% url 'educational_plan:pei_update' object.id %}">
-                    <img src="{% static 'images/icons/icon-edit-element.svg' %}"
-                        alt=""
-                        width="24px"
-                        height="24px"
-                        class="cursor-pointer" />
-                  </a>
+                  {% if object.responsible_teacher.email == request.user.email %}
+                  
+                    <a href="{% url 'educational_plan:pei_update' object.id %}">
+                      <img src="{% static 'images/icons/icon-edit-element.svg' %}"
+                          alt=""
+                          height="18px"
+                          class="cursor-pointer" />
+                    </a>
+                  {% endif %}
                   {% if user|has_group:"Coordinator" %}
                     <button type="button"
                             id="openModal{{ object.pk }}"
                             data-modal-id="confirmationModal{{ object.pk }}">
                       <img src="{% static 'images/icons/icon-remove-element.svg' %}"
                           alt=""
-                          height="24px"
+                          height="18px"
                           class="cursor-pointer" />
                     </button>
                   {% endif %}

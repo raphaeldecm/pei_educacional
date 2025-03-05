@@ -179,6 +179,7 @@
                          height="24px"
                          class="cursor-pointer" />
                   </a>
+                  {% if object.responsible_teacher.user == user %}
                   <a class="hover:bg-slate-100 p-2 rounded-full"
                     href="{% url 'educational_plan:pei_update' object.id %}">
                     <img src="{% static 'images/icons/icon-edit-element.svg' %}"
@@ -186,6 +187,7 @@
                          height="24px"
                          class="cursor-pointer" />
                   </a>
+                  {% endif %}
                   <button type="button"
                           id="openModal{{ object.pk }}"
                           data-modal-id="confirmationModal{{ object.pk }}"
