@@ -84,21 +84,6 @@ class PeiUpdateView(
         return super().form_valid(form)
 
 
-class PeiDeleteView(
-    LoginRequiredMixin,
-    ProtectedErrorMessageMixin,
-    SuccessMessageMixin,
-    generic.DeleteView,
-    CoordinatorPermission,
-):
-    model = models.Pei
-    success_url = reverse_lazy("educational_plan:pei_list")
-    success_message = _("O pei foi removido com sucesso.")
-    protected_warning_message = _(
-        "Não é possível excluir o pei, pois ele possui itens associados.",
-    )
-
-
 class PeiDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
     model = models.Pei
     title = _("Detalhes do PEI")
