@@ -257,7 +257,6 @@
                         class="cursor-pointer" />
                   </a>
                   {% if object.responsible_teacher.email == request.user.email %}
-                  
                     <a href="{% url 'educational_plan:pei_update' object.id %}">
                       <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                           alt=""
@@ -265,21 +264,8 @@
                           class="cursor-pointer" />
                     </a>
                   {% endif %}
-                  {% if user|has_group:"Coordinator" %}
-                    <button type="button"
-                            id="openModal{{ object.pk }}"
-                            data-modal-id="confirmationModal{{ object.pk }}">
-                      <img src="{% static 'images/icons/icon-remove-element.svg' %}"
-                          alt=""
-                          height="18px"
-                          class="cursor-pointer" />
-                    </button>
-                  {% endif %}
                 </span>
               </td>
-              {% if user|has_group:"Coordinator" %}
-                {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão do PEI" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="educational_plan:pei_delete" %}
-              {% endif %}
             </tr>
           {% empty %}
             <tr>

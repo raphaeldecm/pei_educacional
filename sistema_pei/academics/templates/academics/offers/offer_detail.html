@@ -131,7 +131,7 @@
                 </button>
               </td>
               {% url 'academics:remove_student_from_offer' offer.id object.student.id as full_delete_url %}
-              {% include "_confirm_delete_modal.html" with title="Confirmar remoção de discente" body_text="Tem certeza de que deseja remover este discente? Esta ação não pode ser desfeita." full_delete_url=full_delete_url %}
+              {% include "_confirm_delete_modal.html" with title="Confirmar remoção de discente" body_text="Tem certeza de que deseja remover este discente? Esta ação poderá remover os planos de ensino cadastrados para o discente nesta disciplina. Isto não pode ser desfeito." full_delete_url=full_delete_url %}
             </tr>
           {% endfor %}
         </tbody>

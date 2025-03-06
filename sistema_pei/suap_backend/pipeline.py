@@ -45,7 +45,9 @@ def record_user_data(backend, user, response, *args, **kwargs):
             )
             process_teacher(user, response)
         else:
-            user.groups.add(collaborator_group)
+            if not user.groups.exists():
+                user.groups.add(collaborator_group)
+
             user.sector = "NAPNE"
             user.photo = response.get("foto") or ""
             user.is_active = True

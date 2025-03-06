@@ -141,8 +141,8 @@ def pei_created(sender, instance, created, **kwargs):
             if teacher.user.id == author.id:
                 return
 
-            subject = instance.pei.enrollment.offer.subject
-            student = instance.pei.enrollment.student
+            subject = instance.comment.pei.enrollment.offer.subject
+            student = instance.comment.pei.enrollment.student
 
             subject, message = NotificationEmailContent.created_answer(
                 teacher.name,
