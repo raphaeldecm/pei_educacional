@@ -258,21 +258,8 @@
                        height="24px"
                        class="cursor-pointer" />
                 </a>
-                {% if user|has_group:"Coordinator" %}
-                  <button type="button"
-                          id="openModal{{ object.pk }}"
-                          data-modal-id="confirmationModal{{ object.pk }}">
-                    <img src="{% static 'images/icons/icon-remove-element.svg' %}"
-                         alt=""
-                         height="24px"
-                         class="cursor-pointer" />
-                  </button>
-                {% endif %}
               </span>
             </td>
-            {% if user|has_group:"Coordinator" %}
-              {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão do PEI" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="educational_plan:pei_delete" %}
-            {% endif %}
           </tr>
         {% empty %}
           <tr>

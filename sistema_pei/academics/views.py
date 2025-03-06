@@ -252,8 +252,12 @@ class RemoveStudentFromOfferView(SuccessMessageMixin, LoginRequiredMixin, View):
                 offer=offer,
                 student=student,
             )
+            
+            Pei.objects.filter(enrollment=enrollment).delete()
+            
             enrollment.delete()
             messages.success(request, "Discente removido com sucesso da oferta.")
+            
         except ProtectedError:
             messages.error(
                 request,
