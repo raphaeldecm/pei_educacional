@@ -16,5 +16,5 @@ class Command(BaseCommand):
         profile_groups.add("Collaborator")
         profile_groups.add("Pedagogue")
         for group_name in profile_groups:
-            group, created = Group.objects.get_or_create(name=_(group_name))
+            group, created = Group.objects.get_or_create(name=group_name)
         self.stdout.write("Profile groups were updated successfully")

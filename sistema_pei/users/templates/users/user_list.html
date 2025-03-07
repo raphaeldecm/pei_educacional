@@ -101,8 +101,8 @@
               <td class="hidden lg:table-cell">{{ object.email }}</td>
               <td>{{ object.sector }}</td>
               <td class="hidden md:table-cell">
-                {% for group in object.groups.all %}
-                  {% translate group.name %}
+                {% for group in object.translated_groups %}
+                  {{ group }}
                   {% if not forloop.last %}
                     ,
                     <br />

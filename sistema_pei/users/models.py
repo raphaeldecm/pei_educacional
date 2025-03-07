@@ -11,20 +11,14 @@ from sistema_pei.core import constants
 
 from .managers import UserManager
 
-GROUP_TRANSLATIONS = {
-    "Coordinator": _("Coordenador"),
-    "Collaborator": _("Colaborador"),
-    "Pedagogue": _("Pedagogo"),
-    "Teacher": _("Professor"),
-}
-
 
 class User(AbstractUser):
-    """
-    Default custom user model for sistema-pei.
-    If adding fields that need to be filled at user signup,
-    check forms.SignupForm and forms.SocialSignupForms accordingly.
-    """
+
+    GROUP_TRANSLATIONS = {
+        "Coordinator": _("Coordenador"),
+        "Collaborator": _("Colaborador"),
+        "Teacher": _("Professor"),
+    }
 
     class Sector(models.TextChoices):
         NAPNE = "NAPNE", _("NAPNE")
@@ -65,6 +59,6 @@ class User(AbstractUser):
     @property
     def translated_groups(self):
         return [
-            GROUP_TRANSLATIONS.get(group.name, group.name)
+            self.GROUP_TRANSLATIONS.get(group.name, group.name)
             for group in self.groups.all()
         ]

@@ -30,10 +30,12 @@ class Command(BaseCommand):
             reader = csv.reader(csvfile)
             for row in reader:
                 Teacher.objects.get_or_create(
-                    name=row[0].strip(),
-                    email=row[3].strip(),
-                    campus=Campus.objects.get(abbreviation=row[2].strip()),
-                    code=row[1].strip(),
+                    email=row[3].strip(),  # Garante que email seja único
+                    defaults={
+                        "name": row[0].strip(),
+                        "campus": Campus.objects.get(abbreviation=row[2].strip()),
+                        "code": row[1].strip(),
+                    },
                 )
 
     def get_campus(self):
