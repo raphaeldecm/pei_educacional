@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import Group
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse
 from django.urls import reverse_lazy
@@ -88,3 +89,11 @@ class UserManagerUpdate(
     form_class = forms.UserUpdateForm
     success_url = reverse_lazy("users:list")
     success_message = _("Usuário atualizado com sucesso.")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["translated_groups"] = {
+            group.id: User.GROUP_TRANSLATIONS.get(group.name, group.name)
+            for group in Group.objects.all()
+        }
+        return context
