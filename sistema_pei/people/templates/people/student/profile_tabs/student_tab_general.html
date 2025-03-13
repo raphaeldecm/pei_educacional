@@ -10,7 +10,7 @@
       <input type="text"
              name="search"
              placeholder="Pesquisar..."
-             class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50"
+             class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50 text-slate-500 placeholder:text-slate-500"
              value="{{ request.GET.search }}" />
     </div>
     <div class="mt-[35px] flex gap-[19px]">
@@ -20,7 +20,7 @@
              width="24px"
              height="24px" />
         <select name="teacher"
-                class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-400 appearance-none bg-neutral-50">
+                class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
           <option value="default" selected disabled>Selecione o professor...</option>
           {% for teacher in selector_teachers %}
             <option value="{{ teacher.id }}"
@@ -36,7 +36,7 @@
              width="24px"
              height="24px" />
         <select name="period"
-                class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-400 appearance-none bg-neutral-50">
+                class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
           <option value="default" selected disabled>Selecione o turno...</option>
           <option value="MORNING"
                   {% if request.GET.period == 'MORNING' %}selected{% endif %}>Matutino</option>
@@ -52,7 +52,7 @@
              width="24px"
              height="24px" />
         <select name="status"
-                class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-400 appearance-none bg-neutral-50">
+                class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
           <option value="default" selected disabled>Selecione o status...</option>
           <option value="NOT_START"
                   {% if request.GET.status == 'NOT_START' %}selected{% endif %}>Não iniciado</option>
@@ -142,14 +142,14 @@
     <div class="flex gap-[36px]">
       {% if student_peis.has_previous %}
         <a href="?{% if request.GET.course %}course={{ request.GET.course }}&{% endif %}{% if request.GET.teacher %}teacher={{ request.GET.teacher }}&{% endif %}{% if request.GET.period %}period={{ request.GET.period }}&{% endif %}{% if request.GET.status %}status={{ request.GET.status }}&{% endif %}{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}page={{ student_peis.previous_page_number }}">
-          <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-400 border border-slate-400 rounded-lg">
+          <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-500 border border-slate-400 rounded-lg">
             Anterior
           </div>
         </a>
       {% endif %}
       {% if student_peis.has_next %}
         <a href="?{% if request.GET.course %}course={{ request.GET.course }}&{% endif %}{% if request.GET.teacher %}teacher={{ request.GET.teacher }}&{% endif %}{% if request.GET.period %}period={{ request.GET.period }}&{% endif %}{% if request.GET.status %}status={{ request.GET.status }}&{% endif %}{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}page={{ student_peis.next_page_number }}">
-          <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-400 border border-slate-400 rounded-lg">
+          <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-500 border border-slate-400 rounded-lg">
             Próximo
           </div>
         </a>
