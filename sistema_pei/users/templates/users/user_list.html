@@ -87,7 +87,7 @@
         <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">
           <tr>
             <th class="pl-[76px]">Nome</th>
-            <th>Setor</th>
+            <th class="table-cell">Setor</th>
             <th class="table-cell">Tipo</th>
             <th class="table-cell">Situação</th>
             <th colspan="3" style="text-align: center" class='pr-[26px]'>Ações</th>
@@ -107,7 +107,7 @@
                   {% endif %}
                 {% endfor %}
               </td>
-              <td class="hidden md:table-cell">
+              <td class="table-cell">
                 {% if object.is_active %}
                   <img src="{% static 'images/icons/icon-user-green.svg' %}"
                        alt=""
