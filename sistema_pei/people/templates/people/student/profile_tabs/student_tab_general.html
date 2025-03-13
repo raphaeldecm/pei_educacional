@@ -20,7 +20,7 @@
              width="24px"
              height="24px" />
         <select name="teacher"
-                class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
+                class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-400 appearance-none bg-neutral-50">
           <option value="default" selected disabled>Selecione o professor...</option>
           {% for teacher in selector_teachers %}
             <option value="{{ teacher.id }}"
@@ -36,7 +36,7 @@
              width="24px"
              height="24px" />
         <select name="period"
-                class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
+                class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-400 appearance-none bg-neutral-50">
           <option value="default" selected disabled>Selecione o turno...</option>
           <option value="MORNING"
                   {% if request.GET.period == 'MORNING' %}selected{% endif %}>Matutino</option>
@@ -52,7 +52,7 @@
              width="24px"
              height="24px" />
         <select name="status"
-                class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
+                class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-400 appearance-none bg-neutral-50">
           <option value="default" selected disabled>Selecione o status...</option>
           <option value="NOT_START"
                   {% if request.GET.status == 'NOT_START' %}selected{% endif %}>Não iniciado</option>
