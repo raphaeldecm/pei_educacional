@@ -58,7 +58,7 @@
                height="24px" />
           <select name="campus"
                   id="campus"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-400 appearance-none bg-neutral-50">
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
             <option value="" selected disabled>Selecione o campus...</option>
             {% for campus in filter.form.campus.field.queryset %}
               <option value="{{ campus.id }}"
