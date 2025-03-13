@@ -45,7 +45,7 @@
                height="24px" />
           <select name="sector"
                   id="id_sector"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
             <option value="" selected disabled>Selecione o setor ...</option>
             {% for sector in filter.form.sector.field.choices %}
               <option value="{{ sector.0 }}"
@@ -62,7 +62,7 @@
                height="24px" />
           <select name="group"
                   id="group"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-300 appearance-none bg-neutral-50">
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
             <option value="" selected disabled>Selecione o tipo ...</option>
             {% for group in filter.form.groups.field.queryset %}
               <option value="{{ group.id }}"

@@ -20,7 +20,7 @@
         <input type="text"
                name="name"
                placeholder="Pesquisar..."
-               class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50"
+               class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50 placeholder:text-slate-500"
                value="{{ request.GET.name }}" />
       </div>
       <div class="flex gap-[8px]">
@@ -31,7 +31,7 @@
                height="24px" />
           <select name="period"
                   id="period"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-400 appearance-none bg-neutral-50">
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
             <option value="" selected disabled>Selecione o turno...</option>
             {% for key, value in filter.form.period.field.choices %}
               <option value="{{ key }}"
@@ -46,7 +46,7 @@
                height="24px" />
           <select name="course_type"
                   id="course_type"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-400 appearance-none bg-neutral-50">
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
             <option value="" selected disabled>Selecione o tipo de curso...</option>
             {% for key, value in filter.form.course_type.field.choices %}
               <option value="{{ key }}"

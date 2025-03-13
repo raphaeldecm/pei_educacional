@@ -29,11 +29,11 @@
           <div class="flex">
             <div class="pr-[130px]">
               <p class="text-slate-900 font-medium text-[18px] mb-[28px]">Nome completo</p>
-              <p class="text-slate-400 text-[16px] truncate">{{ object.enrollment.student.name }}</p>
+              <p class="text-slate-500 text-[16px] truncate">{{ object.enrollment.student.name }}</p>
             </div>
             <div class="">
               <p class="text-slate-900 font-medium text-[18px] mb-[28px]">Curso</p>
-              <p class="text-slate-400 text-[16px] truncate">{{ object.enrollment.student.course.name }}</p>
+              <p class="text-slate-500 text-[16px] truncate">{{ object.enrollment.student.course.name }}</p>
             </div>
           </div>
           <hr class="mt-6" />
@@ -63,106 +63,106 @@
     {% if object.objective %}
       <div>
         <h2 class="text-[24px] font-medium">Objetivos Da Disciplina:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-400 text-justify">{{ object.objective }}</div>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.objective }}</div>
       </div>
     {% endif %}
     {% if object.adapted_objective %}
       <div>
         <h2 class="text-[24px] font-medium">Objetivos Adaptados:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-400 text-justify">{{ object.adapted_objective }}</div>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.adapted_objective }}</div>
       </div>
     {% endif %}
     {% if object.content %}
       <div>
         <h2 class="text-[24px] font-medium">Conteúdo programático:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-400 text-justify">{{ object.content }}</div>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.content }}</div>
       </div>
     {% endif %}
     {% if object.adapted_content %}
       <div>
         <h2 class="text-[24px] font-medium">Conteúdos Adaptados:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-400 text-justify">{{ object.adapted_content }}</div>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.adapted_content }}</div>
       </div>
     {% endif %}
     {% if object.methodology %}
       <div>
         <h2 class="text-[24px] font-medium">Metodologias:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-400 text-justify">{{ object.methodology }}</div>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.methodology }}</div>
       </div>
     {% endif %}
     {% if object.adapted_methodology %}
       <div>
         <h2 class="text-[24px] font-medium">Metodologias adaptadas:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-400 text-justify">{{ object.adapted_methodology }}</div>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.adapted_methodology }}</div>
       </div>
     {% endif %}
     {% if object.resources %}
       <div>
         <h2 class="text-[24px] font-medium">Recursos didáticos:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-400 text-justify">{{ object.resources }}</div>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.resources }}</div>
       </div>
     {% endif %}
     {% if object.adapted_resources %}
       <div>
         <h2 class="text-[24px] font-medium">Recursos didáticos adaptados:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-400 text-justify">{{ object.adapted_resources }}</div>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.adapted_resources }}</div>
       </div>
     {% endif %}
     {% if object.assessments %}
       <div>
         <h2 class="text-[24px] font-medium">Avaliações:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-400 text-justify">{{ object.assessments }}</div>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.assessments }}</div>
       </div>
     {% endif %}
     {% if object.adapted_assessments %}
       <div>
         <h2 class="text-[24px] font-medium">Avaliações Adaptadas:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-400 text-justify">{{ object.adapted_assessments }}</div>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.adapted_assessments }}</div>
       </div>
     {% endif %}
     {% if not object.objective and not object.adapted_objective and not object.content and not object.adapted_content and not object.methodology and not object.adapted_methodology and not object.resources and not object.adapted_resources and not object.assessments and not object.adapted_assessments %}
-      <p class="text-center text-[18px] pt-6 text-slate-400">Não há conteúdo preenchido</p>
+      <p class="text-center text-[18px] pt-6 text-slate-500">Não há conteúdo preenchido</p>
     {% endif %}
     <hr class="mb-6" />
     {% if object.academic_opinion_1 %}
       <div>
         <h2 class="text-[24px] font-medium">Parecer do 1º Bimestre:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-400 text-justify">{{ object.academic_opinion_1 }}</div>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.academic_opinion_1 }}</div>
       </div>
     {% endif %}
     {% if object.academic_opinion_2 %}
       <div>
         <h2 class="text-[24px] font-medium">Parecer do 2º Bimestre:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-400 text-justify">{{ object.academic_opinion_2 }}</div>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.academic_opinion_2 }}</div>
       </div>
     {% endif %}
     {% if object.enrollment.offer.subject.subject_type == "YEAR" %}
       {% if object.academic_opinion_3 %}
         <div>
           <h2 class="text-[24px] font-medium">Parecer do 3º Bimestre:</h2>
-          <div class="whitespace-pre-wrap text-[18px] text-slate-400 text-justify">{{ object.academic_opinion_3 }}</div>
+          <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.academic_opinion_3 }}</div>
         </div>
       {% endif %}
       {% if object.academic_opinion_4 %}
         <div>
           <h2 class="text-[24px] font-medium">Parecer do 4º Bimestre:</h2>
-          <div class="whitespace-pre-wrap text-[18px] text-slate-400 text-justify">{{ object.academic_opinion_4 }}</div>
+          <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.academic_opinion_4 }}</div>
         </div>
       {% endif %}
     {% endif %}
     {% if object.academic_opinion_final %}
       <div>
         <h2 class="text-[24px] font-medium">Parecer Final:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-400 text-justify">{{ object.academic_opinion_final }}</div>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.academic_opinion_final }}</div>
       </div>
     {% endif %}
     {% if not object.academic_opinion_1 and not object.academic_opinion_2 and not object.academic_opinion_3 and not object.academic_opinion_4 and not object.academic_opinion_final %}
-      <p class="text-center text-[18px] pt-6 text-slate-400 mb-9">Não há parecer registrado.</p>
+      <p class="text-center text-[18px] pt-6 text-slate-500 mb-9">Não há parecer registrado.</p>
     {% endif %}
     {% if object.status == "COMPLETED" %}
       <a href="{% url 'educational_plan:pei_export' object.pk %}"
          target="_blank"
-         class="flex gap-3 text-slate-300 w-full border border-slate-200 py-4 justify-center rounded-lg cursor-pointer hover:bg-green-500 group hover:text-white hover:border-green-500 transition-all">
+         class="flex gap-3 text-slate-500 w-full border border-slate-200 py-4 justify-center rounded-lg cursor-pointer hover:bg-green-500 group hover:text-white hover:border-green-500 transition-all">
         <img src="{% static 'images/icons/icon-copy.svg' %}"
              alt=""
              class="group-hover:filter group-hover:brightness-0 group-hover:invert"
@@ -199,7 +199,7 @@
                     required
                     placeholder="Escreva um comentário aqui!"
                     class="bg-transparent font-sans appearance-none border rounded-lg h-[177px] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"></textarea>
-          <button class="flex gap-3 text-slate-300 w-full border border-slate-200 py-4 justify-center items-center rounded-lg cursor-pointer hover:bg-green-500 group hover:text-white hover:border-green-500 transition-all mt-4">
+          <button class="flex gap-3 text-slate-500 w-full border border-slate-200 py-4 justify-center items-center rounded-lg cursor-pointer hover:bg-green-500 group hover:text-white hover:border-green-500 transition-all mt-4">
             <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                  alt=""
                  class="group-hover:filter group-hover:brightness-0 group-hover:invert"
@@ -243,10 +243,10 @@
             <div class="flex justify-end gap-6">
               {% if comment.created_by == request.user %}
                 <a href="{% url 'educational_plan:pei_comment_delete' comment.pk %}"
-                   class="p-2 cursor-pointer transition-all text-slate-400 hover:text-red-600 hover:scale-105">Apagar</a>
+                   class="p-2 cursor-pointer transition-all text-slate-500 hover:text-red-600 hover:scale-105">Apagar</a>
               {% endif %}
               <button id="replyButton-{{ comment.pk }}"
-                      class="p-2 transition-all text-slate-400 hover:text-green-500 hover:scale-105">
+                      class="p-2 transition-all text-slate-500 hover:text-green-500 hover:scale-105">
                 Responder
               </button>
             </div>
@@ -271,7 +271,7 @@
                           required
                           placeholder="Responda a este comentário aqui!"
                           class="bg-transparent font-sans appearance-none border rounded-lg h-[177px] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"></textarea>
-                <button class="flex gap-3 text-slate-300 w-full border border-slate-200 py-4 justify-center items-center rounded-lg cursor-pointer hover:bg-green-500 group hover:text-white hover:border-green-500 transition-all mt-4">
+                <button class="flex gap-3 text-slate-500 w-full border border-slate-200 py-4 justify-center items-center rounded-lg cursor-pointer hover:bg-green-500 group hover:text-white hover:border-green-500 transition-all mt-4">
                   <img src="{% static 'images/icons/icon-edit-element.svg' %}"
                        alt=""
                        class="group-hover:filter group-hover:brightness-0 group-hover:invert"
@@ -313,7 +313,7 @@
                     <div class="flex justify-end gap-6">
                       {% if answer.created_by == request.user %}
                         <a href="{% url 'educational_plan:pei_answer_delete' answer.pk %}"
-                           class="p-2 cursor-pointer transition-all text-slate-400 hover:text-red-600 hover:scale-105">Apagar</a>
+                           class="p-2 cursor-pointer transition-all text-slate-500 hover:text-red-600 hover:scale-105">Apagar</a>
                       {% endif %}
                     </div>
                   </div>

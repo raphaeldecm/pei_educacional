@@ -20,7 +20,7 @@
         <input type="text"
                name="search"
                placeholder="Pesquisar..."
-               class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50"
+               class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50 placeholder:text-slate-500"
                value="{{ request.GET.search }}" />
       </div>
       <div class="flex gap-[8px] flex-wrap">
@@ -29,7 +29,7 @@
           <input type="text"
                  id="courseSearch"
                  placeholder="Buscar por curso..."
-                 class="mb-3 px-3 py-2 border border-slate-300 rounded-lg w-full"
+                 class="mb-3 px-3 py-2 border border-slate-300 b bg-neutral-50 placeholder:text-slate-500 rounded-lg w-full"
                  oninput="filterCourses()"
                  value="{{ selected_course_name|default:'' }}" />
         
