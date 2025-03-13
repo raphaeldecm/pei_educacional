@@ -1,5 +1,5 @@
 <!-- templates/student_create.html -->
-{% extends "base.html" %}
+{% extends "layouts/base.html" %}
 
 {% load static %}
 {% load breadcrumb_item %}
@@ -349,7 +349,7 @@
           </ul>
         {% endif %}
       </div>
-      {% include "_save_back_edit_buttons.html" with link_to_back="people:student_list" no_margin=True %}
+      {% include "components/_save_back_edit_buttons.html" with link_to_back="people:student_list" no_margin=True %}
     </form>
   </div>
 {% endblock content %}

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "layouts/base.html" %}
 
 {% load static i18n %}
 {% load breadcrumb_item %}
@@ -197,6 +197,6 @@
         </tbody>
       </table>
     </div>
-    {% include "_table_pagination.html" %}
+    {% include "components/_table_pagination.html" %}
   </div>
 {% endblock content %}

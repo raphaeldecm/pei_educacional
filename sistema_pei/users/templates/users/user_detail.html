@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "layouts/base.html" %}
 
 {% load static i18n %}
 {% load breadcrumb_item %}
@@ -124,5 +124,5 @@
     </div>
   </div>
 </div>
-{% include "_save_back_edit_buttons.html" with link_to_back="users:list" edit_url="users:manage_user" %}
+{% include "components/_save_back_edit_buttons.html" with link_to_back="users:list" edit_url="users:manage_user" %}
 {% endblock content %}

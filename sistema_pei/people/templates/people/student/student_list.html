@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "layouts/base.html" %}
 
 {% load static i18n %}
 {% load breadcrumb_item %}
@@ -129,7 +129,7 @@
                   </button>
                 </span>
               </td>
-              {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão do aluno" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="people:student_delete" %}
+              {% include "components/_confirm_delete_modal.html" with title="Confirmar Exclusão do aluno" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="people:student_delete" %}
             </tr>
           {% empty %}
             <tr>
@@ -139,7 +139,7 @@
         </tbody>
       </table>
     </div>
-    {% include "_table_pagination.html" %}
+    {% include "components/_table_pagination.html" %}
   </div>
 {% endblock content %}
 {% block inline_javascript %}

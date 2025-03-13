@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "layouts/base.html" %}
 
 {% load static i18n %}
 {% load breadcrumb_item %}
@@ -37,6 +37,6 @@
         <p class="text-slate-900 font-regular text-[18px]">Nenhum curso com esta disciplina cadastrada.</p>
       {% endfor %}
     </div>
-    {% include "_save_back_edit_buttons.html" with link_to_back="academics:subject_list" edit_url="academics:subject_update" %}
+    {% include "components/_save_back_edit_buttons.html" with link_to_back="academics:subject_list" edit_url="academics:subject_update" %}
   </div>
 {% endblock content %}
