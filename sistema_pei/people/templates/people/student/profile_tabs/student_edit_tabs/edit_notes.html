@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-4">
     {% for i in "x"|rjust:student.course.number_of_periods %}
       <a href="{% url 'people:profile' student.id %}?tab=edit_student_data&sub_tab=edit_notes&selectedPeriod={{ forloop.counter }}"
-         class="font-poppins rounded-lg py-2 px-5 {% if sub_active_tab == 'edit_personal_data' %} text-white bg-green-500 {% else %} text-slate-300 {% endif %} hover:bg-green-500 hover:text-white transition duration-300 ease-in-out w-[218px] ml-[30px] p-[10px] rounded-lg cursor-pointer {% if request.GET.selectedPeriod == forloop.counter|slugify or forloop.first and request.GET.selectedPeriod is null %} bg-green-500 text-slate-50{% endif %}">
+         class="font-poppins rounded-lg py-2 px-5 {% if sub_active_tab == 'edit_personal_data' %} text-white bg-green-500 {% else %} text-slate-500 {% endif %} hover:bg-green-500 hover:text-white transition duration-300 ease-in-out w-[218px] ml-[30px] p-[10px] rounded-lg cursor-pointer {% if request.GET.selectedPeriod == forloop.counter|slugify or forloop.first and request.GET.selectedPeriod is null %} bg-green-500 text-slate-50{% endif %}">
         {{ forloop.counter }}°
         {% if student.course.duration_type == "SEMESTER" %}
           semestre
@@ -29,7 +29,7 @@
           {% csrf_token %}
           <p class="font-light text-slate-900 capitalize">{{ subject_grades.offer.subject.name }}</p>
           <div class="flex gap-[40px]">
-            <div class="text-slate-400 mt-[20px] flex-1">
+            <div class="text-slate-500 mt-[20px] flex-1">
               <label class="block">1° Bimestre</label>
               <input type="number"
                      max="100"
@@ -39,7 +39,7 @@
                      class="mt-[16px] border border-slate-300 rounded-lg bg-transparent p-[10px] w-full"
                      value="{{ subject_grades.grade1 }}" />
             </div>
-            <div class="text-slate-400 mt-[20px] flex-1">
+            <div class="text-slate-500 mt-[20px] flex-1">
               <label class="block">2° Bimestre</label>
               <input type="number"
                      max="100"
@@ -50,7 +50,7 @@
                      value="{{ subject_grades.grade2 }}" />
             </div>
             {% if student.course.duration_type != "SEMESTER" %}
-              <div class="text-slate-400 mt-[20px] flex-1">
+              <div class="text-slate-500 mt-[20px] flex-1">
                 <label class="block">3° Bimestre</label>
                 <input type="number"
                        max="100"
@@ -60,7 +60,7 @@
                        class="mt-[16px] border border-slate-300 rounded-lg bg-transparent p-[10px] w-full"
                        value="{{ subject_grades.grade3 }}" />
               </div>
-              <div class="text-slate-400 mt-[20px] flex-1">
+              <div class="text-slate-500 mt-[20px] flex-1">
                 <label class="block">4° Bimestre</label>
                 <input type="number"
                        max="100"
@@ -72,7 +72,7 @@
               </div>
             {% endif %}
           </div>
-          <button class="border border-slate-300 rounded-lg h-[50px] mt-[32px] w-full text-slate-300 hover:bg-green-500 hover:text-white transition-all"
+          <button class="border border-slate-300 rounded-lg h-[50px] mt-[32px] w-full text-slate-500 hover:bg-green-500 hover:text-white transition-all"
                   type="">
             Atualizar Dados de <span class="capitalize">{{ subject_grades.offer.subject.name }}</span>
           </button>

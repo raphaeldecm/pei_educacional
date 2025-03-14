@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "layouts/base.html" %}
 
 {% load static i18n %}
 {% load breadcrumb_item %}
@@ -23,7 +23,7 @@
                height="24px" />
           <select name="{{ form.course.name }}"
                   id="id_course"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-400 appearance-none bg-neutral-50">
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
             <option value="default" selected disabled>Selecione o curso...</option>
             {% for key, value in form.course.field.choices %}
               <option value="{{ key }}"
@@ -41,7 +41,7 @@
                height="24px" />
           <select name="{{ form.subject.name }}"
                   id="id_subject"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-400 appearance-none bg-neutral-50"
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50"
                   data-selected-value="{{ form.subject.value|default_if_none:'' }}">
             <option value="default" selected disabled>Selecione a disciplina...</option>
             {% for key, value in form.subject.field.choices %}
@@ -80,7 +80,7 @@
                  height="24px" />
             <select name="{{ form.status.name }}"
                     id="{{ form.status.id_for_label }}"
-                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-400 appearance-none bg-neutral-50">
+                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
               <option value="default" selected disabled>Selecione a situação...</option>
               {% for key, value in form.status.field.choices %}
                 <option value="{{ key }}"
@@ -95,7 +95,7 @@
             <input type="number"
                    name="{{ form.year.name }}"
                    id="{{ form.year.id_for_label }}"
-                   class="outline-none placeholder:text-[18px] placeholder:text-slate-400 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+                   class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
                    value="{{ form.year.value|default_if_none:'' }}"
                    placeholder="Ex: 2025"
                    min="1" />
@@ -105,7 +105,7 @@
                    class="font-medium text-[18px]">Semestre referência do período letivo:</label>
             <select name="{{ form.semester.name }}"
                     id="{{ form.semester.id_for_label }}"
-                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-400 appearance-none bg-neutral-50 mt-[16px]">
+                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50 mt-[16px]">
               <option value="default" selected disabled>Selecione o semestre...</option>
               {% for key, value in form.semester.field.choices %}
                 <option value="{{ key }}"
@@ -115,7 +115,7 @@
           </div>
         </div>
       </div>
-      {% include "_save_back_edit_buttons.html" with link_to_back="academics:offer_list" %}
+      {% include "components/_save_back_edit_buttons.html" with link_to_back="academics:offer_list" %}
     </form>
   </div>
 {% endblock content %}

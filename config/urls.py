@@ -41,7 +41,7 @@ urlpatterns = [
     ),
     path(
         "about/",
-        TemplateView.as_view(template_name="pages/about.html"),
+        TemplateView.as_view(template_name="about.html"),
         name="about",
     ),
     # Django Admin, use {% url 'admin:index' %}

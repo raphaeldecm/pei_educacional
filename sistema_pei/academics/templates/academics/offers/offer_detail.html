@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "layouts/base.html" %}
 
 {% load static i18n %}
 {% load breadcrumb_item %}
@@ -131,13 +131,13 @@
                 </button>
               </td>
               {% url 'academics:remove_student_from_offer' offer.id object.student.id as full_delete_url %}
-              {% include "_confirm_delete_modal.html" with title="Confirmar remoção de discente" body_text="Tem certeza de que deseja remover este discente? Esta ação poderá remover os planos de ensino cadastrados para o discente nesta disciplina. Isto não pode ser desfeito." full_delete_url=full_delete_url %}
+              {% include "components/_confirm_delete_modal.html" with title="Confirmar remoção de discente" body_text="Tem certeza de que deseja remover este discente? Esta ação poderá remover os planos de ensino cadastrados para o discente nesta disciplina. Isto não pode ser desfeito." full_delete_url=full_delete_url %}
             </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
-    {% include "_table_pagination.html" %}
+    {% include "components/_table_pagination.html" %}
     <div class="flex mt-[56px] gap-[16px]">
       <a href="{% url 'academics:offer_list' %}"
          class="mr-2 text-[18px] py-[11px] px-[44px] border border-orange-400 rounded-lg font-medium cursor-pointer hover:bg-orange-500 transition-colors duration-300">
@@ -151,7 +151,7 @@
       </button>
     </div>
     {% url 'academics:offer_delete' offer.id as full_delete_url_page %}
-    {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão de oferta" body_text="Tem certeza de que deseja excluir esta oferta? Esta ação não pode ser desfeita." full_delete_url=full_delete_url_page %}
+    {% include "components/_confirm_delete_modal.html" with title="Confirmar Exclusão de oferta" body_text="Tem certeza de que deseja excluir esta oferta? Esta ação não pode ser desfeita." full_delete_url=full_delete_url_page %}
   </div>
 {% endblock content %}
 {% block inline_javascript %}

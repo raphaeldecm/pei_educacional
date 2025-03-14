@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "layouts/base.html" %}
 
 {% load static i18n %}
 {% load breadcrumb_item %}
@@ -41,11 +41,11 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-0 h-[237px] mb-[20px]">
             <div class="border-b border-slate-300 pr-[12px]">
               <p class="text-slate-900 font-medium text-[18px] mb-[28px]">Nome completo</p>
-              <p class="text-slate-400 text-[16px] truncate">{{ student.name }}</p>
+              <p class="text-slate-500 text-[16px] truncate">{{ student.name }}</p>
             </div>
             <div class="border-b border-slate-300">
               <p class="text-slate-900 font-medium text-[18px] mb-[28px]">Curso</p>
-              <p class="text-slate-400 text-[16px] truncate">{{ student.course.name }}</p>
+              <p class="text-slate-500 text-[16px] truncate">{{ student.course.name }}</p>
             </div>
             <div class="border-b border-slate-300 pr-[12px]">
               <p class="text-slate-900 font-medium text-[18px] mb-[28px]">Equipe multiprofissional responsável:</p>
@@ -87,7 +87,7 @@
          aria-label="Menu de navegação do perfil do aluno"
          class="mt-2 mb-8">
       <ul class="flex flex-wrap gap-5 py-2">
-        <li class="pb-1 font-poppins {% if active_tab == 'general' %} text-green-500 border-b border-green-500 {% else %} text-slate-300 {% endif %} cursor-pointer hover:text-green-500 hover:border-b hover:border-green-500 transition duration-300 ease-in-out">
+        <li class="pb-1 font-poppins {% if active_tab == 'general' %} text-green-500 border-b border-green-500 {% else %} text-slate-500 {% endif %} cursor-pointer hover:text-green-500 hover:border-b hover:border-green-500 transition duration-300 ease-in-out">
           <a href="?tab=general#tab">
             <svg xmlns="http://www.w3.org/2000/svg"
                  fill="none"
@@ -100,7 +100,7 @@
             Geral
           </a>
         </li>
-        <li class="pb-1 font-poppins {% if active_tab == 'historic' %} text-green-500 border-b border-green-500 {% else %} text-slate-300 {% endif %} cursor-pointer hover:text-green-500 hover:border-b hover:border-green-500 transition duration-300 ease-in-out">
+        <li class="pb-1 font-poppins {% if active_tab == 'historic' %} text-green-500 border-b border-green-500 {% else %} text-slate-500 {% endif %} cursor-pointer hover:text-green-500 hover:border-b hover:border-green-500 transition duration-300 ease-in-out">
           <a href="?tab=historic#tab">
             <svg xmlns="http://www.w3.org/2000/svg"
                  fill="none"
@@ -113,7 +113,7 @@
             Histórico
           </a>
         </li>
-        <li class="pb-1 font-poppins {% if active_tab == 'grades' %} text-green-500 border-b border-green-500 {% else %} text-slate-300 {% endif %} cursor-pointer hover:text-green-500 hover:border-b hover:border-green-500 transition duration-300 ease-in-out">
+        <li class="pb-1 font-poppins {% if active_tab == 'grades' %} text-green-500 border-b border-green-500 {% else %} text-slate-500 {% endif %} cursor-pointer hover:text-green-500 hover:border-b hover:border-green-500 transition duration-300 ease-in-out">
           <a href="?tab=grades#tab">
             <svg xmlns="http://www.w3.org/2000/svg"
                  fill="none"
@@ -126,7 +126,7 @@
             Notas
           </a>
         </li>
-        <li class="pb-1 font-poppins {% if active_tab == 'edit_student_data' %} text-green-500 border-b border-green-500 {% else %} text-slate-300 {% endif %} cursor-pointer hover:text-green-500 hover:border-b hover:border-green-500 transition duration-300 ease-in-out">
+        <li class="pb-1 font-poppins {% if active_tab == 'edit_student_data' %} text-green-500 border-b border-green-500 {% else %} text-slate-500 {% endif %} cursor-pointer hover:text-green-500 hover:border-b hover:border-green-500 transition duration-300 ease-in-out">
           <a href="?tab=edit_student_data#tab">
             <svg xmlns="http://www.w3.org/2000/svg"
                  fill="none"
@@ -158,7 +158,7 @@
        class="fixed inset-0 bg-gray-800 bg-opacity-75 flex flex-wrap items-center justify-center hidden">
     <div class="bg-white p-6 rounded-lg shadow-lg">
       <h2 class="text-xl font-semibold mb-4">Confirmar Atualização</h2>
-      <p class="mb-4 text-slate-400">Tem certeza de que deseja atualizar seus dados? Esta ação não pode ser desfeita.</p>
+      <p class="mb-4 text-slate-500">Tem certeza de que deseja atualizar seus dados? Esta ação não pode ser desfeita.</p>
       <div class="flex justify-end space-x-4">
         <button id="cancelButton"
                 class="text-slate-900 hover:text-red-700 hover:underline py-2 px-4 rounded">Cancelar</button>
