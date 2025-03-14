@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "layouts/base.html" %}
 
 {% load static i18n %}
 {% load breadcrumb_item %}
@@ -20,7 +20,7 @@
         <input type="text"
                name="search"
                placeholder="Pesquisar..."
-               class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50"
+               class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50 placeholder:text-slate-500"
                value="{{ request.GET.search }}" />
       </div>
       <div class="flex gap-[8px] flex-wrap">
@@ -29,7 +29,7 @@
           <input type="text"
                  id="courseSearch"
                  placeholder="Buscar por curso..."
-                 class="mb-3 px-3 py-2 border border-slate-300 rounded-lg w-full"
+                 class="mb-3 px-3 py-2 border border-slate-300 b bg-neutral-50 placeholder:text-slate-500 rounded-lg w-full"
                  oninput="filterCourses()"
                  value="{{ selected_course_name|default:'' }}" />
         
@@ -129,7 +129,7 @@
                   </button>
                 </span>
               </td>
-              {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão do aluno" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="people:student_delete" %}
+              {% include "components/_confirm_delete_modal.html" with title="Confirmar Exclusão do aluno" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="people:student_delete" %}
             </tr>
           {% empty %}
             <tr>
@@ -139,7 +139,7 @@
         </tbody>
       </table>
     </div>
-    {% include "_table_pagination.html" %}
+    {% include "components/_table_pagination.html" %}
   </div>
 {% endblock content %}
 {% block inline_javascript %}

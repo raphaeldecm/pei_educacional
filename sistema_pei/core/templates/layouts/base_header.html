@@ -37,7 +37,7 @@
     </a>
   </h1>
   <nav class="hidden md:flex flex-col">
-    <ul class="flex justify-center items-center gap-[28px] text-slate-400 text-base">
+    <ul class="flex justify-center items-center gap-[28px] text-slate-500 text-base">
       <li>
         <a href="{% url 'home' %}"
            class="flex gap-[10px] py-[10px] {% if request.resolver_match.url_name == 'home' %}text-green-500 border border-transparent border-b-green-500{% endif %}">
@@ -76,7 +76,7 @@
            height="18px" />
       <input type="text"
              placeholder="Pesquisar..."
-             class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50" />
+             class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50 placeholder:text-slate-500" />
     </div>
     <div id="notificationIcon" class="cursor-pointer relative">
       {% if notifications %}
@@ -197,7 +197,7 @@
               <span class="flex text-[11px] h-[21px] items-center justify-center px-[6px] rounded-md font-bold border border-yellow-300 text-yellow-600 bg-yellow-100">Colaborador</span>
             {% endif %}
           </p>
-          <p class="text-base font-medium text-slate-400 whitespace-nowrap overflow-hidden text-ellipsis block">
+          <p class="text-base font-medium text-slate-500 whitespace-nowrap overflow-hidden text-ellipsis block">
             {{ user.email }}
           </p>
         </div>

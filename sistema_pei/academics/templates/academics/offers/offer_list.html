@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "layouts/base.html" %}
 
 {% load static i18n %}
 {% load breadcrumb_item %}
@@ -21,7 +21,7 @@
         <input type="text"
                name="search"
                placeholder="Pesquisar..."
-               class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50"
+               class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50 placeholder:text-slate-500"
                value="{{ request.GET.search }}" />
       </div>
       <div class="flex gap-[8px] flex-wrap mb-[26px]">
@@ -31,7 +31,7 @@
                width="24px"
                height="24px" />
           <select name="subject"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-400 appearance-none bg-neutral-50">
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
             <option value="default" selected disabled>Selecione a disciplina...</option>
             {% for subject in filter.form.subject.field.queryset %}
               <option value="{{ subject.id }}"
@@ -47,7 +47,7 @@
                width="24px"
                height="24px" />
           <select name="teachers"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full max-w-xs text-slate-400 appearance-none bg-neutral-50">
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full max-w-xs text-slate-500 appearance-none bg-neutral-50">
             <option value="default" selected disabled>Selecione o professor...</option>
             {% for teacher in filter.form.teachers.field.queryset %}
               <option value="{{ teacher.id }}"
@@ -61,7 +61,7 @@
           <input type="number"
                  name="year"
                  placeholder="Digite o ano..."
-                 class="placeholder:text-slate-400 outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50"
+                 class="placeholder:text-slate-500 outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50"
                  value="{{ filter.form.year.value }}" />
         </div>
         <div class="relative cursor-pointer w-full max-w-xs">
@@ -70,7 +70,7 @@
                width="24px"
                height="24px" />
           <select name="semester"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-400 appearance-none bg-neutral-50">
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
             <option value="default" selected disabled>Selecione o semestre...</option>
             {% for semester_value, semester_label in filter.form.fields.semester.choices %}
               <option value="{{ semester_value }}"
@@ -145,7 +145,7 @@
               </td>
             </tr>
             {% if user|has_group:"Coordinator" %}
-              {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão de oferta" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="academics:offer_delete" %}
+              {% include "components/_confirm_delete_modal.html" with title="Confirmar Exclusão de oferta" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="academics:offer_delete" %}
             {% endif %}
           {% empty %}
             <tr>
@@ -155,6 +155,6 @@
         </tbody>
       </table>
     </div>
-    {% include "_table_pagination.html" %}
+    {% include "components/_table_pagination.html" %}
   </div>
 {% endblock content %}

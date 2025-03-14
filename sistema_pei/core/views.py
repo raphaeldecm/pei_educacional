@@ -17,7 +17,7 @@ class HomeListView(
     model = Pei
     paginate_by = constants.DEFAULT_PAGE_SIZE
     filterset_class = PeiFilter
-    template_name = "pages/home.html"
+    template_name = "home.html"
 
     def get_queryset(self):
         queryset = Pei.objects.all()

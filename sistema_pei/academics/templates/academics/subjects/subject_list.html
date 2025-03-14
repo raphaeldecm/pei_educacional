@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "layouts/base.html" %}
 
 {% load static i18n %}
 {% load breadcrumb_item %}
@@ -20,7 +20,7 @@
         <input type="text"
                name="search"
                placeholder="Pesquisar..."
-               class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50"
+               class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50 placeholder:text-slate-500" 
                value="{{ request.GET.search }}" />
       </div>
       <div class="flex gap-[8px] flex-wrap">
@@ -30,7 +30,7 @@
                width="24px"
                height="24px" />
           <select name="courses"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-400 appearance-none bg-neutral-50">
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-500 appearance-none bg-neutral-50">
             <option value="default" selected disabled>Selecione o curso...</option>
             {% for course in filter.form.courses.field.queryset %}
               <option value="{{ course.id }}"
@@ -46,7 +46,7 @@
                width="24px"
                height="24px" />
           <select name="subject_type"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-400 appearance-none bg-neutral-50">
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
             <option value="default" selected disabled>Selecione a duração...</option>
             {% for key, value in filter.form.subject_type.field.choices %}
               <option value="{{ key }}"
@@ -125,7 +125,7 @@
                   </button>
                 </span>
               </td>
-              {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão da disciplina" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="academics:subject_delete" %}
+              {% include "components/_confirm_delete_modal.html" with title="Confirmar Exclusão da disciplina" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="academics:subject_delete" %}
             </tr>
           {% empty %}
             <tr>
@@ -135,6 +135,6 @@
         </tbody>
       </table>
     </div>
-    {% include "_table_pagination.html" %}
+    {% include "components/_table_pagination.html" %}
   </div>
 {% endblock content %}

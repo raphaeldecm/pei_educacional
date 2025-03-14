@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "layouts/base.html" %}
 
 {% load static i18n %}
 {% load breadcrumb_item %}
@@ -58,7 +58,7 @@
                height="24px" />
           <select name="campus"
                   id="campus"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-400 appearance-none bg-neutral-50">
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
             <option value="" selected disabled>Selecione o campus...</option>
             {% for campus in filter.form.campus.field.queryset %}
               <option value="{{ campus.id }}"
@@ -130,7 +130,7 @@
                   </button>
                 </span>
               </td>
-              {% include "_confirm_delete_modal.html" with title="Confirmar Exclusão de Docente" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="people:teacher_delete" %}
+              {% include "components/_confirm_delete_modal.html" with title="Confirmar Exclusão de Docente" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="people:teacher_delete" %}
             </tr>
           {% empty %}
             <tr>
@@ -140,7 +140,7 @@
         </tbody>
       </table>
     </div>
-    {% include "_table_pagination.html" %}
+    {% include "components/_table_pagination.html" %}
   </div>
 </div>
 {% endblock content %}
