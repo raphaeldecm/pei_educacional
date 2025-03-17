@@ -17,6 +17,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView,
 )
+from sistema_pei.core.api.views import SuapTokenValidateView
 from sistema_pei.core.views import (
     CreateSubjectPageView,
     DeleteSubjectView,
@@ -127,6 +128,7 @@ urlpatterns = [
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/token/verify/", TokenVerifyView.as_view(), name="token_verify"),
+    path("api/token/suap_token_validate/", SuapTokenValidateView.as_view(), name="suap_token_validate"),
     # Reload
     path("__reload__/", include("django_browser_reload.urls")),
     # Your stuff: custom urls includes go here
