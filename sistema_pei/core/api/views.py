@@ -20,7 +20,9 @@ class SuapTokenValidateView(APIView):
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        suap_jwt = serializer.validated_data["suap_token"]
+        suap_jwt = serializer.validated_data["token"]
+        suap_code = serializer.validated_data["code"]
+        print("Matrícula do usuário: ", suap_code)
 
         verify_response = requests.post(
             SUAP_VALIDATION_URL,
@@ -31,8 +33,8 @@ class SuapTokenValidateView(APIView):
         if verify_response.status_code != STATUS_CODE_OK:
             return Response({"error": "Token inválido ou expirado"}, status=401)
 
-        # Criar um JWT baseado no aluno (sem User)
         refresh = RefreshToken()
+        refresh["suap_code"] = suap_code
 
         return Response({
             "access": str(refresh.access_token),
