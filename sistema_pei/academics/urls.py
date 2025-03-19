@@ -1,20 +1,10 @@
 from django.urls import path
 
 from sistema_pei.academics import views
-from sistema_pei.academics.api.views import EnrollmentDataView
 
 app_name = "academics"
 urlpatterns = [
     path("dashboard/", views.AcademicsIndexView.as_view(), name="dashboard"),
-
-    # API
-    path(
-        "enrollment_data_update/",
-        EnrollmentDataView.as_view(),
-        name="enrollment-data-update",
-    ),
-
-    # Courses
     path(
         "course/list/",
         views.CourseListView.as_view(),

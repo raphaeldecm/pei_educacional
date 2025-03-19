@@ -12,15 +12,11 @@ from drf_spectacular.views import SpectacularAPIView
 from drf_spectacular.views import SpectacularSwaggerView
 from rest_framework.authtoken.views import obtain_auth_token
 from sistema_pei.people.views import activate_account, StudentCreateView
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-    TokenVerifyView,
-)
-from sistema_pei.core.api.views import SuapTokenValidateView
+
 from sistema_pei.core.views import (
     HomeListView,
 )
+
 
 urlpatterns = [
     path(
@@ -51,11 +47,6 @@ urlpatterns = [
     path("users/", include("sistema_pei.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     path("activate/<uidb64>/<token>/", activate_account, name="activate"),
-    # JWT
-    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-    path("api/token/verify/", TokenVerifyView.as_view(), name="token_verify"),
-    path("api/token/suap_token_validate/", SuapTokenValidateView.as_view(), name="suap_token_validate"),
     # Reload
     path("__reload__/", include("django_browser_reload.urls")),
     # Your stuff: custom urls includes go here
