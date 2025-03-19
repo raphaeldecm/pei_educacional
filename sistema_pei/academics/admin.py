@@ -25,7 +25,13 @@ class EnrollmentAdmin(admin.ModelAdmin):
 class OfferAdmin(admin.ModelAdmin):
     search_fields = ["iteraction_text"]
     readonly_fields = ["updated_by", "created_at"]
-    list_display = ["status", "subject", "year", "teacher"]
+    list_display = ["status", "subject", "year"]
+
+    @admin.display(
+        description="Professores",
+    )
+    def get_teachers(self, obj):
+        return ", ".join([teacher.name for teacher in obj.teachers.all()])
 
 
 admin.site.register(models.Subject, SubjectAdmin)

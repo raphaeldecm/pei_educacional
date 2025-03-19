@@ -1,0 +1,137 @@
+{% extends "layouts/base.html" %}
+
+{% load static i18n %}
+{% load breadcrumb_item %}
+
+{% block breadcrumb %}
+  {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
+  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-home-green.svg" url="academics:dashboard" %}
+  {% breadcrumb_item text="Cursos" icon="images/icons/icon-courses-green.svg" url="academics:course_list" %}
+  {% breadcrumb_item text="Criar Curso" icon="images/icons/icon-courses-green.svg" %}
+{% endblock breadcrumb %}
+{% block alerts %}
+  <div class="fixed p-4 top-20 flex flex-col gap-4">{% include "layouts/alerts.html" %}</div>
+{% endblock alerts %}
+{% block content %}
+  <div class="w-full">
+    <h1 class="text-[32px] font-medium mb-[38px]">Criar Curso</h1>
+    <form method="post" autocomplete="off">
+      {% csrf_token %}
+      <div class="flex items-center gap-[3%]">
+        <div class="flex-1">
+          <label for="{{ form.name.id_for_label }}" class="font-medium text-[18px]">Nome:</label>
+          <input type="text"
+                 name="{{ form.name.name }}"
+                 id="{{ form.name.id_for_label }}"
+                 placeholder="Digite o nome do curso..."
+                 class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+                 value="{{ form.name.value|default_if_none:'' }}" />
+        </div>
+      </div>
+      <div class="flex items-center gap-[3%] mt-[24px]">
+        <div class="flex-1">
+          <label for="{{ form.period.id_for_label }}" class="font-medium text-[18px]">Turno:</label>
+          <div class="relative w-full cursor-pointer mt-[16px]">
+            <img class="absolute top-[12px] right-[10px]"
+                 src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+                 width="24px"
+                 height="24px" />
+            <select name="{{ form.period.name }}"
+                    id="{{ form.period.id_for_label }}"
+                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
+              <option value="default" selected disabled>Selecione o turno...</option>
+              {% for key, value in form.period.field.choices %}
+                <option value="{{ key }}"
+                        {% if key == form.period.value %}selected{% endif %}>{{ value }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="flex-1">
+          <label for="{{ form.duration_type.id_for_label }}"
+                 class="font-medium text-[18px]">Duração:</label>
+          <div class="relative w-full cursor-pointer mt-[16px]">
+            <img class="absolute top-[12px] right-[10px]"
+                 src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+                 width="24px"
+                 height="24px" />
+            <select name="{{ form.duration_type.name }}"
+                    id="{{ form.duration_type.id_for_label }}"
+                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50"
+                    required>
+              <option value="default" selected disabled>Selecione a duração...</option>
+              {% for key, value in form.duration_type.field.choices %}
+                <option value="{{ key }}"
+                        {% if key == form.duration_type.value %}selected{% endif %}>{{ value }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center gap-[3%] mt-[24px]">
+        <div class="flex-1">
+          <div class="flex">
+            <label id="periods-label"
+                   for="{{ form.number_of_periods.id_for_label }}"
+                   class="font-medium text-[18px]">Qtd. Períodos:</label>
+          </div>
+          <input type="number"
+                 name="{{ form.number_of_periods.name }}"
+                 id="{{ form.number_of_periods.id_for_label }}"
+                 class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+                 value="{{ form.number_of_periods.value|default_if_none:'' }}"
+                 placeholder="Digite a quantidade de períodos..."
+                 min="1" />
+        </div>
+        <div class="flex-1">
+          <label for="{{ form.course_type.id_for_label }}"
+                 class="font-medium text-[18px]">Tipo:</label>
+          <div class="relative w-full cursor-pointer mt-[16px]">
+            <img class="absolute top-[12px] right-[10px]"
+                 src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+                 width="24px"
+                 height="24px" />
+            <select name="{{ form.course_type.name }}"
+                    id="{{ form.course_type.id_for_label }}"
+                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50"
+                    required>
+              <option value="default" selected disabled>Selecione o tipo...</option>
+              {% for key, value in form.course_type.field.choices %}
+                <option value="{{ key }}"
+                        {% if key == form.course_type.value %}selected{% endif %}>{{ value }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+      {% include "components/_save_back_edit_buttons.html" with link_to_back="academics:course_list" %}
+    </form>
+  </div>
+{% endblock content %}
+{% block inline_javascript %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const durationSelect = document.getElementById('{{ form.duration_type.id_for_label }}');
+      const periodsLabel = document.getElementById('periods-label');
+      const periodsInput = document.getElementById('{{ form.number_of_periods.id_for_label }}');
+
+      function updatePeriodsLabelAndValue() {
+        const selectedValue = durationSelect.value;
+        if (selectedValue === 'SEMESTER') {
+          periodsLabel.textContent = 'Qtd. de Semestres:';
+          periodsInput.value = 7;
+        } else if (selectedValue === 'YEAR') {
+          periodsLabel.textContent = 'Qtd. de Anos:';
+          periodsInput.value = 4;
+        } else {
+          periodsLabel.textContent = 'Qtd. Períodos:';
+          periodsInput.value = '';
+        }
+      }
+
+      updatePeriodsLabelAndValue();
+
+      durationSelect.addEventListener('change', updatePeriodsLabelAndValue);
+    });
+  </script>
+{% endblock inline_javascript %}

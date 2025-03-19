@@ -1,0 +1,339 @@
+{% extends "layouts/base.html" %}
+
+{% load static i18n %}
+{% load has_group %}
+{% load breadcrumb_item %}
+
+{% block breadcrumb %}
+  {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
+  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-home-green.svg" url="academics:dashboard" %}
+  {% breadcrumb_item text="PEIs" icon="images/icons/icon-pei.svg" url="educational_plan:pei_list" %}
+  {% breadcrumb_item text=title icon="images/icons/highlighter-green.svg" %}
+{% endblock breadcrumb %}
+{% block content %}
+  <div class="w-full">
+    <h1 class="text-[32px] font-medium mb-[38px]">
+      PEI: {{ object.enrollment.student.name }} - {{ object.enrollment.offer.subject.name }}
+    </h1>
+    <div class="mb-8">
+      <h2 class="text-[24px] font-medium">Dados Do Aluno:</h2>
+      <div class="mt-6 flex items-start gap-8">
+        <div class="flex flex-col justify-center items-center">
+          <div class="w-[148px] h-[148px] rounded-full bg-amber-600 flex justify-center overflow-hidden items-center">
+            <img src="{{ object.enrollment.student.image.url }}"
+                 class="w-full h-full object-cover"
+                 alt="Student Image" />
+          </div>
+        </div>
+        <div class="flex-1">
+          <div class="flex">
+            <div class="pr-[130px]">
+              <p class="text-slate-900 font-medium text-[18px] mb-[28px]">Nome completo</p>
+              <p class="text-slate-500 text-[16px] truncate">{{ object.enrollment.student.name }}</p>
+            </div>
+            <div class="">
+              <p class="text-slate-900 font-medium text-[18px] mb-[28px]">Curso</p>
+              <p class="text-slate-500 text-[16px] truncate">{{ object.enrollment.student.course.name }}</p>
+            </div>
+          </div>
+          <hr class="mt-6" />
+          <div class="flex gap-6">
+            <a href="{% url 'people:profile' object.enrollment.student.id %}"
+               class="w-max cursor-pointer flex items-center justify-center mt-6 gap-[10px] p-[10px] h-[44px] bg-green-500 rounded-[6px] text-neutral-50 hover:opacity-85">
+              <img src="{% static 'images/icons/icon-eye-white.svg' %}"
+                   alt=""
+                   width="24px"
+                   height="24px" />
+              <span>Visualizar perfil completo</span>
+            </a>
+            {% if user|has_group:"Coordinator" and object.status == 'FEEDBACK' %}
+              <a href="{% url 'educational_plan:pei_mark_completed' object.id %}"
+                 class="w-max cursor-pointer flex items-center justify-center mt-6 gap-[10px] p-[10px] h-[44px] bg-blue-600 rounded-[6px] text-neutral-50 hover:opacity-85">
+                <img src="{% static 'images/icons/icon-checked-white.svg' %}"
+                     alt=""
+                     width="24px"
+                     height="24px" />
+                <span>Marcar PEI como concluido</span>
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% if object.objective %}
+      <div>
+        <h2 class="text-[24px] font-medium">Objetivos Da Disciplina:</h2>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.objective }}</div>
+      </div>
+    {% endif %}
+    {% if object.adapted_objective %}
+      <div>
+        <h2 class="text-[24px] font-medium">Objetivos Adaptados:</h2>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.adapted_objective }}</div>
+      </div>
+    {% endif %}
+    {% if object.content %}
+      <div>
+        <h2 class="text-[24px] font-medium">Conteúdo programático:</h2>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.content }}</div>
+      </div>
+    {% endif %}
+    {% if object.adapted_content %}
+      <div>
+        <h2 class="text-[24px] font-medium">Conteúdos Adaptados:</h2>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.adapted_content }}</div>
+      </div>
+    {% endif %}
+    {% if object.methodology %}
+      <div>
+        <h2 class="text-[24px] font-medium">Metodologias:</h2>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.methodology }}</div>
+      </div>
+    {% endif %}
+    {% if object.adapted_methodology %}
+      <div>
+        <h2 class="text-[24px] font-medium">Metodologias adaptadas:</h2>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.adapted_methodology }}</div>
+      </div>
+    {% endif %}
+    {% if object.resources %}
+      <div>
+        <h2 class="text-[24px] font-medium">Recursos didáticos:</h2>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.resources }}</div>
+      </div>
+    {% endif %}
+    {% if object.adapted_resources %}
+      <div>
+        <h2 class="text-[24px] font-medium">Recursos didáticos adaptados:</h2>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.adapted_resources }}</div>
+      </div>
+    {% endif %}
+    {% if object.assessments %}
+      <div>
+        <h2 class="text-[24px] font-medium">Avaliações:</h2>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.assessments }}</div>
+      </div>
+    {% endif %}
+    {% if object.adapted_assessments %}
+      <div>
+        <h2 class="text-[24px] font-medium">Avaliações Adaptadas:</h2>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.adapted_assessments }}</div>
+      </div>
+    {% endif %}
+    {% if not object.objective and not object.adapted_objective and not object.content and not object.adapted_content and not object.methodology and not object.adapted_methodology and not object.resources and not object.adapted_resources and not object.assessments and not object.adapted_assessments %}
+      <p class="text-center text-[18px] pt-6 text-slate-500">Não há conteúdo preenchido</p>
+    {% endif %}
+    <hr class="mb-6" />
+    {% if object.academic_opinion_1 %}
+      <div>
+        <h2 class="text-[24px] font-medium">Parecer do 1º Bimestre:</h2>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.academic_opinion_1 }}</div>
+      </div>
+    {% endif %}
+    {% if object.academic_opinion_2 %}
+      <div>
+        <h2 class="text-[24px] font-medium">Parecer do 2º Bimestre:</h2>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.academic_opinion_2 }}</div>
+      </div>
+    {% endif %}
+    {% if object.enrollment.offer.subject.subject_type == "YEAR" %}
+      {% if object.academic_opinion_3 %}
+        <div>
+          <h2 class="text-[24px] font-medium">Parecer do 3º Bimestre:</h2>
+          <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.academic_opinion_3 }}</div>
+        </div>
+      {% endif %}
+      {% if object.academic_opinion_4 %}
+        <div>
+          <h2 class="text-[24px] font-medium">Parecer do 4º Bimestre:</h2>
+          <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.academic_opinion_4 }}</div>
+        </div>
+      {% endif %}
+    {% endif %}
+    {% if object.academic_opinion_final %}
+      <div>
+        <h2 class="text-[24px] font-medium">Parecer Final:</h2>
+        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.academic_opinion_final }}</div>
+      </div>
+    {% endif %}
+    {% if not object.academic_opinion_1 and not object.academic_opinion_2 and not object.academic_opinion_3 and not object.academic_opinion_4 and not object.academic_opinion_final %}
+      <p class="text-center text-[18px] pt-6 text-slate-500 mb-9">Não há parecer registrado.</p>
+    {% endif %}
+    {% if object.status == "COMPLETED" %}
+      <a href="{% url 'educational_plan:pei_export' object.pk %}"
+         target="_blank"
+         class="flex gap-3 text-slate-500 w-full border border-slate-200 py-4 justify-center rounded-lg cursor-pointer hover:bg-green-500 group hover:text-white hover:border-green-500 transition-all">
+        <img src="{% static 'images/icons/icon-copy.svg' %}"
+             alt=""
+             class="group-hover:filter group-hover:brightness-0 group-hover:invert"
+             width="24px"
+             height="24px" />
+        Exportar como PDF
+      </a>
+    {% endif %}
+    <div class="mt-20" id="comments">
+      <h2 class="text-[18px] font-medium">Comentários</h2>
+      <form method='post'
+            action="{% url 'educational_plan:pei_comment_create' object.pk %}"
+            class="mt-8 flex gap-4">
+        {% csrf_token %}
+        {% if user.teacher.photoAlt or user.teacher.photo %}
+          <div class="w-[80px] h-[80px] rounded-full overflow-hidden">
+            {% if user.teacher.photoAlt %}
+              <img src="{{ user.teacher.photoAlt }}"
+                  class="object-cover w-full h-full"
+                  alt="{{ user.teacher.full_name }}" />
+            {% else %}
+              <img src="{{ user.teacher.photo }}"
+                class="object-cover w-full h-full"
+                alt="{{ user.teacher.full_name }}" />
+            {% endif %}
+          </div>
+        {% else %}
+          <div class="bg-green-500/50 w-20 h-20 flex justify-center items-center rounded-full">
+            <i class="fas fa-solid fa-user fa-lg"></i>
+          </div>
+        {% endif %}
+        <div class="mb-4 col-span-2 flex-1">
+          <textarea name="text"
+                    required
+                    placeholder="Escreva um comentário aqui!"
+                    class="bg-transparent font-sans appearance-none border rounded-lg h-[177px] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"></textarea>
+          <button class="flex gap-3 text-slate-500 w-full border border-slate-200 py-4 justify-center items-center rounded-lg cursor-pointer hover:bg-green-500 group hover:text-white hover:border-green-500 transition-all mt-4">
+            <img src="{% static 'images/icons/icon-edit-element.svg' %}"
+                 alt=""
+                 class="group-hover:filter group-hover:brightness-0 group-hover:invert"
+                 width="24px"
+                 height="24px" />
+            Enviar comentário
+          </button>
+        </div>
+      </form>
+    </div>
+    <hr class="my-8" />
+    <div class="flex flex-col gap-8">
+      {% comment %} Comentário {% endcomment %}
+      {% for comment in object.comments.all %}
+        <div class="p-10 pb-6 border border-slate-200 rounded-lg flex gap-6">
+          {% if comment.created_by.teacher.photo %}
+            <div class="w-[80px] h-[80px] rounded-full overflow-hidden">
+              <img src="{{ comment.created_by.teacher.photo }}"
+                   class="object-cover w-full h-full"
+                   alt="{{ comment.created_by.teacher.full_name }}" />
+            </div>
+          {% else %}
+            <div class="bg-green-500/50 w-20 h-20 flex justify-center items-center rounded-full">
+              <i class="fas fa-solid fa-user fa-lg"></i>
+            </div>
+          {% endif %}
+          <div class="text-[16px] flex-1 flex flex-col gap-4">
+            <div class="text-lg text-black flex justify-start items-center gap-2">
+              <p class="font-medium">{{ comment.created_by.name }}</p>
+              {% if comment.created_by|has_group:"Coordinator" %}
+                <span class="flex text-[11px] h-[21px] items-center justify-center px-[6px] rounded-md font-bold border border-green-300 text-green-600 bg-green-100">COORDENADOR</span>
+              {% elif comment.created_by|has_group:"Teacher" %}
+                <span class="flex text-[11px] h-[21px] items-center justify-center px-[6px] rounded-md font-bold border border-blue-300 text-blue-600 bg-blue-100">DOCENTE</span>
+              {% elif comment.created_by|has_group:"Assistant" %}
+                <span class="flex text-[11px] h-[21px] items-center justify-center px-[6px] rounded-md font-bold border border-yellow-300 text-yellow-600 bg-yellow-100">ASSISTENTE</span>
+              {% endif %}
+            </div>
+            <p class="font-medium">{{ comment.date|date:"d/m/Y \à\s H\h" }}</p>
+            <pre class="text-justify text-wrap font-poppins ">{{comment.text}}
+          </pre>
+            <div class="flex justify-end gap-6">
+              {% if comment.created_by == request.user %}
+                <a href="{% url 'educational_plan:pei_comment_delete' comment.pk %}"
+                   class="p-2 cursor-pointer transition-all text-slate-500 hover:text-red-600 hover:scale-105">Apagar</a>
+              {% endif %}
+              <button id="replyButton-{{ comment.pk }}"
+                      class="p-2 transition-all text-slate-500 hover:text-green-500 hover:scale-105">
+                Responder
+              </button>
+            </div>
+            <form id="replyForm-{{ comment.pk }}"
+                  method='post'
+                  action="{% url 'educational_plan:pei_answer_create' comment.pk %}"
+                  class="mt-8 flex gap-4 hidden">
+              {% csrf_token %}
+              {% if user.teacher.photo %}
+                <div class="w-[80px] h-[80px] rounded-full overflow-hidden">
+                  <img src="{{ user.teacher.photo }}"
+                       class="object-cover w-full h-full"
+                       alt="{{ user.teacher.full_name }}" />
+                </div>
+              {% else %}
+                <div class="bg-green-500/50 w-20 h-20 flex justify-center items-center rounded-full">
+                  <i class="fas fa-solid fa-user fa-lg"></i>
+                </div>
+              {% endif %}
+              <div class="mb-4 col-span-2 flex-1">
+                <textarea name="text"
+                          required
+                          placeholder="Responda a este comentário aqui!"
+                          class="bg-transparent font-sans appearance-none border rounded-lg h-[177px] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"></textarea>
+                <button class="flex gap-3 text-slate-500 w-full border border-slate-200 py-4 justify-center items-center rounded-lg cursor-pointer hover:bg-green-500 group hover:text-white hover:border-green-500 transition-all mt-4">
+                  <img src="{% static 'images/icons/icon-edit-element.svg' %}"
+                       alt=""
+                       class="group-hover:filter group-hover:brightness-0 group-hover:invert"
+                       width="24px"
+                       height="24px" />
+                  Enviar resposta
+                </button>
+              </div>
+            </form>
+            {% comment %} Subcomentários {% endcomment %}
+            {% for answer in comment.answers.all %}
+              <div class="flex flex-col gap-8">
+                <div class="p-10 border border-slate-200 rounded-lg flex gap-6">
+                  {% if answer.created_by.teacher.photo %}
+                    <div class="w-[80px] h-[80px] rounded-full overflow-hidden">
+                      <img src="{{ answer.created_by.teacher.photo }}"
+                           class="object-cover w-full h-full"
+                           alt="{{ answer.created_by.teacher.full_name }}" />
+                    </div>
+                  {% else %}
+                    <div class="bg-green-500/50 w-20 h-20 flex justify-center items-center rounded-full">
+                      <i class="fas fa-solid fa-user fa-lg"></i>
+                    </div>
+                  {% endif %}
+                  <div class="text-[16px] flex-1 flex flex-col gap-4">
+                    <div class="text-lg text-black flex justify-start items-center gap-2">
+                      <p class="font-medium">{{ answer.created_by.name }}</p>
+                      {% if answer.created_by|has_group:"Coordinator" %}
+                        <span class="flex text-[11px] h-[21px] items-center justify-center px-[6px] rounded-md font-bold border border-green-300 text-green-600 bg-green-100">COORDENADOR</span>
+                      {% elif answer.created_by|has_group:"Teacher" %}
+                        <span class="flex text-[11px] h-[21px] items-center justify-center px-[6px] rounded-md font-bold border border-blue-300 text-blue-600 bg-blue-100">DOCENTE</span>
+                      {% elif answer.created_by|has_group:"Assistant" %}
+                        <span class="flex text-[11px] h-[21px] items-center justify-center px-[6px] rounded-md font-bold border border-yellow-300 text-yellow-600 bg-yellow-100">ASSISTENTE</span>
+                      {% endif %}
+                    </div>
+                    <p class="font-medium">{{ answer.date|date:"d/m/Y \à\s H\h" }}</p>
+                    <pre class="text-justify text-wrap font-poppins ">{{answer.text}}
+                  </pre>
+                    <div class="flex justify-end gap-6">
+                      {% if answer.created_by == request.user %}
+                        <a href="{% url 'educational_plan:pei_answer_delete' answer.pk %}"
+                           class="p-2 cursor-pointer transition-all text-slate-500 hover:text-red-600 hover:scale-105">Apagar</a>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock content %}
+{% block inline_javascript %}
+  <script>
+    document.querySelectorAll("[id^='replyButton']").forEach(button => {
+      button.addEventListener('click', function() {
+        const commentId = this.id.split('-')[1];
+        const form = document.getElementById(`replyForm-${commentId}`);
+        form.classList.toggle('hidden');
+      });
+    });
+  </script>
+{% endblock inline_javascript %}

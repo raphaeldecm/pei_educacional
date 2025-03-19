@@ -1,4 +1,3 @@
-from django.contrib.auth.decorators import login_required
 from django.urls import path
 
 from sistema_pei.academics import views
@@ -7,58 +6,108 @@ app_name = "academics"
 urlpatterns = [
     path("dashboard/", views.AcademicsIndexView.as_view(), name="dashboard"),
     path(
-        "courses/",
-        views.CoursesPageView.as_view(),
-        name="courses",
+        "course/list/",
+        views.CourseListView.as_view(),
+        name="course_list",
     ),
     path(
-        "courses/create",
-        login_required(views.CreateCoursesPageView.as_view()),
-        name="create_course",
+        "course/create/",
+        views.CourseCreateView.as_view(),
+        name="course_create",
     ),
     path(
-        "courses/edit/<int:course_id>",
-        login_required(views.EditCoursePageView.as_view()),
-        name="edit_course",
+        "course/import/",
+        views.CourseImportView.as_view(),
+        name="course_import",
     ),
     path(
-        "courses/delete/<int:course_id>",
-        login_required(views.DeleteCourseView.as_view()),
-        name="delete_course",
+        "course/update/<int:pk>/",
+        views.CourseUpdateView.as_view(),
+        name="course_update",
     ),
     path(
-        "offers/<int:course_id>",
-        login_required(views.OffersPageView.as_view()),
-        name="offers",
+        "course/delete/<int:pk>/",
+        views.CourseDeleteView.as_view(),
+        name="course_delete",
     ),
     path(
-        "offers/create",
-        login_required(views.CreateOfferPageView.as_view()),
-        name="create_offer",
+        "course/detail/<int:pk>/",
+        views.CourseDetailView.as_view(),
+        name="course_detail",
     ),
     path(
-        "offers/edit/<int:offer_id>",
-        login_required(views.EditOfferPageView.as_view()),
-        name="edit_offer",
+        "subjects/list/",
+        views.SubjectsPageView.as_view(),
+        name="subject_list",
     ),
     path(
-        "offers/delete/<int:offer_id>",
-        login_required(views.DeleteOfferView.as_view()),
-        name="delete_offer",
+        "subjects/create/",
+        views.CreateSubjectPageView.as_view(),
+        name="subject_create",
     ),
     path(
-        "offers/details/<int:course_id>/<int:offer_id>",
-        login_required(views.OfferDetailsPageView.as_view()),
-        name="offer_details",
+        "subject/import/",
+        views.SubjectImportView.as_view(),
+        name="subject_import",
     ),
     path(
-        "offers/remove_student_from_offer/<int:offer_id>/<int:student_id>",
-        login_required(views.RemoveStudentFromOfferView.as_view()),
+        "subjects/update/<int:pk>",
+        views.EditSubjectPageView.as_view(),
+        name="subject_update",
+    ),
+    path(
+        "subjects/delete/<int:pk>",
+        views.SubjectDeleteView.as_view(),
+        name="subject_delete",
+    ),
+    path(
+        "subjects/remove_student_from_subject/<int:subject_id>/<int:student_id>",
+        views.RemoveStudentFromSubjectView.as_view(),
+        name="remove_student_from_subject",
+    ),
+    path(
+        "subjects/detail/<int:pk>/",
+        views.SubjectDetailView.as_view(),
+        name="subject_detail",
+    ),
+    path(
+        "offers/list/",
+        views.OfferListView.as_view(),
+        name="offer_list",
+    ),
+    path(
+        "offers/create/",
+        views.OfferCreateView.as_view(),
+        name="offer_create",
+    ),
+    path(
+        "offers/update/<int:pk>/",
+        views.OfferUpdateView.as_view(),
+        name="offer_update",
+    ),
+    path(
+        "offers/delete/<int:pk>/",
+        views.OfferDeleteView.as_view(),
+        name="offer_delete",
+    ),
+    path(
+        "offers/detail/<int:pk>/",
+        views.OfferDetailView.as_view(),
+        name="offer_detail",
+    ),
+    path(
+        "offers/remove_student_from_offer/<int:offer_id>/<int:student_id>/",
+        views.RemoveStudentFromOfferView.as_view(),
         name="remove_student_from_offer",
     ),
     path(
-        "offers/add_student_to_offer/<int:offer_id>",
-        login_required(views.AddStudentToOfferView.as_view()),
+        "offers/add_student_to_offer/<int:pk>/",
+        views.AddStudentToOfferView.as_view(),
         name="add_student_to_offer",
+    ),
+    path(
+        "offers/get_subjects_by_course_id/<int:pk>/",
+        views.GetSubjectsByCourseView.as_view(),
+        name="get_subjects_by_course",
     ),
 ]

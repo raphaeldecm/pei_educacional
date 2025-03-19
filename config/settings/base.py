@@ -93,7 +93,7 @@ LOCAL_APPS = [
     "sistema_pei.academics",
     "sistema_pei.people",
     "sistema_pei.educational_plan",
-    "suap_backend",
+    "sistema_pei.suap_backend",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -160,6 +160,7 @@ MIDDLEWARE = [
     "django_browser_reload.middleware.BrowserReloadMiddleware",
     "allauth.account.middleware.AccountMiddleware",
     "social_django.middleware.SocialAuthExceptionMiddleware",
+    "sistema_pei.users.middleware.GroupRedirectMiddleware",
 ]
 
 # STATIC
@@ -208,6 +209,7 @@ TEMPLATES = [
                 "sistema_pei.users.context_processors.allauth_settings",
                 "social_django.context_processors.backends",
                 "social_django.context_processors.login_redirect",
+                "sistema_pei.people.context_processors.notifications",
             ],
         },
     },
@@ -241,11 +243,15 @@ EMAIL_BACKEND = env(
     "DJANGO_EMAIL_BACKEND",
     default="django.core.mail.backends.smtp.EmailBackend",
 )
-
+DEFAULT_FROM_EMAIL = env(
+    "DJANGO_DEFAULT_FROM_EMAIL",
+    default="PEI <noreply@ifrn.edu.br>",
+)
 EMAIL_HOST = env("DJANGO_EMAIL_HOST", default="smtp.gmail.com")
 EMAIL_PORT = env("DJANGO_EMAIL_PORT", default=587)
 EMAIL_USE_SSL = env("DJANGO_EMAIL_USE_SSL", default=False)
 EMAIL_USE_TLS = env("DJANGO_EMAIL_USE_TLS", default=True)
+SERVER_EMAIL = env("DJANGO_SERVER_EMAIL", default=DEFAULT_FROM_EMAIL)
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-timeout
 EMAIL_TIMEOUT = 5
@@ -277,7 +283,8 @@ SOCIAL_AUTH_PIPELINE = (
     "social_core.pipeline.social_auth.associate_user",
     "social_core.pipeline.social_auth.load_extra_data",
     "social_core.pipeline.user.user_details",
-    "sistema_pei.suap_backend.pipeline.verifica_grupo_usuario",
+    "sistema_pei.suap_backend.pipeline.record_user_data",  # Registra informações do professor
+    # "sistema_pei.suap_backend.pipeline.verifica_grupo_usuario",
 )
 
 # DJANGO SOCIALL LOGIN
@@ -356,7 +363,13 @@ ACCOUNT_USERNAME_REQUIRED = False
 # https://docs.allauth.org/en/latest/account/configuration.html
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 # https://docs.allauth.org/en/latest/account/configuration.html
-ACCOUNT_EMAIL_VERIFICATION = "none"  # Values: "mandatory", "optional", "none"
+ACCOUNT_EMAIL_VERIFICATION = "optional"  # Values: "mandatory", "optional", "none"
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True  # Evita login automático após a confirmação
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
+ACCOUNT_UNIQUE_EMAIL = True
+# Redireciona para a redefinição de senha após a confirmação do email
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = "/"
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = "/accounts/login/"
 # https://docs.allauth.org/en/latest/account/configuration.html
 ACCOUNT_ADAPTER = "sistema_pei.users.adapters.AccountAdapter"
 # https://docs.allauth.org/en/latest/account/forms.html

@@ -13,7 +13,9 @@ SECRET_KEY = env(
     default="BGS9KbnTSEYXiRZq0xkie2Xiu81XpjK7EM8wjcaOYkwY0Aa3e1ay4cgMs4aYK4FY",
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]  # noqa: S104
+ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", "pei-hmg.nadic.ifrn.edu.br"]  # noqa: S104
+
+CSRF_TRUSTED_ORIGINS = ["https://pei-hmg.nadic.ifrn.edu.br"]
 
 # CACHES
 # ------------------------------------------------------------------------------
@@ -31,17 +33,6 @@ CACHES = {
 EMAIL_HOST_USER = env("DJANGO_EMAIL_HOST_USER", default="nao-responder@mail.com")
 EMAIL_HOST_PASSWORD = env("DJANGO_EMAIL_HOST_PASSWORD", default="")
 
-# django-debug-toolbar
-# ------------------------------------------------------------------------------
-# https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#prerequisites
-# INSTALLED_APPS += ["debug_toolbar"]
-# https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#middleware
-# MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
-# https://django-debug-toolbar.readthedocs.io/en/latest/configuration.html#debug-toolbar-config
-# DEBUG_TOOLBAR_CONFIG = {
-#     "DISABLE_PANELS": ["debug_toolbar.panels.redirects.RedirectsPanel"],
-#     "SHOW_TEMPLATE_CONTEXT": True,
-# }
 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#internal-ips
 INTERNAL_IPS = ["127.0.0.1", "10.0.2.2"]
 if env("USE_DOCKER") == "yes":

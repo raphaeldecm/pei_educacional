@@ -2,6 +2,7 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from sistema_pei.academics import managers
 from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.core.constants import SMALL_CHAR_FIELD_NAME_LENGTH
 from sistema_pei.core.models import BaseModel
@@ -38,7 +39,6 @@ class Course(BaseModel):
 
     number_of_periods = models.PositiveSmallIntegerField(
         verbose_name=_("Número de períodos/Anos"),
-        default=1,
         validators=[
             MinValueValidator(1),
         ],
@@ -49,7 +49,7 @@ class Course(BaseModel):
         verbose_name_plural = _("Cursos")
 
     def __str__(self):
-        return self.name + " - " + self.period
+        return self.name + " - " + self.get_period_display()
 
 
 class Subject(BaseModel):
@@ -68,6 +68,26 @@ class Subject(BaseModel):
         verbose_name=_("Cursos"),
         related_name="subjects",
     )
+    objective = models.TextField(
+        verbose_name=_("Objetivos"),
+        blank=True,
+    )
+    content = models.TextField(
+        verbose_name=_("Conteúdo"),
+        blank=True,
+    )
+    methodology = models.TextField(
+        verbose_name=_("Metodologia"),
+        blank=True,
+    )
+    resources = models.TextField(
+        verbose_name=("Recursos"),
+        blank=True,
+    )
+    assessments = models.TextField(
+        verbose_name=_("Avaliações"),
+        blank=True,
+    )
 
     class Meta:
         verbose_name = _("Disciplina")
@@ -81,6 +101,10 @@ class Offer(BaseModel):
     class OfferStatus(models.TextChoices):
         OPEN = "Aberta", "Aberta"
         CLOSED = "Fechada", "Fechada"
+
+    class Semester(models.IntegerChoices):
+        FIRST = 1, _("1º Semestre")
+        SECOND = 2, _("2º Semestre")
 
     status = models.CharField(
         verbose_name=_("Situação"),
@@ -100,13 +124,19 @@ class Offer(BaseModel):
         on_delete=models.PROTECT,
         related_name="courses",
     )
-    teacher = models.ForeignKey(
+    teachers = models.ManyToManyField(
         Teacher,
         verbose_name=_("Professor"),
-        on_delete=models.PROTECT,
         related_name="offers",
     )
-    year = models.PositiveSmallIntegerField(verbose_name=_("Ano referência"))
+
+    year = models.PositiveSmallIntegerField(verbose_name=_("Ano referência do período letivo"))
+    semester = models.PositiveSmallIntegerField(
+        verbose_name=_("Semestre referência do período letivo"),
+        choices=Semester.choices,
+    )
+
+    objects = managers.OfferManager()
 
     class Meta:
         verbose_name = _("Oferta")
@@ -116,12 +146,12 @@ class Offer(BaseModel):
         return self.enrollments.count()
 
     def __str__(self):
-        return self.subject.name + " - " + self.teacher.name
+        return self.subject.name
 
 
 class Enrollment(BaseModel):
     offer = models.ForeignKey(
-        "academics.Offer",
+        Offer,
         verbose_name=_("Oferta"),
         on_delete=models.PROTECT,
         related_name="enrollments",
@@ -164,7 +194,7 @@ class Enrollment(BaseModel):
         blank=True,
     )
 
-    YearSemesterReference = models.IntegerField(_("Semestre/Ano de referência"))
+    YearSemesterReference = models.IntegerField(_("Cursado no semestre/ano do curso"))
 
     class Meta:
         unique_together = ("offer", "student")

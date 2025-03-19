@@ -1,10 +1,15 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth import models
 from django.db import models
+from django.db import transaction
 from django.utils.translation import gettext_lazy as _
+from multiselectfield import MultiSelectField
 
 from sistema_pei.core import constants
 from sistema_pei.core.models import BaseModel
 from sistema_pei.core.models import get_sentinel_user
+from sistema_pei.users.decorators import profile
+from sistema_pei.users.models import User
 
 User = get_user_model()
 
@@ -50,7 +55,15 @@ class Person(BaseModel):
         return self.name
 
 
+@profile
 class Teacher(Person):
+    user = models.OneToOneField(
+        User,
+        verbose_name=_("Usuário"),
+        related_name="teacher",
+        null=True,
+        on_delete=models.SET_NULL,
+    )
     campus = models.ForeignKey(
         Campus,
         on_delete=models.SET_NULL,
@@ -58,10 +71,16 @@ class Teacher(Person):
         null=True,
         related_name="teachers",
     )
-    photo = models.ImageField(
-        upload_to="teachers",
+    photo = models.URLField(
         verbose_name=_("Foto"),
         blank=True,
+        max_length=constants.URL_LENGTH,
+    )
+    photoAlt = models.ImageField(
+        upload_to="teachers",
+        blank=True,
+        null=True,
+        verbose_name=_("Foto alternativa")
     )
     code = models.CharField(
         verbose_name=_("Matrícula"),
@@ -77,7 +96,23 @@ class Teacher(Person):
     def __str__(self):
         return self.name
 
+    @transaction.atomic
+    def save(self, **kwargs):
+        if self.user:
+            self.user.is_active = True
+            self.user.save(update_fields=["is_active"])
 
+        super().save(**kwargs)
+
+    @transaction.atomic
+    def delete(self, **kwargs):
+        if self.user_id:
+            self.user.is_active = False
+            self.user.save(update_fields=["is_active"])
+        return super().delete(**kwargs)
+
+
+@profile
 class Responsible(Person):
     class Meta:
         verbose_name = _("Responsável")
@@ -127,7 +162,7 @@ class Student(Person):
     )
 
     abilities = models.TextField(
-        verbose_name=_("Conhecimentos, Habilidades,Capacidades e Interesses"),
+        verbose_name=_("Conhecimentos, Habilidades, Capacidades e Interesses"),
         blank=True,
     )
 
@@ -152,9 +187,10 @@ class Student(Person):
         verbose_name=_("Período de Referência"),
     )
 
-    sectors = models.ManyToManyField(
-        "users.Sector",
+    sectors = MultiSelectField(
+        choices=User.Sector.choices,
         verbose_name=_("Setores"),
+        blank=True,
     )
 
     class Meta:
@@ -202,6 +238,12 @@ class Notification(BaseModel):
         verbose_name=_("Notification Type"),
         choices=Type.choices,
         max_length=constants.SMALL_CHAR_FIELD_NAME_LENGTH,
+    )
+    action = models.CharField(
+        verbose_name=_("Link de ação ao clicar"),
+        max_length=constants.SMALL_CHAR_FIELD_NAME_LENGTH,
+        null=True,
+        blank=True,
     )
 
     def __str__(self) -> str:

@@ -19,19 +19,7 @@ from rest_framework_simplejwt.views import (
 )
 from sistema_pei.core.api.views import SuapTokenValidateView
 from sistema_pei.core.views import (
-    CreateSubjectPageView,
-    DeleteSubjectView,
-    EditSubjectPageView,
-    HomePageView,
-    RemoveStudentFromSubjectView,
-    ProfilePageView,
-    SubjectsPageView,
-    UpdateStudentGradesView,
-    UsersPageView,
-    EditHistoricPersonalDataView,
-    EditPersonalDataView,
-    UploadStudentFilesView,
-    DeletePersonalFilesView,
+    HomeListView,
 )
 
 urlpatterns = [
@@ -41,7 +29,7 @@ urlpatterns = [
     ),
     path(
         "",
-        login_required(HomePageView.as_view()),
+        login_required(HomeListView.as_view()),
         name="home",
     ),
     path(
@@ -49,68 +37,12 @@ urlpatterns = [
         include("sistema_pei.academics.urls", namespace="academics"),
     ),
     path(
-        "users/",
-        login_required(UsersPageView.as_view()),
-        name="users",
-    ),
-    path(
-        "profile/<int:student_id>",
-        login_required(ProfilePageView.as_view()),
-        name="profile",
-    ),
-    path(
-        "profile/<int:student_id>/edit_personal_data/",
-        login_required(EditPersonalDataView.as_view()),
-        name="edit_personal_data",
-    ),
-    path(
-        "profile/<int:student_id>/update_student_grades/<int:enrollment_id>",
-        login_required(UpdateStudentGradesView.as_view()),
-        name="update_student_grades",
-    ),
-    path(
-        "profile/<int:student_id>/edit_historic_data/",
-        login_required(EditHistoricPersonalDataView.as_view()),
-        name="edit_personal_historic_data",
-    ),
-    path(
-        "profile/<int:student_id>/upload_files/",
-        login_required(UploadStudentFilesView.as_view()),
-        name="upload_files",
-    ),
-    path(
-        "profile/<int:student_id>/delete_file/",
-        login_required(DeletePersonalFilesView.as_view()),
-        name="delete_personal_file",
-    ),
-    path(
-        "subjects/delete/<int:subject_id>",
-        login_required(DeleteSubjectView.as_view()),
-        name="delete_subject",
-    ),
-    path(
-        "subjects/<int:course_id>",
-        login_required(SubjectsPageView.as_view()),
-        name="subjects",
-    ),
-    path(
-        "subjects/create/<int:course_id>",
-        login_required(CreateSubjectPageView.as_view()),
-        name="create_subject",
-    ),
-    path(
-        "subjects/edit/<int:subject_id>",
-        login_required(EditSubjectPageView.as_view()),
-        name="edit_subject",
-    ),
-    path(
-        "subjects/remove_student_from_subject/<int:subject_id>/<int:student_id>",
-        login_required(RemoveStudentFromSubjectView.as_view()),
-        name="remove_student_from_subject",
+        "educational_plan/",
+        include("sistema_pei.educational_plan.urls", namespace="educational_plan"),
     ),
     path(
         "about/",
-        TemplateView.as_view(template_name="pages/about.html"),
+        TemplateView.as_view(template_name="about.html"),
         name="about",
     ),
     # Django Admin, use {% url 'admin:index' %}
@@ -119,11 +51,6 @@ urlpatterns = [
     path("users/", include("sistema_pei.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     path("activate/<uidb64>/<token>/", activate_account, name="activate"),
-    path(
-        "student/create/",
-        login_required(StudentCreateView.as_view()),
-        name="student_create",
-    ),
     # JWT
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
@@ -134,7 +61,10 @@ urlpatterns = [
     # Your stuff: custom urls includes go here
     # ...
     path("social/", include("social_django.urls", namespace="social")),
-    path("suap_backend/", include("suap_backend.urls", namespace="suap_login")),
+    path(
+        "suap_backend/",
+        include("sistema_pei.suap_backend.urls", namespace="suap_login"),
+    ),
     # Media files
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
 ]

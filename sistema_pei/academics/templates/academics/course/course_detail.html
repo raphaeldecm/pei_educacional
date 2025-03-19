@@ -1,0 +1,50 @@
+{% extends "layouts/base.html" %}
+
+{% load static i18n %}
+{% load breadcrumb_item %}
+
+{% block breadcrumb %}
+  {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
+  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-home-green.svg" url="academics:dashboard" %}
+  {% breadcrumb_item text="Cursos" icon="images/icons/icon-courses-green.svg" url="academics:course_list" %}
+  {% breadcrumb_item text=title icon="images/icons/icon-courses-green.svg" %}
+{% endblock breadcrumb %}
+{% block content %}
+  <div class="w-full">
+    <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}: {{ course.name }}</h1>
+    <div class="mt-[53px] w-full h-max p-8 overflow-x-auto border border-slate-300 rounded-lg">
+      <div class="flex flex-col">
+        <div class="flex gap-4">
+          <p class="font-semibold text-[18px]">Nome:</p>
+          {{ object.name }}
+        </div>
+        <div class="flex gap-4">
+          <p class="font-semibold text-[18px]">Turno:</p>
+          {{ object.get_period_display }}
+        </div>
+        <div class="flex gap-4">
+          <p class="font-semibold text-[18px]">Duração:</p>
+          {{ object.get_duration_type_display }}
+        </div>
+        <div class="flex gap-4">
+          <p class="font-semibold text-[18px]">Períodos:</p>
+          {{ object.number_of_periods }}
+        </div>
+      </div>
+    </div>
+    <p class="font-semibold mb-4 mt-[38px]">Disciplinas</p>
+    <div class="overflow-y-auto h-[253px] mb-[38px]">
+      {% for subject in object.subjects.all %}
+        <div class="flex items-center w-full h-max overflow-x-auto border border-slate-300 rounded-lg mb-4 px-8 p-2 gap-2">
+          <p class="text-slate-900 font-bold text-[18px]">Nome:</p>
+          <p class="text-slate-900 font-regular text-[18px]">{{ subject.name }}</p>
+          <p class="text-slate-900 font-bold text-[18px]">Duração:</p>
+          <p class="text-slate-900 font-regular text-[18px]">{{ subject.get_subject_type_display }}</p>
+        </div>
+      {% empty %}
+        <p class="text-slate-900 font-regular text-[18px]">Nenhuma disciplina cadastrada para este curso.</p>
+      {% endfor %}
+    </div>
+    {% include "components/_save_back_edit_buttons.html" with link_to_back="academics:course_list" edit_url="academics:course_update" %}
+  </div>
+{% endblock content %}

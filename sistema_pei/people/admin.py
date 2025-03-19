@@ -12,10 +12,28 @@ class CampusAdmin(admin.ModelAdmin):
     list_display = ["name", "abbreviation"]
 
 
+@admin.register(models.Teacher)
 class TeacherAdmin(admin.ModelAdmin):
-    search_fields = ["name"]
-    readonly_fields = ["updated_by", "created_at"]
-    list_display = ["name", "email", "campus"]
+    list_display = ("name", "code", "campus", "email", "user", "is_active")
+    search_fields = ("name", "code", "email")
+    list_filter = ("campus",)
+    readonly_fields = ()
+
+    @admin.display(
+        description="Usuário Ativo",
+        boolean=True,
+    )
+    def is_active(self, obj):
+        return obj.user.is_active if obj.user else False
+
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": ("name", "email", "code", "campus", "photo", "user"),
+            },
+        ),
+    )
 
 
 class SpecificNecessitieAdmin(admin.ModelAdmin):
@@ -49,7 +67,6 @@ class NotificationAdmin(admin.ModelAdmin):
 
 
 admin.site.register(models.Campus, CampusAdmin)
-admin.site.register(models.Teacher, TeacherAdmin)
 admin.site.register(models.SpecificNecessitie, SpecificNecessitieAdmin)
 admin.site.register(models.Student, StudentAdmin)
 admin.site.register(models.StudentFile, StudentFileAdmin)

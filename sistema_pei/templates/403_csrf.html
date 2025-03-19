@@ -1,4 +1,6 @@
-{% extends "base.html" %}
+{% extends "layouts/base.html" %}
+
+{% load i18n %}
 
 {% block title %}
   Forbidden (403)
@@ -9,7 +11,7 @@
     {% if exception %}
       {{ exception }}
     {% else %}
-      You're not allowed to access this page.
+      {% translate "You're not allowed to access this page" %}
     {% endif %}
   </p>
 {% endblock content %}

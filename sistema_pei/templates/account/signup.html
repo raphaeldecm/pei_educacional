@@ -3,25 +3,61 @@
 {% load i18n %}
 {% load crispy_forms_tags %}
 
-{% block head_title %}
-  {% translate "Signup" %}
-{% endblock head_title %}
 {% block inner %}
-  <h1>{% translate "Sign Up" %}</h1>
-  <p>
-    {% blocktranslate %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktranslate %}
-  </p>
-  <form class="signup"
-        id="signup_form"
-        method="post"
-        action="{% url 'account_signup' %}">
-    {% csrf_token %}
-    {{ form|crispy }}
-    {% if redirect_field_value %}
-      <input type="hidden"
-             name="{{ redirect_field_name }}"
-             value="{{ redirect_field_value }}" />
-    {% endif %}
-    <button class="btn btn-primary" type="submit">{% translate "Sign Up" %} »</button>
-  </form>
+  <div class="flex flex-col gap-10 w-full">
+    <section>
+      <h1 class="items-start font-sans font-bold text-slate-900">{% translate "Signup" %}</h1>
+      {% if user.is_authenticated %}
+        {% include "account/snippets/already_logged_in.html" %}
+      {% endif %}
+    </section>
+    <form class="signup"
+          id="signup_form"
+          method="post"
+          action="{% url 'account_signup' %}">
+      {% csrf_token %}
+      <label for="{{ form.name.id_for_label }}"
+             class="block text-gray-700 text-sm font-bold mb-2 pb-2">Nome</label>
+      <input type="text"
+             required
+             name="{{ form.name.name }}"
+             id="{{ form.name.id_for_label }}"
+             placeholder="Digite seu nome aqui"
+             class="bg-transparent font-sans appearance-none border rounded-lg w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500 mb-4" />
+      <label for="{{ form.email.id_for_label }}"
+             class="block text-gray-700 text-sm font-bold mb-2 pb-2">E-mail</label>
+      <input type="email"
+             required
+             name="{{ form.email.name }}"
+             id="{{ form.email.id_for_label }}"
+             placeholder="Digite seu email aqui"
+             class="bg-transparent font-sans appearance-none border rounded-lg w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500 mb-4" />
+      <label for="{{ form.password1.id_for_label }}"
+             class="block text-gray-700 text-sm font-bold mb-2 pb-2">Senha</label>
+      <input type="password"
+             required
+             name="{{ form.password1.name }}"
+             id="{{ form.password1.id }}"
+             placeholder="Digite sua senha aqui"
+             class="bg-transparent font-sans appearance-none border rounded-lg w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500 mb-4" />
+      <label for="{{ form.password2.id_for_label }}"
+             class="block text-gray-700 text-sm font-bold mb-2 pb-2">Confirmação de senha</label>
+      <input type="password"
+             required
+             name="{{ form.password2.name }}"
+             id="{{ form.password2.id_for_label }}"
+             placeholder="Digite a confirmação da sua senha"
+             class="bg-transparent font-sans appearance-none border rounded-lg w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500 mb-4" />
+      {% if redirect_field_value %}
+        <input type="hidden"
+               name="{{ redirect_field_name }}"
+               value="{{ redirect_field_value }}" />
+      {% endif %}
+      <button class="w-full btn btn-primary font-sans bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded transition duration-300 ease-in-out"
+              type="submit">{% translate "Sign Up" %} »</button>
+    </form>
+    <p class="font-sans text-gray-700 text-sm font-light text-center">
+      Já tem uma conta? Então, por favor, faça <a class="text-green-500 hover:underline" href="{{ login_url }}">login</a>.
+    </p>
+  </div>
 {% endblock inner %}
