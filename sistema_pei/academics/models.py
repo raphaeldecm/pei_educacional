@@ -169,7 +169,10 @@ class Enrollment(BaseModel):
         null=True,
         blank=True,
     )
-
+    absences1 = models.PositiveIntegerField(
+        verbose_name=_("Faltas 1 Bimestre"),
+        default=0,
+    )
     grade2 = models.DecimalField(
         verbose_name=_("2 - Bimestre"),
         max_digits=5,
@@ -177,7 +180,10 @@ class Enrollment(BaseModel):
         null=True,
         blank=True,
     )
-
+    absences2 = models.PositiveIntegerField(
+        verbose_name=_("Faltas 2 Bimestre"),
+        default=0,
+    )
     grade3 = models.DecimalField(
         verbose_name=_("3 - Bimestre"),
         max_digits=5,
@@ -185,13 +191,20 @@ class Enrollment(BaseModel):
         null=True,
         blank=True,
     )
-
+    absences3 = models.PositiveIntegerField(
+        verbose_name=_("Faltas 3 Bimestre"),
+        default=0,
+    )
     grade4 = models.DecimalField(
         verbose_name=_("4 - Bimestre"),
         max_digits=5,
         decimal_places=2,
         null=True,
         blank=True,
+    )
+    absences4 = models.PositiveIntegerField(
+        verbose_name=_("Faltas 4 Bimestre"),
+        default=0,
     )
 
     YearSemesterReference = models.IntegerField(_("Cursado no semestre/ano do curso"))

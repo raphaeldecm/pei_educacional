@@ -25,7 +25,7 @@ class SuapTokenValidateView(APIView):
         suap_code = serializer.validated_data["code"]
 
         if not Student.objects.filter(registration=suap_code).exists():
-            return Response({"error": "Usuário não encontrado no sistema pei. "
+            return Response({"error": "Discente não encontrado no sistema pei. "
                              "Entre em contato com o setor responsável"}, status=404)
 
         verify_response = requests.post(
