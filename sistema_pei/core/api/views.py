@@ -7,6 +7,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from sistema_pei.core.constants import STATUS_CODE_OK
 from sistema_pei.core.constants import SUAP_VALIDATION_URL
+from sistema_pei.people.models import Student
 
 from .serializers import SUAPTokenSerializer
 
@@ -22,7 +23,10 @@ class SuapTokenValidateView(APIView):
 
         suap_jwt = serializer.validated_data["token"]
         suap_code = serializer.validated_data["code"]
-        print("Matrícula do usuário: ", suap_code)
+
+        if not Student.objects.filter(registration=suap_code).exists():
+            return Response({"error": "Usuário não encontrado no sistema pei. "
+                             "Entre em contato com o setor responsável"}, status=404)
 
         verify_response = requests.post(
             SUAP_VALIDATION_URL,
