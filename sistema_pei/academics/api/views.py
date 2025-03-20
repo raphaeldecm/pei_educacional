@@ -10,20 +10,20 @@ from .serializers import EnrollmentUpdateDataSerializer
 
 
 class EnrollmentDataView(APIView):
-    authentication_classes = []  # Removemos a autenticação padrão do DRF
     permission_classes = [IsAuthenticated]  # Ainda exigimos autenticação
 
     def post(self, request, *args, **kwargs):
-        student = request.user  # Agora, request.user será um Student
+        # student = request.user  # Agora, request.user será um Student
 
-        if not isinstance(student, Student):
-            return Response({"error": "Usuário autenticado não é um estudante"}, status=status.HTTP_403_FORBIDDEN)
+        # if not isinstance(student, Student):
+        #     return Response({"error": "Usuário autenticado não é um estudante"}, status=status.HTTP_403_FORBIDDEN)
 
-        # Processa os dados enviados
-        serializer = EnrollmentUpdateDataSerializer(data=request.data.get("enrollments", []), many=True, context={"student": student})
+        # # Processa os dados enviados
+        # serializer = EnrollmentUpdateDataSerializer(data=request.data.get("enrollments", []), many=True, context={"student": student})
 
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"message": "Dados acadêmicos atualizados com sucesso!"}, status=status.HTTP_200_OK)
+        # if serializer.is_valid():
+        #     serializer.save()
+        #     return Response({"message": "Dados acadêmicos atualizados com sucesso!"}, status=status.HTTP_200_OK)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_200_OK)

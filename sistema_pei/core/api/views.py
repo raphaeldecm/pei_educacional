@@ -1,4 +1,6 @@
 import requests
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -11,6 +13,7 @@ from sistema_pei.people.models import Student
 
 from .serializers import SUAPTokenSerializer
 
+User = get_user_model()
 
 class SuapTokenValidateView(APIView):
     permission_classes = [AllowAny]
@@ -24,7 +27,8 @@ class SuapTokenValidateView(APIView):
         suap_jwt = serializer.validated_data["token"]
         suap_code = serializer.validated_data["code"]
 
-        if not Student.objects.filter(registration=suap_code).exists():
+        student = Student.objects.filter(registration=suap_code).first()
+        if not student:
             return Response({"error": "Discente não encontrado no sistema pei. "
                              "Entre em contato com o setor responsável"}, status=404)
 
@@ -37,8 +41,23 @@ class SuapTokenValidateView(APIView):
         if verify_response.status_code != STATUS_CODE_OK:
             return Response({"error": "Token inválido ou expirado"}, status=401)
 
-        refresh = RefreshToken()
-        refresh["suap_code"] = suap_code
+        # Criar usuário para estudante, se não existir
+        user, created = User.objects.get_or_create(
+            email=student.email,
+            defaults={
+                "name": student.name,
+                "is_active": True,
+            },
+        )
+
+        if created:
+            user.set_unusable_password()
+            user.save()
+
+        student_group, group_created = Group.objects.get_or_create(name="Student")
+        user.groups.add(student_group)
+
+        refresh = RefreshToken.for_user(user)
 
         return Response({
             "access": str(refresh.access_token),
