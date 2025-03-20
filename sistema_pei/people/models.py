@@ -135,8 +135,15 @@ class SpecificNecessitie(BaseModel):
     def __str__(self):
         return self.name
 
-
+@profile
 class Student(Person):
+    user = models.OneToOneField(
+        User,
+        verbose_name=_("Usuário"),
+        related_name="student",
+        null=True,
+        on_delete=models.SET_NULL,
+    )
     registration = models.CharField(
         verbose_name=_("Matrícula"),
         max_length=constants.SMALL_CHAR_FIELD_NAME_LENGTH,
