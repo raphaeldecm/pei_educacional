@@ -32,7 +32,6 @@ class StudentEnrollmentSerializer(serializers.Serializer):
     enrollments = EnrollmentSerializer(many=True)
 
     def create(self, validated_data):
-        """Processa e cria as matrículas no banco de dados"""
         student_code = validated_data["code"]
         enrollments_data = validated_data["enrollments"]
 
@@ -63,9 +62,7 @@ class StudentEnrollmentSerializer(serializers.Serializer):
                 semester=semestre,
                 defaults={"status": Offer.OfferStatus.OPEN},
             )
-            print(offer_created)
-            print(offer)
-            # Criando ou atualizando a matrícula do aluno
+
             Enrollment.objects.update_or_create(
                 student=student,
                 offer=offer,
