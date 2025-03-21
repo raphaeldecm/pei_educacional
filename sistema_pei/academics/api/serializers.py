@@ -1,9 +1,9 @@
+from django.utils.timezone import now
 from rest_framework import serializers
 
 from sistema_pei.academics.models import Enrollment
 from sistema_pei.academics.models import Offer
 from sistema_pei.academics.models import Subject
-from sistema_pei.academics.models import SynchronizationLog
 from sistema_pei.people.models import Student
 
 
@@ -15,6 +15,15 @@ class GradeSerializer(serializers.Serializer):
         allow_null=True,
     )
     faltas = serializers.IntegerField(min_value=0)
+
+class EnrollmentResponseSerializer(serializers.ModelSerializer):
+
+    student = serializers.CharField(source="student.registration")
+    subject = serializers.CharField(source="offer.subject.name")
+
+    class Meta:
+        model = Enrollment
+        fields = ["student", "subject", "last_synced_at"]
 
 class EnrollmentSerializer(serializers.Serializer):
     disciplina = serializers.CharField()
@@ -40,15 +49,8 @@ class StudentEnrollmentSerializer(serializers.Serializer):
         if not student:
             raise StudentNotFoundException
 
-        # Criar o log de sincronização
-        sync_log = SynchronizationLog.objects.create(
-            student=student,
-            status=SynchronizationLog.Status.PENDING,
-        )
-
-        enrollment_list = []  # Lista de matrículas bem-sucedidas
-        error_list = []  # Lista de erros
-
+        sync_enroll_list = []
+        sync_error_list = []
 
         for enrollment_data in enrollments_data:
             try:
@@ -88,34 +90,22 @@ class StudentEnrollmentSerializer(serializers.Serializer):
                         "grade4": enrollment_data["nota_etapa_4"]["nota"],
                         "absences4": enrollment_data["nota_etapa_4"]["faltas"],
                         "YearSemesterReference": ano,
+                        "last_synced_at": now(),
                     },
                 )
 
-                enrollment_list.append(enrollment)  # Adiciona à lista de sucesso
+                serialized_enrollment = EnrollmentResponseSerializer(enrollment).data
+                sync_enroll_list.append(serialized_enrollment)
 
             except Exception as e:
-                error_list.append({
-                    "disciplina": enrollment_data["disciplina"],
-                    "ano": enrollment_data["ano"],
-                    "erro": str(e),
+                sync_error_list.append({
+                    "data": enrollment_data,
+                    "error": str(e),
                 })
-
-
-        sync_log.enrollments.clear()
-
-        # Atualizar log de sincronização
-        if enrollment_list:
-            sync_log.enrollments.set(enrollment_list)  # Success enrollments
-
-        if error_list:
-            sync_log.status = SynchronizationLog.Status.PARTIAL  # Partial error
-            sync_log.error_details = error_list  # erros
-        else:
-            sync_log.status = SynchronizationLog.Status.SUCCESS
-
-        sync_log.save()
+                continue
 
         return {
             "message": "Sincronização concluída!",
-            "processed": len(enrollment_list),
+            "processed": sync_enroll_list,
+            "errors": sync_error_list,
         }

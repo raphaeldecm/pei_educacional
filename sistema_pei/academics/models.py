@@ -162,7 +162,9 @@ class Enrollment(BaseModel):
         verbose_name=_("Aluno"),
         on_delete=models.PROTECT,
     )
-
+    last_synced_at = models.DateTimeField(
+        "Última Sincronização", null=True, blank=True,
+    )
     grade1 = models.DecimalField(
         verbose_name=_("1 - Bimestre"),
         max_digits=5,
@@ -220,36 +222,3 @@ class Enrollment(BaseModel):
 
     def __str__(self):
         return f"{self.student} - {self.offer.subject.name}"
-
-
-
-class SynchronizationLog(models.Model):
-    class Status(models.TextChoices):
-        SUCCESS = "SUCCESS", "Sucesso"
-        FAILED = "FAILED", "Falha"
-        PARTIAL = "PARTIAL", "Parcialmente Completo"
-        PENDING = "PENDING", "Pendente"
-
-    student = models.ForeignKey(
-        "people.Student",
-        verbose_name=_("Discente"),
-        on_delete=models.CASCADE,
-        related_name="sync_logs",
-    )
-    sync_date = models.DateTimeField("Data da Sincronização", default=now)
-    status = models.CharField(
-        "Status",
-        max_length=10,
-        choices=Status.choices,
-        default=Status.PENDING,
-    )
-    enrollments = models.ManyToManyField(
-        Enrollment,
-        verbose_name="Matrículas sincronizadas",
-        related_name="sync_logs",
-        blank=True,
-    )
-    error_details = models.JSONField("Detalhes dos erros", blank=True, null=True)
-
-    def __str__(self):
-        return f"Sync {self.id} - {self.student.registration} - {self.status}"
