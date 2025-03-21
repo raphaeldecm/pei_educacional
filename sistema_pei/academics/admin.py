@@ -33,8 +33,12 @@ class OfferAdmin(admin.ModelAdmin):
     def get_teachers(self, obj):
         return ", ".join([teacher.name for teacher in obj.teachers.all()])
 
+class SynchronizationLogAdmin(admin.ModelAdmin):
+    list_display = ["student", "status", "sync_date"]
+
 
 admin.site.register(models.Subject, SubjectAdmin)
 admin.site.register(models.Course, CoursesAdmin)
 admin.site.register(models.Enrollment, EnrollmentAdmin)
 admin.site.register(models.Offer, OfferAdmin)
+admin.site.register(models.SynchronizationLog, SynchronizationLogAdmin)
