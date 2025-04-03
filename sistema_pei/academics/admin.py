@@ -19,7 +19,7 @@ class CoursesAdmin(admin.ModelAdmin):
 class EnrollmentAdmin(admin.ModelAdmin):
     search_fields = ["iteraction_text"]
     readonly_fields = ["updated_by", "created_at"]
-    list_display = ["student", "grade1", "grade2", "grade3", "grade4"]
+    list_display = ["student", "offer"]
 
 
 class OfferAdmin(admin.ModelAdmin):
