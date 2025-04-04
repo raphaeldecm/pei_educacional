@@ -21,7 +21,6 @@ class HomeListView(
 
     def get_queryset(self):
         queryset = Pei.objects.all()
-        filter_data = self.request.GET
 
         # Filtro por professor logado
         if self.request.user.groups.filter(name="Teacher").exists():
