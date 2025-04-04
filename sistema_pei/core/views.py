@@ -23,16 +23,16 @@ class HomeListView(
         queryset = Pei.objects.all()
         filter_data = self.request.GET
 
-        # Filtro por semestre e ano atuais
-        if not filter_data or not any(filter_data.values()):
-            queryset = Pei.objects.current_peis()
-
         # Filtro por professor logado
         if self.request.user.groups.filter(name="Teacher").exists():
-            if not filter_data or not any(filter_data.values()):
-                queryset = Pei.objects.filter(
-                    enrollment__offer__teachers__email=self.request.user.email,
-                )
+            queryset = Pei.objects.filter(
+                enrollment__offer__teachers__email=self.request.user.email,
+            )
+
+        # Filtro por semestre e ano atuais
+        filter_data = self.request.GET
+        if not filter_data or not any(filter_data.values()):
+            queryset = Pei.objects.current_peis()
 
         return self.filterset_class(
             self.request.GET, queryset=queryset, request=self.request
