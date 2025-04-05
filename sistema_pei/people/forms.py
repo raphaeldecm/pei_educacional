@@ -144,6 +144,11 @@ class ViewStudentForm(AdminStudentForm):
     class Meta(AdminStudentForm.Meta):
         exclude = ("created_by", "updated_by")
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if "user" in self.fields:
+            self.fields["user"].required = False
+
     def clean_files(self):
         files = self.cleaned_data.get("files", [])
         allowed_extensions = [
