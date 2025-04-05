@@ -21,20 +21,18 @@ class HomeListView(
 
     def get_queryset(self):
         queryset = Pei.objects.all()
+        filter_data = self.request.GET
 
-        # Filtro por professor logado
         if self.request.user.groups.filter(name="Teacher").exists():
-            queryset = Pei.objects.filter(
+            queryset = queryset.filter(
                 enrollment__offer__teachers__email=self.request.user.email,
             )
 
-        # Filtro por semestre e ano atuais
-        filter_data = self.request.GET
         if not filter_data or not any(filter_data.values()):
-            queryset = Pei.objects.current_peis()
+            queryset = queryset & Pei.objects.current_peis()
 
         return self.filterset_class(
-            self.request.GET, queryset=queryset, request=self.request
+            self.request.GET, queryset=queryset, request=self.request,
         ).qs
 
     # Cards
