@@ -7,6 +7,11 @@ celery==5.4.0  # pyup: < 6.0  # https://github.com/celery/celery
 django-celery-beat==2.6.0  # https://github.com/celery/django-celery-beat
 flower==2.0.1  # https://github.com/mher/flower
 uvicorn[standard]==0.29.0  # https://github.com/encode/uvicorn
+social-auth-app-django==5.4.1 # https://github.com/python-social-auth/social-app-django
+social-auth-core==4.5.4 # https://github.com/python-social-auth/social-core
+xhtml2pdf==0.2.16  # https://github.com/chrisglass/xhtml2pdf
+django-multiselectfield==0.1.13 # https://github.com/goinnn/django-multiselectfield
+pandas==2.2.3  # https://github.com/pandas-dev/pandas
 
 # Django
 # ------------------------------------------------------------------------------
@@ -26,3 +31,4 @@ drf-spectacular==0.27.2  # https://github.com/tfranzel/drf-spectacular
 djangorestframework_simplejwt==5.3.1  # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/
 django-browser-reload==1.12.1  # https://django-tailwind.readthedocs.io/en/latest/django_browser_reload.html
 django-tailwind==3.8.0  # https://django-tailwind.readthedocs.io/en/latest/index.html
+django-filter==24.3  # https://django-filter.readthedocs.io/en/stable/

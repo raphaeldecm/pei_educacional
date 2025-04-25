@@ -11,7 +11,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   # dependencies for building Python packages
   build-essential \
   # psycopg dependencies
-  libpq-dev
+  libpq-dev \
+  npm
 
 # Requirements are installed here to ensure they will be cached.
 COPY ./requirements .
@@ -49,6 +50,7 @@ RUN groupadd --gid 1000 dev-user \
 RUN apt-get update && apt-get install --no-install-recommends -y \
   # psycopg dependencies
   libpq-dev \
+  npm \
   # Translations dependencies
   gettext \
   # cleaning up unused files
@@ -84,6 +86,7 @@ COPY ./compose/local/django/celery/flower/start /start-flower
 RUN sed -i 's/\r$//g' /start-flower
 RUN chmod +x /start-flower
 
+#RUN npm install
 
 # copy application code to WORKDIR
 COPY . ${APP_HOME}

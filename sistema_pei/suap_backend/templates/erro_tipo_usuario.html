@@ -1,0 +1,21 @@
+{% extends "account/base.html" %}
+
+{% load static %}
+
+{% block title %}
+  Login - Acesso negado
+{% endblock title %}
+{% block login_content %}
+  <div class="flex flex-col flex-wrap items-center ">
+    <img src="{% static 'images/img/under-constructions.svg' %}"
+         alt="Figura de caixa de correio"
+         class="h-48" />
+    <p class="font-sans text-red-700 text-sm font-light text-center w-[32vh]">
+      Apenas professores têm acesso ao login por suap.
+    </p>
+    <a href="{% url 'account_login' %}"
+       class="font-sans inline-block align-baseline font-light text-sm text-green-700 hover:underline focus:text-green-700 px-4 py-2 m-2 cursor-pointer">
+      Voltar para tela de login!
+    </a>
+  </div>
+{% endblock login_content %}

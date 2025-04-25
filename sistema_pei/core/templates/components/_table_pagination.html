@@ -1,0 +1,19 @@
+<div class="mt-[50px] mb-[78px] w-full flex items-center justify-between text-[14px]">
+  <span class="font-semibold">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+  <div class="flex gap-[36px]">
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+        <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-500 hover:bg-slate-200 transition-colors duration-300 border border-slate-400 rounded-lg">
+          Anterior
+        </div>
+      </a>
+    {% endif %}
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+        <div class="w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-500 hover:bg-slate-200 transition-colors duration-300 border border-slate-400 rounded-lg">
+          Próximo
+        </div>
+      </a>
+    {% endif %}
+  </div>
+</div>

@@ -1,21 +1,29 @@
-
 from typing import ClassVar
 
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 from django.db.models import CharField
 from django.db.models import EmailField
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
+from sistema_pei.core import constants
+
 from .managers import UserManager
 
 
 class User(AbstractUser):
-    """
-    Default custom user model for sistema-pei.
-    If adding fields that need to be filled at user signup,
-    check forms.SignupForm and forms.SocialSignupForms accordingly.
-    """
+
+    GROUP_TRANSLATIONS = {
+        "Coordinator": _("Coordenador"),
+        "Collaborator": _("Colaborador"),
+        "Teacher": _("Professor"),
+    }
+
+    class Sector(models.TextChoices):
+        NAPNE = "NAPNE", _("NAPNE")
+        ETEP = "ETEP", _("ETEP")
+        DIAC = "DIAC", _("DIAC")
 
     # First and last name do not cover name patterns around the globe
     name = CharField(_("Name of User"), blank=True, max_length=255)
@@ -23,7 +31,17 @@ class User(AbstractUser):
     last_name = None  # type: ignore[assignment]
     email = EmailField(_("email address"), unique=True)
     username = None  # type: ignore[assignment]
-
+    sector = models.CharField(
+        verbose_name=_("Setor"),
+        choices=Sector.choices,
+        max_length=constants.SMALL_CHAR_FIELD_NAME_LENGTH,
+        blank=True,
+    )
+    photo = models.URLField(
+        verbose_name=_("Foto"),
+        blank=True,
+        max_length=constants.URL_LENGTH,
+    )
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
@@ -37,3 +55,10 @@ class User(AbstractUser):
 
         """
         return reverse("users:detail", kwargs={"pk": self.id})
+
+    @property
+    def translated_groups(self):
+        return [
+            self.GROUP_TRANSLATIONS.get(group.name, group.name)
+            for group in self.groups.all()
+        ]

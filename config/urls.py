@@ -11,21 +11,34 @@ from django.contrib.auth.decorators import login_required
 from drf_spectacular.views import SpectacularAPIView
 from drf_spectacular.views import SpectacularSwaggerView
 from rest_framework.authtoken.views import obtain_auth_token
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-    TokenVerifyView,
+from sistema_pei.people.views import activate_account, StudentCreateView
+
+from sistema_pei.core.views import (
+    HomeListView,
 )
+
 
 urlpatterns = [
     path(
+        "people/",
+        include("sistema_pei.people.urls", namespace="people"),
+    ),
+    path(
         "",
-        login_required(TemplateView.as_view(template_name="pages/home.html")),
+        login_required(HomeListView.as_view()),
         name="home",
     ),
     path(
+        "academics/",
+        include("sistema_pei.academics.urls", namespace="academics"),
+    ),
+    path(
+        "educational_plan/",
+        include("sistema_pei.educational_plan.urls", namespace="educational_plan"),
+    ),
+    path(
         "about/",
-        TemplateView.as_view(template_name="pages/about.html"),
+        TemplateView.as_view(template_name="about.html"),
         name="about",
     ),
     # Django Admin, use {% url 'admin:index' %}
@@ -33,14 +46,16 @@ urlpatterns = [
     # User management
     path("users/", include("sistema_pei.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
-    # JWT
-    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-    path("api/token/verify/", TokenVerifyView.as_view(), name="token_verify"),
+    path("activate/<uidb64>/<token>/", activate_account, name="activate"),
     # Reload
     path("__reload__/", include("django_browser_reload.urls")),
     # Your stuff: custom urls includes go here
     # ...
+    path("social/", include("social_django.urls", namespace="social")),
+    path(
+        "suap_backend/",
+        include("sistema_pei.suap_backend.urls", namespace="suap_login"),
+    ),
     # Media files
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
 ]

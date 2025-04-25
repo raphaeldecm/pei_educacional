@@ -1,0 +1,79 @@
+name: Solicitação de Funcionalidade
+description: Sugira uma nova funcionalidade ou melhoria para o sistema.
+title: "[Feature]: "
+labels: ["enhancement", "feature"]
+projects: ["seu-org/seu-projeto"]
+assignees:
+  - usuario-responsavel
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por sugerir uma nova funcionalidade! Preencha os detalhes abaixo para facilitar a implementação.
+
+  - type: input
+    id: contact
+    attributes:
+      label: Contato
+      description: Como podemos entrar em contato para mais detalhes?
+      placeholder: ex. email@example.com
+    validations:
+      required: false
+
+  - type: textarea
+    id: descricao
+    attributes:
+      label: Descrição da Funcionalidade
+      description: Explique o que essa funcionalidade deve fazer e qual problema ela resolve.
+      placeholder: "Exemplo: Permitir que os alunos visualizem seus planos educacionais de forma personalizada."
+    validations:
+      required: true
+
+  - type: textarea
+    id: justificativa
+    attributes:
+      label: Justificativa
+      description: Por que essa funcionalidade é necessária? Quais benefícios ela traz?
+      placeholder: "Exemplo: Atualmente, apenas os administradores podem ver os planos. Isso melhoraria a experiência dos alunos."
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: criterios
+    attributes:
+      label: Critérios de Aceitação
+      description: O que deve estar pronto para considerar essa funcionalidade concluída?
+      options:
+        - label: Interface de usuário implementada
+        - label: Dados corretamente armazenados no banco de dados
+        - label: Testes automatizados escritos e aprovados
+        - label: Documentação atualizada
+
+  - type: dropdown
+    id: prioridade
+    attributes:
+      label: Qual a prioridade dessa funcionalidade?
+      options:
+        - Alta
+        - Média
+        - Baixa
+      default: 1
+    validations:
+      required: true
+
+  - type: textarea
+    id: referencias
+    attributes:
+      label: Referências e Inspirações
+      description: Algum exemplo de outra aplicação que tenha essa funcionalidade?
+      placeholder: "Exemplo: Plataforma XYZ tem uma interface semelhante para exibição de planos."
+
+  - type: checkboxes
+    id: termos
+    attributes:
+      label: Código de Conduta
+      description: Ao enviar esta issue, você concorda em seguir nosso [Código de Conduta](https://example.com).
+      options:
+        - label: Eu concordo em seguir o Código de Conduta
+          required: true

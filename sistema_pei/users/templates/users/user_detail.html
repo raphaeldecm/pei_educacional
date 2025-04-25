@@ -1,0 +1,128 @@
+{% extends "layouts/base.html" %}
+
+{% load static i18n %}
+{% load breadcrumb_item %}
+
+{% block breadcrumb %}
+  {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
+  {% breadcrumb_item text="Usuários" icon="images/icons/icon-users-green.svg" url="users:list" %}
+  {% breadcrumb_item text=title icon="images/icons/icon-user-green.svg" %}
+{% endblock breadcrumb %}
+{% block content %}
+  <div class="w-full">
+    <h1 class="text-[32px] font-medium mb-[38px]">{% translate title %}</h1>
+    <div class="flex justify-center items-center gap-6 p-2 [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px] border border-slate-300">
+      <div class="flex flex-col items-center m-4">
+        {% if object.photo %}
+          <img src="{{ object.photo }}"
+               class="h-64 w-64 rounded-full bg-transparent border object-cover text-transparent"
+               alt="{{ object.name }}" />
+        {% else %}
+          <img id="profileImage"
+               src="{% static 'images/img/boy_user-profile.svg' %}"
+               alt="imagem de perfil"
+               class="h-64 w-64 rounded-full bg-transparent border object-cover text-transparent" />
+        {% endif %}
+      </label>
+    </div>
+    <div class="flex flex-col flex-1 m-4">
+      <div class="flex-1 mb-4">
+        <label for="{{ object.name.id_for_label }}" class="font-medium text-[18px]">Nome:</label>
+        <input type="text"
+               name="{{ object.name }}"
+               id="{{ object.name.id_for_label }}"
+               class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+               value="{{ object.name }}"
+               readonly />
+      </div>
+      <div class="flex-1 mb-4">
+        <label for="{{ object.email.id_for_label }}" class="font-medium text-[18px]">Email:</label>
+        <input type="text"
+               name="{{ object.email.name }}"
+               id="{{ object.email.id_for_label }}"
+               class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+               value="{{ object.email }}"
+               readonly />
+      </div>
+      <div class="flex-1 mb-4">
+        <label for="{{ object.date_joined.id_for_label }}"
+               class="font-medium text-[18px]">Data de ingresso no sistema:</label>
+        <input type="text"
+               name="{{ object.date_joined.name }}"
+               id="{{ object.date_joined.id_for_label }}"
+               class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+               value="{{ object.date_joined }}"
+               readonly />
+      </div>
+      <div class="border-t border-slate-50"></div>
+      <div class="flex items-center">
+        <div class="flex-1 my-4 mr-3">
+          <label for="{{ object.is_active.id_for_label }}"
+                 class="font-medium text-[18px]">Situação:</label>
+          <input type="text"
+                 name="{{ object.is_active.name }}"
+                 id="{{ object.is_active.id_for_label }}"
+                 class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+                 value="{% if object.is_active %}Ativo{% else %}Inativo{% endif %}"
+                 readonly />
+        </div>
+        <div class="flex-1 my-4">
+          <label for="{{ form.sector.id_for_label }}" class="font-medium text-[18px]">Setor:</label>
+          <input type="text"
+                 name="{{ object.sector.name }}"
+                 id="{{ object.sector.id_for_label }}"
+                 class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+                 value="{{ object.sector }}"
+                 readonly />
+        </div>
+      </div>
+      <div class="flex items-center">
+        <div class="flex-1 my-4 mr-3">
+          <label for="{{ object.groups.id_for_label }}"
+                 class="font-medium text-[18px]">Tipo de usuário:</label>
+          <div class="mt-[16px] border border-slate-300 rounded-lg py-2 px-3 max-h-[150px] overflow-y-auto gap-6">
+            {% for group in object.translated_groups %}
+              <div class="flex flex-row-reverse justify-end items-center gap-1">
+                <input id="{{ group.id }}"
+                       type="checkbox"
+                       class="hidden peer"
+                       name="{{ object.groups.name }}"
+                       value="{{ group.id }}"
+                       disabled
+                       checked />
+                {{ group }}
+                <label for="{{ group.id }}"
+                       class="flex items-center cursor-pointer w-[20px] h-[20px] rounded-[5px] peer-checked:[&_img]:block bg-slate-300">
+                  <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}"
+                       width="20px"
+                       height="20px"
+                       class="hidden"
+                       alt="Checkmark" />
+                </label>
+              </div>
+            {% empty %}
+              <p class="text-slate-500">Nenhum tipo de usuário selecionado.</p>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="flex-1 my-4">
+          <label for="{{ form.sector.id_for_label }}" class="font-medium text-[18px]">Senha:</label>
+          <div class="flex items-center">
+            <input type="text"
+                   name="{{ object.sector.name }}"
+                   id="{{ object.sector.id_for_label }}"
+                   class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+                   value="{% if user.has_usable_password %}Definida{% else %}Usuário sem senha{% endif %}"
+                   readonly />
+            <a href="{% url 'account_reset_password' %}"
+               class="font-sans inline-block align-baseline font-light text-sm text-green-500 hover:text-green-700 ml-2 mt-[16px]">
+              Definir senha
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% include "components/_save_back_edit_buttons.html" with link_to_back="users:list" edit_url="users:manage_user" %}
+{% endblock content %}

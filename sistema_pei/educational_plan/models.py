@@ -1,31 +1,34 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from sistema_pei.academics.models import Subject
+from sistema_pei.academics.models import Enrollment
 from sistema_pei.core.models import BaseModel
-from sistema_pei.people.models import Student
+from sistema_pei.educational_plan import managers
+from sistema_pei.people.models import Teacher
 
 
 # Create your models here.
 class Pei(BaseModel):
     class StatusChoice(models.TextChoices):
-        NOT_START = "NOT_START", "Não iniciado"
-        IN_PROGRESS = "IN_PROGRESS", "Em andamento"
-        COMPLETED = "COMPLETED", "Preenchidos"
-        FEEDBACK = "FEEDBACK", "Com parecer"
+        NOT_START = "NOT_START", _("Não iniciado")
+        IN_PROGRESS = "IN_PROGRESS", _("Em andamento")
+        FEEDBACK = "FEEDBACK", _("Preenchido")
+        COMPLETED = "COMPLETED", _("Finalizado")
 
-    subject = models.ForeignKey(
-        Subject,
-        verbose_name=_("Matéria"),
-        on_delete=models.CASCADE,
+    enrollment = models.ForeignKey(
+        Enrollment,
+        verbose_name=_("Inscrição"),
+        on_delete=models.PROTECT,
         related_name="peis",
     )
-    student = models.ForeignKey(
-        Student,
-        verbose_name=_("Aluno"),
-        on_delete=models.CASCADE,
-        related_name="peis",
+
+    responsible_teacher = models.ForeignKey(
+        Teacher,
+        verbose_name=_("Professor Responsável"),
+        on_delete=models.PROTECT,
+        related_name="Teachers",
     )
+
     status = models.CharField(
         max_length=30,
         choices=StatusChoice.choices,
@@ -72,15 +75,67 @@ class Pei(BaseModel):
         blank=True,
     )
 
+    objects = managers.PeiManager()
+
+    academic_opinion_1 = models.TextField(
+        verbose_name=_("Parecer do 1º Bimestre"),
+        blank=True,
+    )
+    academic_opinion_2 = models.TextField(
+        verbose_name=_("Parecer do 2º Bimestre"),
+        blank=True,
+    )
+    academic_opinion_3 = models.TextField(
+        verbose_name=_("Parecer do 3º Bimestre"),
+        blank=True,
+    )
+    academic_opinion_4 = models.TextField(
+        verbose_name=_("Parecer do 4º Bimestre"),
+        blank=True,
+    )
+    academic_opinion_final = models.TextField(
+        verbose_name=_("Parecer final"),
+        blank=True,
+    )
+
     def __str__(self):
         return (
-            "("
-            + self.student.registration
-            + ")"
-            + self.student.name
-            + " / "
-            + self.subject.name
+            "PEI -" + self.enrollment.offer.subject.name + self.enrollment.student.name
         )
+
+    def update_status(self):
+        if self.pk:
+            if self.status == self.StatusChoice.COMPLETED:
+                return
+
+            fields_to_check = [
+                self.objective,
+                self.adapted_objective,
+                self.content,
+                self.adapted_content,
+                self.methodology,
+                self.adapted_methodology,
+                self.resources,
+                self.adapted_resources,
+                self.assessments,
+                self.adapted_assessments,
+            ]
+
+            filled_fields = [field for field in fields_to_check if field]
+
+            if len(filled_fields) == len(fields_to_check):
+                self.status = self.StatusChoice.FEEDBACK
+            elif len(filled_fields) > 0:
+                self.status = self.StatusChoice.IN_PROGRESS
+            else:
+                self.status = self.StatusChoice.NOT_START
+
+    def save(self, *args, **kwargs):
+        self.update_status()
+        super().save(*args, **kwargs)
+
+    class Meta:
+        ordering = ['id']
 
 
 class FeedbackPei(BaseModel):

@@ -1,6 +1,85 @@
-{% extends "base.html" %}
-{% block title %}{% block head_title %}{% endblock head_title %}{% endblock title %}
+{% load static i18n %}
 
-{% block content %}
-    {% block inner %}{% endblock %}
-{% endblock %}
+<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>PEI -
+      {% block title %}
+        Plano Educacional Individualizado
+      {% endblock title %}
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+          content="An application to manage the individualized educational plans." />
+    <meta name="author" content="R. Muniz" />
+    {% block css %}
+    {% endblock css %}
+    <!-- Your stuff: Third-party CSS libraries go here -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+          rel="stylesheet" />
+    <link href="{% static 'css/project.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/output.css' %}" rel="stylesheet" />
+    <!-- Le javascript
+        ================================================== -->
+    {# Placed at the top of the document so pages load faster with defer #}
+    {% block javascript %}
+    {% endblock javascript %}
+  </head>
+  <body class="flex justify-center items-center min-h-screen bg-cover bg-center bg-green-950 bg-[url('../../static/images/img/login_cover.webp')]">
+    <div class="flex items-center bg-neutral-50 p-2 rounded-lg m-4 mini:mt-[200px] lg:mt-0">
+      <section class=" mini:hidden lc:flex flex-col items-center justify-center min-h-[400px] min-w-[500px] h-[70vh] w-[35vw] bg-gradient-to-br from-green-500 to-green-950 rounded-lg">
+        <div class="flex flex-col justify-center items-center gap-10 min-w-[20vh] min-h-[400px]">
+          <div class="flex flex-col items-center mx-5">
+            <img src="{% static 'images/logos/peis/logo_white.svg' %}"
+                 alt="Logo branca com o nome PEIs"
+                 aria-describedby="logo-description" />
+            <p id="logo-description"
+               class="font-sans xl:text-base mini:text-sm text-neutral-50 pt-5">Plano educacional Individualizado</p>
+          </div>
+          <p class="font-sans xl:text-base mini:text-sm  text-neutral-50 max-w-[560px] text-center mx-5">
+            Esse sistema visa o gerenciamento e acompanhamento dos planos educacionais individualizados do IFRN - campus Pau dos Ferros
+          </p>
+          <div class="flex flex-wrap lg:items-center justify-center gap-5 mx-5">
+            <img src="{% static 'images/logos/ifrn/ifrn_white.png' %}"
+                 alt="logo do IFRN(Instituto Federal do Rio Grande do Norte) com letras brancas" />
+            <img src="{% static 'images/logos/nadic/nadic_white.png' %}"
+                 alt="logo do NADIC(Núcleo de Análise de Dados e Inteligência Computacional) com letras brancas" />
+          </div>
+        </div>
+      </section>
+      <section class="flex flex-col items-center gap-16 m-10 mini:min-w-[30vh] lg:min-w-[70vh]">
+        {% if messages %}
+          <div class="fixed p-4 top-20 flex flex-col gap-4">{% include "layouts/messages.html" %}</div>
+        {% endif %}
+        {% block alerts %}
+          <div class="fixed p-4 top-20 flex flex-col gap-4">{% include "layouts/alerts.html" %}</div>
+        {% endblock alerts %}
+        {% block login_content %}
+        {% endblock login_content %}
+        {% block head_title %}
+        {% endblock head_title %}
+        {% block inner %}
+        {% endblock inner %}
+      </section>
+    </div>
+    {% comment %} /container --> {% endcomment %}
+    {% block modal %}
+    {% endblock modal %}
+    {% block inline_javascript %}
+      {% comment %}
+      Script tags with only code, no src (defer by default). To run
+      with a "defer" so that you run inline code:
+      <script>
+        window.addEventListener('DOMContentLoaded', () => {
+          /* Run whatever you want */
+        });
+      </script>
+      {% endcomment %}
+    {% endblock inline_javascript %}
+  </body>
+</html>
