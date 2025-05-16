@@ -398,6 +398,7 @@ REST_FRAMEWORK = {
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^http://localhost:3000$",
+    r"^https://pei.ifrn.edu.br$",
     r"^/api/.*$",
 ]
 
