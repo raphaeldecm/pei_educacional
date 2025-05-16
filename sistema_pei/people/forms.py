@@ -193,6 +193,8 @@ class ViewEditDataStudentForm(AdminStudentForm):
         self.fields["educational_necessities"].required = False
         self.fields["course"].required = False
         self.fields["sectors"].required = False
+        if "user" in self.fields:
+            self.fields["user"].required = False
 
 
 class ViewEdithistoricStudentForm(forms.ModelForm):
