@@ -47,7 +47,7 @@ services:
       - media_data:/app/sistema_pei/media
 
     ports:
-      - 84:80
+      - 80:80
     restart: unless-stopped  
 
   redis:
