@@ -15,7 +15,7 @@ COMMANDS = [
     CommandItem("update_user_profiles", "Updating user profiles..."),
     CommandItem("create_admin_user", "Creating superuser..."),
     CommandItem("load_db_people", "Loading people data..."),
-    CommandItem("populate_courses", "Loading courses data..."),
+    # CommandItem("populate_courses", "Loading courses data..."),
 ]
 
 

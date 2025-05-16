@@ -7,7 +7,11 @@ from . import models
 class SubjectAdmin(admin.ModelAdmin):
     search_fields = ["iteraction_text"]
     readonly_fields = ["updated_by", "created_at"]
-    list_display = ["name", "subject_type"]
+    list_display = ["name", "courses", "subject_type"]
+
+    @admin.display(description="Cursos")
+    def courses(self, obj):
+        return ", ".join([course.name for course in obj.courses.all()])
 
 
 class CoursesAdmin(admin.ModelAdmin):
@@ -25,7 +29,7 @@ class EnrollmentAdmin(admin.ModelAdmin):
 class OfferAdmin(admin.ModelAdmin):
     search_fields = ["iteraction_text"]
     readonly_fields = ["updated_by", "created_at"]
-    list_display = ["status", "subject", "year"]
+    list_display = ["status", "course", "subject", "year"]
 
     @admin.display(
         description="Professores",
