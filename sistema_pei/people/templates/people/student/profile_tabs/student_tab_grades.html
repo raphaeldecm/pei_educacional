@@ -93,29 +93,6 @@
 <script>
   const ctx = document.getElementById('myChart');
 
-  const jsonData = `
-    [
-      {% for subject_grades in student_notes %}
-        {
-          "label": "{{ subject_grades.offer.subject.name|escapejs }}",
-          "data": [
-            {% if subject_grades.grade1 %}{{ subject_grades.grade1|floatformat:2 }}{% else %}0.0{% endif %},
-            {% if subject_grades.grade2 %}{{ subject_grades.grade2|floatformat:2 }}{% else %}0.0{% endif %}
-            {% if student.course.duration_type != "SEMESTER" %},
-              {% if subject_grades.grade3 %}{{ subject_grades.grade3|floatformat:2 }}{% else %}0.0{% endif %},
-              {% if subject_grades.grade4 %}{{ subject_grades.grade4|floatformat:2 }}{% else %}0.0{% endif %}
-            {% endif %}
-          ],
-          "borderWidth": 2,
-          "tension": 0.2
-        }
-        {% if not forloop.last %},{% endif %}
-      {% endfor %}
-    ]
-  `.trim();
-
-  const data = JSON.parse(jsonData);
-
   new Chart(ctx, {
     type: 'line',
     data: {
@@ -127,7 +104,23 @@
           '4° Bimestre'
         {% endif %}
       ],
-      datasets: data
+      datasets: [
+        {% for subject_grades in student_notes %}
+          {
+            label: "{{ subject_grades.offer.subject.name|escapejs }}",
+            data: [
+              {{ subject_grades.grade1|default:"0"|floatformat:"2"|cut:","|default:"0" }},
+              {{ subject_grades.grade2|default:"0"|floatformat:"2"|cut:","|default:"0" }}
+              {% if student.course.duration_type != "SEMESTER" %},
+                {{ subject_grades.grade3|default:"0"|floatformat:"2"|cut:","|default:"0" }},
+                {{ subject_grades.grade4|default:"0"|floatformat:"2"|cut:","|default:"0" }}
+              {% endif %}
+            ],
+            borderWidth: 2,
+            tension: 0.2
+          }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+      ]
     },
     options: {
       responsive: true,
