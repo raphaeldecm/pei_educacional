@@ -11,7 +11,7 @@
 {% block content %}
   <div class="w-full">
     <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
-    <form>
+    <form autocomplete="off">
       <div class="mb-[26px] flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
         <img src="{% static 'images/icons/icon-search.svg' %}"
              alt=""
@@ -32,7 +32,7 @@
                  class="mb-3 px-3 py-2 border border-slate-300 b bg-neutral-50 placeholder:text-slate-500 rounded-lg w-full"
                  oninput="filterCourses()"
                  value="{{ selected_course_name|default:'' }}" />
-        
+
           <!-- Lista de Seleção -->
           <div class="border border-slate-300 rounded-lg py-2 px-3 max-h-[150px] min-h-[48px] overflow-y-auto hidden"
                id="courseList">
@@ -47,12 +47,12 @@
                 <label for="course_{{ course.id }}"
                        class="flex items-center cursor-pointer w-full text-[16px] rounded-[5px] peer-checked:bg-green-100"
                        onclick="selectCourse('{{ course.name }}')">
-                  {{ course.name }}
+                  {{ course }}
                 </label>
               </div>
             {% endfor %}
           </div>
-        
+
           <!-- Mensagem de "Nenhum resultado encontrado" -->
           <div id="noCourseResults" class="text-center text-gray-500 mt-2 hidden">Nenhum curso encontrado.</div>
         </div>
@@ -147,7 +147,7 @@
   // Recupera o ID do curso da URL e preenche o campo de busca com o nome
   const urlParams = new URLSearchParams(window.location.search);
   const selectedCourseId = urlParams.get('course');
-  
+
   if (selectedCourseId) {
     const selectedCourseLabel = document.querySelector(`label[for="course_${selectedCourseId}"]`);
     if (selectedCourseLabel) {

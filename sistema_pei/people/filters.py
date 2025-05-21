@@ -1,6 +1,8 @@
 import django_filters
 from django.db.models import Q
 
+from sistema_pei.academics.models import Course
+
 from .models import Campus
 from .models import Student
 from .models import Teacher
@@ -22,6 +24,10 @@ class TeacherFilter(django_filters.FilterSet):
 
 class StudentFilter(django_filters.FilterSet):
     search = django_filters.CharFilter(method="multi_field_search", label="Search")
+    course = django_filters.ModelChoiceFilter(
+        queryset=Course.objects.order_by("name", "period"),
+        label="Curso",
+    )
 
     class Meta:
         model = Student

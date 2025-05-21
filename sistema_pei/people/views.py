@@ -153,6 +153,7 @@ class StudentListView(
     paginate_by = constants.DEFAULT_PAGE_SIZE
     filterset_class = StudentFilter
     template_name = "people/student/student_list.html"
+    ordering = ["name"]
 
 
 class StudentDeleteView(
@@ -290,8 +291,8 @@ class ProfilePageView(LoginRequiredMixin, TemplateView):
 
         ##^ Tab Notes
         student_notes = Enrollment.objects.filter(student=student)
-        
-        
+
+
         if "selectedPeriod" in self.request.GET:
             student_notes = student_notes.filter(
                 YearSemesterReference=self.request.GET["selectedPeriod"],
