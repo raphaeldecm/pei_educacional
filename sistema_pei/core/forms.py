@@ -13,4 +13,8 @@ class SubjectForm(forms.ModelForm):
 class EnrollmentForm(forms.ModelForm):
     class Meta:
         model = Enrollment
-        fields = ["grade1", "grade2", "grade3", "grade4"]
+        fields = [
+            "grade1", "grade2", "grade3", "grade4",
+            "absences1", "absences2", "absences3", "absences4"
+        ]
+
