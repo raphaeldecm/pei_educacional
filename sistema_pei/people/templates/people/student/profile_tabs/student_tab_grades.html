@@ -4,7 +4,7 @@
   <div class="flex flex-col gap-[16px] text-[18px] text-slate-500 w-full max-w-[218px]">
     {% for i in "x"|rjust:student.course.number_of_periods %}
       <a href="{% url 'people:profile' student.id %}?tab=grades&selectedPeriod={{ forloop.counter }}"
-         class="p-[10px] rounded-lg cursor-pointer hover:bg-green-500 hover:text-white transition duration-300 ease-in-out {% if request.GET.selectedPeriod == forloop.counter|slugify or forloop.first and request.GET.selectedPeriod is null %} bg-green-500 text-slate-50{% endif %}">
+         class="p-[10px] rounded-lg cursor-pointer hover:bg-green-500 hover:text-white transition duration-300 ease-in-out {% if request.GET.selectedPeriod == forloop.counter|stringformat:"s" or forloop.first and request.GET.selectedPeriod is null %} bg-green-500 text-slate-50{% endif %}">
         {{ forloop.counter }}°
         {% if student.course.duration_type == "SEMESTER" %}
           semestre
@@ -14,6 +14,7 @@
       </a>
     {% endfor %}
   </div>
+
   {% if student_notes %}
     <div class="flex-1">
       <div class="border border-slate-300 rounded-lg px-[20px] py-[40px]">
@@ -21,6 +22,7 @@
           <canvas id="myChart"></canvas>
         </div>
       </div>
+
       <div class="mt-[36px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg">
         <table class="table-auto w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px]">
           <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">
@@ -38,20 +40,39 @@
             {% for subject_grades in student_notes %}
               <tr>
                 <td class="pl-[76px]">{{ subject_grades.offer.subject.name }}</td>
+
                 <td>
                   {% if subject_grades.grade1 is not null %}
                     {{ subject_grades.grade1 }}
                   {% else %}
                     ---
                   {% endif %}
+                  <br>
+                  <span class="text-slate-400 text-sm">
+                    {% if subject_grades.absences1 is not null %}
+                      {{ subject_grades.absences1 }} falta{{ subject_grades.absences1|pluralize }}
+                    {% else %}
+                      ---
+                    {% endif %}
+                  </span>
                 </td>
+
                 <td>
                   {% if subject_grades.grade2 is not null %}
                     {{ subject_grades.grade2 }}
                   {% else %}
                     ---
                   {% endif %}
+                  <br>
+                  <span class="text-slate-400 text-sm">
+                    {% if subject_grades.absences2 is not null %}
+                      {{ subject_grades.absences2 }} falta{{ subject_grades.absences2|pluralize }}
+                    {% else %}
+                      ---
+                    {% endif %}
+                  </span>
                 </td>
+
                 {% if student.course.duration_type != "SEMESTER" %}
                   <td>
                     {% if subject_grades.grade3 is not null %}
@@ -59,13 +80,30 @@
                     {% else %}
                       ---
                     {% endif %}
+                    <br>
+                    <span class="text-slate-400 text-sm">
+                      {% if subject_grades.absences3 is not null %}
+                        {{ subject_grades.absences3 }} falta{{ subject_grades.absences3|pluralize }}
+                      {% else %}
+                        ---
+                      {% endif %}
+                    </span>
                   </td>
+
                   <td>
                     {% if subject_grades.grade4 is not null %}
                       {{ subject_grades.grade4 }}
                     {% else %}
                       ---
                     {% endif %}
+                    <br>
+                    <span class="text-slate-400 text-sm">
+                      {% if subject_grades.absences4 is not null %}
+                        {{ subject_grades.absences4 }} falta{{ subject_grades.absences4|pluralize }}
+                      {% else %}
+                        ---
+                      {% endif %}
+                    </span>
                   </td>
                 {% endif %}
               </tr>
@@ -86,63 +124,42 @@
     </p>
   {% endif %}
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-{% comment %} Pre-commit can break this graph {% endcomment %}
 <script>
   const ctx = document.getElementById('myChart');
-
-
-  const jsonData = `
-    [
-      {% for subject_grades in student_notes %}
-      {
-        "label": "{{ subject_grades.offer.subject.name|escapejs }}",
-        "data": [
-          {% if subject_grades.grade1 %}{{ subject_grades.grade1|floatformat:2|slice:":-1" }}{% else %}0,0{% endif %},
-          {% if subject_grades.grade2 %}{{ subject_grades.grade2|floatformat:2|slice:":-1" }}{% else %}0,0{% endif %},
-          {% if student.course.duration_type != "SEMESTER" %}
-            {% if subject_grades.grade3 %}{{ subject_grades.grade3|floatformat:2|slice:":-1" }}{% else %}0,0{% endif %},
-            {% if subject_grades.grade4 %}{{ subject_grades.grade4|floatformat:2|slice:":-1" }}{% else %}0,0{% endif %}
-          {% endif %}
-        ],
-        "borderWidth": 2,
-        "tension": 0.2
-      }
-      {% if not forloop.last %},{% endif %}
-      {% endfor %}
-    ]
-  `.trim();
-
-  const data = JSON.parse(jsonData).map((grades) => {
-    const fixedGrade = {
-      ...grades,
-      data: [
-        ...grades.data
-        .map((grade, i) => i % 2 == 0 ? grade : null)
-        .filter((grade) => grade != null)
-      ]
-    }
-
-    return fixedGrade;
-  })
 
   new Chart(ctx, {
     type: 'line',
     data: {
       labels: [
         '1° Bimestre',
-        '2° Bimestre', {
-          %
-          if student.course.duration_type != "SEMESTER" %
-        }
-        '3° Bimestre',
-        '4° Bimestre' {
-          % endif %
-        }
+        '2° Bimestre'
+        {% if student.course.duration_type != "SEMESTER" %},
+          '3° Bimestre',
+          '4° Bimestre'
+        {% endif %}
       ],
-      datasets: [...data]
+      datasets: [
+        {% for subject_grades in student_notes %}
+          {
+            label: "{{ subject_grades.offer.subject.name|escapejs }}",
+            data: [
+              {{ subject_grades.grade1|default:"0"|floatformat:"2"|cut:","|default:"0" }},
+              {{ subject_grades.grade2|default:"0"|floatformat:"2"|cut:","|default:"0" }}
+              {% if student.course.duration_type != "SEMESTER" %},
+                {{ subject_grades.grade3|default:"0"|floatformat:"2"|cut:","|default:"0" }},
+                {{ subject_grades.grade4|default:"0"|floatformat:"2"|cut:","|default:"0" }}
+              {% endif %}
+            ],
+            borderWidth: 2,
+            tension: 0.2
+          }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+      ]
     },
     options: {
+      responsive: true,
       scales: {
         y: {
           beginAtZero: true
