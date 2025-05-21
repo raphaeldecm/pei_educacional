@@ -290,9 +290,15 @@ class ProfilePageView(LoginRequiredMixin, TemplateView):
 
         ##^ Tab Notes
         student_notes = Enrollment.objects.filter(student=student)
+        
+        
         if "selectedPeriod" in self.request.GET:
             student_notes = student_notes.filter(
                 YearSemesterReference=self.request.GET["selectedPeriod"],
+            )
+        else:
+            student_notes = student_notes.filter(
+                YearSemesterReference=1
             )
 
         context["student_notes"] = student_notes
