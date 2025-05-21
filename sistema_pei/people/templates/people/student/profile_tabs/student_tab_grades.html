@@ -40,20 +40,39 @@
             {% for subject_grades in student_notes %}
               <tr>
                 <td class="pl-[76px]">{{ subject_grades.offer.subject.name }}</td>
+
                 <td>
                   {% if subject_grades.grade1 is not null %}
                     {{ subject_grades.grade1 }}
                   {% else %}
                     ---
                   {% endif %}
+                  <br>
+                  <span class="text-slate-400 text-sm">
+                    {% if subject_grades.absences1 is not null %}
+                      {{ subject_grades.absences1 }} falta{{ subject_grades.absences1|pluralize }}
+                    {% else %}
+                      ---
+                    {% endif %}
+                  </span>
                 </td>
+
                 <td>
                   {% if subject_grades.grade2 is not null %}
                     {{ subject_grades.grade2 }}
                   {% else %}
                     ---
                   {% endif %}
+                  <br>
+                  <span class="text-slate-400 text-sm">
+                    {% if subject_grades.absences2 is not null %}
+                      {{ subject_grades.absences2 }} falta{{ subject_grades.absences2|pluralize }}
+                    {% else %}
+                      ---
+                    {% endif %}
+                  </span>
                 </td>
+
                 {% if student.course.duration_type != "SEMESTER" %}
                   <td>
                     {% if subject_grades.grade3 is not null %}
@@ -61,13 +80,30 @@
                     {% else %}
                       ---
                     {% endif %}
+                    <br>
+                    <span class="text-slate-400 text-sm">
+                      {% if subject_grades.absences3 is not null %}
+                        {{ subject_grades.absences3 }} falta{{ subject_grades.absences3|pluralize }}
+                      {% else %}
+                        ---
+                      {% endif %}
+                    </span>
                   </td>
+
                   <td>
                     {% if subject_grades.grade4 is not null %}
                       {{ subject_grades.grade4 }}
                     {% else %}
                       ---
                     {% endif %}
+                    <br>
+                    <span class="text-slate-400 text-sm">
+                      {% if subject_grades.absences4 is not null %}
+                        {{ subject_grades.absences4 }} falta{{ subject_grades.absences4|pluralize }}
+                      {% else %}
+                        ---
+                      {% endif %}
+                    </span>
                   </td>
                 {% endif %}
               </tr>
