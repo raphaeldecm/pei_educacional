@@ -89,7 +89,7 @@ class StudentEnrollmentSerializer(serializers.Serializer):
                         "absences3": enrollment_data["nota_etapa_3"]["faltas"],
                         "grade4": enrollment_data["nota_etapa_4"]["nota"],
                         "absences4": enrollment_data["nota_etapa_4"]["faltas"],
-                        "YearSemesterReference": ano,
+                        "YearSemesterReference": student.reference_period,
                         "last_synced_at": now(),
                     },
                 )
