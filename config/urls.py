@@ -36,6 +36,10 @@ urlpatterns = [
         "educational_plan/",
         include("sistema_pei.educational_plan.urls", namespace="educational_plan"),
     ),
+        path(
+        "pei_sync/",
+        include("sistema_pei.pei_sync.urls", namespace="pei_sync"),
+    ),
     path(
         "about/",
         TemplateView.as_view(template_name="about.html"),
