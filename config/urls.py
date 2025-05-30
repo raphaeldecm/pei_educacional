@@ -37,8 +37,8 @@ urlpatterns = [
         include("sistema_pei.educational_plan.urls", namespace="educational_plan"),
     ),
         path(
-        "pei_sync/",
-        include("sistema_pei.pei_sync.urls", namespace="pei_sync"),
+        "peis_sync/",
+        include("sistema_pei.peis_sync.urls", namespace="peis_sync"),
     ),
     path(
         "about/",
