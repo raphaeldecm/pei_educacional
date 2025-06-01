@@ -24,6 +24,63 @@
         </div>
       </div>
     </div>
+
+    <p class="font-semibold mb-4 mt-[8px]">Objetivo da Disciplina</p>
+    {%if object.objective%}
+      <div class="flex items-center w-full h-max overflow-x-auto border border-slate-300 rounded-lg mb-4 px-8 p-2 gap-2 text-slate-900 font-regular text-[18px]">
+        {{object.objective|linebreaks}}
+      </div>
+    {%else%}
+      <p class="ml-5 text-slate-900 font-regular text-[18px]">
+        Obejetivo não informado.
+      </p>
+    {%endif%}
+
+    <p class="font-semibold mb-4 mt-[8px]">Conteúdo da Disciplina</p>
+    {%if object.content%}
+      <div class="flex flex-col max-h-[20%] overflow-y-scroll items-center w-full h-max overflow-x-auto border border-slate-300 rounded-lg mb-4 px-8 p-2 gap-2 text-slate-900 font-regular text-[18px] max-md:max-h-[40vh] max-lc:max-h-[15vh] max-sm:max-h-[30vh]" style="scrollbar-width: none;">
+        {{object.content|linebreaks}}
+      </div>
+    {%else%}
+      <p class="ml-5 text-slate-900 font-regular text-[18px]">
+        A Disciplina não tem Conteúdo
+      </p>
+    {%endif%}
+    
+    <p class="font-semibold mb-4 mt-[8px]">Metodologia da Disciplina</p>
+    {%if object.methodology%}
+      <div class="flex flex-col max-h-[20%] overflow-y-scroll items-center w-full h-max overflow-x-auto border border-slate-300 rounded-lg mb-4 px-8 p-2 gap-2 text-slate-900 font-regular text-[18px] max-md:max-h-[40vh] max-lc:max-h-[15vh] max-sm:max-h-[30vh]" style="scrollbar-width: none;">
+        {{object.methodology|linebreaks}}
+      </div>
+    {%else%}
+      <p class="ml-5 text-slate-900 font-regular text-[18px]">
+        A Metodologia não foi definida 
+      </p>
+    {%endif%}
+    
+    <p class="font-semibold mb-4 mt-[8px]">Recursos da Disciplina</p>
+    {%if object.resources%}
+      <div class="flex flex-col max-h-[20%] overflow-y-scroll items-center w-full h-max overflow-x-auto border border-slate-300 rounded-lg mb-4 px-8 p-2 gap-2 text-slate-900 font-regular text-[18px] max-md:max-h-[40vh] max-lc:max-h-[15vh] max-sm:max-h-[30vh]" style="scrollbar-width: none;">
+          {{object.resources|linebreaks}}
+        </div>
+    {%else%}
+      <p class="ml-5 text-slate-900 font-regular text-[18px]">
+        Os recursos da Disciplina não foram definidos 
+      </p>
+    {%endif%}
+
+    <p class="font-semibold mb-4 mt-[8px]">Avaliações da Disciplina</p>
+    {%if object.assessments%}
+      <div class="flex flex-col max-h-[20%] overflow-y-scroll items-center w-full h-max overflow-x-auto border border-slate-300 rounded-lg mb-4 px-8 p-2 gap-2 text-slate-900 font-regular text-[18px] max-md:max-h-[40vh] max-lc:max-h-[15vh] max-sm:max-h-[30vh]" style="scrollbar-width: none;">
+          {{object.assessments|linebreaks}}
+        </div>
+    {%else%}
+      <p class="ml-5 text-slate-900 font-regular text-[18px]">
+        As Avaliações dessa Disciplina ainda não foram definidos 
+      </p>
+    {%endif%}
+      
+
     <p class="font-semibold mb-4 mt-[38px]">Disciplina presente nos cursos:</p>
     <div class="overflow-y-auto h-[253px] mb-[38px]">
       {% for subject in object.courses.all %}
@@ -37,6 +94,7 @@
         <p class="text-slate-900 font-regular text-[18px]">Nenhum curso com esta disciplina cadastrada.</p>
       {% endfor %}
     </div>
+    
     {% include "components/_save_back_edit_buttons.html" with link_to_back="academics:subject_list" edit_url="academics:subject_update" %}
   </div>
 {% endblock content %}
