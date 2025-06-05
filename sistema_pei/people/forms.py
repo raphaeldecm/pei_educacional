@@ -213,6 +213,11 @@ class ViewEdithistoricStudentForm(forms.ModelForm):
             "sectors",
         )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if "user" in self.fields:
+            self.fields["user"].required = False
+
 
 class StudentFilesForm(forms.ModelForm):
     files = MultipleFileField(required=False)

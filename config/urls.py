@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from drf_spectacular.views import SpectacularAPIView
 from drf_spectacular.views import SpectacularSwaggerView
 from rest_framework.authtoken.views import obtain_auth_token
+from django.views.generic.base import RedirectView
 from sistema_pei.people.views import activate_account, StudentCreateView
 
 from sistema_pei.core.views import (
@@ -19,6 +20,7 @@ from sistema_pei.core.views import (
 
 
 urlpatterns = [
+    path('app/', RedirectView.as_view(url='/peis_sync/app/', permanent=False)),
     path(
         "people/",
         include("sistema_pei.people.urls", namespace="people"),
@@ -35,6 +37,10 @@ urlpatterns = [
     path(
         "educational_plan/",
         include("sistema_pei.educational_plan.urls", namespace="educational_plan"),
+    ),
+    path(
+        "peis_sync/",
+        include("sistema_pei.peis_sync.urls", namespace="peis_sync"),
     ),
     path(
         "about/",
