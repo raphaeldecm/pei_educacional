@@ -51,8 +51,9 @@ class OfferFilter(django_filters.FilterSet):
 
     def filter_by_search(self, queryset, name, value):
         return queryset.filter(
-            Q(subject__name__icontains=value) | Q(teacher__name__icontains=value),
+            Q(subject__name__icontains=value) | Q(teachers__name__icontains=value),
         )
+
 
 
 class EnrollmentFilter(django_filters.FilterSet):
