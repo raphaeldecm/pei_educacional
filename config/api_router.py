@@ -6,7 +6,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.views import TokenRefreshView
 from rest_framework_simplejwt.views import TokenVerifyView
 
-from sistema_pei.academics.api.views import EnrollmentDataView
+from sistema_pei.academics.api.views import EnrollmentDataView, StudentReferencePeriodView
 from sistema_pei.core.api.views import SuapTokenValidateView
 from sistema_pei.users.api.views import UserViewSet
 
@@ -29,6 +29,11 @@ urlpatterns = [
       "academics/enrollment_data_update/",
       EnrollmentDataView.as_view(),
       name="enrollment-data-update",
+    ),
+    path(
+      "academics/student_reference_period_update/",
+      StudentReferencePeriodView.as_view(),
+      name="enrollment-reference-period-update",
     ),
 ]
 urlpatterns += router.urls
