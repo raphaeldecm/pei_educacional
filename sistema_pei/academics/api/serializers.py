@@ -109,3 +109,25 @@ class StudentEnrollmentSerializer(serializers.Serializer):
             "processed": sync_enroll_list,
             "errors": sync_error_list,
         }
+
+class StudentReferencePeriodSerializer(serializers.Serializer):
+    code = serializers.CharField()
+    reference_period = serializers.IntegerField(min_value=1)
+
+    def create(self, validated_data):
+        student_code = validated_data["code"]
+        new_reference = validated_data["reference_period"]
+
+        student = Student.objects.filter(registration=student_code).first()
+
+        if not student:
+            raise StudentNotFoundException
+
+        student.reference_period = new_reference
+        student.save(update_fields=["reference_period"])
+
+        return {
+            "message": "Período de referência atualizado com sucesso.",
+            "student": student.registration,
+            "new_reference_period": student.reference_period,
+        }
