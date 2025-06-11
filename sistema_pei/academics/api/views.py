@@ -9,7 +9,19 @@ from sistema_pei.academics.models import Offer
 from sistema_pei.academics.models import Subject
 from sistema_pei.people.models import Student
 
-from .serializers import StudentEnrollmentSerializer
+from .serializers import StudentEnrollmentSerializer, StudentReferencePeriodSerializer
+
+
+class StudentReferencePeriodView(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = StudentReferencePeriodSerializer
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            result = serializer.save()
+            return Response(result, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class EnrollmentDataView(APIView):
