@@ -4,6 +4,7 @@ from django.db import models
 from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 from multiselectfield import MultiSelectField
+from django.utils.timezone import now
 
 from sistema_pei.core import constants
 from sistema_pei.core.models import BaseModel
@@ -206,6 +207,19 @@ class Student(Person):
 
     def __str__(self):
         return self.name
+    
+    def last_sync_time(self):
+        """
+            retorna quantos dias fazem desde a ultima sicronização
+        """
+        date_now = now().date()
+        last_sync = self.enrollment_set.all().order_by("-updated_at").first()
+        print(last_sync)
+        if not last_sync:
+            return 
+        last_sync = last_sync.last_synced_at
+        last_sync_date = last_sync
+        return abs(last_sync_date.date() - date_now).days
 
 
 class StudentFile(models.Model):
