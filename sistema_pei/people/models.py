@@ -214,11 +214,15 @@ class Student(Person):
         """
         date_now = now().date()
         last_sync = self.enrollment_set.all().order_by("-updated_at").first()
-        print(last_sync)
+        
         if not last_sync:
+            return  
+        
+        last_sync_date = last_sync.last_synced_at
+        
+        if not last_sync_date:
             return 
-        last_sync = last_sync.last_synced_at
-        last_sync_date = last_sync
+        
         return abs(last_sync_date.date() - date_now).days
 
 
