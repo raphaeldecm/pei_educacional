@@ -102,10 +102,10 @@
               <td>{{ object.name }}</td>
               <td>{{ object.course.name }}</td>
               <td class="absolute h-[97px] w-[8%] flex items-center justify-center">
-                {% with last_sync_days=object.last_sync_time %}
-                {% with las_sync_date=object.enrollment_set.last.last_synced_at%}
-
-                {%if not last_sync_days and last_sync_days != 0%}
+                {% with last_sync_days=object.last_sync_time%}
+                {% with last_sync_date=object.last_sync_date%}
+                
+                {%if last_sync_days is none%}
 
                     <div class="m-auto w-fit [&_span]:hover:visible">
                       <img src="{%static 'images/icons/sync_not_sync_icon.svg'%}" alt="" class="w-[36px] cursor-pointer">
@@ -114,21 +114,21 @@
                         </span>
                     </div>
 
-                {%elif last_sync_days < 50 %}
+                {%elif last_sync_days <= 30 %}
 
                       <div class="m-auto w-fit [&_span]:hover:visible">
                         <img src="{%static 'images/icons/sync_updated_icon.svg'%}" alt="" class='w-[36px] cursor-pointer'>
                          <span class="absolute top-3/4 w-[250px] left-[-40px] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
-                          Sicronização recente (feita em {{las_sync_date|date:"d/m/Y"}})
+                          Sicronização recente (feita em {{last_sync_date|date:"d/m/Y"}})
                         </span>
                       </div>
 
-                {%elif last_sync_days < 100 %}
+                {%elif last_sync_days <= 60 %}
 
                       <div class="m-auto w-fit [&_span]:hover:visible">
                         <img src="{%static 'images/icons/sync_outdated_icon.svg'%}" alt="" class='w-[36px] cursor-pointer'>
                          <span class= "absolute top-3/4 w-[250px] left-[-25%] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
-                          Sicronização feita em {{las_sync_date|date:"d/m/Y"}}
+                          Sicronização feita em {{last_sync_date|date:"d/m/Y"}}
                         </span>
                       </div>
                       
@@ -137,7 +137,7 @@
                       <div class="m-auto w-fit [&_span]:hover:visible">
                         <img src="{%static 'images/icons/sync_not_updated_icon.svg'%}" alt="" class='w-[36px] cursor-pointer'>
                           <span class="absolute top-3/4 w-[250px] left-[-25%] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
-                          Ultima Sicronização feita a muito tempo ({{las_sync_date|date:"d/m/Y"}})
+                          Ultima Sicronização feita a muito tempo ({{last_sync_date|date:"d/m/Y"}})
                         </span>
                       </div>
                       

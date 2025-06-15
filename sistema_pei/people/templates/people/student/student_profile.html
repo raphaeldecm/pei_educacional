@@ -26,16 +26,56 @@
           </p>
         </div>
       </div>
-      <div class="mx-[166px] mt-[65px] flex items-start gap-[10%]">
+      <div class="mx-[166px] mt-[65px] flex items-start gap-[10%] relative">
         <div class="flex flex-col justify-center items-center">
           <div class="w-[219px] h-[219px] rounded-full bg-amber-600 flex justify-center overflow-hidden items-center">
             <img src="{{ student.image.url }}"
                  class="w-full h-full object-cover"
                  alt="Student Image" />
           </div>
-          <p class="mt-[24px] bg-green-950 border border-green-500 rounded-full text-neutral-50 px-[8px]">
-            # {{ student.registration }}
-          </p>
+
+          <div class='mt-[24px] flex items-center justify-center'>
+            <p class="bg-green-950 border border-green-500 rounded-full text-neutral-50 px-[8px]">
+              # {{ student.registration }}
+            </p>
+
+            {% with last_sync_days=student.last_sync_time %}
+            {% with last_sync_date=student.last_sync_date%}
+
+            {%if last_sync_days is none%}
+                <div class="m-auto w-fit relative [&_span]:hover:visible">
+                  <img src="{%static 'images/icons/sync_not_sync_icon.svg'%}" alt="" class="w-[36px] cursor-pointer">
+                    <span class="absolute top-full left-[-105px] w-[250px] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
+                      Nenhuma sicronização feita ate o momento
+                    </span>
+                </div>
+            {%elif last_sync_days <= 30 %}
+                  <div class="m-auto w-fit relative [&_span]:hover:visible">
+                    <img src="{%static 'images/icons/sync_updated_icon.svg'%}" alt="" class='w-[36px] cursor-pointer'>
+                     <span class="absolute top-full left-[-105px] w-[250px] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
+                      Sicronização recente (feita em {{last_sync_date|date:"d/m/Y"}})
+                    </span>
+                  </div>
+            {%elif last_sync_days <= 60 %}
+                  <div class="m-auto w-fit relative [&_span]:hover:visible">
+                    <img src="{%static 'images/icons/sync_outdated_icon.svg'%}" alt="" class='w-[36px] cursor-pointer'>
+                     <span class= "absolute top-full left-[-105px] w-[250px] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
+                      Sicronização feita em {{last_sync_date|date:"d/m/Y"}}
+                    </span>
+                  </div>
+      
+            {%else%}
+                  <div class="m-auto w-fit relative [&_span]:hover:visible">
+                    <img src="{%static 'images/icons/sync_not_updated_icon.svg'%}" alt="" class='w-[36px] cursor-pointer'>
+                      <span class="absolute top-full left-[-105px] w-[250px] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
+                      Ultima Sicronização feita a muito tempo ({{last_sync_date|date:"d/m/Y"}})
+                    </span>
+                  </div>
+      
+            {%endif%}
+            {% endwith %}
+            {% endwith %}
+          </div>
         </div>
         <div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-0 h-[237px] mb-[20px]">

@@ -224,6 +224,16 @@ class Student(Person):
             return 
         
         return abs(last_sync_date.date() - date_now).days
+    
+    def last_sync_date(self):
+        """
+            retorna a data da ultima sicronização feita
+        """
+        last_sync = self.enrollment_set.all().order_by("-updated_at").first()
+        if not last_sync:
+            return
+        
+        return last_sync.last_synced_at
 
 
 class StudentFile(models.Model):
