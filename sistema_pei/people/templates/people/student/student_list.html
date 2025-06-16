@@ -12,16 +12,42 @@
   <div class="w-full">
     <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
     <form autocomplete="off">
-      <div class="mb-[26px] flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
-        <img src="{% static 'images/icons/icon-search.svg' %}"
-             alt=""
-             width="18px"
-             height="18px" />
-        <input type="text"
-               name="search"
-               placeholder="Pesquisar..."
-               class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50 placeholder:text-slate-500"
-               value="{{ request.GET.search }}" />
+      <div class='flex items-center justify-between'>
+        <div class="mb-[26px] flex w-[78%] h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
+          <img src="{% static 'images/icons/icon-search.svg' %}"
+               alt=""
+               width="18px"
+               height="18px" />
+          <input type="text"
+                 name="search"
+                 placeholder="Pesquisar..."
+                 class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50 placeholder:text-slate-500"
+                 value="{{ request.GET.search }}" />
+        </div>
+        <div class='mb-[26px] relative flex items-center w-[20%] h-[48px] border border-slate-300 rounded-lg'>
+          <img class="absolute top-[12px] right-[10px] z-10"
+            src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+            width="24px"
+            height="24px" />
+          <select class='w-full h-full bg-transparent px-2 text-[18px] outline-none text-slate-500 appearance-none' name="sync_status">
+            <option selected disabled>
+              Sicronização
+            </option>
+            {%for choice in filter.STATUS_CHOICES%}
+              <option 
+              {%if request.GET.sync_status == choice.0 %}
+                selected
+              {%endif%}
+              class=""
+              value="{{choice.0}}">
+                {{choice.1}}
+              </option>
+            {%endfor%}
+            <option value="">
+              Todos
+            </option>
+          </select>
+      </div>
       </div>
       <div class="flex gap-[8px] flex-wrap">
 
@@ -102,22 +128,22 @@
               <td>{{ object.name }}</td>
               <td>{{ object.course.name }}</td>
               <td class="absolute h-[97px] w-[8%] flex items-center justify-center">
-                {% with last_sync_days=object.last_sync_time%}
-                {% with last_sync_date=object.last_sync_date%}
-                
+                {%with last_sync_days=object.last_sync_time%}
+                {%with last_sync_date=object.last_sync_date%}
+
                 {%if last_sync_days is none%}
 
                     <div class="m-auto w-fit [&_span]:hover:visible">
-                      <img src="{%static 'images/icons/sync_not_sync_icon.svg'%}" alt="" class="w-[36px] cursor-pointer">
+                      <img src="{%static 'images/icons/sync_not_sync_icon.svg'%}" alt="Icone que demonstra que não ha nehuma sicronia ate o momento" class="w-[36px] cursor-pointer">
                         <span class="absolute top-3/4 w-[250px] left-[-25%] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
-                          Nenhuma sicronização feita ate o momento
+                          Nenhuma sicronização feita até o momento
                         </span>
                     </div>
 
                 {%elif last_sync_days <= 30 %}
 
                       <div class="m-auto w-fit [&_span]:hover:visible">
-                        <img src="{%static 'images/icons/sync_updated_icon.svg'%}" alt="" class='w-[36px] cursor-pointer'>
+                        <img src="{%static 'images/icons/sync_updated_icon.svg'%}" alt="icone de sicronia recente" class='w-[36px] cursor-pointer'>
                          <span class="absolute top-3/4 w-[250px] left-[-40px] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
                           Sicronização recente (feita em {{last_sync_date|date:"d/m/Y"}})
                         </span>
@@ -126,7 +152,7 @@
                 {%elif last_sync_days <= 60 %}
 
                       <div class="m-auto w-fit [&_span]:hover:visible">
-                        <img src="{%static 'images/icons/sync_outdated_icon.svg'%}" alt="" class='w-[36px] cursor-pointer'>
+                        <img src="{%static 'images/icons/sync_outdated_icon.svg'%}" alt="icone de sicronia regular" class='w-[36px] cursor-pointer'>
                          <span class= "absolute top-3/4 w-[250px] left-[-25%] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
                           Sicronização feita em {{last_sync_date|date:"d/m/Y"}}
                         </span>
@@ -135,7 +161,7 @@
                 {%else%}
 
                       <div class="m-auto w-fit [&_span]:hover:visible">
-                        <img src="{%static 'images/icons/sync_not_updated_icon.svg'%}" alt="" class='w-[36px] cursor-pointer'>
+                        <img src="{%static 'images/icons/sync_not_updated_icon.svg'%}" alt="icone de sicronia antiga" class='w-[36px] cursor-pointer'>
                           <span class="absolute top-3/4 w-[250px] left-[-25%] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
                           Ultima Sicronização feita a muito tempo ({{last_sync_date|date:"d/m/Y"}})
                         </span>
@@ -143,8 +169,8 @@
                       
                 {%endif%}
 
-                {% endwith %}
-                {% endwith %}
+                {%endwith%}
+                {%endwith%}
               </td>
               <td>
                 <span class="flex justify-center items-center h-full gap-4 pr-[26px]">
