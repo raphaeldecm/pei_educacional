@@ -44,31 +44,31 @@
 
             {%if last_sync_days is none%}
                 <div class="m-auto w-fit relative [&_span]:hover:visible">
-                  <img src="{%static 'images/icons/sync_not_sync_icon.svg'%}" alt="" class="w-[36px] cursor-pointer">
+                  <img src="{%static 'images/icons/not-sync-icon.svg'%}" alt="Icone que demonstra que não ha nenhuma sicronização até o momento" class="w-[36px] cursor-pointer">
                     <span class="absolute top-full left-[-105px] w-[250px] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
-                      Nenhuma sicronização feita ate o momento
+                      Nenhuma sincronização feita até o momento
                     </span>
                 </div>
             {%elif last_sync_days <= 30 %}
                   <div class="m-auto w-fit relative [&_span]:hover:visible">
-                    <img src="{%static 'images/icons/sync_updated_icon.svg'%}" alt="" class='w-[36px] cursor-pointer'>
+                    <img src="{%static 'images/icons/sync-updated-icon.svg'%}" alt="icone de sincronização recente" class='w-[36px] cursor-pointer'>
                      <span class="absolute top-full left-[-105px] w-[250px] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
-                      Sicronização recente (feita em {{last_sync_date|date:"d/m/Y"}})
+                      Sincronização recente (feita em {{last_sync_date|date:"d/m/Y"}})
                     </span>
                   </div>
             {%elif last_sync_days <= 60 %}
                   <div class="m-auto w-fit relative [&_span]:hover:visible">
-                    <img src="{%static 'images/icons/sync_outdated_icon.svg'%}" alt="" class='w-[36px] cursor-pointer'>
+                    <img src="{%static 'images/icons/sync-outdated-icon.svg'%}" alt="icone de sicronização regular" class='w-[36px] cursor-pointer'>
                      <span class= "absolute top-full left-[-105px] w-[250px] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
-                      Sicronização feita em {{last_sync_date|date:"d/m/Y"}}
+                      Sincronização feita em {{last_sync_date|date:"d/m/Y"}}
                     </span>
                   </div>
       
             {%else%}
                   <div class="m-auto w-fit relative [&_span]:hover:visible">
-                    <img src="{%static 'images/icons/sync_not_updated_icon.svg'%}" alt="" class='w-[36px] cursor-pointer'>
+                    <img src="{%static 'images/icons/sync-not-updated-icon.svg'%}" alt="icone de sicronização antiga" class='w-[36px] cursor-pointer'>
                       <span class="absolute top-full left-[-105px] w-[250px] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
-                      Ultima Sicronização feita a muito tempo ({{last_sync_date|date:"d/m/Y"}})
+                      Ultima Sincronização feita a muito tempo ({{last_sync_date|date:"d/m/Y"}})
                     </span>
                   </div>
       

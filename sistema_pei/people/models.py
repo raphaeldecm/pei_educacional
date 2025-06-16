@@ -210,11 +210,11 @@ class Student(Person):
     
     def last_sync_time(self):
         """
-            retorna quantos dias fazem desde a ultima sicronização
+            retorna quantos dias fazem desde a ultima sincronização
         """
         date_now = now().date()
         
-        #retorna a ultima inscrição atualizada excluindo as que não tem data de sicronização
+        #retorna a ultima inscrição atualizada excluindo as que não tem data de sincronização
         last_sync = self.enrollment_set.all().exclude(last_synced_at=None).order_by("-updated_at").first()
         
         if not last_sync:
@@ -229,10 +229,10 @@ class Student(Person):
     
     def last_sync_date(self):
         """
-            retorna a data da ultima sicronização feita
+            retorna a data da ultima sincronização feita
         """
         
-        #retorna a ultima inscrição atualizada excluindo as que não tem data de sicronização
+        #retorna a ultima inscrição atualizada excluindo as que não tem data de sincronização
         last_sync = self.enrollment_set.all().exclude(last_synced_at=None).order_by("-updated_at").first()
         if not last_sync:
             return

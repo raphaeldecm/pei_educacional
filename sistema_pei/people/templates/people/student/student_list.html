@@ -31,7 +31,7 @@
             height="24px" />
           <select class='w-full h-full bg-transparent px-2 text-[18px] outline-none text-slate-500 appearance-none' name="sync_status">
             <option selected disabled>
-              Sicronização
+              Sincronização
             </option>
             {%for choice in filter.STATUS_CHOICES%}
               <option 
@@ -112,7 +112,7 @@
             <th>Matrícula</th>
             <th>Nome</th>
             <th>Curso</th>
-            <th style="text-align: center">Sicronização</th>
+            <th style="text-align: center">Sincronização</th>
             <th style="text-align: center" class='pr-[30px]'>Ações</th>
           </tr>
         </thead>
@@ -134,36 +134,36 @@
                 {%if last_sync_days is none%}
 
                     <div class="m-auto w-fit [&_span]:hover:visible">
-                      <img src="{%static 'images/icons/sync_not_sync_icon.svg'%}" alt="Icone que demonstra que não ha nehuma sicronia ate o momento" class="w-[36px] cursor-pointer">
+                      <img src="{%static 'images/icons/not-sync-icon.svg'%}" alt="Icone que demonstra que não ha nenhuma sicronização até o momento" class="w-[36px] cursor-pointer">
                         <span class="absolute top-3/4 w-[250px] left-[-25%] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
-                          Nenhuma sicronização feita até o momento
+                          Nenhuma sincronização feita até o momento
                         </span>
                     </div>
 
                 {%elif last_sync_days <= 30 %}
 
                       <div class="m-auto w-fit [&_span]:hover:visible">
-                        <img src="{%static 'images/icons/sync_updated_icon.svg'%}" alt="icone de sicronia recente" class='w-[36px] cursor-pointer'>
+                        <img src="{%static 'images/icons/sync-updated-icon.svg'%}" alt="icone de sincronização recente" class='w-[36px] cursor-pointer'>
                          <span class="absolute top-3/4 w-[250px] left-[-40px] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
-                          Sicronização recente (feita em {{last_sync_date|date:"d/m/Y"}})
+                          Sincronização recente (feita em {{last_sync_date|date:"d/m/Y"}})
                         </span>
                       </div>
 
                 {%elif last_sync_days <= 60 %}
 
                       <div class="m-auto w-fit [&_span]:hover:visible">
-                        <img src="{%static 'images/icons/sync_outdated_icon.svg'%}" alt="icone de sicronia regular" class='w-[36px] cursor-pointer'>
+                        <img src="{%static 'images/icons/sync-outdated-icon.svg'%}" alt="icone de sicronização regular" class='w-[36px] cursor-pointer'>
                          <span class= "absolute top-3/4 w-[250px] left-[-25%] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
-                          Sicronização feita em {{last_sync_date|date:"d/m/Y"}}
+                          Sincronização feita em {{last_sync_date|date:"d/m/Y"}}
                         </span>
                       </div>
                       
                 {%else%}
 
                       <div class="m-auto w-fit [&_span]:hover:visible">
-                        <img src="{%static 'images/icons/sync_not_updated_icon.svg'%}" alt="icone de sicronia antiga" class='w-[36px] cursor-pointer'>
+                        <img src="{%static 'images/icons/sync-not-updated-icon.svg'%}" alt="icone de sicronização antiga" class='w-[36px] cursor-pointer'>
                           <span class="absolute top-3/4 w-[250px] left-[-25%] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
-                          Ultima Sicronização feita a muito tempo ({{last_sync_date|date:"d/m/Y"}})
+                          Ultima Sincronização feita a muito tempo ({{last_sync_date|date:"d/m/Y"}})
                         </span>
                       </div>
                       
