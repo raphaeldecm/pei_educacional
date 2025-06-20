@@ -140,7 +140,7 @@
                         </span>
                     </div>
 
-                {%elif last_sync_days <= 30 %}
+                {%elif last_sync_days <= filter.SYNC_RECENT_INTERVAL %}
 
                       <div class="m-auto w-fit [&_span]:hover:visible">
                         <img src="{%static 'images/icons/sync-updated-icon.svg'%}" alt="icone de sincronização recente" class='w-[36px] cursor-pointer'>
@@ -149,7 +149,7 @@
                         </span>
                       </div>
 
-                {%elif last_sync_days <= 60 %}
+                {%elif last_sync_days <= filter.SYNC_REGULAR_INTERVAL %}
 
                       <div class="m-auto w-fit [&_span]:hover:visible">
                         <img src="{%static 'images/icons/sync-outdated-icon.svg'%}" alt="icone de sicronização regular" class='w-[36px] cursor-pointer'>

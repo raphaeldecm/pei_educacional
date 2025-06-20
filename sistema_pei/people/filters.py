@@ -9,6 +9,8 @@ from .models import Campus
 from .models import Student
 from .models import Teacher
 
+#constants
+from sistema_pei.core.constants import SYNC_RECENT_INTERVAL,SYNC_REGULAR_INTERVAL,SYNC_OLD_INTERVAL
 
 class TeacherFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(lookup_expr="icontains", label="Nome")
@@ -25,6 +27,13 @@ class TeacherFilter(django_filters.FilterSet):
 
 
 class StudentFilter(django_filters.FilterSet):
+    
+    #sync status tempo (em dias)
+    #necessario para a verificação no template com base nas constantes
+    SYNC_RECENT_INTERVAL = SYNC_RECENT_INTERVAL
+    SYNC_REGULAR_INTERVAL = SYNC_REGULAR_INTERVAL
+    SYNC_OLD_INTERVAL = SYNC_OLD_INTERVAL
+    
     search = django_filters.CharFilter(method="multi_field_search", label="Search")
     course = django_filters.ModelChoiceFilter(
         queryset=Course.objects.order_by("name", "period"),
@@ -58,9 +67,9 @@ class StudentFilter(django_filters.FilterSet):
         """
         
         filter_dates_values = {
-            'RECENTE' : [now() - timedelta(days=30),now()],
-            'REGULAR' :[now() - timedelta(days=60),now()-timedelta(days=30)],
-            "ANTIGA":[now()-timedelta(days=7305),now()-timedelta(days=60)]
+            'RECENTE' : [now() - timedelta(days=self.SYNC_RECENT_INTERVAL),now()],
+            'REGULAR' :[now() - timedelta(days=self.SYNC_REGULAR_INTERVAL),now()-timedelta(days=self.SYNC_RECENT_INTERVAL)],
+            "ANTIGA":[now()-timedelta(days=self.SYNC_OLD_INTERVAL),now()-timedelta(days=self.SYNC_REGULAR_INTERVAL)]
         }
         
         if value == 'SEM_SINCRONIZACAO':
