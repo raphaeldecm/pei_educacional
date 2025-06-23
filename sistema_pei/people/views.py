@@ -40,6 +40,7 @@ from sistema_pei.people.models import Teacher
 from sistema_pei.people.models import User
 from sistema_pei.people.services import import_student_csv
 from sistema_pei.people.services import teachers_import
+from sistema_pei.core.constants import SYNC_RECENT_INTERVAL,SYNC_REGULAR_INTERVAL
 
 from .forms import TeacherForm
 from .forms import ViewStudentForm
@@ -232,6 +233,10 @@ class ProfilePageView(LoginRequiredMixin, TemplateView):
         # Profile data
         context["student"] = student
         context["student_files"] = StudentFile.objects.filter(student=student)
+        
+        # Sync status constants
+        context["SYNC_RECENT_INTERVAL"] = SYNC_RECENT_INTERVAL
+        context["SYNC_REGULAR_INTERVAL"] = SYNC_REGULAR_INTERVAL
 
         # Tabs
         allowed_tabs = ("general", "historic", "grades", "edit_student_data")
