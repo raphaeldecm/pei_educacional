@@ -21,8 +21,9 @@ class HomeListView(
 
     def get_teacher_peis_queryset(self):
         queryset = Pei.objects.all()
+        has_professor_filter = self.request.GET.get("teacher")
 
-        if self.request.user.groups.filter(name="Teacher").exists():
+        if not has_professor_filter and self.request.user.groups.filter(name="Teacher").exists():
             queryset = queryset.filter(
                 enrollment__offer__teachers__email=self.request.user.email
             )
