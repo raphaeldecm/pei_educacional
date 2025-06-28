@@ -94,8 +94,8 @@
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
           {% for object in object_list %}
-            <tr>
-              <td class="pl-[76px]">
+            <tr class='[&_td]:px-3 [&_td]:overflow-hidden [&_td]:text-ellipsis'>
+              <td class="!pl-[76px]">
                 <div class="relative w-[67px] h-[67px] rounded-full overflow-hidden">
                   <img src="{{ object.student.image.url }}"
                        class="w-full h-full object-cover relative"
@@ -105,30 +105,32 @@
               <td>{{ object.student.name }}</td>
               <td>{{ object.student.email }}</td>
               <td>{{ object.student.registration }}</td>
-              <td class="flex justify-center h-full gap-[30px] !mt-[32px] pr-[26px]">
-                <a href="{% url 'people:profile' object.student.id %}">
-                  <img src="{% static 'images/icons/icon-eye.svg' %}"
-                       alt=""
-                       width="24px"
-                       height="24px"
-                       class="cursor-pointer" />
-                </a>
-                <a href="{% url 'people:profile' object.student.id %}?tab=edit_student_data#tab">
-                  <img src="{% static 'images/icons/icon-edit-element.svg' %}"
-                       alt=""
-                       width="24px"
-                       height="24px"
-                       class="cursor-pointer" />
-                </a>
-                <button class="hover:bg-slate-100 rounded-full"
-                        type="button"
-                        id="openModal{{ object.pk }}"
-                        data-modal-id="confirmationModal{{ object.pk }}">
-                  <img src="{% static 'images/icons/icon-remove-element.svg' %}"
-                       alt=""
-                       height="25px"
-                       class="cursor-pointer" />
-                </button>
+              <td>
+                <span class="flex justify-center items-center h-full gap-4 pr-[26px]">
+                  <a href="{% url 'people:profile' object.student.id %}">
+                    <img src="{% static 'images/icons/icon-eye.svg' %}"
+                        alt=""
+                        width="24px"
+                        height="24px"
+                        class="cursor-pointer" />
+                  </a>
+                  <a href="{% url 'people:profile' object.student.id %}?tab=edit_student_data#tab">
+                    <img src="{% static 'images/icons/icon-edit-element.svg' %}"
+                        alt=""
+                        width="24px"
+                        height="24px"
+                        class="cursor-pointer" />
+                  </a>
+                  <button class="hover:bg-slate-100 rounded-full"
+                          type="button"
+                          id="openModal{{ object.pk }}"
+                          data-modal-id="confirmationModal{{ object.pk }}">
+                    <img src="{% static 'images/icons/icon-remove-element.svg' %}"
+                        alt=""
+                        height="25px"
+                        class="cursor-pointer" />
+                  </button>
+                </span>
               </td>
               {% url 'academics:remove_student_from_offer' offer.id object.student.id as full_delete_url %}
               {% include "components/_confirm_delete_modal.html" with title="Confirmar remoção de discente" body_text="Tem certeza de que deseja remover este discente? Esta ação poderá remover os planos de ensino cadastrados para o discente nesta disciplina. Isto não pode ser desfeito." full_delete_url=full_delete_url %}

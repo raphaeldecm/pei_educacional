@@ -125,7 +125,7 @@
                      class="rounded-full w-16 h-16 aspect-square" />
               </td>
               <td>{{ object.registration }}</td>
-              <td>{{ object.name }}</td>
+              <td class='max-w-[15vw]'>{{ object.name }}</td>
               <td class='max-w-[22vw] max-xl:text-nowrap'>{{ object.course.name }}</td>
               <td class="absolute h-[97px] w-[8%] flex items-center justify-center">
                 {%with last_sync_days=object.last_sync_time%}
