@@ -118,15 +118,15 @@
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
           {% for object in object_list %}
-            <tr>
-              <td class="pl-[76px]">
+            <tr class='[&_td]:px-3 [&_td]:overflow-hidden [&_td]:text-ellipsis'>
+              <td class="!pl-[76px] pr-2">
                 <img src="{{ object.image.url }}"
                      alt=""
                      class="rounded-full w-16 h-16 aspect-square" />
               </td>
               <td>{{ object.registration }}</td>
               <td>{{ object.name }}</td>
-              <td>{{ object.course.name }}</td>
+              <td class='max-w-[22vw] max-xl:text-nowrap'>{{ object.course.name }}</td>
               <td class="absolute h-[97px] w-[8%] flex items-center justify-center">
                 {%with last_sync_days=object.last_sync_time%}
                 {%with last_sync_date=object.last_sync_date%}

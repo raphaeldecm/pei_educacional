@@ -137,16 +137,16 @@
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
           {% for object in object_list %}
-            <tr>
-              <td class="pl-[76px]">
+            <tr class="[&_td]:px-3 [&_td]:overflow-x-hidden [&_td]:text-ellipsis">
+              <td class="!pl-[76px] pr-3">
                 <img src="{{ object.enrollment.student.image.url }}"
                      alt=""
                      class="rounded-full w-16 h-16 aspect-square" />
               </td>
-              <td>{{ object.enrollment.student.registration }}</td>
+              <td class='max-w-[10vw]'>{{ object.enrollment.student.registration }}</td>
               <td>{{ object.enrollment.student.name }}</td>
               <td>{{ object.responsible_teacher }}</td>
-              <td>
+              <td class='max-w-[15vw] max-2xl:text-nowrap'>
                 {{ object.enrollment.offer.subject }}
                 <br />
                 <span class="text-sm text-slate-600/50">{{ object.enrollment.student.course.name }}</span>
