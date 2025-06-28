@@ -127,7 +127,7 @@
               <td>{{ object.registration }}</td>
               <td class='max-w-[15vw]'>{{ object.name }}</td>
               <td class='max-w-[22vw] max-xl:text-nowrap'>{{ object.course.name }}</td>
-              <td class="absolute h-[97px] w-[8%] flex items-center justify-center">
+              <td class="absolute h-[97px] w-[8%] flex items-center justify-center !overflow-visible">
                 {%with last_sync_days=object.last_sync_time%}
                 {%with last_sync_date=object.last_sync_date%}
 
