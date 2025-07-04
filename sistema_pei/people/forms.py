@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from sistema_pei.core import constants
+from sistema_pei.core.mixins import OptionalUserFieldMixin
 
 from .models import Campus
 from .models import Student
@@ -132,7 +133,7 @@ class AdminStudentForm(forms.ModelForm):
         return reference_period
 
 
-class ViewStudentForm(AdminStudentForm):
+class ViewStudentForm(OptionalUserFieldMixin, AdminStudentForm):
     """
     Formulário para ser usado no Template de cadastro do aluno.
     Os campos 'created_by', 'updated_by' devem ser atualizados na view.
@@ -144,10 +145,6 @@ class ViewStudentForm(AdminStudentForm):
     class Meta(AdminStudentForm.Meta):
         exclude = ("created_by", "updated_by")
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if "user" in self.fields:
-            self.fields["user"].required = False
 
     def clean_files(self):
         files = self.cleaned_data.get("files", [])
@@ -175,7 +172,7 @@ class ViewStudentForm(AdminStudentForm):
         return files
 
 
-class ViewEditDataStudentForm(AdminStudentForm):
+class ViewEditDataStudentForm(OptionalUserFieldMixin, AdminStudentForm):
     class Meta(AdminStudentForm.Meta):
         exclude = (
             "created_by",
@@ -193,11 +190,9 @@ class ViewEditDataStudentForm(AdminStudentForm):
         self.fields["educational_necessities"].required = False
         self.fields["course"].required = False
         self.fields["sectors"].required = False
-        if "user" in self.fields:
-            self.fields["user"].required = False
 
 
-class ViewEdithistoricStudentForm(forms.ModelForm):
+class ViewEdithistoricStudentForm(OptionalUserFieldMixin, forms.ModelForm):
     class Meta:
         model = Student
         exclude = (
@@ -212,11 +207,6 @@ class ViewEdithistoricStudentForm(forms.ModelForm):
             "reference_period",
             "sectors",
         )
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if "user" in self.fields:
-            self.fields["user"].required = False
 
 
 class StudentFilesForm(forms.ModelForm):

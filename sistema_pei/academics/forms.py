@@ -14,6 +14,10 @@ class OfferForm(forms.ModelForm):
         model = models.Offer
         fields = ["status", "subject", "year", "teachers", "course", "semester"]
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["teachers"].queryset = models.Teacher.objects.order_by("name")
+
 
 class SubjectForm(forms.ModelForm):
     class Meta:

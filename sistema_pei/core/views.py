@@ -19,36 +19,35 @@ class HomeListView(
     filterset_class = PeiFilter
     template_name = "home.html"
 
-    def get_queryset(self):
+    def get_teacher_peis_queryset(self):
         queryset = Pei.objects.all()
-        filter_data = self.request.GET
+        has_professor_filter = self.request.GET.get("teacher")
 
-        if self.request.user.groups.filter(name="Teacher").exists():
+        if not has_professor_filter and self.request.user.groups.filter(name="Teacher").exists():
             queryset = queryset.filter(
-                enrollment__offer__teachers__email=self.request.user.email,
+                enrollment__offer__teachers__email=self.request.user.email
             )
+
+        return queryset
+
+    def get_queryset(self):
+        queryset = self.get_teacher_peis_queryset()
+        filter_data = self.request.GET
 
         if not filter_data or not any(filter_data.values()):
             queryset = queryset & Pei.objects.current_peis()
 
         return self.filterset_class(
-            self.request.GET, queryset=queryset, request=self.request,
+            self.request.GET, queryset=queryset, request=self.request
         ).qs
 
-    # Cards
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        base_queryset = self.get_teacher_peis_queryset()
 
-        queryset = Pei.objects.all()
-
-        if self.request.user.groups.filter(name="Teacher").exists():
-            queryset = Pei.objects.filter(
-                enrollment__offer__teachers__email=self.request.user.email
-            )
-
-        context["pending_peis"] = queryset.filter(status="NOT_START").count()
-        context["in_progress_peis"] = queryset.filter(status="IN_PROGRESS").count()
-        context["filled_peis"] = queryset.filter(status="FEEDBACK").count()
-        context["finished_peis"] = queryset.filter(status="COMPLETED").count()
+        context["pending_peis"] = base_queryset.filter(status="NOT_START").count()
+        context["in_progress_peis"] = base_queryset.filter(status="IN_PROGRESS").count()
+        context["filled_peis"] = base_queryset.filter(status="FEEDBACK").count()
+        context["finished_peis"] = base_queryset.filter(status="COMPLETED").count()
 
         return context

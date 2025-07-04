@@ -19,7 +19,7 @@
           <label for="{{ form.year.id_for_label }}" class="font-medium text-[18px]">Selecionar Inscrição:</label>
           <select name="{{ form.enrollment.name }}"
                   id="{{ form.enrollment.id_for_label }}"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50 mt-[16px]">
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50 mt-[16px] pointer-events-none">
             <option value="default" selected>Selecione a inscrição...</option>
             {% for key, value in form.enrollment.field.choices %}
               <option value="{{ key }}"

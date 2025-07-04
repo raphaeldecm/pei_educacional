@@ -13,6 +13,7 @@ from django.views import generic
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
 from django_filters.views import FilterView
+from django.db.models.functions import Lower
 
 from sistema_pei.academics import filters
 from sistema_pei.academics import forms
@@ -146,7 +147,7 @@ class OfferListView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.List
         if not filter_data or not any(filter_data.values()):
             queryset = models.Offer.objects.current_offers()
 
-        return self.filterset_class(self.request.GET, queryset=queryset).qs
+        return self.filterset_class(self.request.GET, queryset=queryset).qs.order_by(Lower('subject__name'))
 
 
 class OfferCreateView(

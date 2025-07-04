@@ -85,8 +85,8 @@
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
           {% for object in object_list %}
-            <tr>
-              <td class="pl-[76px]">{{ object.name }}</td>
+            <tr class='[&_td]:px-3 [&_td]:overflow-hidden [&_td]:text-ellipsis'>
+              <td class="!pl-[76px]">{{ object.name }}</td>
               <td>{{ object.get_period_display }}</td>
               <td>{{ object.course_type }}</td>
               <td>

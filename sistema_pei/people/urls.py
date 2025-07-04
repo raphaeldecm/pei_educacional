@@ -37,11 +37,6 @@ urlpatterns = [
         name="profile_update",
     ),
     path(
-        "profile/<int:student_id>/update_student_grades/<int:enrollment_id>",
-        views.UpdateStudentGradesView.as_view(),
-        name="student_update_grades",
-    ),
-    path(
         "profile/<int:pk>/edit_historic_data/",
         views.EditHistoricPersonalDataView.as_view(),
         name="student_update_historic",

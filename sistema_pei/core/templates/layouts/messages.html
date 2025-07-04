@@ -31,5 +31,13 @@
         });
       });
     });
-  </script>
+
+    //apaga as menssagens depois de 4 segundos
+    document.addEventListener("DOMContentLoaded",()=>{
+      const alertMessage = document.querySelectorAll('.alert-message')
+      setTimeout(()=>{
+        alertMessage.forEach(element=>element.remove())
+      },4000)
+    })
+    </script>
 {% endblock inline_javascript %}

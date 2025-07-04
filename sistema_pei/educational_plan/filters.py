@@ -17,9 +17,9 @@ class PeiFilter(django_filters.FilterSet):
     )
 
     subject = django_filters.ModelChoiceFilter(
-        queryset=models.Subject.objects.all(),
+        queryset=models.Subject.objects.order_by('name').distinct('name'),
         field_name="enrollment__offer__subject",
-        label="subject",
+        label="Disciplina",
     )
 
     teacher = django_filters.ModelChoiceFilter(

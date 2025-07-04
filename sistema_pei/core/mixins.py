@@ -21,3 +21,9 @@ class ProtectedErrorMessageMixin:
         except ProtectedError:
             messages.warning(self.request, self.protected_warning_message)
             return redirect(self.request.headers.get("referer"))
+
+class OptionalUserFieldMixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if "user" in self.fields:
+            self.fields["user"].required = False
