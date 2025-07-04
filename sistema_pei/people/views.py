@@ -338,31 +338,6 @@ class ProfilePageView(LoginRequiredMixin, TemplateView):
         return context
 
 
-class UpdateStudentGradesView(LoginRequiredMixin, View):
-    """
-    View para editar as notas de um Enrollment específico.
-    """
-
-    def post(self, request, *args, **kwargs):
-        enrollment_id = kwargs.get("enrollment_id")
-        enrollment = get_object_or_404(Enrollment, id=enrollment_id)
-
-        form = EnrollmentForm(request.POST, instance=enrollment)
-        if form.is_valid():
-            form.save()
-            selected_period = request.POST.get("selectedPeriod", 1)
-            messages.success(request, "Dados da disciplina atualizados!")
-            return redirect(
-                f"/people/profile/{enrollment.student.id}?tab=edit_student_data&sub_tab=edit_notes&selectedPeriod={selected_period}",
-            )
-        else:
-            messages.error(
-                request,
-                "Erro ao atualizar dados. Verifique os valores inseridos.",
-            )
-            return redirect(request.headers.get("referer"))
-
-
 class EditPersonalDataView(LoginRequiredMixin, View):
     """
     View para editar os dados pessoais de um aluno.
