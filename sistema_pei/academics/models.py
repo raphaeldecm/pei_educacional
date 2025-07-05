@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from sistema_pei.academics import managers
 from sistema_pei.academics.constants import COURSE_TYPE
-from sistema_pei.core.constants import SMALL_CHAR_FIELD_NAME_LENGTH
+from sistema_pei.core.constants import SMALL_CHAR_FIELD_NAME_LENGTH,MEDIUM_CHAR_FIELD_NAME_LENGTH
 from sistema_pei.core.models import BaseModel
 from sistema_pei.people.models import Teacher
 
@@ -222,3 +222,29 @@ class Enrollment(BaseModel):
 
     def __str__(self):
         return f"{self.student} - {self.offer.subject.name}"
+
+
+class Matrix(BaseModel):
+    name = models.CharField(
+        verbose_name=_("Nome da matriz"),
+        unique=True,
+        max_length=MEDIUM_CHAR_FIELD_NAME_LENGTH,
+        null=False,
+        blank=False
+    )
+    
+    year = models.DecimalField(
+        verbose_name=_("Ano da matriz"),
+        max_digits=5,
+        decimal_places=1,
+        null=False,
+        blank=False
+    )
+    
+    def __str__(self):
+        return f"{self.name} - {self.year}"
+    
+    class Meta:
+        verbose_name = _("Matriz")
+        verbose_name_plural = _("Matrizes")
+        ordering = ['-year']
