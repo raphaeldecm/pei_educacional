@@ -110,4 +110,9 @@ urlpatterns = [
         views.GetSubjectsByCourseView.as_view(),
         name="get_subjects_by_course",
     ),
+    path(
+        'matrix/list/',
+        views.MatrixListView.as_view(),
+        name='matrix_list'
+    )
 ]
