@@ -99,3 +99,21 @@ class SubjectFilter(
     class Meta:
         model = models.Subject
         fields = ["name", "subject_type", "courses"]
+
+class MatrixFilter(django_filters.FilterSet):
+    
+    name = django_filters.CharFilter(
+        'name',
+        lookup_expr='icontains',
+        label='name'
+    )
+    
+    year = django_filters.NumberFilter(
+        'year',
+        lookup_expr='icontains',
+        label='year'
+    )
+    
+    class Meta:
+        model = models.Matrix
+        fields = []

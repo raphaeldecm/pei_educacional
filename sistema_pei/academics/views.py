@@ -48,6 +48,7 @@ class AcademicsIndexView(
         context["subjects_counter"] = models.Subject.objects.count()
         context["offers_counter"] = models.Offer.objects.current_offers().count()
         context["peis_counter"] = Pei.objects.count()
+        context["matrix_counter"] = models.Matrix.objects.count()
 
         # Participants
         context["students_counter"] = Student.objects.count()
@@ -404,3 +405,14 @@ class SubjectDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
     model = models.Subject
     title = _("Detalhes da disciplina")
     template_name = "academics/subjects/subject_detail.html"
+
+class MatrixListView(
+    TitleViewMixin,
+    FilterView
+):
+    title = _('Matrizes')
+    template_name = 'academics/matrix/matrix_list.html'
+    filterset_class = filters.MatrixFilter
+    queryset = models.Matrix.objects.all()
+    paginate_by = constants.DEFAULT_PAGE_SIZE
+    context_object_name = 'object_list'
