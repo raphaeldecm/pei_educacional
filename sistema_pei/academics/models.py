@@ -59,6 +59,13 @@ class Subject(BaseModel):
         YEAR = "YEAR", _("Anual")
 
     name = models.CharField(max_length=100)
+    matrix = models.ForeignKey(
+        verbose_name=_("Matriz da disciplina"),
+        to='academics.Matrix',
+        related_name='subjects',
+        on_delete=models.PROTECT,
+        null=True,
+    )
     subject_type = models.CharField(
         max_length=15,
         choices=SubjectsDuration.choices,
@@ -242,7 +249,7 @@ class Matrix(BaseModel):
     )
     
     def __str__(self):
-        return f"{self.name} - {self.year}"
+        return self.name
     
     class Meta:
         verbose_name = _("Matriz")

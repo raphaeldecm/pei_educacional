@@ -1,0 +1,57 @@
+{%extends 'layouts/base.html'%}
+
+{% load static i18n %}
+{%load breadcrumb_item%}
+
+{%block breadcrumb%}
+    {%breadcrumb_item text='Home' icon='images/icons/icon-home-green.svg' first="true" url='home'%}
+    {%breadcrumb_item text='Acadêmico' icon='images/icons/icon-courses-green.svg' url='academics:dashboard'%}
+    {%breadcrumb_item text='Matrizes' icon='images/icons/icon-subject.svg' url='academics:matrix_list'%}
+    {%breadcrumb_item text='Detalhes da Matrize' icon='images/icons/icon-subject.svg'%}
+{%endblock breadcrumb%}
+
+{%block content%}
+    <div class="w-full">
+        <h1 class="text-[32px] font-medium mb-[38px]">{{title}} : {{object.name}}</h1>
+        <h2>
+            Ano da matriz : {{object.year}}
+        </h2>
+        <h3 class="mt-5 text-[16px]">
+            Disciplinas da Matriz
+        </h3>
+        <div class="mt-[53px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg">
+            <table class="w-full text-slate-900 text-[18px] border-collapse">
+                <thead class="[&_th]:text-left h-[91px]">
+                    <tr class="border-b border-slate-300">
+                        <th class="pl-[76px] pr-4">Nome da Disciplina</th>
+                        <th class="px-4" >Duração</th>
+                        <th colspan="3" class="text-center pr-[30px]">
+                        <span class="m-auto block w-fit">
+                            Ações
+                        </span>
+                        </th>
+                    </tr>
+                </thead>
+            <tbody>
+            {% for object in object.subjects.all %}
+                <tr class="border-b border-slate-300 h-[97px]">
+                <td class="pl-[76px] pr-4">{{ object.name }}</td>
+                <td class="px-4">{{ object.get_subject_type_display }}</td>
+                <td>
+                    <span class="flex justify-center items-center h-full gap-2 pr-[30px]">
+                    <a class="hover:bg-slate-100 w-10 h-10 flex items-center justify-center rounded-full" href="{%url 'academics:subject_detail' object.pk%}">
+                        <img src="{% static 'images/icons/icon-eye.svg' %}" alt="" class="w-6 h-6 cursor-pointer" />
+                    </a>
+                    </span>
+                </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="9" class="text-center py-4">Nenhuma Disciplina nessa matrix.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+{%endblock content%}
