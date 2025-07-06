@@ -114,5 +114,10 @@ urlpatterns = [
         'matrix/list/',
         views.MatrixListView.as_view(),
         name='matrix_list'
+    ),
+    path(
+        'matrix/detail/<int:pk>/',
+        views.MatrixDetailView.as_view(),
+        name='matrix_detail'
     )
 ]

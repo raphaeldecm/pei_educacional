@@ -21,6 +21,11 @@ class OfferForm(forms.ModelForm):
 
 
 class SubjectForm(forms.ModelForm):
+    matrix = forms.ModelChoiceField(
+        queryset=models.Matrix.objects.all(),
+        label='matix'
+    )
+    
     class Meta:
         model = models.Subject
         fields = [
@@ -32,6 +37,7 @@ class SubjectForm(forms.ModelForm):
             "methodology",
             "resources",
             "assessments",
+            'matrix'
         ]
         
     def __init__(self,*args, **kwargs):

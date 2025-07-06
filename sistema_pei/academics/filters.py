@@ -95,6 +95,12 @@ class SubjectFilter(
         field_name="courses",
         label="Courses",
     )
+    
+    matrix = django_filters.ModelChoiceFilter(
+        queryset = models.Matrix.objects.all(),
+        field_name = 'matrix',
+        label='matrix'
+    )
 
     class Meta:
         model = models.Subject

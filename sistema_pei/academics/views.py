@@ -416,3 +416,12 @@ class MatrixListView(
     queryset = models.Matrix.objects.all()
     paginate_by = constants.DEFAULT_PAGE_SIZE
     context_object_name = 'object_list'
+    
+class MatrixDetailView(
+    TitleViewMixin,
+    generic.DeleteView
+):
+    template_name = 'academics/matrix/matrix_detail.html'
+    model = models.Matrix
+    title = _("Detalhes da Matriz")
+    
