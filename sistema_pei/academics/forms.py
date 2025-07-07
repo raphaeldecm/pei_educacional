@@ -47,3 +47,8 @@ class SubjectForm(forms.ModelForm):
 
 class CSVImportForm(forms.Form):
     file = forms.FileField(label="Arquivo CSV")
+
+class MatrixForm(forms.ModelForm):      
+    class Meta:
+        model = models.Matrix
+        fields = ['name','year']

@@ -425,3 +425,56 @@ class MatrixDetailView(
     model = models.Matrix
     title = _("Detalhes da Matriz")
     
+class MatrixCreateView(
+    SuccessMessageMixin,
+    LoginRequiredMixin,
+    TitleViewMixin,
+    CreateView
+):
+    template_name = 'academics/matrix/matrix_form.html'
+    model = models.Matrix
+    form_class = forms.MatrixForm
+    success_url = reverse_lazy('academics:matrix_list')
+    title = _("Criar matriz")
+    success_message = _("A matriz foi criada com sucesso")
+    
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        form.instance.updated_by = self.request.user
+
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        messages.error(self.request, "Erro ao criar Matriz")
+        return self.render_to_response(context)
+    
+class MatrixEditView(
+    LoginRequiredMixin,
+    TitleViewMixin,
+    UpdateView,
+):
+    template_name = 'academics/matrix/matrix_form.html'
+    model = models.Matrix
+    form_class = forms.MatrixForm
+    success_url = reverse_lazy('academics:matrix_list')
+    title = _("Atualizar matriz")
+    success_message = _("A matriz foi Atualizada com sucesso")
+    
+    def form_valid(self, form):
+        form.instance.updated_by = self.request.user
+        return super().form_valid(form)
+
+class MatrixDeleteView(
+    LoginRequiredMixin,
+    ProtectedErrorMessageMixin,
+    SuccessMessageMixin,
+    generic.DeleteView,
+):
+    model = models.Matrix
+    success_url = reverse_lazy("academics:matrix_list")
+    success_message = _("A matriz foi excluída com sucesso.")
+    protected_warning_message = _(
+        "Não é possível excluir a matriz, pois ele possui "
+        "uma ou mais disciplinas associadas.",
+    )

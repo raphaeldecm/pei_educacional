@@ -119,5 +119,20 @@ urlpatterns = [
         'matrix/detail/<int:pk>/',
         views.MatrixDetailView.as_view(),
         name='matrix_detail'
-    )
+    ),
+    path(
+        'matrix/create/',
+        views.MatrixCreateView.as_view(),
+        name='matrix_create'
+    ),
+    path(
+        'matrix/edit/<int:pk>',
+        views.MatrixEditView.as_view(),
+        name='matrix_edit'
+    ),
+    path(
+        'matrix/delete/<int:pk>',
+        views.MatrixDeleteView.as_view(),
+        name='matrix_delete'
+    ),
 ]
