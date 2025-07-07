@@ -1,0 +1,56 @@
+{% extends "layouts/base.html" %}
+
+{% load static i18n %}
+{% load breadcrumb_item %}
+
+{% block breadcrumb %}
+  {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
+  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" url="academics:dashboard" %}
+  {% breadcrumb_item text="Matrizes" icon="images/icons/icon-courses-green.svg" url="academics:matrix_list" %}
+  {% breadcrumb_item text=title icon="images/icons/icon-courses-green.svg" %}
+{% endblock breadcrumb %}
+{% block content %}
+  <div class="w-full">
+    <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
+    <form method='post'>
+      {% csrf_token %}
+       <div class="mt-[24px]">
+        <label for="" class="font-medium text-[18px]">
+            Nome
+        </label>
+        <div class="relative w-full cursor-pointer mt-[16px]">
+            <input
+            type="text"
+            name="name"
+            placeholder="Digite o Nome da Matriz"
+            value="{{form.name.value|default_if_none:''}}"
+            class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+            >
+            {%for erro in form.name.errors%}
+                <span class='ml-2 text-red-500 mt-4 block'>{{erro}}</span>
+            {%endfor%}
+        </div>
+    </div>        
+    <div class="mt-[24px]">
+        <label for="" class="font-medium text-[18px]">
+            Ano
+        </label>
+        <div class="relative w-full cursor-pointer mt-[16px]">
+            <input
+            type="number"
+            name="year"
+            min="0"
+            step="0.1"
+            placeholder="Digite o Ano da Matriz"
+            value="{{form.year.value}}"
+            class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+            id="">
+            {%for erro in form.year.errors%}
+                <span class='ml-2 text-red-500 mt-4 block'>{{erro}}</span>
+            {%endfor%}
+        </div>
+       </div>
+      {% include "components/_save_back_edit_buttons.html" with link_to_back="academics:offer_list" %}
+    </form>
+  </div>
+{% endblock content %}

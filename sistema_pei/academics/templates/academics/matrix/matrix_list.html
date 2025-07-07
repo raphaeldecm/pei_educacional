@@ -45,7 +45,7 @@
         </form>
     
         <div class="flex mt-3 gap-[16px]">
-            <a href="#"
+            <a href="{%url 'academics:matrix_create'%}"
             class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer hover:bg-green-500 hover:text-white active:scale-75 transition-all duration-300">
                 Cadastrar Nova Matriz
             </a>
@@ -75,7 +75,7 @@
                     <a class="hover:bg-slate-100 w-10 h-10 flex items-center justify-center rounded-full" href="{%url 'academics:matrix_detail' object.pk%}">
                         <img src="{% static 'images/icons/icon-eye.svg' %}" alt="" class="w-6 h-6 cursor-pointer" />
                     </a>
-                    <a class="hover:bg-slate-100 w-10 h-10 flex items-center justify-center rounded-full" href="#">
+                    <a class="hover:bg-slate-100 w-10 h-10 flex items-center justify-center rounded-full" href="{%url 'academics:matrix_edit' object.pk%}">
                         <img src="{% static 'images/icons/icon-edit-element.svg' %}" alt="" class="w-5 h-5 cursor-pointer" />
                     </a>
                     <button class="hover:bg-slate-100 w-10 h-10 flex items-center justify-center rounded-full"
@@ -86,7 +86,8 @@
                     </button>
                     </span>
                 </td>
-                </tr>
+            </tr>
+            {% include "components/_confirm_delete_modal.html" with title="Confirmar Exclusão da matriz" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="academics:matrix_delete" %}
                 
             {% empty %}
                 <tr>
