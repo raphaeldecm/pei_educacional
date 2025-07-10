@@ -31,7 +31,6 @@ from sistema_pei.educational_plan.services import generatePeiExportHtml
 from sistema_pei.users.permissions import CoordinatorPermission
 
 
-# Create your views here.
 class PeiListView(
     LoginRequiredMixin,
     TitleViewMixin,
@@ -46,12 +45,8 @@ class PeiListView(
 
     def get_queryset(self):
         queryset = models.Pei.objects.all()
-        filter_data = self.request.GET
-
-        if not filter_data or not any(filter_data.values()):
-            queryset = models.Pei.objects.current_peis()
-
         return self.filterset_class(self.request.GET, queryset=queryset).qs
+
 
 
 class PeiUpdateView(
