@@ -13,12 +13,8 @@
 {%block content%}
     <div class="w-full">
         <h1 class="text-[32px] font-medium mb-[38px]">{{title}} : {{object.name}}</h1>
-        <h2>
-            Ano da matriz : {{object.year}}
-        </h2>
-        <h3 class="mt-5 text-[16px]">
-            Disciplinas da Matriz
-        </h3>
+        <p class="font-semibold mb-4 mt-[38px]">Ano da matriz: {{object.year}}</p>
+        <p class="font-semibold mb-4 mt-[38px]">Disciplina da matriz:</p>
         <div class="mt-[53px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg">
             <table class="w-full text-slate-900 text-[18px] border-collapse">
                 <thead class="[&_th]:text-left h-[91px]">
@@ -41,6 +37,13 @@
                     <span class="flex justify-center items-center h-full gap-2 pr-[30px]">
                     <a class="hover:bg-slate-100 w-10 h-10 flex items-center justify-center rounded-full" href="{%url 'academics:subject_detail' object.pk%}">
                         <img src="{% static 'images/icons/icon-eye.svg' %}" alt="" class="w-6 h-6 cursor-pointer" />
+                    </a>
+                    <a class="hover:bg-slate-100 p-2 rounded-full"
+                    href="{% url 'academics:subject_update' object.id %}">
+                        <img src="{% static 'images/icons/icon-edit-element.svg' %}"
+                            alt=""
+                            height="24px"
+                            class="cursor-pointer" />
                     </a>
                     </span>
                 </td>

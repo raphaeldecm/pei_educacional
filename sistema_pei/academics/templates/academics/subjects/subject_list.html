@@ -45,13 +45,13 @@
             {% endfor %}
           </select>
         </div>
-        <div class="relative w-fit cursor-pointer">
+        <div class="relative max-w-[30%] cursor-pointer">
            <img class="absolute top-[12px] right-[10px]"
                src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                width="24px"
                height="24px" />
             <select name="matrix"
-                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
+                    class="outline-none text-[18px] max-w-full overflow-hidden  rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] text-slate-500 appearance-none bg-neutral-50 text-ellipsis">
             <option value="default" selected disabled>Selecionar a matrix...</option>
             {% for key, value in filter.form.matrix.field.choices %}
               <option value="{{ key }}"
