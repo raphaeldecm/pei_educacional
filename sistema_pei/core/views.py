@@ -32,11 +32,7 @@ class HomeListView(
 
     def get_queryset(self):
         queryset = self.get_teacher_peis_queryset()
-        filter_data = self.request.GET
-
-        if not filter_data or not any(filter_data.values()):
-            queryset = queryset & Pei.objects.current_peis()
-
+        
         return self.filterset_class(
             self.request.GET, queryset=queryset, request=self.request
         ).qs
@@ -51,3 +47,4 @@ class HomeListView(
         context["finished_peis"] = base_queryset.filter(status="COMPLETED").count()
 
         return context
+

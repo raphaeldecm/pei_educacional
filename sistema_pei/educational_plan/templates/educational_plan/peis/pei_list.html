@@ -104,10 +104,10 @@
                height="24px" />
           <select name="semester"
                   class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
-            <option value="default" selected disabled>Selecione o semestre...</option>
+            <option value="" {% if not request.GET.semester %}selected{% endif %} disabled>Selecione o semestre...</option>
             {% for semester_value, semester_label in filter.form.fields.semester.choices %}
               <option value="{{ semester_value }}"
-                      {% if filter.form.semester.value|stringformat:"s" == semester_value|stringformat:"s" or request.GET.semester|stringformat:"s" == semester_value|stringformat:"s" %} selected {% endif %}>
+                      {% if request.GET.semester|stringformat:"s" == semester_value|stringformat:"s" %}selected{% endif %}>
                 {{ semester_label }}
               </option>
             {% endfor %}
