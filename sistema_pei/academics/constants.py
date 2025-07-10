@@ -8,3 +8,5 @@ COURSE_TYPE = [
     ("Engenharia", "Engenharia"),
     ("Outros", "Outros"),
 ]
+
+DEFAULT_SYNC_SUBJECT_DURATION_TYPE = "semestral"  # ou "anual"
