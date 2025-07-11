@@ -17,12 +17,18 @@
       <div class="flex-1">
         <label for="name" class="font-medium text-[18px]">Nome:</label>
         <input type="text"
-               name="name"
-               placeholder="Digite o nome da disciplina ..."
-               class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
-               value="{{ form.name.value|default_if_none:'' }}"
-               required />
+              name="name"
+              placeholder="Digite o nome da disciplina ..."
+              class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px] {% if form.instance.pk %}pointer-events-none cursor-not-allowed text-slate-500/50{% endif %}"
+              value="{{ form.name.value|default_if_none:'' }}"
+              required
+              {% if form.instance.pk %}readonly{% endif %} />
       </div>
+      {% if form.instance.pk %}
+        <p class="my-4 text-sm font-sans text-slate-500">
+          O título não pode ser editado, pois é utilizado como identificador principal nas sincronizações feitas pelo aplicativo <strong>PEIs Sync</strong>. Essa restrição evita problemas e previne a duplicação de disciplinas.
+        </p>
+      {% endif %}
       <div class="mt-[32px]">
         <label class="font-medium text-[18px]">Cursos:</label>
         <div class="mt-[16px] border border-slate-300 rounded-lg py-2 px-3 max-h-[150px] overflow-y-auto gap-6">
