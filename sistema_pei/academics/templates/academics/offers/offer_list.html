@@ -3,13 +3,16 @@
 {% load static i18n %}
 {% load breadcrumb_item %}
 {% load has_group %}
+{%load search_option%}
 
 {% block breadcrumb %}
-  {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
-  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" url="academics:dashboard" %}
-  {% breadcrumb_item text=title icon="images/icons/icon-courses-green.svg" %}
+{% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
+{% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" url="academics:dashboard" %}
+{% breadcrumb_item text=title icon="images/icons/icon-courses-green.svg" %}
 {% endblock breadcrumb %}
+
 {% block content %}
+{%load_search_script%}
   <div class="w-full">
     <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
     <form>
@@ -26,54 +29,10 @@
       </div>
       <div class="flex gap-[8px] flex-wrap mb-[26px]">
         <div class="relative w-full max-w-xs cursor-pointer">
-          <input
-            type="search" 
-            name="" 
-            id="subjects_search"  
-            placeholder="Buscar por Disciplina"
-            class=" text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full max-w-xs placeholder:text-slate-500 appearance-none bg-neutral-50">
-
-        <div id="subjects" class="border border-slate-300 hidden rounded-lg py-2 px-3 max-h-[150px] mt-2 min-h-[48px] overflow-y-auto ">
-          {%with subject_selected_id=request.GET.subject%}
-          {%for subject in filter.form.subject.field.queryset%}
-            <div class="course-item items-center hidden gap-3">
-              <input
-              type="radio" 
-              name="subject"
-              id="subject_{{subject.id}}"
-              value="{{subject.id}}"
-              class="hidden peer"
-              {%if subject.id|stringformat:"s" == subject_selected_id%}
-                checked
-              {%endif%}
-              >
-              <label
-              id="label_for_subject_{{subject.id}}" 
-              for="subject_{{subject.id}}"
-              class="flex subject_label items-center cursor-pointer w-full text-[16px] rounded-[5px] peer-checked:bg-green-100">
-                {{subject}}
-              </label>
-            </div>
-          {%endfor%}
-          {%endwith%}
-          </div>
-
+          {%search_option object_name='subject' query=filter.form.subject.field.queryset input_placeholder='Buscar disciplina'%}
         </div>
-        <div class="relative min-w-[222px] w-max cursor-pointer">
-          <img class="absolute top-[12px] right-[10px]"
-               src="{% static 'images/icons/icon-updown-arrow.svg' %}"
-               width="24px"
-               height="24px" />
-          <select name="teachers"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full max-w-xs text-slate-500 appearance-none bg-neutral-50">
-            <option value="default" selected disabled>Selecione o professor...</option>
-            {% for teacher in filter.form.teachers.field.queryset %}
-              <option value="{{ teacher.id }}"
-                      {% if request.GET.teachers == teacher.id|stringformat:'s' %}selected{% endif %}>
-                {{ teacher.name }}
-              </option>
-            {% endfor %}
-          </select>
+        <div class="relative min-w-[222px] w-[20%] cursor-pointer">
+          {%search_option object_name='teachers' query=filter.form.teachers.field.queryset input_placeholder='Buscar Professores'%}
         </div>
         <div class="flex h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2 w-full max-w-xs">
           <input type="number"
@@ -181,65 +140,3 @@
     {% include "components/_table_pagination.html" %}
   </div>
 {% endblock content %}
-
-{%block inline_javascript%}
-<script>
-  //url
-  const UrlParams = new URLSearchParams(window.location.search)
-  const subjects_search_input = document.getElementById("subjects_search")
-
-  //setando o valor atual do filtro no input
-  const subject_selected = UrlParams.get("subject")
-
-  if(subject_selected){
-    subjects_search_input.value = document.getElementById(`label_for_subject_${subject_selected}`).textContent.trim()
-  }
-
-  //mostrando as disciplinas com base na pesquisa
-  let labels = Array.from(document.getElementsByClassName("subject_label"))
-  const subjects_container = document.getElementById("subjects")
-
-  subjects_search_input.addEventListener("input",()=>{
-    let input_value = document.getElementById("subjects_search").value.toLowerCase()
-    let hasResult = false
-
-    labels.forEach(element=>{
-      let results = search(element,input_value)
-      if(results){
-        hasResult=true
-      }
-    })
-
-    hasResult ? subjects_container.style.display = 'block' : subjects_container.style.display = 'none'
-
-  })
-
-  labels.forEach(element=>{
-    element.addEventListener("click",()=>{
-      select(subjects_container,element,subjects_search_input)
-    })
-  })
-
-  //funcs
-  let search = (element,input_value) =>{
-    let element_value = element.textContent.toLowerCase()
-
-    if(element_value.includes(input_value) && input_value){
-      element.parentNode.style.display = 'block'
-      return true
-    }else{
-      element.parentNode.style.display = 'none'
-    }
-
-  }
-
-  let select = (element_container,element,input)=>{
-    element_container.style.display = 'none'
-    input.value = element.textContent.trim()
-  }
-
-
-</script>
-
-{%endblock%}
-

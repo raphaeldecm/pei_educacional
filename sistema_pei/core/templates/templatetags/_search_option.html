@@ -5,16 +5,16 @@
             id="{{object_name}}_search"  
             placeholder="{{input_placeholder}}"
             aria-label="{{input_placeholder}}"
-            class="text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full max-w-xs placeholder:text-slate-500 appearance-none bg-neutral-50"
+            class="text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full placeholder:text-slate-500 appearance-none bg-neutral-50"
             oninput=""
             {%if current_input_value%}
             value="{{current_input_value}}"
             {%endif%}
             >
 
-        <div id="{{object_name}}_labels_container" class="border border-slate-300 hidden rounded-lg py-2 px-3 max-h-[150px] mt-2 min-h-[48px] overflow-y-auto " role="listbox">
+        <div id="{{object_name}}_labels_container" class="border border-slate-300 hidden rounded-lg w-full py-2 px-3 max-h-[150px] mt-2 min-h-[48px] overflow-y-auto " role="listbox">
           {%for object in query%}
-            <div class="course-item hidden items-center gap-3" role="radio">
+            <div class="course-item hidden items-center mt-1 gap-3" role="radio">
               <input
               type="radio" 
               name="{{object_name}}"
@@ -40,7 +40,7 @@
     //cria a variavel do input e labels de forma dinamica
     let {{object_name}}_search = document.getElementById('{{object_name}}_search')
     let {{object_name}}_labels = Array.from(document.getElementsByClassName('{{object_name}}_label'))
-
+    
 
   
     {{object_name}}_search.addEventListener('input',()=>{
@@ -60,6 +60,7 @@
      })
 
     {{object_name}}_labels.forEach(element=>{
+    //adiciona o evento de select
     element.addEventListener("click",()=>{
       select(element,{{object_name}}_search)
     })
