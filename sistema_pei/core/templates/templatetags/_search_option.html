@@ -2,8 +2,9 @@
           <input
             type="search" 
             name="" 
-            id="{{input_name}}_search"  
+            id="{{object_name}}_search"  
             placeholder="{{input_placeholder}}"
+            aria-label="{{input_placeholder}}"
             class="text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full max-w-xs placeholder:text-slate-500 appearance-none bg-neutral-50"
             oninput=""
             {%if current_input_value%}
@@ -11,13 +12,13 @@
             {%endif%}
             >
 
-        <div id="{{input_name}}_labels_container" class="border border-slate-300 hidden rounded-lg py-2 px-3 max-h-[150px] mt-2 min-h-[48px] overflow-y-auto ">
+        <div id="{{object_name}}_labels_container" class="border border-slate-300 hidden rounded-lg py-2 px-3 max-h-[150px] mt-2 min-h-[48px] overflow-y-auto " role="listbox">
           {%for object in query%}
-            <div class="course-item hidden items-center gap-3">
+            <div class="course-item hidden items-center gap-3" role="radio">
               <input
               type="radio" 
-              name="{{input_name}}"
-              id="{{input_name}}_{{object.id}}"
+              name="{{object_name}}"
+              id="{{object_name}}_{{object.id}}"
               value="{{object.id}}"
               class="hidden peer"
               {%if current_query == object.id %}
@@ -26,8 +27,8 @@
               >
               <label
               id="" 
-              for="{{input_name}}_{{object.id}}"
-              class="flex items-center {{input_name}}_label cursor-pointer w-full text-[16px] rounded-[5px] peer-checked:bg-green-100">
+              for="{{object_name}}_{{object.id}}"
+              class="flex items-center {{object_name}}_label cursor-pointer w-full text-[16px] rounded-[5px] peer-checked:bg-green-100">
                 {{object}}
               </label>
             </div>
@@ -36,47 +37,32 @@
 
 {%block inline_javascript%}
     <script>
-    //temporario
-    let {{input_name}}_search = document.getElementById('{{input_name}}_search')
-    let {{input_name}}_labels = Array.from(document.getElementsByClassName('{{input_name}}_label'))
+    //cria a variavel do input e labels de forma dinamica
+    let {{object_name}}_search = document.getElementById('{{object_name}}_search')
+    let {{object_name}}_labels = Array.from(document.getElementsByClassName('{{object_name}}_label'))
 
 
   
-    {{input_name}}_search.addEventListener('input',()=>{
-      let input_value = {{input_name}}_search.value.toLowerCase()
+    {{object_name}}_search.addEventListener('input',()=>{
+      let input_value = {{object_name}}_search.value.toLowerCase()
       let hasResult = false
 
-      {{input_name}}_labels.forEach(element=>{
+      {{object_name}}_labels.forEach(element=>{
         let results = search(element,input_value)
         if(results){
           hasResult=true
         }
       })
 
-      let labels_container = document.getElementById("{{input_name}}_labels_container")
+      let labels_container = document.getElementById("{{object_name}}_labels_container")
 
       hasResult ? labels_container.style.display = 'block' : labels_container.style.display = 'none'
      })
 
-
-
-    //funcs
-
-    let search = (element,input_value) =>{
-        let element_value = element.textContent.toLowerCase()
-        if(element_value.includes(input_value) && input_value){
-        element.parentNode.style.display = 'block'
-        return true
-        }else{
-        element.parentNode.style.display = 'none'
-        }
-
-    }
-
-    let select = (element,input)=>{
-        let element_container = element.parentNode.parentNode
-        element_container.style.display = 'none'
-        input.value = element.textContent.trim()
-    }
-    </script>
+    {{object_name}}_labels.forEach(element=>{
+    element.addEventListener("click",()=>{
+      select(element,{{object_name}}_search)
+    })
+  })
+</script>
 {%endblock%}
