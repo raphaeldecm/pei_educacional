@@ -35,7 +35,7 @@
           {% for course in form.courses.field.queryset %}
             <div class="flex flex-row-reverse justify-end items-center gap-1">
               <input id={{ course.id }} type="checkbox" class="hidden peer" name="courses" value="{{ course.id }}" {% if course.id in form.courses.value %}checked{% endif %} />
-              {{ course.name }}
+              {{ course.name }} - {{course.get_period_display}}
               <label for={{ course.id }} class="flex items-center cursor-pointer w-[20px] h-[20px] rounded-[5px] peer-checked:[&_img]:block bg-slate-300">
                 <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}"
                      width="20px"
