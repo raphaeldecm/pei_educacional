@@ -35,16 +35,16 @@
         <label for="" class="font-medium text-[18px]">
             Ano
         </label>
-        {%if form.year.value%}
-          <p class='text-[15px]'>Ano atual da matriz: {{form.year.value}}</p>
-        {%endif%}
         <div class="relative w-full cursor-pointer mt-[16px]">
             <input
             type="number"
             name="year"
             min="0"
-            step="0.1"
-            placeholder="Digite o Ano da Matriz"
+            {%if form.year.value%}
+              placeholder="Ano atual: {{form.year.value}}"
+            {%else%}
+              placeholder="Digite o Ano da Matriz"
+            {%endif%}
             class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
             id="">
             {%for erro in form.year.errors%}

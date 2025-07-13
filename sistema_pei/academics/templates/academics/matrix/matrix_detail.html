@@ -7,20 +7,24 @@
     {%breadcrumb_item text='Home' icon='images/icons/icon-home-green.svg' first="true" url='home'%}
     {%breadcrumb_item text='Acadêmico' icon='images/icons/icon-courses-green.svg' url='academics:dashboard'%}
     {%breadcrumb_item text='Matrizes' icon='images/icons/icon-subject.svg' url='academics:matrix_list'%}
-    {%breadcrumb_item text='Detalhes da Matrize' icon='images/icons/icon-subject.svg'%}
+    {%breadcrumb_item text='Detalhes da Matriz' icon='images/icons/icon-subject.svg'%}
 {%endblock breadcrumb%}
 
 {%block content%}
     <div class="w-full">
         <h1 class="text-[32px] font-medium mb-[38px]">{{title}} : {{object.name}}</h1>
         <p class="font-semibold mb-4 mt-[38px]">Ano da matriz: {{object.year}}</p>
-        <p class="font-semibold mb-4 mt-[38px]">Disciplina da matriz:</p>
+        <p class="font-semibold mb-4 mt-[38px] text-[20px]">Disciplinas da matriz:</p>
         <div class="mt-[53px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg">
             <table class="w-full text-slate-900 text-[18px] border-collapse">
                 <thead class="[&_th]:text-left h-[91px]">
                     <tr class="border-b border-slate-300">
                         <th class="pl-[76px] pr-4">Nome da Disciplina</th>
-                        <th class="px-4" >Duração</th>
+                        <th class="px-4">
+                            <span class='block w-full text-center'>
+                                Duração
+                            </span>
+                        </th>
                         <th colspan="3" class="text-center pr-[30px]">
                         <span class="m-auto block w-fit">
                             Ações
@@ -31,8 +35,8 @@
             <tbody>
             {% for object in object.subjects.all %}
                 <tr class="border-b border-slate-300 h-[97px]">
-                <td class="pl-[76px] pr-4">{{ object.name }}</td>
-                <td class="px-4">{{ object.get_subject_type_display }}</td>
+                <td class="pl-[76px] pr-4 max-w-[60vw] overflow-hidden text-nowrap text-ellipsis">{{ object.name }}</td>
+                <td class="px-4 text-center">{{ object.get_subject_type_display }}</td>
                 <td>
                     <span class="flex justify-center items-center h-full gap-2 pr-[30px]">
                     <a class="hover:bg-slate-100 w-10 h-10 flex items-center justify-center rounded-full" href="{%url 'academics:subject_detail' object.pk%}">
