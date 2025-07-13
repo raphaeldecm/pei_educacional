@@ -413,7 +413,7 @@ class MatrixListView(
     title = _('Matrizes')
     template_name = 'academics/matrix/matrix_list.html'
     filterset_class = filters.MatrixFilter
-    queryset = models.Matrix.objects.all()
+    queryset = models.Matrix.objects.all().order_by('-year')
     paginate_by = constants.DEFAULT_PAGE_SIZE
     context_object_name = 'object_list'
     

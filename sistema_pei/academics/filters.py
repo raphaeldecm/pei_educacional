@@ -116,7 +116,7 @@ class MatrixFilter(django_filters.FilterSet):
     
     year = django_filters.NumberFilter(
         'year',
-        lookup_expr='icontains',
+        lookup_expr='exact',
         label='year'
     )
     

@@ -248,10 +248,8 @@ class Matrix(BaseModel):
         blank=False
     )
     
-    year = models.DecimalField(
+    year = models.IntegerField(
         verbose_name=_("Ano da matriz"),
-        max_digits=5,
-        decimal_places=1,
         null=False,
         blank=False
     )

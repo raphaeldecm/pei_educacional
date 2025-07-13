@@ -53,7 +53,7 @@
           {%for matrix in form.matrix.field.queryset%}
             <div class="flex flex-row-reverse justify-end items-center gap-1">
               <label for="matrix_{{matrix.id}}">
-                {{matrix}} ({{matrix.year}})
+                {{matrix}}-({{matrix.year}})
               </label>
               <input 
               type="radio" 
