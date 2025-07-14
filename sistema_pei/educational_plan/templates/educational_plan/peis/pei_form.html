@@ -16,9 +16,10 @@
       {% csrf_token %}
       <div class="flex gap-8">
         <div class="flex-1">
-          <label for="{{ form.year.id_for_label }}" class="font-medium text-[18px]">Selecionar Inscrição:</label>
+          <label for="{{ form.year.id_for_label }}" class="font-medium text-[18px]">Inscrição:</label>
           <select name="{{ form.enrollment.name }}"
                   id="{{ form.enrollment.id_for_label }}"
+                  tabindex="-1"
                   class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50 mt-[16px] pointer-events-none">
             <option value="default" selected>Selecione a inscrição...</option>
             {% for key, value in form.enrollment.field.choices %}
@@ -83,8 +84,9 @@
                      class="font-sans font-medium text-lg text-ls block mb-4">Objetivos da disciplina:</label>
               <textarea id="{{ form.objective.id_for_label }}"
                         name="{{ form.objective.name }}"
-                        placeholder="Escreva aqui!"
-                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.objective.value|default_if_none:'' }}</textarea>
+                        tabindex="-1"
+                        placeholder="Não definido durante o cadastro da disciplina."
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ object.enrollment.offer.subject.objective|default_if_none:'' }}</textarea>
               {% if form.objective.errors %}
                 <ul class="list-disc p-2">
                   {% for error in form.objective.errors %}
@@ -115,8 +117,9 @@
                      class="font-sans font-medium text-lg text-ls block mb-4">Conteúdo programático:</label>
               <textarea id="{{ form.content.id_for_label }}"
                         name="{{ form.content.name }}"
-                        placeholder="Escreva aqui!"
-                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.content.value|default_if_none:'' }}</textarea>
+                        tabindex="-1"
+                        placeholder="Não definido durante o cadastro da disciplina."
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ object.enrollment.offer.subject.content|default_if_none:''}}</textarea>
               {% if form.content.errors %}
                 <ul class="list-disc p-2">
                   {% for error in form.content.errors %}
@@ -147,8 +150,9 @@
                      class="font-sans font-medium text-lg text-ls block mb-4">Metodologias:</label>
               <textarea id="{{ form.methodology.id_for_label }}"
                         name="{{ form.methodology.name }}"
-                        placeholder="Escreva aqui!"
-                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.methodology.value|default_if_none:'' }}</textarea>
+                        tabindex="-1"
+                        placeholder="Não definido durante o cadastro da disciplina."
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ object.enrollment.offer.subject.methodology|default_if_none:''}}</textarea>
               {% if form.methodology.errors %}
                 <ul class="list-disc p-2">
                   {% for error in form.methodology.errors %}
@@ -177,8 +181,9 @@
                      class="font-sans font-medium text-lg text-ls block mb-4">Recursos didáticos:</label>
               <textarea id="{{ form.resources.id_for_label }}"
                         name="{{ form.resources.name }}"
+                        tabindex="-1"
                         placeholder="Escreva aqui!"
-                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.resources.value|default_if_none:'' }}</textarea>
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ object.enrollment.offer.subject.resources|default_if_none:'Não definido durante o cadastro da disciplina.'}}</textarea>
               {% if form.resources.errors %}
                 <ul class="list-disc p-2">
                   {% for error in form.resources.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
@@ -205,8 +210,10 @@
                      class="font-sans font-medium text-lg text-ls block mb-4">Avaliações:</label>
               <textarea id="{{ form.assessments.id_for_label }}"
                         name="{{ form.assessments.name }}"
-                        placeholder="Escreva aqui!"
-                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ form.assessments.value|default_if_none:'' }}</textarea>
+                        tabindex="-1"
+                        placeholder="Não definido durante o cadastro da disciplina."
+                        disabled
+                        class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ object.enrollment.offer.subject.assessments|default_if_none:''}}</textarea>
               {% if form.assessments.errors %}
                 <ul class="list-disc p-2">
                   {% for error in form.assessments.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}

@@ -11,15 +11,10 @@ class PeiForm(forms.ModelForm):
         fields = [
             "enrollment",
             "status",
-            "objective",
             "adapted_objective",
-            "content",
             "adapted_content",
-            "methodology",
             "adapted_methodology",
-            "resources",
             "adapted_resources",
-            "assessments",
             "adapted_assessments",
             "academic_opinion_1",
             "academic_opinion_2",
@@ -27,6 +22,7 @@ class PeiForm(forms.ModelForm):
             "academic_opinion_4",
             "academic_opinion_final",
         ]
+
 
 
 class CommentForm(forms.ModelForm):
