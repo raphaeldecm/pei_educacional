@@ -19,11 +19,6 @@ def createPeiForEnrollment(sender, instance, created, **kwargs):
                     enrollment=instance,
                     responsible_teacher=teacher,
                     status=Pei.StatusChoice.NOT_START,
-                    objective=instance.offer.subject.objective,
-                    content=instance.offer.subject.content,
-                    methodology=instance.offer.subject.methodology,
-                    resources=instance.offer.subject.resources,
-                    assessments=instance.offer.subject.assessments,
                     created_by=instance.created_by,
                     updated_by=instance.updated_by,
                 )
@@ -43,11 +38,6 @@ def createPeiForNewTeachers(sender, instance, action, reverse, model, pk_set, **
                         enrollment=enrollment,
                         responsible_teacher=teacher,
                         status=Pei.StatusChoice.NOT_START,
-                        objective=instance.subject.objective,
-                        content=instance.subject.content,
-                        methodology=instance.subject.methodology,
-                        resources=instance.subject.resources,
-                        assessments=instance.subject.assessments,
                         created_by=enrollment.created_by,
                         updated_by=enrollment.updated_by,
                     )
