@@ -1,4 +1,5 @@
 from django import forms
+from django.db.models.functions import Lower
 
 from sistema_pei.academics import models
 
@@ -32,6 +33,10 @@ class SubjectForm(forms.ModelForm):
             "resources",
             "assessments",
         ]
+        
+    def __init__(self,*args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['courses'].queryset = models.Course.objects.all().order_by(Lower('name'))
 
 
 class CSVImportForm(forms.Form):

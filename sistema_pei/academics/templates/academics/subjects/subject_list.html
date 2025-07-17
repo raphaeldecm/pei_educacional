@@ -89,7 +89,7 @@
               <td class="pl-[76px]">{{ object.name }}</td>
               <td class="py-2">
                 {% for subject_course in object.courses.all|slice:":3" %}
-                  {{ subject_course.name }}
+                  {{ subject_course.name }} - {{subject_course.get_period_display}}
                   {% if not forloop.last %}
                     ,
                     <br />
