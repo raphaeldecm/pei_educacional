@@ -34,40 +34,20 @@ class Pei(BaseModel):
         choices=StatusChoice.choices,
         default=StatusChoice.NOT_START,
     )
-    objective = models.TextField(
-        verbose_name=_("Objetivos"),
-        blank=True,
-    )
     adapted_objective = models.TextField(
         verbose_name=_("Objetivos Adaptados"),
-        blank=True,
-    )
-    content = models.TextField(
-        verbose_name=_("Conteúdo"),
         blank=True,
     )
     adapted_content = models.TextField(
         verbose_name=_("Conteúdo Adaptado"),
         blank=True,
     )
-    methodology = models.TextField(
-        verbose_name=_("Metodologia"),
-        blank=True,
-    )
     adapted_methodology = models.TextField(
         verbose_name=_("Metodologia Adaptada"),
         blank=True,
     )
-    resources = models.TextField(
-        verbose_name=("Recursos"),
-        blank=True,
-    )
     adapted_resources = models.TextField(
         verbose_name=_("Recursos Adaptados"),
-        blank=True,
-    )
-    assessments = models.TextField(
-        verbose_name=_("Avaliações"),
         blank=True,
     )
     adapted_assessments = models.TextField(
@@ -109,15 +89,10 @@ class Pei(BaseModel):
                 return
 
             fields_to_check = [
-                self.objective,
                 self.adapted_objective,
-                self.content,
                 self.adapted_content,
-                self.methodology,
                 self.adapted_methodology,
-                self.resources,
                 self.adapted_resources,
-                self.assessments,
                 self.adapted_assessments,
             ]
 
