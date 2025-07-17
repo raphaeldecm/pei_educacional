@@ -8,6 +8,8 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
+from django.utils.timezone import now
+from django.db.models.functions import Lower
 from django.views import View
 from django.views import generic
 from django.views.generic.edit import CreateView
@@ -145,11 +147,11 @@ class OfferListView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.List
         filter_data = self.request.GET
 
         if not filter_data or not any(filter_data.values()):
-            queryset = models.Offer.objects.current_offers()
+            current_year = now().year
+            queryset = models.Offer.objects.filter(year=current_year)
 
         return self.filterset_class(self.request.GET, queryset=queryset).qs.order_by(Lower('subject__name'))
-
-
+    
 class OfferCreateView(
     SuccessMessageMixin,
     LoginRequiredMixin,
