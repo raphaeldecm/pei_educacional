@@ -128,11 +128,16 @@
      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
   <div class="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto">
     <h2 id="modalTitle" class="text-xl font-semibold mb-4">Confirmar criação dos PEIs</h2>
+    <p class="mb-4 !text-red-800"><strong>Importante:</strong> leia com cuidado para não cometer enganos.</p>
     <p class="mb-4">Serão criados PEIs para os seguintes professores:</p>
     <ul id="selectedTeachersList" class="list-disc list-inside mb-6"></ul>
     <div class="flex justify-end gap-4">
-      <button type="button" id="cancelModalBtn" class="cancelDelete bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400">Cancelar</button>
-      <button type="button" id="confirmModalBtn" class="confirmDelete bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Confirmar</button>
+      <button type="button" id="cancelModalBtn" class="cancelDelete bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400">
+        Cancelar
+      </button>
+      <button type="button" id="confirmModalBtn" disabled class="confirmDelete bg-green-500 text-white px-4 py-2 rounded-lg opacity-50 cursor-not-allowed">
+        Confirmar (7s)
+      </button>
     </div>
   </div>
 </div>
@@ -176,7 +181,24 @@
       });
 
       modal.classList.remove('hidden');
-      confirmBtn.focus();
+      confirmBtn.disabled = true;
+      confirmBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+      let countdown = 7;
+      confirmBtn.textContent = `Confirmar (${countdown}s)`;
+
+      const timer = setInterval(() => {
+        countdown -= 1;
+        confirmBtn.textContent = `Confirmar (${countdown}s)`;
+
+        if (countdown <= 0) {
+          clearInterval(timer);
+          confirmBtn.disabled = false;
+          confirmBtn.textContent = 'Confirmar';
+          confirmBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+          confirmBtn.focus();
+        }
+      }, 1000);
     }
 
     function confirmAndSubmit() {
@@ -202,3 +224,4 @@
   })();
 </script>
 {% endblock inline_javascript %}
+
