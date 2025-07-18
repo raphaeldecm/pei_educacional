@@ -42,7 +42,7 @@ class OfferFilter(django_filters.FilterSet):
         field_name="semester",
         choices=models.Offer.Semester.choices,
         label="Semestre",
-        initial=1 if timezone.now().date().month <= SEMESTER_SPLIT_MONTH else 2,
+        required=False,
     )
 
     class Meta:
@@ -53,8 +53,6 @@ class OfferFilter(django_filters.FilterSet):
         return queryset.filter(
             Q(subject__name__icontains=value) | Q(teachers__name__icontains=value),
         )
-
-
 
 class EnrollmentFilter(django_filters.FilterSet):
     search = django_filters.CharFilter(

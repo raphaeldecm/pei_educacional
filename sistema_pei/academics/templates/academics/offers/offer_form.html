@@ -9,11 +9,13 @@
   {% breadcrumb_item text="Ofertas" icon="images/icons/icon-courses-green.svg" url="academics:offer_list" %}
   {% breadcrumb_item text=title icon="images/icons/icon-courses-green.svg" %}
 {% endblock breadcrumb %}
+
 {% block content %}
   <div class="w-full">
     <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
-    <form method='post'>
+    <form method="post" id="peiForm">
       {% csrf_token %}
+      
       <div class="mt-[24px]">
         <label for="{{ form.course.id_for_label }}" class="font-medium text-[18px]">Curso:</label>
         <div class="relative w-full cursor-pointer mt-[16px]">
@@ -23,15 +25,15 @@
                height="24px" />
           <select name="{{ form.course.name }}"
                   id="id_course"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-500 appearance-none bg-neutral-50">
             <option value="default" selected disabled>Selecione o curso...</option>
             {% for key, value in form.course.field.choices %}
-              <option value="{{ key }}"
-                      {% if key == form.course.value %}selected{% endif %}>{{ value }}</option>
+              <option value="{{ key }}" {% if key == form.course.value %}selected{% endif %}>{{ value }}</option>
             {% endfor %}
           </select>
         </div>
       </div>
+
       <div class="mt-[24px]">
         <label for="{{ form.subject.id_for_label }}" class="font-medium text-[18px]">Disciplina:</label>
         <div class="relative w-full cursor-pointer mt-[16px]">
@@ -41,25 +43,25 @@
                height="24px" />
           <select name="{{ form.subject.name }}"
                   id="id_subject"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50"
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-500 appearance-none bg-neutral-50"
                   data-selected-value="{{ form.subject.value|default_if_none:'' }}">
             <option value="default" selected disabled>Selecione a disciplina...</option>
             {% for key, value in form.subject.field.choices %}
-              <option value="{{ key }}"
-                      {% if key == form.subject.value %}selected{% endif %}>{{ value }}</option>
+              <option value="{{ key }}" {% if key == form.subject.value %}selected{% endif %}>{{ value }}</option>
             {% endfor %}
           </select>
         </div>
       </div>
+
       <div class="mt-[32px]">
         <label class="font-medium text-[18px]">Professores:</label>
         <div class="mt-[16px] border border-slate-300 rounded-lg py-2 px-3 max-h-[150px] overflow-y-auto gap-6 teachers-container"
              data-selected-values="{{ form.teachers.value|join:',' }}">
           {% for teacher in form.teachers.field.queryset %}
             <div class="flex flex-row-reverse justify-end items-center gap-1">
-              <input id={{ teacher.id }} type="checkbox" class="hidden peer" name="teachers" value="{{ teacher.id }}" {% if teacher.id in form.teachers.value %}checked{% endif %} />
+              <input id="teacher_{{ teacher.id }}" type="checkbox" class="hidden peer" name="teachers" value="{{ teacher.id }}" {% if teacher.id in form.teachers.value %}checked{% endif %} />
               {{ teacher.name }}
-              <label for={{ teacher.id }} class="flex items-center cursor-pointer w-[20px] h-[20px] rounded-[5px] peer-checked:[&_img]:block bg-slate-300">
+              <label for="teacher_{{ teacher.id }}" class="flex items-center cursor-pointer w-[20px] h-[20px] rounded-[5px] peer-checked:[&_img]:block bg-slate-300">
                 <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}"
                      width="20px"
                      height="20px"
@@ -70,6 +72,7 @@
           {% endfor %}
         </div>
       </div>
+
       <div class="flex gap-8">
         <div class="mt-[24px] flex-1">
           <label for="{{ form.status.id_for_label }}" class="font-medium text-[18px]">Situação:</label>
@@ -80,15 +83,15 @@
                  height="24px" />
             <select name="{{ form.status.name }}"
                     id="{{ form.status.id_for_label }}"
-                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
+                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-500 appearance-none bg-neutral-50">
               <option value="default" selected disabled>Selecione a situação...</option>
               {% for key, value in form.status.field.choices %}
-                <option value="{{ key }}"
-                        {% if key == form.status.value %}selected{% endif %}>{{ value }}</option>
+                <option value="{{ key }}" {% if key == form.status.value %}selected{% endif %}>{{ value }}</option>
               {% endfor %}
             </select>
           </div>
         </div>
+
         <div class="flex gap-8">
           <div class="mt-[24px] flex-1">
             <label for="{{ form.year.id_for_label }}" class="font-medium text-[18px]">Ano referência do período letivo:</label>
@@ -100,22 +103,125 @@
                    placeholder="Ex: 2025"
                    min="1" />
           </div>
+
           <div class="mt-[24px] flex-1">
-            <label for="{{ form.semester.id_for_label }}"
-                   class="font-medium text-[18px]">Semestre referência do período letivo:</label>
+            <label for="{{ form.semester.id_for_label }}" class="font-medium text-[18px]">Semestre referência do período letivo:</label>
             <select name="{{ form.semester.name }}"
                     id="{{ form.semester.id_for_label }}"
-                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50 mt-[16px]">
+                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-500 appearance-none bg-neutral-50 mt-[16px]">
               <option value="default" selected disabled>Selecione o semestre...</option>
               {% for key, value in form.semester.field.choices %}
-                <option value="{{ key }}"
-                        {% if key == form.semester.value %}selected{% endif %}>{{ value }}</option>
+                <option value="{{ key }}" {% if key == form.semester.value %}selected{% endif %}>{{ value }}</option>
               {% endfor %}
             </select>
           </div>
         </div>
       </div>
+
       {% include "components/_save_back_edit_buttons.html" with link_to_back="academics:offer_list" %}
     </form>
   </div>
 {% endblock content %}
+
+{% block modal %}
+<div id="confirmPeiCreationModal" tabindex="-1" aria-labelledby="modalTitle" aria-modal="true" role="dialog"
+     class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
+  <div class="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto">
+    <h2 id="modalTitle" class="text-xl font-semibold mb-4">Confirmar criação dos PEIs</h2>
+    <p class="mb-4 !text-red-800"><strong>Importante:</strong> leia com cuidado para não cometer enganos.</p>
+    <p class="mb-4">Serão criados PEIs para os seguintes professores:</p>
+    <ul id="selectedTeachersList" class="list-disc list-inside mb-6"></ul>
+    <div class="flex justify-end gap-4">
+      <button type="button" id="cancelModalBtn" class="cancelDelete bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400">
+        Cancelar
+      </button>
+      <button type="button" id="confirmModalBtn" disabled class="confirmDelete bg-green-500 text-white px-4 py-2 rounded-lg opacity-50 cursor-not-allowed">
+        Confirmar (7s)
+      </button>
+    </div>
+  </div>
+</div>
+{% endblock modal %}
+
+{% block inline_javascript %}
+<script>
+  (function() {
+    const form = document.getElementById('peiForm');
+    const modal = document.getElementById('confirmPeiCreationModal');
+    const selectedTeachersList = document.getElementById('selectedTeachersList');
+    const cancelBtn = document.getElementById('cancelModalBtn');
+    const confirmBtn = document.getElementById('confirmModalBtn');
+
+    function onFormSubmit(event) {
+      event.preventDefault();
+
+      const checkedTeachers = Array.from(form.querySelectorAll('input[name="teachers"]:checked'));
+
+      if (checkedTeachers.length === 0) {
+        alert('Por favor, selecione ao menos um professor.');
+        return;
+      }
+
+      selectedTeachersList.innerHTML = '';
+
+      checkedTeachers.forEach(input => {
+        const parentDiv = input.parentElement;
+        let teacherName = '';
+        if (parentDiv) {
+          const labelEl = parentDiv.querySelector('label');
+          let labelText = labelEl ? labelEl.textContent.trim() : '';
+          let allText = parentDiv.textContent.trim();
+          teacherName = allText.replace(labelText, '').trim();
+        }
+        if (!teacherName) teacherName = 'Professor desconhecido';
+
+        const li = document.createElement('li');
+        li.textContent = teacherName;
+        selectedTeachersList.appendChild(li);
+      });
+
+      modal.classList.remove('hidden');
+      confirmBtn.disabled = true;
+      confirmBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+      let countdown = 7;
+      confirmBtn.textContent = `Confirmar (${countdown}s)`;
+
+      const timer = setInterval(() => {
+        countdown -= 1;
+        confirmBtn.textContent = `Confirmar (${countdown}s)`;
+
+        if (countdown <= 0) {
+          clearInterval(timer);
+          confirmBtn.disabled = false;
+          confirmBtn.textContent = 'Confirmar';
+          confirmBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+          confirmBtn.focus();
+        }
+      }, 1000);
+    }
+
+    function confirmAndSubmit() {
+      modal.classList.add('hidden');
+      form.removeEventListener('submit', onFormSubmit);
+      form.submit();
+    }
+
+    function cancelModal() {
+      modal.classList.add('hidden');
+    }
+
+    function onKeyDown(event) {
+      if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+        cancelModal();
+      }
+    }
+
+    form.addEventListener('submit', onFormSubmit);
+    cancelBtn.addEventListener('click', cancelModal);
+    confirmBtn.addEventListener('click', confirmAndSubmit);
+    window.addEventListener('keydown', onKeyDown);
+  })();
+</script>
+{% endblock inline_javascript %}
+
