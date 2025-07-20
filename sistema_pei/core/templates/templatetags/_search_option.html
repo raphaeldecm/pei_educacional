@@ -12,7 +12,7 @@
             {%endif%}
             >
 
-        <div id="{{object_name}}_labels_container" class="border border-slate-300 hidden rounded-lg w-full py-2 px-3 max-h-[150px] mt-2 min-h-[48px] overflow-y-auto " role="listbox">
+        <div id="{{object_name}}_labels_container" class="border border-slate-300 hidden rounded-lg w-full py-2 px-3 max-h-[150px] mt-2 min-h-[48px] overflow-y-auto absolute z-20 bg-neutral-50" role="listbox">
           {%for object in query%}
             <div class="course-item hidden items-center mt-1 gap-3" role="radio">
               <input
@@ -41,23 +41,23 @@
     let {{object_name}}_search = document.getElementById('{{object_name}}_search')
     let {{object_name}}_labels = Array.from(document.getElementsByClassName('{{object_name}}_label'))
     
-
-  
     {{object_name}}_search.addEventListener('input',()=>{
       let input_value = {{object_name}}_search.value.toLowerCase()
       let hasResult = false
-
+      
       {{object_name}}_labels.forEach(element=>{
         let results = search(element,input_value)
         if(results){
           hasResult=true
         }
       })
-
+      
       let labels_container = document.getElementById("{{object_name}}_labels_container")
-
+      
       hasResult ? labels_container.style.display = 'block' : labels_container.style.display = 'none'
-     })
+
+      window.addEventListener('click',()=>labels_container.style.display = 'none')
+    })
 
     {{object_name}}_labels.forEach(element=>{
     //adiciona o evento de select
