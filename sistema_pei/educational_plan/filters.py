@@ -24,8 +24,8 @@ class PeiFilter(django_filters.FilterSet):
 
     teacher = django_filters.ModelChoiceFilter(
         queryset=Teacher.objects.all(),
-        field_name="enrollment__offer__teachers",
-        label="teacher",
+        field_name="responsible_teacher",
+        label="Professor responsável",
     )
 
     SEMESTER_SPLIT_MONTH = 6
