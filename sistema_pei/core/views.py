@@ -25,7 +25,7 @@ class HomeListView(
 
         if not has_professor_filter and self.request.user.groups.filter(name="Teacher").exists():
             queryset = queryset.filter(
-                enrollment__offer__teachers__email=self.request.user.email
+                responsible_teacher__user=self.request.user
             )
 
         return queryset
