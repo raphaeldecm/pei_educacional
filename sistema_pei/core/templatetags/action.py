@@ -9,10 +9,11 @@ register = template.Library()
 @register.inclusion_tag(
     filename='templatetags/action_item.html',
 )
-def action_buttons(detail_view,edit_view,object):
+def action_buttons(detail_view,edit_view,object,model_name):
     urls = {
         'detail_url' : reverse(detail_view,args=[object.pk]),
         'edit_url' : reverse(edit_view,args=[object.pk]),
-        'object' : object
+        'object' : object,
+        'model' : model_name
     }
     return urls

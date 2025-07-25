@@ -1,40 +1,53 @@
 {%load static%}
 
-<span class="flex justify-center items-center h-full gap-4 pr-[26px]">
-    <a class="p-2 rounded-[12px] border-[#deedfe] border-solid border-2 hover:bg-[#2462eb] group"
-      href="{{detail_url}}">
-      <img src="{% static 'images/icons/eye-action-icon.svg' %}"
-          alt=""
-          height="24px"
-          class="cursor-pointer group-hover:hidden"/>
+<span class="flex justify-center items-center h-full relative gap-4 pr-[26px]">
 
-      <img src="{% static 'images/icons/eye-action-hover-icon.svg' %}"
-          alt=""
-          height="24px"
-          class="cursor-pointer hidden group-hover:block"/>
-    </a>
-    <a class="hover:bg-[#ee8e5f] p-2 rounded-[12px] border-[#f4e7d9] border-solid border-2 group"
-      href="{{edit_url}}">
-      <img src="{% static 'images/icons/edit-icon.svg' %}"
+    <div class="p-2 rounded-[12px] border-[#deedfe] border-solid border-2 hover:bg-[#2462eb] group">
+        <span class="absolute top-0 left-[11%] text-[0.80rem] min-w-[40%] p-1 rounded-[10px] bg-black text-white group-hover:flex  transition-opacity duration-100 font-medium items-center hidden justify-center">
+            Vizualizar {{model}}
+        </span>
+        <a
+        href="{{detail_url}}">
+        <img src="{% static 'images/icons/eye-action-icon.svg' %}"
+        alt=""
+              height="24px"
+              class="cursor-pointer group-hover:hidden"/>
+          <img src="{% static 'images/icons/eye-action-hover-icon.svg' %}"
+              alt=""
+              height="24px"
+              class="cursor-pointer hidden group-hover:block"/>
+            </a>
+        </div>
+        <div class="hover:bg-[#ee8e5f] p-2 rounded-[12px] border-[#f4e7d9] border-solid border-2 group">
+        <span class="absolute top-0 left-[25%] text-[0.80rem] w-[40%] text-ellipsis overflow-hidden text-nowrap p-1 rounded-[10px] bg-black text-white group-hover:flex  transition-opacity duration-100 font-medium items-center hidden justify-center">
+            editar {{model}}
+        </span>
+        <a
+        href="{{edit_url}}">
+        <img src="{% static 'images/icons/edit-icon.svg' %}"
         alt=""
         height="24px"
-        class="cursor-pointer group-hover:hidden"/>
-      <img src="{% static 'images/icons/edit-hover-icon.svg' %}"
-        alt=""
-        height="24px"
-        class="cursor-pointer hidden group-hover:block"/>
-    </a>
+            class="cursor-pointer group-hover:hidden"/>
+            <img src="{% static 'images/icons/edit-hover-icon.svg' %}"
+            alt=""
+            height="24px"
+            class="cursor-pointer hidden group-hover:block"/>
+        </a>
+    </div>
     <button class="hover:bg-[#e66c6e] p-2 rounded-[12px] border-[#fbebed] border-solid border-2 group"
-            type="button"
-            id="openModal{{ object.pk }}"
-            data-modal-id="confirmationModal{{ object.pk }}">
-      <img src="{% static 'images/icons/delete-icon.svg' %}"
-          alt=""
-          height="24px"
-          class="cursor-pointer group-hover:hidden"/>
-      <img src="{% static 'images/icons/delete-hover-icon.svg' %}"
-          alt=""
-          height="24px"
-          class="cursor-pointer hidden group-hover:block"/>
-    </button>
+    type="button"
+    id="openModal{{ object.pk }}"
+    data-modal-id="confirmationModal{{ object.pk }}">
+        <span class="absolute top-0 right-[17%] text-[0.80rem] w-[40%] text-ellipsis overflow-hidden text-nowrap p-1 rounded-[10px] bg-black text-white group-hover:flex  transition-opacity duration-100 font-medium items-center hidden justify-center">
+            Apagar {{model}}
+        </span>
+          <img src="{% static 'images/icons/delete-icon.svg' %}"
+              alt=""
+              height="24px"
+              class="cursor-pointer group-hover:hidden"/>
+          <img src="{% static 'images/icons/delete-hover-icon.svg' %}"
+              alt=""
+              height="24px"
+              class="cursor-pointer hidden group-hover:block"/>
+        </button>
 </span>
