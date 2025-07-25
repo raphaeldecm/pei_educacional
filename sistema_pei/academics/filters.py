@@ -11,7 +11,7 @@ class CourseFilter(
     django_filters.FilterSet,
     Icontains_with_unaccentMinxin
 ):
-    name = django_filters.CharFilter(method='search', label="Nome")
+    name = django_filters.CharFilter(method='search_icontains', label="Nome")
     course_type = django_filters.ChoiceFilter(
         choices=COURSE_TYPE,
         label="Tipo",
@@ -76,7 +76,7 @@ class SubjectFilter(
 ):
     search = django_filters.CharFilter(
         field_name="name",
-        method='search',
+        method='search_icontains',
         label="Search",
     )
 

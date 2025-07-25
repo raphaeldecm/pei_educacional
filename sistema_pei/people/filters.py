@@ -18,7 +18,7 @@ class TeacherFilter(
     django_filters.FilterSet,
     Icontains_with_unaccentMinxin    
 ):
-    name = django_filters.CharFilter(label="Nome",method='search')
+    name = django_filters.CharFilter(label="Nome",method='search_icontains')
     email = django_filters.CharFilter(lookup_expr="icontains", label="E-mail")
     campus = django_filters.ModelChoiceFilter(
         queryset=Campus.objects.all(),
