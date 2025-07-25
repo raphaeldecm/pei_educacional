@@ -5,6 +5,8 @@ from django.db.models.functions import Lower
 
 from sistema_pei.academics.models import Course
 
+from sistema_pei.core.mixins import Icontains_with_unaccentMinxin
+
 from .models import Campus
 from .models import Student
 from .models import Teacher
@@ -12,14 +14,18 @@ from .models import Teacher
 #constants
 from sistema_pei.core.constants import SYNC_RECENT_INTERVAL,SYNC_REGULAR_INTERVAL,SYNC_OLD_INTERVAL
 
-class TeacherFilter(django_filters.FilterSet):
-    name = django_filters.CharFilter(lookup_expr="icontains", label="Nome")
+class TeacherFilter(
+    django_filters.FilterSet,
+    Icontains_with_unaccentMinxin    
+):
+    name = django_filters.CharFilter(label="Nome",method='search_icontains')
     email = django_filters.CharFilter(lookup_expr="icontains", label="E-mail")
     campus = django_filters.ModelChoiceFilter(
         queryset=Campus.objects.all(),
         label="Campus",
     )
     code = django_filters.CharFilter(lookup_expr="icontains", label="Matrícula")
+    
 
     class Meta:
         model = Teacher
@@ -58,7 +64,7 @@ class StudentFilter(django_filters.FilterSet):
 
     def multi_field_search(self, queryset, name, value):
         return queryset.filter(
-            Q(name__icontains=value) | Q(registration__icontains=value),
+            Q(name__unaccent__icontains=value) | Q(registration__icontains=value),
         )
 
     def get_student_by_sync_status(self,quaryset,name,value):
