@@ -2,6 +2,7 @@
 
 {% load static i18n %}
 {% load breadcrumb_item %}
+{% load search_option %}
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
@@ -9,6 +10,7 @@
   {% breadcrumb_item text="Disciplinas" icon="images/icons/icon-courses-green.svg" %}
 {% endblock breadcrumb %}
 {% block content %}
+{%load_search_script%}
   <div class="w-full">
     <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
     <form>
@@ -25,20 +27,7 @@
       </div>
       <div class="flex gap-[8px] flex-wrap">
         <div class="relative w-[322px] cursor-pointer">
-          <img class="absolute top-[12px] right-[10px]"
-               src="{% static 'images/icons/icon-updown-arrow.svg' %}"
-               width="24px"
-               height="24px" />
-          <select name="courses"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-500 appearance-none bg-neutral-50">
-            <option value="default" selected disabled>Selecione o curso...</option>
-            {% for course in filter.form.courses.field.queryset %}
-              <option value="{{ course.id }}"
-                      {% if course.id|stringformat:"s" == request.GET.courses %}selected{% endif %}>
-                {{ course }}
-              </option>
-            {% endfor %}
-          </select>
+          {%search_option object_name='courses' query=filter.form.courses.field.queryset input_placeholder='Selecione o curso...'%}
         </div>
         <div class="relative w-[322px] cursor-pointer">
           <img class="absolute top-[12px] right-[10px]"
