@@ -51,4 +51,4 @@ class CSVImportForm(forms.Form):
 class MatrixForm(forms.ModelForm):      
     class Meta:
         model = models.Matrix
-        fields = ['name','year']
+        fields = ['code','description','year','active']

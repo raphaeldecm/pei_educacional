@@ -19,10 +19,10 @@
                 width="18px"
                 height="18px" />
                 <input type="text"
-                        name="name"
+                        name="search"
                         placeholder="Procurar matriz"
                         class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50 placeholder:text-slate-500"
-                        value="{{ request.GET.name }}" />
+                        value="{{ request.GET.search }}" />
             </div>
             <div class="mb-[26px] flex w-[45%] h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2 mr-[2.5%]">
                 <input 
@@ -55,12 +55,14 @@
             <table class="w-full text-slate-900 text-[18px] border-collapse">
                 <thead class="[&_th]:text-left h-[91px]">
                     <tr class="border-b border-slate-300">
-                        <th class="pl-[76px] pr-4">Matriz</th>
+                        <th class="pl-[76px] pr-4">Codigo</th>
+                        <th class="">Descrição da Matriz</th>
                         <th class="px-4">
                             <span class='text-center w-full block'>
                                 Ano da matriz
                             </span>
                         </th>
+                        <th style='text-align:center;'>Ativa</th>
                         <th colspan="3" class="text-center pr-[30px]">
                         <span class="m-auto block w-fit">
                             Ações
@@ -71,8 +73,16 @@
             <tbody>
             {% for object in object_list %}
                 <tr class="border-b border-slate-300 h-[97px]">
-                <td class="pl-[76px] pr-4 max-w-[50vw] overflow-x-hidden text-ellipsis text-nowrap">{{ object.name }}</td>
+                <td class="pl-[76px] pr-4 max-w-[50vw] overflow-x-hidden text-ellipsis text-nowrap">{{ object.code }}</td>
+                <td class="max-w-[50vw] overflow-x-hidden text-ellipsis text-nowrap">{{ object.description }}</td>
                 <td class="px-4 text-center">{{object.year}}</td>
+                <td class="px-4">
+                    {%if object.active%}
+                        <img src="{% static 'images/icons/sync-updated-icon.svg' %}" alt='' width='30px' height='30px' class="m-auto"/>
+                    {%else%}
+                        <img src="{% static 'images/icons/not-sync-icon.svg' %}" alt='' width='30px' height='30px' class="m-auto"/>
+                    {%endif%}
+                </td>
                 <td>
                     <span class="flex justify-center items-center h-full gap-2 pr-[30px]">
                     <a class="hover:bg-slate-100 w-10 h-10 flex items-center justify-center rounded-full" href="{%url 'academics:matrix_detail' object.pk%}">

@@ -16,14 +16,33 @@
       {% csrf_token %}
        <div class="mt-[24px]">
         <label for="" class="font-medium text-[18px]">
-            Nome
+            Codigo
+        </label>
+        <div class="relative w-full cursor-pointer mt-[16px]">
+            <input
+            type="number"
+            min='1'
+            step='1'
+            name="code"
+            placeholder="Digite o Codigo da Matriz"
+            value="{{form.code.value|default_if_none:''}}"
+            class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
+            >
+            {%for erro in form.code.errors%}
+                <span class='ml-2 text-red-500 mt-4 block'>{{erro}}</span>
+            {%endfor%}
+        </div>
+    </div>        
+       <div class="mt-[24px]">
+        <label for="" class="font-medium text-[18px]">
+            Descrição
         </label>
         <div class="relative w-full cursor-pointer mt-[16px]">
             <input
             type="text"
-            name="name"
-            placeholder="Digite o Nome da Matriz"
-            value="{{form.name.value|default_if_none:''}}"
+            name="description"
+            placeholder="Digite a descrição da Matriz"
+            value="{{form.description.value|default_if_none:''}}"
             class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
             >
             {%for erro in form.name.errors%}
@@ -40,14 +59,24 @@
             type="number"
             name="year"
             min="0"
-            {%if form.year.value%}
-              placeholder="Ano atual: {{form.year.value}}"
-            {%else%}
-              placeholder="Digite o Ano da Matriz"
-            {%endif%}
+            placeholder="Digite o Ano da Matriz"
+            value="{{form.year.value|default_if_none:''}}"
             class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
             id="">
             {%for erro in form.year.errors%}
+                <span class='ml-2 text-red-500 mt-4 block'>{{erro}}</span>
+            {%endfor%}
+        </div>
+    <div class="mt-[24px]">
+        <label for="" class="font-medium text-[18px]">
+            Esta Ativa?
+        </label>
+        <div class="relative w-full cursor-pointer mt-[16px]">
+            <select name="active" class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]">
+                <option value="True" {%if form.active.value == True %}selected{%endif%}>Sim</option>
+                <option value="False" {%if form.active.value == False %}selected{%endif%}>Não</option>
+            </select>
+            {%for erro in form.active.errors%}
                 <span class='ml-2 text-red-500 mt-4 block'>{{erro}}</span>
             {%endfor%}
         </div>

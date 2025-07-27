@@ -12,8 +12,16 @@
 
 {%block content%}
     <div class="w-full">
-        <h1 class="text-[32px] font-medium mb-[38px]">{{title}} : {{object.name}}</h1>
+        <h1 class="text-[32px] font-medium mb-[38px]">{{title}} : {{object.code}} - {{object.description}}</h1>
         <p class="font-semibold mb-4 mt-[38px]">Ano da matriz: {{object.year}}</p>
+        <p class="font-semibold mb-4 mt-[38px] flex items-center gap-2">
+            Ativa:
+            {%if object.active%}
+                <img src="{% static 'images/icons/sync-updated-icon.svg' %}" alt='' width='30px' height='30px' class=""/>
+            {%else%}
+                <img src="{% static 'images/icons/not-sync-icon.svg' %}" alt='' width='30px' height='30px' class=""/>
+            {%endif%}
+        </p>
         <p class="font-semibold mb-4 mt-[38px] text-[20px]">Disciplinas da matriz:</p>
         <div class="mt-[53px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg">
             <table class="w-full text-slate-900 text-[18px] border-collapse">
