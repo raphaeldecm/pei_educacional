@@ -108,18 +108,22 @@ class SubjectFilter(
 
 class MatrixFilter(django_filters.FilterSet):
     
-    name = django_filters.CharFilter(
-        'name',
-        lookup_expr='icontains',
-        label='name'
+    search = django_filters.CharFilter(
+        method='search_matrix',
+        label='search'
     )
     
-    year = django_filters.NumberFilter(
-        'year',
-        lookup_expr='exact',
-        label='year'
-    )
     
     class Meta:
         model = models.Matrix
-        fields = []
+        fields = ['year']
+        
+    def search_matrix(self, queryset, name, value:str):
+        value_to_filter = {'description': value, 'code': value}
+        
+        if not value.isdigit():
+            value_to_filter['code'] = None
+            
+        return queryset.filter(
+            Q(description__icontains=value_to_filter["description"]) | Q(code=value_to_filter['code'])
+        )

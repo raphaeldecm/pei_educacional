@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from sistema_pei.academics import managers
 from sistema_pei.academics.constants import COURSE_TYPE
-from sistema_pei.core.constants import SMALL_CHAR_FIELD_NAME_LENGTH,MEDIUM_CHAR_FIELD_NAME_LENGTH
+from sistema_pei.core.constants import SMALL_CHAR_FIELD_NAME_LENGTH
 from sistema_pei.core.models import BaseModel
 from sistema_pei.people.models import Teacher
 
@@ -232,12 +232,18 @@ class Enrollment(BaseModel):
 
 
 class Matrix(BaseModel):
-    name = models.CharField(
-        verbose_name=_("Nome da matriz"),
+    code = models.IntegerField(
+        verbose_name=_("Código da matriz"),
         unique=True,
-        max_length=MEDIUM_CHAR_FIELD_NAME_LENGTH,
         null=False,
-        blank=False
+        blank=False,
+        validators=[MinValueValidator(1)],
+    )
+    
+    description = models.CharField(
+        verbose_name=_("Descrição da matriz"),
+        null=False,
+        blank=False,
     )
     
     year = models.IntegerField(
@@ -246,8 +252,13 @@ class Matrix(BaseModel):
         blank=False
     )
     
+    active = models.BooleanField(
+        verbose_name=_("Ativa"),
+        default=True,
+    )
+    
     def __str__(self):
-        return self.name
+        return f'{self.code} - {self.description}'
     
     class Meta:
         verbose_name = _("Matriz")
