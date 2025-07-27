@@ -125,5 +125,5 @@ class MatrixFilter(django_filters.FilterSet):
             value_to_filter['code'] = None
             
         return queryset.filter(
-            Q(description__icontains=value_to_filter["description"]) | Q(code=value_to_filter['code'])
+            Q(description__unaccent__icontains=value_to_filter["description"]) | Q(code=value_to_filter['code'])
         )
