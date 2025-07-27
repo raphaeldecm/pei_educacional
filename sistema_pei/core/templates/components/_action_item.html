@@ -1,0 +1,22 @@
+
+{%load static%}
+
+{%if not is_delete_button%}
+<div class="p-2 rounded-[12px] border-solid border-2 {{border_color}} {{hover_color}} group">
+        <span class="absolute top-0 text-[0.80rem] translate-x-[-40%] min-w-[100px] w-[40%] p-1 rounded-[10px] bg-black text-white group-hover:flex  transition-opacity duration-100 font-medium items-center hidden justify-center">
+            {{message}}
+        </span>
+        <a href="{{link}}?{{link_args}}">
+            <img src="{%static default_icon%}"
+                alt=""
+                height="24px"
+                class="cursor-pointer group-hover:hidden"/>
+            <img src="{% static hover_icon%}"
+                alt=""
+                height="24px"
+                class="cursor-pointer hidden group-hover:block"/>
+        </a>
+</div>
+
+
+{%endif%}

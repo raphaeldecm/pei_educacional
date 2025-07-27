@@ -4,6 +4,7 @@
 {% load breadcrumb_item %}
 {% load has_group %}
 {%load search_option%}
+{% load action %}
 
 {% block breadcrumb %}
 {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
@@ -82,7 +83,7 @@
             <th class="px-4">Ano</th>
             <th class="px-4">Turno</th>
             <th class="px-4">Situação</th>
-            <th colspan="3" class="text-center pr-[30px]">
+            <th colspan="3" style='text-align:center;' class="text-center pr-[30px]">
               <span class="ml-9">
                 Ações
               </span>
@@ -105,22 +106,7 @@
               <td class="px-4">{{ object.course.get_period_display }}</td>
               <td class="px-4">{{ object.status }}</td>
               <td>
-                <span class="flex justify-center items-center h-full gap-2 pr-[26px]">
-                  <a class="hover:bg-slate-100 w-10 h-10 flex items-center justify-center rounded-full" href="{% url 'academics:offer_detail' object.pk %}">
-                    <img src="{% static 'images/icons/icon-eye.svg' %}" alt="" class="w-6 h-6 cursor-pointer" />
-                  </a>
-                  <a class="hover:bg-slate-100 w-10 h-10 flex items-center justify-center rounded-full" href="{% url 'academics:offer_update' object.pk %}">
-                    <img src="{% static 'images/icons/icon-edit-element.svg' %}" alt="" class="w-5 h-5 cursor-pointer" />
-                  </a>
-                  {% if user|has_group:"Coordinator" %}
-                    <button class="hover:bg-slate-100 w-10 h-10 flex items-center justify-center rounded-full"
-                            type="button"
-                            id="openModal{{ object.pk }}"
-                            data-modal-id="confirmationModal{{ object.pk }}">
-                      <img src="{% static 'images/icons/icon-remove-element.svg' %}" alt="" class="w-5 h-5 cursor-pointer" />
-                    </button>
-                  {% endif %}
-                </span>
+                {% action_buttons detail_view='academics:offer_detail' edit_view='academics:offer_update' model_name='Oferta' object=object %}
               </td>
             </tr>
             {% if user|has_group:"Coordinator" %}

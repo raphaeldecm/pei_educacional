@@ -1,0 +1,28 @@
+{%load static%}
+{% load action %}
+
+<span class="flex justify-center items-center h-[97px] relative gap-4 min-w-[250px]">
+
+    {%action_item default_icon='images/icons/eye-action-icon.svg' hover_icon='images/icons/eye-action-hover-icon.svg' message="Vizualizar "|add:model border_class='border-[#deedfe]' hover_class='hover:bg-[#2462eb]' link=detail_url link_args=kwargs.detail_url_args%}
+
+    
+    {%action_item default_icon='images/icons/edit-icon.svg' hover_icon='images/icons/edit-hover-icon.svg' message="Editar "|add:model  border_class='border-[#f4e7d9]' hover_class='hover:bg-[#ee8e5f]' link=edit_url link_args=kwargs.edit_url_args%}
+
+    <button class="hover:bg-[#e66c6e] p-2 rounded-[12px] border-[#fbebed] border-solid border-2 group"
+    type="button"
+    id="openModal{{ object.pk }}"
+    data-modal-id="confirmationModal{{ object.pk }}">
+        <span class="absolute top-0 translate-x-[-40%] text-[0.80rem] w-[40%] text-ellipsis overflow-hidden text-nowrap p-1 rounded-[10px] bg-black text-white group-hover:flex  transition-opacity duration-100 font-medium items-center hidden justify-center">
+            Apagar {{model}}
+        </span>
+          <img src="{% static 'images/icons/delete-icon.svg' %}"
+              alt=""
+              height="24px"
+              class="cursor-pointer group-hover:hidden"/>
+          <img src="{% static 'images/icons/delete-hover-icon.svg' %}"
+              alt=""
+              height="24px"
+              class="cursor-pointer hidden group-hover:block"/>
+        </button>
+    
+</span>
