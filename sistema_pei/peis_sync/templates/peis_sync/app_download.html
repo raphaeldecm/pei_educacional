@@ -49,14 +49,19 @@
         </div>
 
         <div class="flex flex-col sm:flex-row gap-4">
-          <a href="{% static 'peis_sync_app/peis_sync.apk' %}" download class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full text-sm flex items-center gap-2 w-full sm:w-fit shadow-md">
-            PEIs Sync v1.0.2 [APK]
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
-                 viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4"/>
-            </svg>
-          </a>
+          {% if latestVersion and latestVersion.apkFile %}
+            <a href="{{ latestVersion.apkFile.url }}" download class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full text-sm flex items-center gap-2 w-full sm:w-fit shadow-md">
+              PEIs Sync v{{ latestVersion.version }} [APK]
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                   viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4"/>
+              </svg>
+            </a>
+          {% else %}
+            <p class="bg-slate-900 text-white px-6 py-3 rounded-full text-sm flex items-center gap-2 w-full sm:w-fit shadow-md opacity-50 cursor-not-allowed">Peis Sync [APK] - não disponível no momento.</p>
+          {% endif %}
+
           <a href="#" class="bg-slate-900 text-white px-6 py-3 rounded-full text-sm flex items-center gap-2 w-full sm:w-fit shadow-md opacity-50 cursor-not-allowed">
             PEIs Sync [WebApp] - Em breve
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
