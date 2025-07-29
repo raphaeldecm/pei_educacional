@@ -35,6 +35,13 @@ class OfferFilter(django_filters.FilterSet):
     search = django_filters.CharFilter(method="filter_by_search", label="Search")
     SEMESTER_SPLIT_MONTH = 6
 
+    period = django_filters.ChoiceFilter(
+        method = 'filter_by_period',
+        choices=models.Course.CoursePeriod.choices,
+        label="Período",
+    )
+    
+    
     year = django_filters.NumberFilter(
         field_name="year",
         lookup_expr="exact",
@@ -51,12 +58,15 @@ class OfferFilter(django_filters.FilterSet):
 
     class Meta:
         model = models.Offer
-        fields = ["teachers", "subject", "semester", "year"]
+        fields = ["teachers", "subject", "semester", "year", 'course']
 
     def filter_by_search(self, queryset, name, value):
         return queryset.filter(
             Q(subject__name__unaccent__icontains=value) | Q(teachers__name__unaccent__icontains=value),
         )
+        
+    def filter_by_period(self, queryset, name, value):
+        return queryset.filter(course__period=value)
 
 class EnrollmentFilter(django_filters.FilterSet):
     search = django_filters.CharFilter(
