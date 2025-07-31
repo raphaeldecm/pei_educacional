@@ -2,6 +2,7 @@
 
 {% load static i18n %}
 {% load breadcrumb_item %}
+{% load custom_filter %}
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
@@ -103,7 +104,7 @@
                          name="{{ form.groups.name }}"
                          value="{{ group.id }}"
                          {% if group.id in form.groups.value %}checked{% endif %} />
-                  {{ group.name }}
+                  {{ translated_groups|custom_filter:group.id }}
                   <label for="{{ group.id }}"
                          class="flex items-center cursor-pointer w-[20px] h-[20px] rounded-[5px] peer-checked:[&_img]:block bg-slate-300">
                     <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}"
