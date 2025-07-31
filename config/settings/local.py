@@ -40,7 +40,6 @@ CACHES = {
 # EMAIL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
-EMAIL_HOST_USER = env("DJANGO_EMAIL_HOST_USER", default="nao-responder@mail.com")
 EMAIL_HOST_PASSWORD = env("DJANGO_EMAIL_HOST_PASSWORD", default="")
 
 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#internal-ips
