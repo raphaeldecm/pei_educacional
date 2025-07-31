@@ -50,6 +50,6 @@ class PeiFilter(django_filters.FilterSet):
 
     def multi_field_search(self, queryset, name, value):
         return queryset.filter(
-            Q(enrollment__student__name__icontains=value)
+            Q(enrollment__student__name__unaccent__icontains=value)
             | Q(enrollment__student__registration__icontains=value),
         )

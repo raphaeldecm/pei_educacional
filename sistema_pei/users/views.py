@@ -29,6 +29,7 @@ class UserDetailView(
     slug_field = "id"
     slug_url_kwarg = "id"
     title = _("Detalhes do usuário")
+    context_object_name = "profile_user"
 
 
 user_detail_view = UserDetailView.as_view()
@@ -89,6 +90,7 @@ class UserManagerUpdate(
     form_class = forms.UserUpdateForm
     success_url = reverse_lazy("users:list")
     success_message = _("Usuário atualizado com sucesso.")
+    context_object_name = "profile_user"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

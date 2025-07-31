@@ -3,11 +3,13 @@
 {% load static i18n %}
 {% load breadcrumb_item %}
 {% load has_group %}
+{% load search_option %}
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
 {% endblock breadcrumb %}
 {% block content %}
+{%load_search_script%}
 <div class="w-full">
     <div>
       <h1 class="font-semibold text-[24px]">Olá 👋, {{ request.user.name }}!</h1>
@@ -86,66 +88,27 @@
       <form>
         <div class="mb-[26px] flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
           <img src="{% static 'images/icons/icon-search.svg' %}"
-               alt=""
-               width="18px"
-               height="18px" />
+          alt=""
+          width="18px"
+          height="18px" />
           <input type="text"
-                 name="search"
-                 placeholder="Pesquisar..."
-                 class="outline-none text-[14px] placeholder:text-[14px] rounded-lg h-full w-full bg-neutral-50 placeholder:text-slate-500"
-                 value="{{ request.GET.search }}" />
+          name="search"
+          placeholder="Pesquisar..."
+          class="outline-none text-[14px] placeholder:text-[14px] rounded-lg h-full w-full bg-neutral-50 placeholder:text-slate-500"
+          value="{{ request.GET.search }}" />
         </div>
         <div class="flex gap-[8px] flex-wrap">
-          <div class="relative w-[322px] cursor-pointer">
-            <img class="absolute top-[12px] right-[10px]"
-                 src="{% static 'images/icons/icon-updown-arrow.svg' %}"
-                 width="24px"
-                 height="24px" />
-            <select name="course"
-                    class="outline-none text-[14px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
-              <option value="default" selected disabled cla>Selecione o curso...</option>
-              {% for course in selector_courses %}
-                <option value="{{ course.id }}"
-                        {% if request.GET.course == course.id|stringformat:'s' %}selected{% endif %}>
-                  {{ course.name }}
-                </option>
-              {% endfor %}
-            </select>
+          <div class="relative w-[322px] cursor-pointer [&_input]:text-[14px]">
+            {%search_option object_name='course' query=filter.form.course.field.queryset input_placeholder='Selecione o curso...'%}
           </div>
-          <div class="flex gap-[8px] flex-wrap">
+          <div class="flex gap-[8px] flex-wrap [&_input]:text-[14px]">
             <div class="relative w-[322px] cursor-pointer">
-              <img class="absolute top-[12px] right-[10px]"
-                   src="{% static 'images/icons/icon-updown-arrow.svg' %}"
-                   width="24px"
-                   height="24px" />
-              <select name="subject"
-                      class="outline-none text-[14px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-500 appearance-none bg-neutral-50">
-                <option value="default" selected disabled>Selecione a disciplina...</option>
-                {% for subject in filter.form.subject.field.queryset %}
-                  <option value="{{ subject.id }}"
-                          {% if subject.id|stringformat:"s" == request.GET.subject %}selected{% endif %}>
-                    {{ subject }}
-                  </option>
-                {% endfor %}
-              </select>
+              {%search_option object_name='subject' query=filter.form.subject.field.queryset input_placeholder='Selecione a disciplina...'%}
             </div>
           </div>
-          <div class="flex gap-[8px] flex-wrap">
+          <div class="flex gap-[8px] flex-wrap [&_input]:text-[14px]">
             <div class="relative w-[322px] cursor-pointer">
-              <img class="absolute top-[12px] right-[10px]"
-                   src="{% static 'images/icons/icon-updown-arrow.svg' %}"
-                   width="24px"
-                   height="24px" />
-              <select name="teacher"
-                      class="outline-none text-[14px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-500 appearance-none bg-neutral-50">
-                <option value="default" selected disabled>Selecione o professor...</option>
-                {% for teacher in filter.form.teacher.field.queryset %}
-                  <option value="{{ teacher.id }}"
-                          {% if user|has_group:"Teacher" and not request.GET and teacher.email|stringformat:"s" == user.email|stringformat:"s" %} selected {% elif filter.form.teacher.value|stringformat:"s" == teacher.id|stringformat:"s" or request.GET.teacher|stringformat:"s" == teacher.id|stringformat:"s" %} selected {% endif %}>
-                    {{ teacher }}
-                  </option>
-                {% endfor %}
-              </select>
+              {%search_option object_name='teacher' query=filter.form.teacher.field.queryset input_placeholder='Selecione o professor...'%}
             </div>
           </div>
           <div class="flex h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2 w-full max-w-xs">

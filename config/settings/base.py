@@ -66,6 +66,7 @@ DJANGO_APPS = [
     "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.postgres",
     # "django.contrib.humanize", # Handy template tags
     "django.contrib.admin",
     "django.forms",
@@ -253,6 +254,7 @@ EMAIL_PORT = env("DJANGO_EMAIL_PORT", default=587)
 EMAIL_USE_SSL = env("DJANGO_EMAIL_USE_SSL", default=False)
 EMAIL_USE_TLS = env("DJANGO_EMAIL_USE_TLS", default=True)
 SERVER_EMAIL = env("DJANGO_SERVER_EMAIL", default=DEFAULT_FROM_EMAIL)
+EMAIL_HOST_USER = env("DJANGO_EMAIL_HOST_USER", default="nao-responder@mail.com")
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-timeout
 EMAIL_TIMEOUT = 5

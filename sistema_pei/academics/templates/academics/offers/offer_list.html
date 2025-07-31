@@ -3,13 +3,16 @@
 {% load static i18n %}
 {% load breadcrumb_item %}
 {% load has_group %}
+{%load search_option%}
 
 {% block breadcrumb %}
-  {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
-  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" url="academics:dashboard" %}
-  {% breadcrumb_item text=title icon="images/icons/icon-courses-green.svg" %}
+{% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
+{% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" url="academics:dashboard" %}
+{% breadcrumb_item text=title icon="images/icons/icon-courses-green.svg" %}
 {% endblock breadcrumb %}
+
 {% block content %}
+{%load_search_script%}
   <div class="w-full">
     <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
     <form>
@@ -26,36 +29,10 @@
       </div>
       <div class="flex gap-[8px] flex-wrap mb-[26px]">
         <div class="relative w-full max-w-xs cursor-pointer">
-          <img class="absolute top-[12px] right-[10px]"
-               src="{% static 'images/icons/icon-updown-arrow.svg' %}"
-               width="24px"
-               height="24px" />
-          <select name="subject"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
-            <option value="default" selected disabled>Selecione a disciplina...</option>
-            {% for subject in filter.form.subject.field.queryset %}
-              <option value="{{ subject.id }}"
-                      {% if request.GET.subject == subject.id|stringformat:'s' %}selected{% endif %}>
-                {{ subject.name }}
-              </option>
-            {% endfor %}
-          </select>
+          {%search_option object_name='subject' query=filter.form.subject.field.queryset input_placeholder='Buscar disciplina'%}
         </div>
-        <div class="relative min-w-[222px] w-max cursor-pointer">
-          <img class="absolute top-[12px] right-[10px]"
-               src="{% static 'images/icons/icon-updown-arrow.svg' %}"
-               width="24px"
-               height="24px" />
-          <select name="teachers"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full max-w-xs text-slate-500 appearance-none bg-neutral-50">
-            <option value="default" selected disabled>Selecione o professor...</option>
-            {% for teacher in filter.form.teachers.field.queryset %}
-              <option value="{{ teacher.id }}"
-                      {% if request.GET.teachers == teacher.id|stringformat:'s' %}selected{% endif %}>
-                {{ teacher.name }}
-              </option>
-            {% endfor %}
-          </select>
+        <div class="relative min-w-[222px] max-w-xs cursor-pointer">
+          {%search_option object_name='teachers' query=filter.form.teachers.field.queryset input_placeholder='Buscar Professores'%}
         </div>
         <div class="flex h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2 w-full max-w-xs">
           <input type="number"
@@ -76,6 +53,24 @@
               <option value="{{ semester_value }}"
                       {% if filter.form.semester.value|stringformat:"s" == semester_value|stringformat:"s" or request.GET.semester|stringformat:"s" == semester_value|stringformat:"s" %} selected {% endif %}>
                 {{ semester_label }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="relative min-w-[222px] max-w-xs cursor-pointer">
+          {%search_option object_name='course' query=filter.form.course.field.queryset input_placeholder='Buscar curso...'%}
+        </div>
+        <div class="relative cursor-pointer w-full max-w-xs">
+          <img class="absolute top-[12px] right-[10px]"
+               src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+               width="24px"
+               height="24px" />
+          <select name="period"
+                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
+            <option value="default" selected disabled>Selecione o Turno...</option>
+            {% for period_value, period_label in filter.form.fields.period.choices %}
+              <option value="{{ period_value }}" {%if request.GET.period == period_value%}selected{%endif%}>
+                {{ period_label }}
               </option>
             {% endfor %}
           </select>

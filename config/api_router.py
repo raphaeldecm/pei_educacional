@@ -8,6 +8,7 @@ from rest_framework_simplejwt.views import TokenVerifyView
 
 from sistema_pei.academics.api.views import EnrollmentDataView, StudentReferencePeriodView
 from sistema_pei.core.api.views import SuapTokenValidateView
+from sistema_pei.peis_sync.api.view import LatestAppVersionView
 from sistema_pei.users.api.views import UserViewSet
 
 router = DefaultRouter() if settings.DEBUG else SimpleRouter()
@@ -35,5 +36,6 @@ urlpatterns = [
       StudentReferencePeriodView.as_view(),
       name="enrollment-reference-period-update",
     ),
+    path('peis_sync/version/', LatestAppVersionView.as_view(), name='peis_sync_version'),
 ]
 urlpatterns += router.urls

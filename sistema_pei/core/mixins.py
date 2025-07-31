@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.db.models.deletion import ProtectedError
 from django.shortcuts import redirect
+from django.db.models.functions import Lower 
 
 
 class TitleViewMixin:
@@ -27,3 +28,13 @@ class OptionalUserFieldMixin:
         super().__init__(*args, **kwargs)
         if "user" in self.fields:
             self.fields["user"].required = False
+
+
+class Icontains_with_unaccentMinxin:
+    """adiciona um filtro de busca ignorando acentos"""
+    
+    def search_icontains(self,query,name,value):
+        """
+        Método que filtra o queryset com base no valor de busca
+        """
+        return query.filter(**{f"{name}__unaccent__icontains": value}).order_by(Lower(name))
