@@ -181,7 +181,7 @@
                        class="rounded-full w-full h-full object-cover"
                    />
                 </div>
-              </td>              
+              </td>
               <td title="{{ object.enrollment.student.registration }}" class="max-w-[100px] overflow-hidden text-ellipsis text-nowrap">{{ object.enrollment.student.registration }}</td>
 
               <td title="{{ object.enrollment.student.name }}" class="max-w-[100px] overflow-hidden text-ellipsis text-nowrap" >{{ object.enrollment.student.name }}</td>
@@ -215,9 +215,9 @@
               <td>
                 <span class="flex justify-center items-center h-full gap-[30px] pr-[26px] relative">
                     {% url 'educational_plan:pei_detail' object.pk as detail_url%}
-                    {%action_item default_icon='images/icons/eye-action-icon.svg' hover_icon='images/icons/eye-action-hover-icon.svg' message="Vizualizar Pei" border_class='border-[#deedfe]' hover_class='hover:bg-[#2462eb]' link=detail_url%}
+                    {%action_item default_icon='images/icons/eye-action-icon.svg' hover_icon='images/icons/eye-action-hover-icon.svg' message="Visualizar Pei" border_class='border-[#deedfe]' hover_class='hover:bg-[#2462eb]' link=detail_url%}
                   {% if object.responsible_teacher.email == request.user.email %}
-                    {%url 'educational_plan:pei' object.id as edit_url%} 
+                    {%url 'educational_plan:pei' object.id as edit_url%}
                     {%action_item default_icon='images/icons/edit-icon.svg' hover_icon='images/icons/edit-hover-icon.svg' message="Editar Pei"  border_class='border-[#f4e7d9]' hover_class='hover:bg-[#ee8e5f]' link=edit_url%}
                   {% endif %}
                 </span>
