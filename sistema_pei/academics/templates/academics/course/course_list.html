@@ -2,6 +2,7 @@
 
 {% load static i18n %}
 {% load breadcrumb_item %}
+{% load action%}
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
@@ -90,32 +91,8 @@
               <td>{{ object.get_period_display }}</td>
               <td>{{ object.course_type }}</td>
               <td>
-                <span class="flex justify-center items-center h-full gap-4 pr-[26px]">
-                    <a class="hover:bg-slate-100 p-2 rounded-full"
-                      href="{% url 'academics:course_detail' object.pk %}">
-                      <img src="{% static 'images/icons/icon-eye.svg' %}"
-                          alt=""
-                          height="24px"
-                          class="cursor-pointer" />
-                    </a>
-                    <a class="hover:bg-slate-100 p-2 rounded-full"
-                      href="{% url 'academics:course_update' object.pk %}">
-                      <img src="{% static 'images/icons/icon-edit-element.svg' %}"
-                          alt=""
-                          height="24px"
-                          class="cursor-pointer" />
-                    </a>
-                    <button class="hover:bg-slate-100 p-2 rounded-full"
-                            type="button"
-                            id="openModal{{ object.pk }}"
-                            data-modal-id="confirmationModal{{ object.pk }}">
-                      <img src="{% static 'images/icons/icon-remove-element.svg' %}"
-                          alt=""
-                          height="24px"
-                          class="cursor-pointer" />
-                    </button>
-                  </span>
-                </td>
+                {%action_buttons detail_view='academics:course_detail' edit_view='academics:course_update' object=object model_name='Curso'%}
+              </td>
               {% include "components/_confirm_delete_modal.html" with title="Confirmar Exclusão do Curso" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="academics:course_delete" %}
             </tr>
           {% empty %}

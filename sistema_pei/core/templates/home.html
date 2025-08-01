@@ -4,6 +4,7 @@
 {% load breadcrumb_item %}
 {% load has_group %}
 {% load search_option %}
+{% load action%}
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
@@ -212,20 +213,12 @@
                 {% endif %}
               </td>
               <td>
-                <span class="flex justify-center items-center h-full gap-[30px] pr-[26px]">
-                  <a href="{% url 'educational_plan:pei_detail' object.id %}">
-                    <img src="{% static 'images/icons/icon-eye.svg' %}"
-                        alt=""
-                        height="18px"
-                        class="cursor-pointer" />
-                  </a>
+                <span class="flex justify-center items-center h-full gap-[30px] pr-[26px] relative">
+                    {% url 'educational_plan:pei_detail' object.pk as detail_url%}
+                    {%action_item default_icon='images/icons/eye-action-icon.svg' hover_icon='images/icons/eye-action-hover-icon.svg' message="Vizualizar Pei" border_class='border-[#deedfe]' hover_class='hover:bg-[#2462eb]' link=detail_url%}
                   {% if object.responsible_teacher.email == request.user.email %}
-                    <a href="{% url 'educational_plan:pei_update' object.id %}">
-                      <img src="{% static 'images/icons/icon-edit-element.svg' %}"
-                          alt=""
-                          height="18px"
-                          class="cursor-pointer" />
-                    </a>
+                    {%url 'educational_plan:pei' object.id as edit_url%} 
+                    {%action_item default_icon='images/icons/edit-icon.svg' hover_icon='images/icons/edit-hover-icon.svg' message="Editar Pei"  border_class='border-[#f4e7d9]' hover_class='hover:bg-[#ee8e5f]' link=edit_url%}
                   {% endif %}
                 </span>
               </td>

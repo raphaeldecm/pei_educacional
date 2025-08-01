@@ -2,6 +2,7 @@
 
 {% load static i18n %}
 {% load breadcrumb_item %}
+{% load action %}
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
@@ -173,33 +174,7 @@
                 {%endwith%}
               </td>
               <td>
-                <span class="flex justify-center items-center h-full gap-4 pr-[26px]">
-                  <a href="{% url 'people:profile' object.id %}"
-                     class="hover:bg-slate-100 p-2 rounded-full">
-                    <img src="{% static 'images/icons/icon-eye.svg' %}"
-                         alt=""
-                         width="24px"
-                         height="24px"
-                         class="cursor-pointer" />
-                  </a>
-                  <a href="/people/profile/{{ object.id }}?tab=edit_student_data#tab"
-                     class="hover:bg-slate-100 p-2 rounded-full">
-                    <img src="{% static 'images/icons/icon-edit-element.svg' %}"
-                         alt=""
-                         width="24px"
-                         height="24px"
-                         class="cursor-pointer" />
-                  </a>
-                  <button type="button"
-                          id="openModal{{ object.pk }}"
-                          data-modal-id="confirmationModal{{ object.pk }}"
-                          class="hover:bg-slate-100 p-2 rounded-full">
-                    <img src="{% static 'images/icons/icon-remove-element.svg' %}"
-                         alt=""
-                         height="24px"
-                         class="cursor-pointer" />
-                  </button>
-                </span>
+                {% action_buttons detail_view='people:profile' edit_view='people:profile' model_name='Estudantes'  object=object  edit_url_args='tab=edit_student_data#tab'%}
               </td>
               {% include "components/_confirm_delete_modal.html" with title="Confirmar Exclusão do aluno" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="people:student_delete" %}
             </tr>
