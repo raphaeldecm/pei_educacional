@@ -1,7 +1,7 @@
 {%load static%}
-{% load action %}
+{% load action_buttons %}
 
-<span class="flex justify-center items-center h-[97px] relative gap-4 min-w-[250px]">
+<span class="flex justify-center items-center h-[97px] relative gap-4 min-w-[250px] pr-[30px]">
 
     {%action_item default_icon='images/icons/eye-action-icon.svg' hover_icon='images/icons/eye-action-hover-icon.svg' message="Visualizar "|add:model border_class='border-[#deedfe]' hover_class='hover:bg-[#2462eb]' link=detail_url link_args=kwargs.detail_url_args%}
 
@@ -12,7 +12,7 @@
     type="button"
     id="openModal{{ object.pk }}"
     data-modal-id="confirmationModal{{ object.pk }}">
-        <span class="absolute top-0 translate-x-[-40%] text-[0.80rem] w-[40%] text-ellipsis overflow-hidden text-nowrap p-1 rounded-[10px] bg-black text-white group-hover:flex  transition-opacity duration-100 font-medium items-center hidden justify-center">
+        <span class="absolute top-0 text-[0.80rem] translate-x-[-40%] min-w-[150px] w-[40%] p-1 rounded-[10px] bg-black text-white group-hover:flex  transition-opacity duration-100 font-medium items-center hidden justify-center">
             Apagar {{model}}
         </span>
           <img src="{% static 'images/icons/delete-icon.svg' %}"
