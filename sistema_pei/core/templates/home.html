@@ -4,7 +4,7 @@
 {% load breadcrumb_item %}
 {% load has_group %}
 {% load search_option %}
-{% load action%}
+{% load action_buttons %}
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
@@ -213,7 +213,7 @@
                 {% endif %}
               </td>
               <td>
-                <span class="flex justify-center items-center h-full gap-[30px] pr-[26px] relative">
+                <span class="flex justify-center items-center h-full gap-[30px] relative">
                     {% url 'educational_plan:pei_detail' object.pk as detail_url%}
                     {%action_item default_icon='images/icons/eye-action-icon.svg' hover_icon='images/icons/eye-action-hover-icon.svg' message="Visualizar Pei" border_class='border-[#deedfe]' hover_class='hover:bg-[#2462eb]' link=detail_url%}
                   {% if object.responsible_teacher.email == request.user.email %}
