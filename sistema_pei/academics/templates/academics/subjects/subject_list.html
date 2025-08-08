@@ -4,6 +4,7 @@
 {% load breadcrumb_item %}
 {% load search_option %}
 {% load action_buttons %}
+{% load register_and_import_buttons %}
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
@@ -54,10 +55,7 @@
       </div>
     </form>
     <div class="flex mt-[56px] gap-[16px]">
-      <a href="{% url 'academics:subject_create' %}"
-         class=" text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer">
-        Cadastrar Nova Disciplina
-      </a>
+      {% register_button text='Cadastrar Nova disciplina' link='academics:subject_create'%}
       <a href="{% url 'academics:subject_import' %}"
          class="text-[18px] py-[11px] px-[44px] border border-blue-600 rounded-lg font-medium cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-300 mt-[2px]">
         Importar Disciplinas
