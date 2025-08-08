@@ -1,5 +1,5 @@
 {% load static i18n %}
-
+{%if can_view_breadcumb%}
 {% if not first %}
   <img src="{% static 'images/icons/icon-breadcrumbs-arrow.svg' %}"
        alt=""
@@ -11,3 +11,4 @@
   <img src="{% static icon %}" class="w-[19px] h-[19px]" alt="" />
   <p>{{ text }}</p>
 </a>
+{%endif%}
