@@ -41,6 +41,7 @@ from sistema_pei.people.models import User
 from sistema_pei.people.services import import_student_csv
 from sistema_pei.people.services import teachers_import
 from sistema_pei.core.constants import SYNC_RECENT_INTERVAL,SYNC_REGULAR_INTERVAL
+from sistema_pei.users.permissions import CollaboratorOrCoordinatorPermission
 
 from .forms import TeacherForm
 from .forms import ViewStudentForm
@@ -144,6 +145,7 @@ class TeacherDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
 
 
 class StudentListView(
+    CollaboratorOrCoordinatorPermission,
     LoginRequiredMixin,
     TitleViewMixin,
     FilterView,
@@ -158,6 +160,7 @@ class StudentListView(
 
 
 class StudentDeleteView(
+    CollaboratorOrCoordinatorPermission,
     ProtectedErrorMessageMixin,
     LoginRequiredMixin,
     SuccessMessageMixin,
@@ -171,7 +174,7 @@ class StudentDeleteView(
     )
 
 
-class StudentCreateView(LoginRequiredMixin, CreateView):
+class StudentCreateView(CollaboratorOrCoordinatorPermission,LoginRequiredMixin, CreateView):
     model = Student
     form_class = ViewStudentForm
     template_name = "people/student/student_create.html"
