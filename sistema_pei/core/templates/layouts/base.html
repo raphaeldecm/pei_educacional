@@ -88,6 +88,12 @@
         {% endif %}
         {% block alerts %}
         {% endblock alerts %}
+        <!-- Alertas globais -->
+        {% for alerta_global in alertas_globais_ativos %}
+          <div class="{{ alerta_global.bg_class }} {{ alerta_global.text_class }} {{ alerta_global.border_class }} border rounded p-4 mb-4 w-full text-center">
+            {{ alerta_global.mensagem|safe }}
+          </div>
+        {% endfor %}
         <div class="flex w-full gap-[16px] mb-[30px]">
           {% block breadcrumb %}
           {% endblock breadcrumb %}

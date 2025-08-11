@@ -3,6 +3,7 @@ from django.contrib.auth import models
 from django.db import models
 from django.db import transaction
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 from multiselectfield import MultiSelectField
 from django.utils.timezone import now
 
@@ -13,7 +14,6 @@ from sistema_pei.users.decorators import profile
 from sistema_pei.users.models import User
 
 User = get_user_model()
-
 
 # Create your models here.
 class Campus(BaseModel):
@@ -287,3 +287,41 @@ class Notification(BaseModel):
 
     def __str__(self) -> str:
         return super().__str__()
+
+class AlertaGlobal(models.Model):
+
+    COR_CHOICES = [
+        ('yellow', 'Amarelo'),
+        ('red', 'Vermelho'),
+        ('green', 'Verde'),
+        ('blue', 'Azul'),
+        ('gray', 'Cinza'),
+    ]
+
+    COR_MAP = {
+        'yellow': {'bg': 'bg-yellow-100', 'text': 'text-yellow-800', 'border': 'border-yellow-300'},
+        'red': {'bg': 'bg-red-100', 'text': 'text-red-800', 'border': 'border-red-300'},
+        'green': {'bg': 'bg-green-100', 'text': 'text-green-800', 'border': 'border-green-300'},
+        'blue': {'bg': 'bg-blue-100', 'text': 'text-blue-800', 'border': 'border-blue-300'},
+        'gray': {'bg': 'bg-gray-100', 'text': 'text-gray-800', 'border': 'border-gray-300'},
+    }
+
+    mensagem = models.TextField("Mensagem do alerta")
+    data_inicio = models.DateTimeField("Data de início")
+    data_fim = models.DateTimeField("Data de fim")
+    cor_base = models.CharField(
+        "Cor base",
+        max_length=20,
+        choices=COR_CHOICES,
+        default='yellow',
+    )
+    criado_em = models.DateTimeField(auto_now_add=True)
+    atualizado_em = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Alerta Global: {self.mensagem[:50]}..."
+
+    def esta_valido(self):
+        from django.utils import timezone
+        now = timezone.now()
+        return self.data_inicio <= now <= self.data_fim

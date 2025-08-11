@@ -218,6 +218,7 @@ TEMPLATES = [
                 "social_django.context_processors.backends",
                 "social_django.context_processors.login_redirect",
                 "sistema_pei.people.context_processors.notifications",
+                "sistema_pei.people.context_processors.alertas_globais_ativos",
             ],
         },
     },
