@@ -1,3 +1,12 @@
+import requests
+from social_core.backends.oauth import BaseOAuth2
+import requests
+from django.contrib.auth import get_user_model
+from django.contrib.auth.backends import BaseBackend
+
+User = get_user_model()
+
+
 """
 Informações enviadas pelo SUAP durante o login
 
@@ -20,7 +29,6 @@ Informações enviadas pelo SUAP durante o login
 }
 """
 
-from social_core.backends.oauth import BaseOAuth2
 
 
 class SuapOAuth2(BaseOAuth2):
@@ -60,3 +68,52 @@ class SuapOAuth2(BaseOAuth2):
             "email": email,
             "name": response["nome"],
         }
+
+class SuapCredentialsBackend(BaseBackend):
+    API_BASE_URL = "https://suap.ifrn.edu.br/api"
+
+    def authenticate(self, request, username=None, password=None):
+        resp = requests.post(
+            f"{self.API_BASE_URL}/token/pair",
+            json={"username": username, "password": password}
+        )
+        if resp.status_code != 200:
+            return None
+
+        tokens = resp.json()
+        access_token = tokens.get("access")
+        refresh_token = tokens.get("refresh")
+        if not access_token:
+            return None
+
+        profile_resp = requests.get(
+            f"{self.API_BASE_URL}/rh/eu/",
+            headers={"Authorization": f"Bearer {access_token}"}
+        )
+        if profile_resp.status_code != 200:
+            return None
+
+        dados = profile_resp.json()
+
+        full_name = f"{dados.get('primeiro_nome', '')} {dados.get('ultimo_nome', '')}".strip()
+
+        email = dados.get("email") or dados.get("email_preferencial") or f"{username}@suap.local"
+
+        user, created = User.objects.update_or_create(
+            email=email,
+            defaults={
+                "name": full_name,
+            }
+        )
+
+        if request:
+            request.session["suap_access_token"] = access_token
+            request.session["suap_refresh_token"] = refresh_token
+
+        return user
+
+    def get_user(self, user_id):
+        try:
+            return User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return None
