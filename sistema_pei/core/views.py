@@ -9,7 +9,6 @@ from sistema_pei.users.permissions import AnyGroupPermission
 
 
 class HomeListView(
-    AnyGroupPermission,
     LoginRequiredMixin,
     FilterView,
     generic.ListView,
