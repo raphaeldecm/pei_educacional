@@ -2,7 +2,7 @@
 
 {% load static i18n %}
 {% load breadcrumb_item %}
-{% load action %}
+{% load action_buttons %}
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
@@ -106,67 +106,66 @@
       </a>
     </div>
     <div class="mt-[53px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg">
-      <table class="table-auto w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px]">
+      <table class="table-fixed w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px]">
         <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">
-          <tr>
-            <th class="pl-[76px]">Perfil</th>
-            <th>Matrícula</th>
-            <th>Nome</th>
-            <th>Curso</th>
-            <th style="text-align: center">Sincronização</th>
-            <th style="text-align: center" class='pr-[30px]'>Ações</th>
+          <tr class='[&_th]:max-w-[150px]'>
+            <th class="pl-[76px] w-[16.6%] max-lg:hidden">Perfil</th>
+            <th class="w-[16.6%] max-lg:pl-[56px]">Matrícula</th>
+            <th class="w-[16.6%]">Nome</th>
+            <th class="w-[16.6%]">Curso</th>
+            <th style="text-align: center" class="w-[12%]">Sincronização</th>
+            <th style="text-align: center" class='pr-[30px] w-[20.6%]'>Ações</th>
           </tr>
         </thead>
         <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
           {% for object in object_list %}
             <tr class='[&_td]:px-3 [&_td]:overflow-hidden [&_td]:text-ellipsis'>
-              <td class="!pl-[76px] pr-2">
+              <td class="!pl-[76px] pr-2 w-1/5 max-lg:hidden">
                 <img src="{{ object.image.url }}"
                      alt=""
                      class="rounded-full w-16 h-16 aspect-square" />
               </td>
-              <td>{{ object.registration }}</td>
-              <td class='max-w-[15vw]'>{{ object.name }}</td>
-              <td class='max-w-[22vw] max-xl:text-nowrap'>{{ object.course.name }}</td>
-              <td class="absolute h-[97px] w-[8%] flex items-center justify-center !overflow-visible">
+              <td class="max-lg:!pl-[56px]">{{ object.registration }}</td>
+              <td class='max-lc:text-nowrap text-[17px]'>{{ object.name }}</td>
+              <td class='text-nowrap'>{{ object.course.name }}</td>
+              <td class="h-[97px]">
                 {%with last_sync_days=object.last_sync_time%}
                 {%with last_sync_date=object.last_sync_date%}
 
                 {%if last_sync_days is none%}
 
-                    <div class="m-auto w-fit [&_span]:hover:visible">
-                      <img src="{%static 'images/icons/not-sync-icon.svg'%}" alt="Icone que demonstra que não ha nenhuma sicronização até o momento" class="w-[36px] cursor-pointer">
-                        <span class="absolute top-3/4 w-[250px] left-[-25%] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
-                          Nenhuma sincronização feita até o momento
-                        </span>
+                    <div class="w-full flex justify-center">
+                      <img src="{%static 'images/icons/not-sync-icon.svg'%}" alt="Icone que demonstra que não ha nenhuma sicronização até o momento" class="w-[36px] cursor-pointer sync_icon">
+                      <span class="absolute sync_message top-0 w-[250px] text-center p-2 bg-neutral-200 rounded-2xl z-10 hidden">
+                        Nenhuma sincronização feita até o momento
+                      </span>
                     </div>
 
                 {%elif last_sync_days <= filter.SYNC_RECENT_INTERVAL %}
 
-                      <div class="m-auto w-fit [&_span]:hover:visible">
-                        <img src="{%static 'images/icons/sync-updated-icon.svg'%}" alt="icone de sincronização recente" class='w-[36px] cursor-pointer'>
-                         <span class="absolute top-3/4 w-[250px] left-[-40px] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
-                          Sincronização recente (feita em {{last_sync_date|date:"d/m/Y"}})
-                        </span>
-                      </div>
-
+                    <div class="w-full flex justify-center">
+                      <img src="{%static 'images/icons/sync-updated-icon.svg'%}" alt="Icone que demonstra que não ha nenhuma sicronização até o momento" class="w-[36px] cursor-pointer sync_icon">
+                      <span class="absolute sync_message top-0 w-[250px] text-center p-2 bg-neutral-200 rounded-2xl z-10 hidden">
+                        Sincronização recente (feita em {{last_sync_date|date:"d/m/Y"}})
+                      </span>
+                    </div>
+                    
                 {%elif last_sync_days <= filter.SYNC_REGULAR_INTERVAL %}
-
-                      <div class="m-auto w-fit [&_span]:hover:visible">
-                        <img src="{%static 'images/icons/sync-outdated-icon.svg'%}" alt="icone de sicronização regular" class='w-[36px] cursor-pointer'>
-                         <span class= "absolute top-3/4 w-[250px] left-[-25%] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
-                          Sincronização feita em {{last_sync_date|date:"d/m/Y"}}
-                        </span>
-                      </div>
-                      
+                    
+                    <div class="w-full flex justify-center">
+                      <img src="{%static 'images/icons/sync-outdated-icon.svg'%}" alt="Icone que demonstra que não ha nenhuma sicronização até o momento" class="w-[36px] cursor-pointer sync_icon">
+                      <span class="absolute sync_message top-0 w-[250px] text-center p-2 bg-neutral-200 rounded-2xl z-10 hidden">
+                        Sincronização feita em {{last_sync_date|date:"d/m/Y"}}
+                      </span>
+                    </div>
+                    
                 {%else%}
-
-                      <div class="m-auto w-fit [&_span]:hover:visible">
-                        <img src="{%static 'images/icons/sync-not-updated-icon.svg'%}" alt="icone de sicronização antiga" class='w-[36px] cursor-pointer'>
-                          <span class="absolute top-3/4 w-[250px] left-[-25%] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
-                          Ultima Sincronização feita a muito tempo ({{last_sync_date|date:"d/m/Y"}})
-                        </span>
-                      </div>
+                    <div class="w-full flex justify-center">
+                      <img src="{%static 'images/icons/sync-not-updated-icon.svg'%}" alt="Icone que demonstra que não ha nenhuma sicronização até o momento" class="w-[36px] cursor-pointer sync_icon">
+                      <span class="absolute sync_message top-0 w-[250px] text-center p-2 bg-neutral-200 rounded-2xl z-10 hidden">
+                        Ultima Sincronização feita a muito tempo ({{last_sync_date|date:"d/m/Y"}})
+                      </span>
+                    </div>
                       
                 {%endif%}
 
@@ -191,6 +190,36 @@
 {% endblock content %}
 {% block inline_javascript %}
 <script>
+  const sync_icons = Array.from(document.getElementsByClassName("sync_icon"))
+  const sync_messages = Array.from(document.getElementsByClassName("sync_message"))
+
+  let showSyncMessage = (MessageElement,MessagePosition)=>{
+    MessageElement.style.transform = `translateY(${MessagePosition}px)`
+    MessageElement.style.display='block'
+  }
+
+  let hiddenMessage = (MessageElement)=>{
+    MessageElement.style.display='none'
+  }
+  
+  let calculateMessagePosition = (SyncElement)=>{
+    let element_position = SyncElement.getBoundingClientRect()
+    let message_position = window.scrollY + (element_position.top + 50)
+    return message_position
+  }
+  
+  sync_icons.forEach((element,index)=>{
+    const element_message_div = sync_messages[index]
+    
+    element.addEventListener('mouseenter',(e)=>{
+      let message_position = calculateMessagePosition(element)
+      showSyncMessage(element_message_div,message_position)
+    })
+    
+    element.addEventListener("mouseleave",()=>{
+      hiddenMessage(element_message_div)})
+  })
+
   // Recupera o ID do curso da URL e preenche o campo de busca com o nome
   const urlParams = new URLSearchParams(window.location.search);
   const selectedCourseId = urlParams.get('course');
@@ -234,5 +263,6 @@
     // Esconde a lista de sugestões
     courseList.style.display = "none";
   }
+
 </script>
 {% endblock inline_javascript %}

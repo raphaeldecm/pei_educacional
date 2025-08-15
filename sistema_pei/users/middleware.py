@@ -10,7 +10,7 @@ class GroupRedirectMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        if request.user.is_authenticated and request.path in ("/", "/users/list/"):
+        if request.user.is_authenticated and request.path in ("/users/list/",):
             if (
                 request.user.groups.filter(name="Collaborator").exists()
                 or request.user.groups.filter(name="Pedagogue").exists()

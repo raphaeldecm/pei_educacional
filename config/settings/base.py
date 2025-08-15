@@ -86,6 +86,7 @@ THIRD_PARTY_APPS = [
     "rest_framework_simplejwt",
     "django_browser_reload",
     "social_django",
+    "easyaudit",
 ]
 
 LOCAL_APPS = [
@@ -114,9 +115,10 @@ MIGRATION_MODULES = {"sites": "sistema_pei.contrib.sites.migrations"}
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#authentication-backends
 AUTHENTICATION_BACKENDS = [
+    "suap_backend.backends.SuapCredentialsBackend",  
+    "suap_backend.backends.SuapOAuth2",             
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
-    "suap_backend.backends.SuapOAuth2",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
 AUTH_USER_MODEL = "users.User"
@@ -163,7 +165,12 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
     "social_django.middleware.SocialAuthExceptionMiddleware",
     "sistema_pei.users.middleware.GroupRedirectMiddleware",
+    "easyaudit.middleware.easyaudit.EasyAuditMiddleware"
 ]
+
+DJANGO_EASY_AUDIT_WATCH_MODEL_EVENTS = True
+DJANGO_EASY_AUDIT_WATCH_AUTH_EVENTS = True
+DJANGO_EASY_AUDIT_WATCH_REQUEST_EVENTS = True
 
 # STATIC
 # ------------------------------------------------------------------------------
@@ -212,6 +219,7 @@ TEMPLATES = [
                 "social_django.context_processors.backends",
                 "social_django.context_processors.login_redirect",
                 "sistema_pei.people.context_processors.notifications",
+                "sistema_pei.people.context_processors.alertas_globais_ativos",
             ],
         },
     },
@@ -358,13 +366,13 @@ CELERY_TASK_SEND_SENT_EVENT = True
 # ------------------------------------------------------------------------------
 ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
 # https://docs.allauth.org/en/latest/account/configuration.html
-ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_AUTHENTICATION_METHOD = "username"
 # https://docs.allauth.org/en/latest/account/configuration.html
-ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_REQUIRED = False
 # https://docs.allauth.org/en/latest/account/configuration.html
-ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USERNAME_REQUIRED = True
 # https://docs.allauth.org/en/latest/account/configuration.html
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_USER_MODEL_USERNAME_FIELD = "email"
 # https://docs.allauth.org/en/latest/account/configuration.html
 ACCOUNT_EMAIL_VERIFICATION = "optional"  # Values: "mandatory", "optional", "none"
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True  # Evita login automático após a confirmação
