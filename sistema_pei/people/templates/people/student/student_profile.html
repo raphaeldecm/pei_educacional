@@ -6,8 +6,8 @@
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
-  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" url="academics:dashboard" groups='coordinator collaborator'%}
-  {% breadcrumb_item text="Discentes" url="people:student_list" icon="images/icons/icon-user-green.svg" groups='coordinator collaborator' %}
+  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" url="academics:dashboard" groups='collaborator coordinator responsible'%}
+  {% breadcrumb_item text="Discentes" url="people:student_list" icon="images/icons/icon-user-green.svg" groups='collaborator coordinator responsible'%}
   {% breadcrumb_item text="Perfil do discente" icon="images/icons/icon-user-green.svg" %}
 {% endblock breadcrumb %}
 {% block content %}
