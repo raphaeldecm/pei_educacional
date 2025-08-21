@@ -5,7 +5,7 @@
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
-  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-home-green.svg" url="academics:dashboard" %}
+  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-home-green.svg" url="academics:dashboard" groups='collaborator coordinator responsible'%}
   {% breadcrumb_item text="PEIs" icon="images/icons/icon-pei.svg" url="educational_plan:pei_list" %}
   {% breadcrumb_item text=title icon="images/icons/highlighter-green.svg" %}
 {% endblock breadcrumb %}

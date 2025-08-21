@@ -41,6 +41,7 @@ from sistema_pei.people.models import User
 from sistema_pei.people.services import import_student_csv
 from sistema_pei.people.services import teachers_import
 from sistema_pei.core.constants import SYNC_RECENT_INTERVAL,SYNC_REGULAR_INTERVAL
+from sistema_pei.users.permissions import DontBeTeacherPermission
 
 from .forms import TeacherForm
 from .forms import ViewStudentForm
@@ -144,6 +145,7 @@ class TeacherDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
 
 
 class StudentListView(
+    DontBeTeacherPermission,
     LoginRequiredMixin,
     TitleViewMixin,
     FilterView,
@@ -158,6 +160,7 @@ class StudentListView(
 
 
 class StudentDeleteView(
+    DontBeTeacherPermission,
     ProtectedErrorMessageMixin,
     LoginRequiredMixin,
     SuccessMessageMixin,
@@ -171,7 +174,7 @@ class StudentDeleteView(
     )
 
 
-class StudentCreateView(LoginRequiredMixin, CreateView):
+class StudentCreateView(DontBeTeacherPermission,LoginRequiredMixin, CreateView):
     model = Student
     form_class = ViewStudentForm
     template_name = "people/student/student_create.html"
@@ -338,7 +341,7 @@ class ProfilePageView(LoginRequiredMixin, TemplateView):
         return context
 
 
-class EditPersonalDataView(LoginRequiredMixin, View):
+class EditPersonalDataView(DontBeTeacherPermission,LoginRequiredMixin, View):
     """
     View para editar os dados pessoais de um aluno.
     """
@@ -363,7 +366,7 @@ class EditPersonalDataView(LoginRequiredMixin, View):
         )
 
 
-class EditHistoricPersonalDataView(LoginRequiredMixin, View):
+class EditHistoricPersonalDataView(DontBeTeacherPermission,LoginRequiredMixin, View):
     """
     View para editar o histórico pessoal de um aluno.
     """
@@ -388,7 +391,7 @@ class EditHistoricPersonalDataView(LoginRequiredMixin, View):
         )
 
 
-class DeletePersonalFilesView(LoginRequiredMixin, View):
+class DeletePersonalFilesView(DontBeTeacherPermission,LoginRequiredMixin, View):
     """
     View para deletar arquivos pessoais de um aluno.
     """
