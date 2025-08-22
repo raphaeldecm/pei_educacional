@@ -61,7 +61,7 @@
           <tr>
             <th class="pl-[76px]">Nome da Disciplina</th>
             <th>Cursos</th>
-            <th>Preenchida</th>
+            <th class='pr-2 w-[10%]' style="text-align: center">Situação</th>
             <th>Duração</th>
             <th colspan="3" style="text-align: center" class='pr-[30px]'>Ações</th>
           </tr>
@@ -80,13 +80,21 @@
                 {% endfor %}
                 {% if object.courses.all|length > 3 %}...{% endif %}
               </td>
-              <td>
+              <td class='pr-2 w-[10%]'>
                 {%if object.is_filled %}
-                  Preenchida
+                  <div class="w-full flex justify-center items-center">
+                    <img src={%static "images/icons/sync-updated-icon.svg"%} alt="" width='36px'class="filled_icon cursor-pointer"/>
+                    <span class="absolute filled_message top-0 w-[250px] text-center p-2 bg-neutral-200 rounded-2xl z-10">
+                      Preenchido
+                    </span>
+                  </div>
                 {%else%}
-                {%with length_of_fields_not_filled=object.get_fields_not_filled|length%}
-                  Faltando {{length_of_fields_not_filled}} campo{{length_of_fields_not_filled|pluralize:"s"}}
-                {%endwith%}
+                  <div class="w-full flex justify-center items-center">
+                    <img src={%static "images/icons/not-sync-icon.svg"%} alt="" width='36px' class="filled_icon cursor-pointer"/>
+                    <span class="absolute filled_message top-0 w-[250px] text-center p-2 bg-neutral-200 rounded-2xl z-10 hidden">
+                      Não Preenchido
+                    </span>
+                  </div>
                 {%endif%}
               </td>
               <td>{{ object.get_subject_type_display }}</td>
@@ -106,3 +114,36 @@
     {% include "components/_table_pagination.html" %}
   </div>
 {% endblock content %}
+
+{%block inline_javascript%}
+<script>
+  let filled_icons = Array.from(document.getElementsByClassName("filled_icon")) 
+  let filled_messages = Array.from(document.getElementsByClassName("filled_message"))
+
+  let CalculateMessagePosition = (element,margin_top=0)=>{
+    let element_position = element.getBoundingClientRect()
+    return window.scrollY + element_position.top + margin_top
+  }
+
+  let ShowMessage = (message_element,position)=>{
+    message_element.style.transform = `translateY(${position}px)`
+    message_element.style.display = 'block'
+  }
+
+  let HiddenMessage = (message_element)=>{message_element.style.display='none'}
+
+
+  filled_icons.forEach((element,index)=>{
+    let element_filled_message = filled_messages[index]
+
+    element.addEventListener('mouseenter',()=>{
+      let filled_message_position = CalculateMessagePosition(element,50)
+      ShowMessage(element_filled_message,filled_message_position)
+    })
+
+    element.addEventListener("mouseleave",()=>{HiddenMessage(element_filled_message)})
+  })
+
+
+</script>
+{%endblock inline_javascript%}
