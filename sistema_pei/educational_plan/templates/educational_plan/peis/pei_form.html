@@ -10,7 +10,7 @@
   {% breadcrumb_item text=title icon="images/icons/highlighter-green.svg" %}
 {% endblock breadcrumb %}
 {% block content %}
-  <div class="w-full">
+  <div class="w-full" id="pei_edit_container">
     <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
     <form method='post'>
       {% csrf_token %}
@@ -330,16 +330,25 @@
 {% endblock content %}
 {% block inline_javascript %}
 <script>
+  //vars
+  const pei_edit_container = document.getElementById('pei_edit_container') // elemento inicial da pagina
+
+  function scrollToElement(element){
+    let element_position = element.getBoundingClientRect()
+    window.scrollTo({top : element_position.top,behavior: "smooth",})
+  }
+
   function showTab(tab) {
-      document.querySelectorAll('.tab-content').forEach(function(content) {
-        content.classList.add('hidden');
-      });
-      
-      document.querySelectorAll('nav ul li').forEach(function(tabItem) {
-        tabItem.classList.remove();
-      });
-      
-      document.getElementById('content-' + tab).classList.remove('hidden');
+      scrollToElement(pei_edit_container)
+        document.querySelectorAll('.tab-content').forEach(function(content) {
+          content.classList.add('hidden');
+        });
+        
+        document.querySelectorAll('nav ul li').forEach(function(tabItem) {
+          tabItem.classList.remove();
+        });
+        
+        document.getElementById('content-' + tab).classList.remove('hidden');
 
     }
 
