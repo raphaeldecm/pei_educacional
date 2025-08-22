@@ -137,38 +137,43 @@
       <hr class="col-span-2 my-6 border-slate-200">
     </div>
 
-    {% if object.academic_opinion_1 %}
-      <div>
-        <h2 class="text-[24px] font-medium">Parecer do 1º Bimestre:</h2>
-        <div class= text-justify text-[18px] text-slate-500 whitespace-pre-line text-justify">{{ object.academic_opinion_1 }}</div>
+    <div class="my-6">
+      <h2 class="text-[24px] font-medium">Parecer do 1º Bimestre:</h2>
+      <div class="text-[18px] text-slate-500 whitespace-pre-line">
+        {{ object.academic_opinion_1|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
       </div>
-    {% endif %}
-    {% if object.academic_opinion_2 %}
-      <div>
-        <h2 class="text-[24px] font-medium">Parecer do 2º Bimestre:</h2>
-        <div class= text-justify text-[18px] text-slate-500 whitespace-pre-line text-justify">{{ object.academic_opinion_2 }}</div>
+    </div>
+
+    <div class="my-6">
+      <h2 class="text-[24px] font-medium">Parecer do 2º Bimestre:</h2>
+      <div class="text-[18px] text-slate-500 whitespace-pre-line">
+        {{ object.academic_opinion_2|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
       </div>
-    {% endif %}
+    </div>
+
     {% if object.enrollment.offer.subject.subject_type == "YEAR" %}
-      {% if object.academic_opinion_3 %}
-        <div>
-          <h2 class="text-[24px] font-medium">Parecer do 3º Bimestre:</h2>
-          <div class= text-justify text-[18px] text-slate-500 whitespace-pre-line text-justify">{{ object.academic_opinion_3 }}</div>
+      <div class="my-6">
+        <h2 class="text-[24px] font-medium">Parecer do 3º Bimestre:</h2>
+        <div class="text-[18px] text-slate-500 whitespace-pre-line">
+          {{ object.academic_opinion_3|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
         </div>
-      {% endif %}
-      {% if object.academic_opinion_4 %}
-        <div>
-          <h2 class="text-[24px] font-medium">Parecer do 4º Bimestre:</h2>
-          <div class= text-justify text-[18px] text-slate-500 whitespace-pre-line text-justify">{{ object.academic_opinion_4 }}</div>
+      </div>
+
+      <div class="my-6">
+        <h2 class="text-[24px] font-medium">Parecer do 4º Bimestre:</h2>
+        <div class="text-[18px] text-slate-500 whitespace-pre-line">
+          {{ object.academic_opinion_4|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
         </div>
-      {% endif %}
-    {% endif %}
-    {% if object.academic_opinion_final %}
-      <div>
-        <h2 class="text-[24px] font-medium">Parecer Final:</h2>
-        <div class= text-justify text-[18px] text-slate-500 whitespace-pre-line text-justify">{{ object.academic_opinion_final }}</div>
       </div>
     {% endif %}
+
+    <div class="my-6">
+      <h2 class="text-[24px] font-medium">Parecer Final:</h2>
+      <div class="text-[18px] text-slate-500 whitespace-pre-line">
+        {{ object.academic_opinion_final|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
+      </div>
+    </div>
+
     {% if not object.academic_opinion_1 and not object.academic_opinion_2 and not object.academic_opinion_3 and not object.academic_opinion_4 and not object.academic_opinion_final %}
       <p class="text-center text-[18px] pt-6 text-slate-500 mb-9">Não há parecer registrado.</p>
     {% endif %}
