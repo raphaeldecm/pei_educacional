@@ -65,13 +65,13 @@
       <div>
         <h2 class="text-[24px] font-medium">Objetivos da Disciplina:</h2>
         <div class="text-[18px] text-slate-500 whitespace-pre-line">
-          {{ object.objective|default:"Conteúdo não preenchido." }}
+          {{ object.enrollment.offer.subject.objective|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
         </div>
       </div>
       <div>
         <h2 class="text-[24px] font-medium">Objetivos Adaptados:</h2>
         <div class="text-[18px] text-slate-500 whitespace-pre-line">
-          {{ object.adapted_objective|default:"Conteúdo não preenchido." }}
+          {{ object.adapted_objective|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
         </div>
       </div>
       <hr class="col-span-2 my-6 border-slate-200">
@@ -80,13 +80,13 @@
       <div>
         <h2 class="text-[24px] font-medium">Conteúdo Programático:</h2>
         <div class="text-[18px] text-slate-500 whitespace-pre-line">
-          {{ object.content|default:"Conteúdo não preenchido." }}
+          {{ object.enrollment.offer.subject.content|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
         </div>
       </div>
       <div>
         <h2 class="text-[24px] font-medium">Conteúdos Adaptados:</h2>
         <div class="text-[18px] text-slate-500 whitespace-pre-line">
-          {{ object.adapted_content|default:"Conteúdo não preenchido." }}
+          {{ object.adapted_content|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
         </div>
       </div>
       <hr class="col-span-2 my-6 border-slate-200">
@@ -95,13 +95,13 @@
       <div>
         <h2 class="text-[24px] font-medium">Metodologias:</h2>
         <div class="text-[18px] text-slate-500 whitespace-pre-line">
-          {{ object.methodology|default:"Conteúdo não preenchido." }}
+          {{ object.enrollment.offer.subject.methodology|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
         </div>
       </div>
       <div>
         <h2 class="text-[24px] font-medium">Metodologias Adaptadas:</h2>
         <div class="text-[18px] text-slate-500 whitespace-pre-line">
-          {{ object.adapted_methodology|default:"Conteúdo não preenchido." }}
+          {{ object.adapted_methodology|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
         </div>
       </div>
       <hr class="col-span-2 my-6 border-slate-200">
@@ -110,13 +110,13 @@
       <div>
         <h2 class="text-[24px] font-medium">Recursos Didáticos:</h2>
         <div class="text-[18px] text-slate-500 whitespace-pre-line">
-          {{ object.resources|default:"Conteúdo não preenchido." }}
+          {{ object.enrollment.offer.subject.resources|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
         </div>
       </div>
       <div>
         <h2 class="text-[24px] font-medium">Recursos Didáticos Adaptados:</h2>
         <div class="text-[18px] text-slate-500 whitespace-pre-line">
-          {{ object.adapted_resources|default:"Conteúdo não preenchido." }}
+          {{ object.adapted_resources|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
         </div>
       </div>
       <hr class="col-span-2 my-6 border-slate-200">
@@ -125,13 +125,13 @@
       <div>
         <h2 class="text-[24px] font-medium">Avaliações:</h2>
         <div class="text-[18px] text-slate-500 whitespace-pre-line">
-          {{ object.assessments|default:"Conteúdo não preenchido." }}
+          {{ object.enrollment.offer.subject.assessments|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
         </div>
       </div>
       <div>
         <h2 class="text-[24px] font-medium">Avaliações Adaptadas:</h2>
         <div class="text-[18px] text-slate-500 whitespace-pre-line">
-          {{ object.adapted_assessments|default:"Conteúdo não preenchido." }}
+          {{ object.adapted_assessments|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
         </div>
       </div>
       <hr class="col-span-2 my-6 border-slate-200">
