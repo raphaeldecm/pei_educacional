@@ -15,7 +15,7 @@
     <h1 class="text-[32px] font-medium mb-[38px]">
       PEI: {{ object.enrollment.student.name }} - {{ object.enrollment.offer.subject.name }}
     </h1>
-    <div class="mb-8">
+    <div class="mb-10">
       <h2 class="text-[24px] font-medium">Dados Do Aluno:</h2>
       <div class="mt-6 flex items-start gap-8">
         <div class="flex flex-col justify-center items-center">
@@ -60,100 +60,113 @@
         </div>
       </div>
     </div>
-    {% if object.objective %}
+    <div class="grid grid-cols-2 gap-6">
+      <!-- Objetivos -->
       <div>
-        <h2 class="text-[24px] font-medium">Objetivos Da Disciplina:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.objective }}</div>
+        <h2 class="text-[24px] font-medium">Objetivos da Disciplina:</h2>
+        <div class="text-[18px] text-slate-500 whitespace-pre-line">
+          {{ object.objective|default:"Conteúdo não preenchido." }}
+        </div>
       </div>
-    {% endif %}
-    {% if object.adapted_objective %}
       <div>
         <h2 class="text-[24px] font-medium">Objetivos Adaptados:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.adapted_objective }}</div>
+        <div class="text-[18px] text-slate-500 whitespace-pre-line">
+          {{ object.adapted_objective|default:"Conteúdo não preenchido." }}
+        </div>
       </div>
-    {% endif %}
-    {% if object.content %}
+      <hr class="col-span-2 my-6 border-slate-200">
+
+      <!-- Conteúdo -->
       <div>
-        <h2 class="text-[24px] font-medium">Conteúdo programático:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.content }}</div>
+        <h2 class="text-[24px] font-medium">Conteúdo Programático:</h2>
+        <div class="text-[18px] text-slate-500 whitespace-pre-line">
+          {{ object.content|default:"Conteúdo não preenchido." }}
+        </div>
       </div>
-    {% endif %}
-    {% if object.adapted_content %}
       <div>
         <h2 class="text-[24px] font-medium">Conteúdos Adaptados:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.adapted_content }}</div>
+        <div class="text-[18px] text-slate-500 whitespace-pre-line">
+          {{ object.adapted_content|default:"Conteúdo não preenchido." }}
+        </div>
       </div>
-    {% endif %}
-    {% if object.methodology %}
+      <hr class="col-span-2 my-6 border-slate-200">
+
+      <!-- Metodologias -->
       <div>
         <h2 class="text-[24px] font-medium">Metodologias:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.methodology }}</div>
+        <div class="text-[18px] text-slate-500 whitespace-pre-line">
+          {{ object.methodology|default:"Conteúdo não preenchido." }}
+        </div>
       </div>
-    {% endif %}
-    {% if object.adapted_methodology %}
       <div>
-        <h2 class="text-[24px] font-medium">Metodologias adaptadas:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.adapted_methodology }}</div>
+        <h2 class="text-[24px] font-medium">Metodologias Adaptadas:</h2>
+        <div class="text-[18px] text-slate-500 whitespace-pre-line">
+          {{ object.adapted_methodology|default:"Conteúdo não preenchido." }}
+        </div>
       </div>
-    {% endif %}
-    {% if object.resources %}
+      <hr class="col-span-2 my-6 border-slate-200">
+
+      <!-- Recursos -->
       <div>
-        <h2 class="text-[24px] font-medium">Recursos didáticos:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.resources }}</div>
+        <h2 class="text-[24px] font-medium">Recursos Didáticos:</h2>
+        <div class="text-[18px] text-slate-500 whitespace-pre-line">
+          {{ object.resources|default:"Conteúdo não preenchido." }}
+        </div>
       </div>
-    {% endif %}
-    {% if object.adapted_resources %}
       <div>
-        <h2 class="text-[24px] font-medium">Recursos didáticos adaptados:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.adapted_resources }}</div>
+        <h2 class="text-[24px] font-medium">Recursos Didáticos Adaptados:</h2>
+        <div class="text-[18px] text-slate-500 whitespace-pre-line">
+          {{ object.adapted_resources|default:"Conteúdo não preenchido." }}
+        </div>
       </div>
-    {% endif %}
-    {% if object.assessments %}
+      <hr class="col-span-2 my-6 border-slate-200">
+
+      <!-- Avaliações -->
       <div>
         <h2 class="text-[24px] font-medium">Avaliações:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.assessments }}</div>
+        <div class="text-[18px] text-slate-500 whitespace-pre-line">
+          {{ object.assessments|default:"Conteúdo não preenchido." }}
+        </div>
       </div>
-    {% endif %}
-    {% if object.adapted_assessments %}
       <div>
         <h2 class="text-[24px] font-medium">Avaliações Adaptadas:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.adapted_assessments }}</div>
+        <div class="text-[18px] text-slate-500 whitespace-pre-line">
+          {{ object.adapted_assessments|default:"Conteúdo não preenchido." }}
+        </div>
       </div>
-    {% endif %}
-    {% if not object.objective and not object.adapted_objective and not object.content and not object.adapted_content and not object.methodology and not object.adapted_methodology and not object.resources and not object.adapted_resources and not object.assessments and not object.adapted_assessments %}
-      <p class="text-center text-[18px] pt-6 text-slate-500">Não há conteúdo preenchido</p>
-    {% endif %}
-    <hr class="mb-6" />
+      <hr class="col-span-2 my-6 border-slate-200">
+    </div>
+
     {% if object.academic_opinion_1 %}
       <div>
         <h2 class="text-[24px] font-medium">Parecer do 1º Bimestre:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.academic_opinion_1 }}</div>
+        <div class= text-justify text-[18px] text-slate-500 whitespace-pre-line text-justify">{{ object.academic_opinion_1 }}</div>
       </div>
     {% endif %}
     {% if object.academic_opinion_2 %}
       <div>
         <h2 class="text-[24px] font-medium">Parecer do 2º Bimestre:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.academic_opinion_2 }}</div>
+        <div class= text-justify text-[18px] text-slate-500 whitespace-pre-line text-justify">{{ object.academic_opinion_2 }}</div>
       </div>
     {% endif %}
     {% if object.enrollment.offer.subject.subject_type == "YEAR" %}
       {% if object.academic_opinion_3 %}
         <div>
           <h2 class="text-[24px] font-medium">Parecer do 3º Bimestre:</h2>
-          <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.academic_opinion_3 }}</div>
+          <div class= text-justify text-[18px] text-slate-500 whitespace-pre-line text-justify">{{ object.academic_opinion_3 }}</div>
         </div>
       {% endif %}
       {% if object.academic_opinion_4 %}
         <div>
           <h2 class="text-[24px] font-medium">Parecer do 4º Bimestre:</h2>
-          <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.academic_opinion_4 }}</div>
+          <div class= text-justify text-[18px] text-slate-500 whitespace-pre-line text-justify">{{ object.academic_opinion_4 }}</div>
         </div>
       {% endif %}
     {% endif %}
     {% if object.academic_opinion_final %}
       <div>
         <h2 class="text-[24px] font-medium">Parecer Final:</h2>
-        <div class="whitespace-pre-wrap text-[18px] text-slate-500 text-justify">{{ object.academic_opinion_final }}</div>
+        <div class= text-justify text-[18px] text-slate-500 whitespace-pre-line text-justify">{{ object.academic_opinion_final }}</div>
       </div>
     {% endif %}
     {% if not object.academic_opinion_1 and not object.academic_opinion_2 and not object.academic_opinion_3 and not object.academic_opinion_4 and not object.academic_opinion_final %}
