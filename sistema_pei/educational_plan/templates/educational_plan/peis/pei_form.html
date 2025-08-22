@@ -20,6 +20,7 @@
           <select name="{{ form.enrollment.name }}"
                   id="{{ form.enrollment.id_for_label }}"
                   tabindex="-1"
+                  readonly
                   class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50 mt-[16px] pointer-events-none">
             <option value="default" selected>Selecione a inscrição...</option>
             {% for key, value in form.enrollment.field.choices %}
@@ -79,12 +80,13 @@
       <section>
         <div id="content-metodologia" class="tab-content">
           <div class="flex gap-6">
-            <div class="mb-4 col-span-2 flex-1 pointer-events-none">
+            <div class="mb-4 col-span-2 flex-1">
               <label for="{{ form.objective.id_for_label }}"
                      class="font-sans font-medium text-lg text-ls block mb-4">Objetivos da disciplina:</label>
               <textarea id="{{ form.objective.id_for_label }}"
                         name="{{ form.objective.name }}"
                         tabindex="-1"
+                        readonly
                         placeholder="Não definido durante o cadastro da disciplina."
                         class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ object.enrollment.offer.subject.objective|default_if_none:'' }}</textarea>
               {% if form.objective.errors %}
@@ -112,12 +114,13 @@
             </div>
           </div>
           <div class="flex gap-6">
-            <div class="mb-4 col-span-2 flex-1 pointer-events-none">
+            <div class="mb-4 col-span-2 flex-1">
               <label for="{{ form.content.id_for_label }}"
                      class="font-sans font-medium text-lg text-ls block mb-4">Conteúdo programático:</label>
               <textarea id="{{ form.content.id_for_label }}"
                         name="{{ form.content.name }}"
                         tabindex="-1"
+                        readonly
                         placeholder="Não definido durante o cadastro da disciplina."
                         class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ object.enrollment.offer.subject.content|default_if_none:''}}</textarea>
               {% if form.content.errors %}
@@ -145,12 +148,13 @@
             </div>
           </div>
           <div class="flex gap-6 ">
-            <div class="mb-4 col-span-2 flex-1 pointer-events-none">
+            <div class="mb-4 col-span-2 flex-1">
               <label for="{{ form.methodology.id_for_label }}"
                      class="font-sans font-medium text-lg text-ls block mb-4">Metodologias:</label>
               <textarea id="{{ form.methodology.id_for_label }}"
                         name="{{ form.methodology.name }}"
                         tabindex="-1"
+                        readonly
                         placeholder="Não definido durante o cadastro da disciplina."
                         class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ object.enrollment.offer.subject.methodology|default_if_none:''}}</textarea>
               {% if form.methodology.errors %}
@@ -176,12 +180,13 @@
             </div>
           </div>
           <div class="flex gap-6">
-            <div class="mb-4 col-span-2 flex-1 pointer-events-none">
+            <div class="mb-4 col-span-2 flex-1">
               <label for="{{ form.resources.id_for_label }}"
                      class="font-sans font-medium text-lg text-ls block mb-4">Recursos didáticos:</label>
               <textarea id="{{ form.resources.id_for_label }}"
                         name="{{ form.resources.name }}"
                         tabindex="-1"
+                        readonly
                         placeholder="Escreva aqui!"
                         class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ object.enrollment.offer.subject.resources|default_if_none:'Não definido durante o cadastro da disciplina.'}}</textarea>
               {% if form.resources.errors %}
@@ -205,12 +210,13 @@
             </div>
           </div>
           <div class="flex gap-6">
-            <div class="mb-4 col-span-2 flex-1 pointer-events-none">
+            <div class="mb-4 col-span-2 flex-1">
               <label for="{{ form.assessments.id_for_label }}"
                      class="font-sans font-medium text-lg text-ls block mb-4">Avaliações:</label>
               <textarea id="{{ form.assessments.id_for_label }}"
                         name="{{ form.assessments.name }}"
                         tabindex="-1"
+                        readonly
                         placeholder="Não definido durante o cadastro da disciplina."
                         disabled
                         class="bg-transparent font-sans appearance-none border rounded-lg h-[30vh] min-h-40 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">{{ object.enrollment.offer.subject.assessments|default_if_none:''}}</textarea>
