@@ -174,9 +174,6 @@
       </div>
     </div>
 
-    {% if not object.academic_opinion_1 and not object.academic_opinion_2 and not object.academic_opinion_3 and not object.academic_opinion_4 and not object.academic_opinion_final %}
-      <p class="text-center text-[18px] pt-6 text-slate-500 mb-9">Não há parecer registrado.</p>
-    {% endif %}
     {% if object.status == "COMPLETED" %}
       <a href="{% url 'educational_plan:pei_export' object.pk %}"
          target="_blank"
