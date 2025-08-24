@@ -5,6 +5,7 @@
 {% load has_group %}
 {%load search_option%}
 {% load action_buttons %}
+{% load register_and_import_buttons %}
 
 {% block breadcrumb %}
 {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
@@ -86,10 +87,7 @@
       </div>
     </form>
     <div class="flex mt-3 gap-[16px]">
-      <a href="{% url 'academics:offer_create' %}"
-         class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer hover:bg-green-500 hover:text-white active:scale-75 transition-all duration-300">
-        Cadastrar Nova Oferta
-      </a>
+      {% register_button text="Cadastrar Nova Oferta" link="academics:offer_create"%}
     </div>
     <div class="mt-[53px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg">
       <table class="w-full text-slate-900 text-[18px] border-collapse">
