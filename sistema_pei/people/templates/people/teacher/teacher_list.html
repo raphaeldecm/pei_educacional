@@ -4,6 +4,7 @@
 {% load breadcrumb_item %}
 {% load search_option %}
 {% load action_buttons %}
+{% load register_and_import_buttons %}
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
@@ -66,14 +67,7 @@
         </button>
       </div>
     </form>
-    <a href="{% url 'people:teacher_create' %}"
-       class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer hover:bg-green-500 hover:text-white transition-colors duration-300 mt-[2px]">
-      Cadastrar Docente
-    </a>
-    <a href="{% url 'people:teacher_import' %}"
-       class="text-[18px] py-[11px] px-[44px] border border-blue-600 rounded-lg font-medium cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-300 mt-[2px] ml-4">
-      Importar Docentes
-    </a>
+    {% register_and_import_buttons register_text="Cadastrar Docente" register_link='people:teacher_create' import_text="Importar Docentes" import_link='people:teacher_import' %}
     <div class="mt-[53px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg">
       <table class="table-auto w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px]">
         <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">

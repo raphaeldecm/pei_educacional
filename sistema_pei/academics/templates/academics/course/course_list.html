@@ -3,6 +3,7 @@
 {% load static i18n %}
 {% load breadcrumb_item %}
 {% load action_buttons %}
+{% load register_and_import_buttons %}
 
 {% block breadcrumb %}
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
@@ -64,16 +65,7 @@
         </button>
       </div>
     </form>
-    <div class="mt-[53px] flex gap-4">
-      <a href="{% url 'academics:course_create' %}"
-         class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer hover:bg-green-500 hover:text-white transition-colors duration-300 mt-[2px]">
-        Cadastrar Novo Curso
-      </a>
-      <a href="{% url 'academics:course_import' %}"
-         class="text-[18px] py-[11px] px-[44px] border border-blue-600 rounded-lg font-medium cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-300 mt-[2px]">
-        Importar Cursos
-      </a>
-    </div>
+    {%register_and_import_buttons register_text="Cadastrar Novo Curso" register_link="academics:course_create" import_text="Importar Cursos" import_link='academics:course_import'%}
     <div class="mt-[53px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg">
       <table class="table-auto w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px]">
         <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">
