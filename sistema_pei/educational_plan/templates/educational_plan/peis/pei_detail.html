@@ -10,6 +10,7 @@
   {% breadcrumb_item text="PEIs" icon="images/icons/icon-pei.svg" url="educational_plan:pei_list" %}
   {% breadcrumb_item text=title icon="images/icons/highlighter-green.svg" %}
 {% endblock breadcrumb %}
+
 {% block content %}
   <div class="w-full">
     <h1 class="text-[32px] font-medium mb-[38px]">
@@ -47,14 +48,14 @@
               <span>Visualizar perfil completo</span>
             </a>
             {% if user|has_group:"Coordinator" and object.status == 'FEEDBACK' %}
-              <a href="{% url 'educational_plan:pei_mark_completed' object.id %}"
+              <button id="markCompletedBtn"
                  class="w-max cursor-pointer flex items-center justify-center mt-6 gap-[10px] p-[10px] h-[44px] bg-blue-600 rounded-[6px] text-neutral-50 hover:opacity-85">
                 <img src="{% static 'images/icons/icon-checked-white.svg' %}"
                      alt=""
                      width="24px"
                      height="24px" />
-                <span>Marcar PEI como concluido</span>
-              </a>
+                <span>Marcar PEI como concluído</span>
+              </button>
             {% endif %}
           </div>
         </div>
@@ -137,14 +138,14 @@
       <hr class="col-span-2 my-6 border-slate-200">
     </div>
 
-    <div class="my-6">
+    <div class="my-6" data-opinion="1">
       <h2 class="text-[24px] font-medium">Parecer do 1º Bimestre:</h2>
       <div class="text-[18px] text-slate-500 whitespace-pre-line">
         {{ object.academic_opinion_1|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
       </div>
     </div>
 
-    <div class="my-6">
+    <div class="my-6" data-opinion="2">
       <h2 class="text-[24px] font-medium">Parecer do 2º Bimestre:</h2>
       <div class="text-[18px] text-slate-500 whitespace-pre-line">
         {{ object.academic_opinion_2|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
@@ -152,14 +153,14 @@
     </div>
 
     {% if object.enrollment.offer.subject.subject_type == "YEAR" %}
-      <div class="my-6">
+      <div class="my-6" data-opinion="3">
         <h2 class="text-[24px] font-medium">Parecer do 3º Bimestre:</h2>
         <div class="text-[18px] text-slate-500 whitespace-pre-line">
           {{ object.academic_opinion_3|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
         </div>
       </div>
 
-      <div class="my-6">
+      <div class="my-6" data-opinion="4">
         <h2 class="text-[24px] font-medium">Parecer do 4º Bimestre:</h2>
         <div class="text-[18px] text-slate-500 whitespace-pre-line">
           {{ object.academic_opinion_4|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
@@ -167,7 +168,7 @@
       </div>
     {% endif %}
 
-    <div class="my-6">
+    <div class="my-6" data-opinion="final">
       <h2 class="text-[24px] font-medium">Parecer Final:</h2>
       <div class="text-[18px] text-slate-500 whitespace-pre-line">
         {{ object.academic_opinion_final|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
@@ -333,7 +334,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+                </div>
             {% endfor %}
           </div>
         </div>
@@ -341,14 +342,148 @@
     </div>
   </div>
 {% endblock content %}
+
+{% block modal %}
+<div id="confirmPeiCompletionModal" tabindex="-1" aria-labelledby="modalTitle" aria-modal="true" role="dialog"
+     class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
+  <div class="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto">
+    <h2 id="modalTitle" class="text-xl font-semibold mb-4">Confirmar finalização do PEI</h2>
+    <p class="mb-4 !text-red-800"><strong>Atenção:</strong> Os seguintes pareceres não foram preenchidos:</p>
+    <ul id="missingOpinionsList" class="list-disc list-inside mb-6 text-red-800"></ul>
+    <p class="mb-4">Deseja realmente finalizar o PEI mesmo com pareceres em falta?</p>
+    <div class="flex justify-end gap-4">
+      <button type="button" id="cancelCompletionBtn" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400">
+        Cancelar
+      </button>
+      <button type="button" id="confirmCompletionBtn" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+        Confirmar Finalização
+      </button>
+    </div>
+  </div>
+</div>
+{% endblock modal %}
+
 {% block inline_javascript %}
-  <script>
-    document.querySelectorAll("[id^='replyButton']").forEach(button => {
-      button.addEventListener('click', function() {
-        const commentId = this.id.split('-')[1];
-        const form = document.getElementById(`replyForm-${commentId}`);
-        form.classList.toggle('hidden');
+<script>
+  (function() {
+    const modal = document.getElementById('confirmPeiCompletionModal');
+    const missingOpinionsList = document.getElementById('missingOpinionsList');
+    const cancelBtn = document.getElementById('cancelCompletionBtn');
+    const confirmBtn = document.getElementById('confirmCompletionBtn');
+    const markCompletedBtn = document.getElementById('markCompletedBtn');
+    
+    const completionUrl = "{% url 'educational_plan:pei_mark_completed' object.id %}";
+    
+    let countdownTimer;
+    
+    function checkMissingOpinions() {
+      const missingOpinions = [];
+      
+      const opinion1 = document.querySelector('[data-opinion="1"]');
+      if (opinion1 && opinion1.textContent.includes('não preenchido')) {
+        missingOpinions.push('1º Bimestre');
+      }
+      
+      const opinion2 = document.querySelector('[data-opinion="2"]');
+      if (opinion2 && opinion2.textContent.includes('não preenchido')) {
+        missingOpinions.push('2º Bimestre');
+      }
+      
+      {% if object.enrollment.offer.subject.subject_type == "YEAR" %}
+        const opinion3 = document.querySelector('[data-opinion="3"]');
+        if (opinion3 && opinion3.textContent.includes('não preenchido')) {
+          missingOpinions.push('3º Bimestre');
+        }
+        
+        const opinion4 = document.querySelector('[data-opinion="4"]');
+        if (opinion4 && opinion4.textContent.includes('não preenchido')) {
+          missingOpinions.push('4º Bimestre');
+        }
+      {% endif %}
+      
+      const opinionFinal = document.querySelector('[data-opinion="final"]');
+      if (opinionFinal && opinionFinal.textContent.includes('não preenchido')) {
+        missingOpinions.push('Parecer Final');
+      }
+      
+      return missingOpinions;
+    }
+    
+    function startCountdown() {
+      confirmBtn.disabled = true;
+      confirmBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      
+      let countdown = 7;
+      confirmBtn.textContent = `Confirmar (${countdown}s)`;
+      
+      countdownTimer = setInterval(() => {
+        countdown -= 1;
+        confirmBtn.textContent = `Confirmar (${countdown}s)`;
+        
+        if (countdown <= 0) {
+          clearInterval(countdownTimer);
+          confirmBtn.disabled = false;
+          confirmBtn.textContent = 'Confirmar';
+          confirmBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+          confirmBtn.focus();
+        }
+      }, 1000);
+    }
+    
+    if (markCompletedBtn) {
+      markCompletedBtn.addEventListener('click', function() {
+        const missingOpinions = checkMissingOpinions();
+        
+        if (missingOpinions.length > 0) {
+          missingOpinionsList.innerHTML = '';
+          missingOpinions.forEach(opinion => {
+            const li = document.createElement('li');
+            li.textContent = opinion;
+            missingOpinionsList.appendChild(li);
+          });
+          
+          modal.classList.remove('hidden');
+          startCountdown();
+        } else {
+          window.location.href = completionUrl;
+        }
       });
+    }
+    
+    function confirmAndSubmit() {
+      modal.classList.add('hidden');
+      clearInterval(countdownTimer);
+      window.location.href = completionUrl;
+    }
+    
+    function cancelModal() {
+      modal.classList.add('hidden');
+      clearInterval(countdownTimer);
+    }
+    
+    function onKeyDown(event) {
+      if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+        cancelModal();
+      }
+    }
+    
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', cancelModal);
+    }
+    
+    if (confirmBtn) {
+      confirmBtn.addEventListener('click', confirmAndSubmit);
+    }
+    
+    window.addEventListener('keydown', onKeyDown);
+  })();
+
+  document.querySelectorAll("[id^='replyButton']").forEach(button => {
+    button.addEventListener('click', function() {
+      const commentId = this.id.split('-')[1];
+      const form = document.getElementById(`replyForm-${commentId}`);
+      form.classList.toggle('hidden');
     });
-  </script>
+  });
+</script>
 {% endblock inline_javascript %}
