@@ -12,12 +12,12 @@ from drf_spectacular.views import SpectacularAPIView
 from drf_spectacular.views import SpectacularSwaggerView
 from rest_framework.authtoken.views import obtain_auth_token
 from django.views.generic.base import RedirectView
-from sistema_pei.people.views import activate_account, StudentCreateView
+from django.views.defaults import page_not_found
 
+from sistema_pei.people.views import activate_account
 from sistema_pei.core.views import (
     HomeListView,
 )
-
 
 urlpatterns = [
     path('app/', RedirectView.as_view(url='/peis_sync/app/', permanent=False)),
@@ -51,6 +51,12 @@ urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
     path("users/", include("sistema_pei.users.urls", namespace="users")),
+    # Rotas de alteração de senha e recuperação (Desativadas)
+    path("accounts/password/change/", page_not_found, kwargs={"exception": Exception("Not Found")}),
+    path("accounts/password/reset/", page_not_found, kwargs={"exception": Exception("Not Found")}),
+    path("accounts/password/reset/done/", page_not_found, kwargs={"exception": Exception("Not Found")}),
+    path("accounts/password/reset/key/<uidb36>/<key>/", page_not_found, kwargs={"exception": Exception("Not Found")}),
+    # Allauth (login, logout, signup, etc.)
     path("accounts/", include("allauth.urls")),
     path("activate/<uidb64>/<token>/", activate_account, name="activate"),
     # Reload
