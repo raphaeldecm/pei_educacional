@@ -331,15 +331,21 @@
 {% block inline_javascript %}
 <script>
   //vars
-  const pei_edit_container = document.getElementById('pei_edit_container') // elemento inicial da pagina
+  const peiEditContainer = document.getElementById('pei_edit_container') // elemento inicial da pagina
+  const behaviorUnSupportedNavigators = ['firefox'];
+
+  function isNavigatorSupported(unsupportedList) {
+    const userAgent = navigator.userAgent.toLowerCase();
+    return !unsupportedList.some(navigator => userAgent.includes(navigator));
+  }
 
   function scrollToElement(element){
-    let element_position = element.getBoundingClientRect()
-    window.scrollTo({top : element_position.top,behavior: "smooth",})
+    let {top} = element.getBoundingClientRect()
+    isNavigatorSupported(behaviorUnSupportedNavigators) ? window.scrollTo({top : top,behavior: "smooth",}) :window.scrollTo({top : top})
   }
 
   function showTab(tab) {
-      scrollToElement(pei_edit_container)
+      scrollToElement(peiEditContainer)
         document.querySelectorAll('.tab-content').forEach(function(content) {
           content.classList.add('hidden');
         });
