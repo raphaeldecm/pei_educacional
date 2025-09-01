@@ -23,7 +23,8 @@ class OfferForm(forms.ModelForm):
 class SubjectForm(forms.ModelForm):
     matrix = forms.ModelChoiceField(
         queryset=models.Matrix.objects.all(),
-        label='matix'
+        label='matix',
+        required=False
     )
     
     class Meta:
