@@ -12,7 +12,7 @@
 {% block content %}
   <div class="w-full">
     <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
-    <form method="post">
+    <form method="post" id="subject_form">
       {% csrf_token %}
       <div class="flex-1">
         <label for="name" class="font-medium text-[18px]">Nome:</label>
@@ -52,21 +52,22 @@
         <div class="mt-[16px] border border-slate-300 rounded-lg py-2 px-3 max-h-[150px] overflow-y-auto gap-6">
           {%for matrix in form.matrix.field.queryset%}
             <div class="flex flex-row-reverse justify-end items-center gap-1">
-              <label for="matrix_{{matrix.id}}">
+              <label class="cursor-pointer" for="matrix_{{matrix.id}}" onclick="RadioEfect('matrix_checkbox','matrix_{{matrix.id}}')">
                 {{matrix}}-({{matrix.year}})
               </label>
               <input 
-              type="radio" 
+              type="checkbox" 
               name="matrix" 
               id="matrix_{{matrix.id}}"
               value="{{matrix.id}}"
-              class="hidden peer"
+              class="matrix_checkbox hidden peer"
               {%if matrix == object.matrix%}
                 checked
               {%endif%}
               >
               <label 
               for="matrix_{{matrix.id}}"
+              onclick="RadioEfect('matrix_checkbox')"
               class="flex items-center cursor-pointer w-[20px] h-[20px] rounded-[5px] peer-checked:[&_img]:block bg-slate-300">
                  <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}"
                      width="20px"
@@ -75,6 +76,10 @@
                      alt="Checkmark" />
               </label>
             </div>
+            {%empty%}
+            <h1>
+              Nenhuma Matriz cadastrada 
+            </h1>
           {%endfor%}
         </div>
       </div>
@@ -197,3 +202,62 @@
     </form>
   </div>
 {% endblock content %}
+
+{%block modal%}
+<div id="WithoutMatrxConfirmModal" tabindex="-1" aria-labelledby="modalTitle" aria-modal="true" role="dialog"
+     class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
+  <div class="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto opacity-100">
+    <h1 class="text-xl font-semibold mb-4">
+      Criar/Modificar Disciplina sem informar a matriz?
+    </h1>
+    <p class="mb-4 !text-red-800">
+      Essa Ação pode Causar problemas de sincronização
+    </p>  
+   <div class="flex justify-end gap-4">
+      <button type="button" id="cancelModalBtn" class="cancelDelete bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400">
+        Cancelar
+      </button>
+      <button type="button" id="confirmModalBtn" class="confirmDelete bg-green-500 text-white px-4 py-2 rounded-lg cursor-pointer">
+        Confirmar
+      </button>
+    </div>
+  </div>
+</div>
+{%endblock modal%}
+
+{%block inline_javascript%}
+<script>
+  //global vars
+  const form = document.getElementById("subject_form")
+  const withoutMatrxModal = document.getElementById("WithoutMatrxConfirmModal")
+  const confirmModelBtn = document.getElementById("confirmModalBtn")
+  const cancelModalBtn = document.getElementById("cancelModalBtn")
+  const matrixArray = Array.from(document.getElementsByClassName("matrix_checkbox"))
+
+  form.addEventListener("submit",(e)=>{FormSubmit(e,form)})
+  
+  cancelModalBtn.addEventListener('click',()=>{withoutMatrxModal.classList.add("hidden")})
+  confirmModelBtn.addEventListener('click',()=>{form.submit()})
+  
+  
+  function FormSubmit(event,form){
+    event.preventDefault()
+    let hasMatrixSelected = false
+
+    matrixArray.forEach(element=>{if(element.checked)hasMatrixSelected=true})
+  
+    !hasMatrixSelected && matrixArray.length > 0 ? withoutMatrxModal.classList.remove('hidden') : form.submit()
+  }
+
+  function RadioEfect(elementsClass,elementCheckedId){
+    const Elements = Array.from(document.getElementsByClassName(elementsClass))
+
+    Elements.map(element=>{
+      if(element.id != elementCheckedId) element.checked = false}
+    )
+  
+  }
+  
+  
+</script>
+{%endblock inline_javascript %}

@@ -2,6 +2,7 @@
 
 {% load static i18n %}
 {%load breadcrumb_item%}
+{% load action_buttons %}
 
 {%block breadcrumb%}
     {%breadcrumb_item text='Home' icon='images/icons/icon-home-green.svg' first="true" url='home'%}
@@ -46,17 +47,12 @@
                 <td class="pl-[76px] pr-4 max-w-[60vw] overflow-hidden text-nowrap text-ellipsis">{{ object.name }}</td>
                 <td class="px-4 text-center">{{ object.get_subject_type_display }}</td>
                 <td>
-                    <span class="flex justify-center items-center h-full gap-2 pr-[30px]">
-                    <a class="hover:bg-slate-100 w-10 h-10 flex items-center justify-center rounded-full" href="{%url 'academics:subject_detail' object.pk%}">
-                        <img src="{% static 'images/icons/icon-eye.svg' %}" alt="" class="w-6 h-6 cursor-pointer" />
-                    </a>
-                    <a class="hover:bg-slate-100 p-2 rounded-full"
-                    href="{% url 'academics:subject_update' object.id %}">
-                        <img src="{% static 'images/icons/icon-edit-element.svg' %}"
-                            alt=""
-                            height="24px"
-                            class="cursor-pointer" />
-                    </a>
+                    {%url 'academics:subject_detail' object.id as detail_url %}
+                    {%url 'academics:subject_update' object.id as edit_url %}
+                    <span class="flex justify-center items-center h-[97px] gap-2 pr-[30px] relative">
+                        {%action_item default_icon='images/icons/eye-action-icon.svg' hover_icon='images/icons/eye-action-hover-icon.svg' message="Visualizar Disciplina" border_class='border-[#deedfe]' hover_class='hover:bg-[#2462eb]' link=detail_url%}
+                        {%action_item default_icon='images/icons/edit-icon.svg' hover_icon='images/icons/edit-hover-icon.svg' message="Editar Disciplina" border_class='border-[#f4e7d9]' hover_class='hover:bg-[#ee8e5f]' link=edit_url%}
+
                     </span>
                 </td>
                 </tr>

@@ -65,6 +65,7 @@ class Subject(BaseModel):
         to='academics.Matrix',
         related_name='subjects',
         on_delete=models.PROTECT,
+        blank=True,
         null=True,
     )
     subject_type = models.CharField(
