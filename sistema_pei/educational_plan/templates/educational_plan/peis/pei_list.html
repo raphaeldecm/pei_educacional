@@ -73,6 +73,23 @@
             {% endfor %}
           </select>
         </div>
+         <div class="relative w-[322px] cursor-pointer">
+            <img class="absolute top-[12px] right-[10px]"
+                 src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+                 width="24px"
+                 height="24px" />
+            <select name="offer_type"
+            class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
+              <option value="default" disabled selected>
+                Selecionar Tipo de oferta
+              </option>
+              {%for key,value in filter.form.offer_type.field.choices%}
+                <option value="{{key}}" {%if key == request.GET.offer_type%} selected {%endif%} >
+                  {{value}}
+                </option>
+              {%endfor%}
+            </select>
+          </div>
         <button class="flex items-center justify-center gap-[10px] min-w-[100px] h-[48px] bg-green-500 rounded-[6px] text-neutral-50">
           <img src="{% static 'images/icons/icon-filter.svg' %}"
                alt=""
