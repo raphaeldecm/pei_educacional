@@ -60,6 +60,14 @@ class Subject(BaseModel):
         YEAR = "YEAR", _("Anual")
 
     name = models.CharField(max_length=100)
+    matrix = models.ForeignKey(
+        verbose_name=_("Matriz da disciplina"),
+        to='academics.Matrix',
+        related_name='subjects',
+        on_delete=models.PROTECT,
+        blank=True,
+        null=True,
+    )
     subject_type = models.CharField(
         max_length=15,
         choices=SubjectsDuration.choices,
@@ -230,3 +238,38 @@ class Enrollment(BaseModel):
 
     def __str__(self):
         return f"{self.student} - {self.offer.subject.name}"
+
+
+class Matrix(BaseModel):
+    code = models.IntegerField(
+        verbose_name=_("Código da matriz"),
+        unique=True,
+        null=False,
+        blank=False,
+        validators=[MinValueValidator(1)],
+    )
+    
+    description = models.CharField(
+        verbose_name=_("Descrição da matriz"),
+        null=False,
+        blank=False,
+    )
+    
+    year = models.IntegerField(
+        verbose_name=_("Ano da matriz"),
+        null=False,
+        blank=False
+    )
+    
+    active = models.BooleanField(
+        verbose_name=_("Ativa"),
+        default=True,
+    )
+    
+    def __str__(self):
+        return f'{self.code} - {self.description}'
+    
+    class Meta:
+        verbose_name = _("Matriz")
+        verbose_name_plural = _("Matrizes")
+        ordering = ['-year']

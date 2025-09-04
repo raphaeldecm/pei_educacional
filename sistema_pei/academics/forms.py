@@ -21,6 +21,12 @@ class OfferForm(forms.ModelForm):
 
 
 class SubjectForm(forms.ModelForm):
+    matrix = forms.ModelChoiceField(
+        queryset=models.Matrix.objects.all(),
+        label='matix',
+        required=False
+    )
+    
     class Meta:
         model = models.Subject
         fields = [
@@ -32,6 +38,7 @@ class SubjectForm(forms.ModelForm):
             "methodology",
             "resources",
             "assessments",
+            'matrix'
         ]
         
     def __init__(self,*args, **kwargs):
@@ -41,3 +48,8 @@ class SubjectForm(forms.ModelForm):
 
 class CSVImportForm(forms.Form):
     file = forms.FileField(label="Arquivo CSV")
+
+class MatrixForm(forms.ModelForm):      
+    class Meta:
+        model = models.Matrix
+        fields = ['code','description','year','active']
