@@ -47,6 +47,42 @@
           {% endfor %}
         </div>
       </div>
+      <div>
+        <label class="font-medium text-[18px]">Matriz:</label>
+        <div class="mt-[16px] border border-slate-300 rounded-lg py-2 px-3 max-h-[150px] overflow-y-auto gap-6">
+          {%for matrix in form.matrix.field.queryset%}
+            <div class="flex flex-row-reverse justify-end items-center gap-1">
+              <label class="cursor-pointer" for="matrix_{{matrix.id}}" onclick="RadioEfect('matrix_checkbox','matrix_{{matrix.id}}')">
+                {{matrix}}-({{matrix.year}})
+              </label>
+              <input 
+              type="checkbox" 
+              name="matrix" 
+              id="matrix_{{matrix.id}}"
+              value="{{matrix.id}}"
+              class="matrix_checkbox hidden peer"
+              {%if matrix == object.matrix%}
+                checked
+              {%endif%}
+              >
+              <label 
+              for="matrix_{{matrix.id}}"
+              onclick="RadioEfect('matrix_checkbox')"
+              class="flex items-center cursor-pointer w-[20px] h-[20px] rounded-[5px] peer-checked:[&_img]:block bg-slate-300">
+                 <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}"
+                     width="20px"
+                     height="20px"
+                     class="hidden"
+                     alt="Checkmark" />
+              </label>
+            </div>
+            {%empty%}
+            <h1>
+              Nenhuma Matriz cadastrada 
+            </h1>
+          {%endfor%}
+        </div>
+      </div>
       <div class="mt-[32px]">
         <label class="font-medium text-[18px]">Matriz:</label>
         <div class="mt-[16px] border border-slate-300 rounded-lg py-2 px-3 max-h-[150px] overflow-y-auto gap-6">

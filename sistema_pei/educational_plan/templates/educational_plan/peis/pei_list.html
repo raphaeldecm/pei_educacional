@@ -43,7 +43,7 @@
                height="24px" />
           <select name="status"
                   class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
-            <option value="default" selected disabled>Selecione o status...</option>
+            <option value="default" selected disabled>Selecione a situação...</option>
             {% for key, value in filter.form.status.field.choices %}
               <option value="{{ key }}"
                       {% if key == request.GET.status %}selected{% endif %}>{{ value }}</option>
@@ -108,7 +108,7 @@
             <th>Nome</th>
             <th>Professor</th>
             <th>Disciplina</th>
-            <th>Status</th>
+            <th>Situação</th>
             <th style="text-align: center" class='pr-[30px]'>Ações</th>
           </tr>
         </thead>
