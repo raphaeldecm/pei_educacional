@@ -2,6 +2,7 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
+from django.forms.models import model_to_dict
 
 from sistema_pei.academics import managers
 from sistema_pei.academics.constants import COURSE_TYPE
@@ -104,6 +105,13 @@ class Subject(BaseModel):
 
     def __str__(self):
         return self.name
+    
+    def is_filled(self):
+        return len(self.get_fields_not_filled()) == 0
+    
+    def get_fields_not_filled(self):
+        data = model_to_dict(self, fields=['objective', 'content', 'methodology', 'resources', 'assessments'])
+        return [field for field, value in data.items() if not value]           
 
 
 class Offer(BaseModel):
