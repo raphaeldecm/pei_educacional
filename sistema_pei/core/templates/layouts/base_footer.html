@@ -6,28 +6,36 @@
          alt=""
          width="145px"
          height="50px" />
-    <p class="mt-[20px] mb-[40px]">Plano educacional Individualizado</p>
+    <p class="mt-[20px] mb-[40px]">Plano Educacional Individualizado</p>
     <p>
       Esse sistema visa o gerenciamento e acompanhamento dos planos educacionais
       individualizados do IFRN - campus Pau dos Ferros
     </p>
     <div class="flex gap-[18px] mt-[40px]">
-      <img src="{% static 'images/icons/social-icons/icon-instagram.svg' %}"
-           alt=""
-           width="28"
-           height="28px" />
-      <img src="{% static 'images/icons/social-icons/icon-facebook.svg' %}"
-           alt=""
-           width="28"
-           height="28px" />
-      <img src="{% static 'images/icons/social-icons/icon-twitter.svg' %}"
-           alt=""
-           width="28"
-           height="28px" />
-      <img src="{% static 'images/icons/social-icons/icon-github.svg' %}"
-           alt=""
-           width="28"
-           height="28px" />
+      {% comment %} <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+        <img src="{% static 'images/icons/social-icons/icon-instagram.svg' %}"
+            alt="Instagram"
+            width="28"
+            height="28" />
+      </a>
+      <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+        <img src="{% static 'images/icons/social-icons/icon-facebook.svg' %}"
+            alt="Facebook"
+            width="28"
+            height="28" />
+      </a>
+      <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+        <img src="{% static 'images/icons/social-icons/icon-twitter.svg' %}"
+            alt="Twitter"
+            width="28"
+            height="28" />
+      </a> {% endcomment %}
+      <a href="https://github.com/ifrn-pei" target="_blank" rel="noopener noreferrer">
+        <img src="{% static 'images/icons/social-icons/icon-github.svg' %}"
+            alt="GitHub"
+            width="28"
+            height="28" />
+      </a>
     </div>
   </div>
   <div class="w-[560px]">
@@ -35,11 +43,11 @@
          alt=""
          width="220px"
          height="75px" />
-    <p class="mt-[40px]">Endereço:BR 405, Km 154, s/n, Chico Cajá - Pau dos Ferros-RN</p>
+    <p class="mt-[40px]">Endereço: BR 405, Km 154, s/n, Chico Cajá - Pau dos Ferros-RN</p>
     <br />
-    <p>CEP:59900-000</p>
+    <p>CEP: 59900-000</p>
     <br />
-    <p>Telefone:(84) 4005 4109</p>
+    <p>Telefone: (84) 4005 4109</p>
   </div>
   <div class="w-[560px]">
     <img src="{% static 'images/icons/icon-nadic.svg' %}"
@@ -55,5 +63,7 @@
 </div>
 <div class="w-full px-[74px] max-w-[1841px]">
   <hr class="border-t border-slate-700" />
-  <p class="block mt-[32px] mb-[26px] text-white">© 2024 Gerenciador de Plano Educacional Individualizado.</p>
+  <p class="block mt-[32px] mb-[26px] text-white">
+    © {% now "Y" %} Gerenciador de Plano Educacional Individualizado.
+  </p>
 </div>

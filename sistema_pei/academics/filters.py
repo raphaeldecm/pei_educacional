@@ -95,7 +95,35 @@ class SubjectFilter(
         field_name="courses",
         label="Courses",
     )
+    
+    matrix = django_filters.ModelChoiceFilter(
+        queryset = models.Matrix.objects.all(),
+        field_name = 'matrix',
+        label='matrix'
+    )
 
     class Meta:
         model = models.Subject
         fields = ["name", "subject_type", "courses"]
+
+class MatrixFilter(django_filters.FilterSet):
+    
+    search = django_filters.CharFilter(
+        method='search_matrix',
+        label='search'
+    )
+    
+    
+    class Meta:
+        model = models.Matrix
+        fields = ['year']
+        
+    def search_matrix(self, queryset, name, value:str):
+        value_to_filter = {'description': value, 'code': value}
+        
+        if not value.isdigit():
+            value_to_filter['code'] = None
+            
+        return queryset.filter(
+            Q(description__unaccent__icontains=value_to_filter["description"]) | Q(code=value_to_filter['code'])
+        )

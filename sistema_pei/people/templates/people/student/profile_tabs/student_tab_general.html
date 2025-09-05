@@ -1,4 +1,5 @@
 {% load static i18n %}
+{% load action_buttons %}
 
 <div>
   <form method="GET">
@@ -53,7 +54,7 @@
              height="24px" />
         <select name="status"
                 class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
-          <option value="default" selected disabled>Selecione o status...</option>
+          <option value="default" selected disabled>Selecione a situação...</option>
           <option value="NOT_START"
                   {% if request.GET.status == 'NOT_START' %}selected{% endif %}>Não iniciado</option>
           <option value="IN_PROGRESS"
@@ -80,7 +81,7 @@
       <tr>
         <th class="pl-[76px]">PEIs</th>
         <th>Professor</th>
-        <th>Status</th>
+        <th>Situação</th>
         <th style="text-align: center" class='pr-[30px]'>Ações</th>
       </tr>
     </thead>
@@ -113,21 +114,18 @@
             {% endif %}
           </td>
           <td>
-            <span class="flex justify-center items-center h-full gap-4 pr-[26px]">
-              <a class="hover:bg-slate-100 p-2 rounded-full"
-                href="{% url 'educational_plan:pei_detail' pei.id %}">
-                <img src="{% static 'images/icons/icon-eye.svg' %}"
-                     alt=""
-                     height="24px"
-                     class="cursor-pointer" />
-              </a>
-              <a class="hover:bg-slate-100 p-2 rounded-full"
-                href="{% url 'educational_plan:pei_update' pei.id %}">
-                <img src="{% static 'images/icons/icon-edit-element.svg' %}"
-                     alt=""
-                     height="24px"
-                     class="cursor-pointer" />
-              </a>
+            <span class="flex justify-center items-center h-[97px] relative gap-4 pr-[26px]">
+              {% url 'educational_plan:pei_detail' pei.id  as detail_url%}
+
+              {%action_item default_icon='images/icons/eye-action-icon.svg' hover_icon='images/icons/eye-action-hover-icon.svg' message="Visualizar Pei" border_class='border-[#deedfe]' hover_class='hover:bg-[#2462eb]' link=detail_url %}
+              
+              {%if pei.responsible_teacher.email == request.user.email%}
+
+              {% url 'educational_plan:pei_update' pei.id as edit_url %}
+
+              {%action_item default_icon='images/icons/edit-icon.svg' hover_icon='images/icons/edit-hover-icon.svg' message="Editar Pei"  border_class='border-[#f4e7d9]' hover_class='hover:bg-[#ee8e5f]' link=edit_url %}
+
+              {%endif%}
               {% comment %} <button type="button" id="openModal{{ pei.id }}" data-modal-id="confirmationModal{{ pei.id }}">
                 <img src="{% static 'images/icons/icon-remove-element.svg' %}" alt="" height="24px" class="cursor-pointer" />
               </button> {% endcomment %}

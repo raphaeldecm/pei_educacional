@@ -2,6 +2,7 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
+from django.forms.models import model_to_dict
 
 from sistema_pei.academics import managers
 from sistema_pei.academics.constants import COURSE_TYPE
@@ -59,6 +60,14 @@ class Subject(BaseModel):
         YEAR = "YEAR", _("Anual")
 
     name = models.CharField(max_length=100)
+    matrix = models.ForeignKey(
+        verbose_name=_("Matriz da disciplina"),
+        to='academics.Matrix',
+        related_name='subjects',
+        on_delete=models.PROTECT,
+        blank=True,
+        null=True,
+    )
     subject_type = models.CharField(
         max_length=15,
         choices=SubjectsDuration.choices,
@@ -96,6 +105,13 @@ class Subject(BaseModel):
 
     def __str__(self):
         return self.name
+    
+    def is_filled(self):
+        return len(self.get_fields_not_filled()) == 0
+    
+    def get_fields_not_filled(self):
+        data = model_to_dict(self, fields=['objective', 'content', 'methodology', 'resources', 'assessments'])
+        return [field for field, value in data.items() if not value]           
 
 
 class Offer(BaseModel):
@@ -222,3 +238,38 @@ class Enrollment(BaseModel):
 
     def __str__(self):
         return f"{self.student} - {self.offer.subject.name}"
+
+
+class Matrix(BaseModel):
+    code = models.IntegerField(
+        verbose_name=_("Código da matriz"),
+        unique=True,
+        null=False,
+        blank=False,
+        validators=[MinValueValidator(1)],
+    )
+    
+    description = models.CharField(
+        verbose_name=_("Descrição da matriz"),
+        null=False,
+        blank=False,
+    )
+    
+    year = models.IntegerField(
+        verbose_name=_("Ano da matriz"),
+        null=False,
+        blank=False
+    )
+    
+    active = models.BooleanField(
+        verbose_name=_("Ativa"),
+        default=True,
+    )
+    
+    def __str__(self):
+        return f'{self.code} - {self.description}'
+    
+    class Meta:
+        verbose_name = _("Matriz")
+        verbose_name_plural = _("Matrizes")
+        ordering = ['-year']
