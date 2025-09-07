@@ -60,7 +60,7 @@ class PeiUpdateView(
     form_class = PeiForm
     success_message = _("O PEI foi atualizado com sucesso.")
     template_name = "educational_plan/peis/pei_form.html"
-    success_url = reverse_lazy("educational_plan:pei_list")
+    success_url = reverse_lazy("home")
 
     def dispatch(self, request, *args, **kwargs):
         # Verificar se o usuário logado é o professor associado ao PEI
