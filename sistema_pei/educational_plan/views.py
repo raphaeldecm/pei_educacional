@@ -87,7 +87,11 @@ class PeiDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["comments"] = Comment.objects.filter(pei=self.object).order_by("-date")
+        context["missing_opinions"] = self.object.get_missing_opinions()
+        context["has_missing_opinions"] = self.object.has_missing_opinions()
+
         return context
+
 
 
 class PeiMarkCompletedView(CoordinatorPermission, LoginRequiredMixin, View):

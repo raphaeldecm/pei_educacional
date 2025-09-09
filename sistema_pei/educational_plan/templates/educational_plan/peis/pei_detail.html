@@ -349,7 +349,12 @@
   <div class="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto">
     <h2 id="modalTitle" class="text-xl font-semibold mb-4">Confirmar finalização do PEI</h2>
     <p class="mb-4 !text-red-800"><strong>Atenção:</strong> Os seguintes pareceres não foram preenchidos:</p>
-    <ul id="missingOpinionsList" class="list-disc list-inside mb-6 text-red-800"></ul>
+    <ul id="missingOpinionsList" class="list-disc list-inside mb-6 text-red-800">
+      {% for opinion in missing_opinions %}
+        <li>{{ opinion }}</li>
+      {% endfor %}
+    </ul>
+
     <p class="mb-4">Deseja realmente finalizar o PEI mesmo com pareceres em falta?</p>
     <div class="flex justify-end gap-4">
       <button type="button" id="cancelCompletionBtn" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400">
@@ -364,126 +369,5 @@
 {% endblock modal %}
 
 {% block inline_javascript %}
-<script>
-  (function() {
-    const modal = document.getElementById('confirmPeiCompletionModal');
-    const missingOpinionsList = document.getElementById('missingOpinionsList');
-    const cancelBtn = document.getElementById('cancelCompletionBtn');
-    const confirmBtn = document.getElementById('confirmCompletionBtn');
-    const markCompletedBtn = document.getElementById('markCompletedBtn');
-    
-    const completionUrl = "{% url 'educational_plan:pei_mark_completed' object.id %}";
-    
-    let countdownTimer;
-    
-    function checkMissingOpinions() {
-      const missingOpinions = [];
-      
-      const opinion1 = document.querySelector('[data-opinion="1"]');
-      if (opinion1 && opinion1.textContent.includes('não preenchido')) {
-        missingOpinions.push('1º Bimestre');
-      }
-      
-      const opinion2 = document.querySelector('[data-opinion="2"]');
-      if (opinion2 && opinion2.textContent.includes('não preenchido')) {
-        missingOpinions.push('2º Bimestre');
-      }
-      
-      {% if object.enrollment.offer.subject.subject_type == "YEAR" %}
-        const opinion3 = document.querySelector('[data-opinion="3"]');
-        if (opinion3 && opinion3.textContent.includes('não preenchido')) {
-          missingOpinions.push('3º Bimestre');
-        }
-        
-        const opinion4 = document.querySelector('[data-opinion="4"]');
-        if (opinion4 && opinion4.textContent.includes('não preenchido')) {
-          missingOpinions.push('4º Bimestre');
-        }
-      {% endif %}
-      
-      const opinionFinal = document.querySelector('[data-opinion="final"]');
-      if (opinionFinal && opinionFinal.textContent.includes('não preenchido')) {
-        missingOpinions.push('Parecer Final');
-      }
-      
-      return missingOpinions;
-    }
-    
-    function startCountdown() {
-      confirmBtn.disabled = true;
-      confirmBtn.classList.add('opacity-50', 'cursor-not-allowed');
-      
-      let countdown = 7;
-      confirmBtn.textContent = `Confirmar (${countdown}s)`;
-      
-      countdownTimer = setInterval(() => {
-        countdown -= 1;
-        confirmBtn.textContent = `Confirmar (${countdown}s)`;
-        
-        if (countdown <= 0) {
-          clearInterval(countdownTimer);
-          confirmBtn.disabled = false;
-          confirmBtn.textContent = 'Confirmar';
-          confirmBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-          confirmBtn.focus();
-        }
-      }, 1000);
-    }
-    
-    if (markCompletedBtn) {
-      markCompletedBtn.addEventListener('click', function() {
-        const missingOpinions = checkMissingOpinions();
-        
-        if (missingOpinions.length > 0) {
-          missingOpinionsList.innerHTML = '';
-          missingOpinions.forEach(opinion => {
-            const li = document.createElement('li');
-            li.textContent = opinion;
-            missingOpinionsList.appendChild(li);
-          });
-          
-          modal.classList.remove('hidden');
-          startCountdown();
-        } else {
-          window.location.href = completionUrl;
-        }
-      });
-    }
-    
-    function confirmAndSubmit() {
-      modal.classList.add('hidden');
-      clearInterval(countdownTimer);
-      window.location.href = completionUrl;
-    }
-    
-    function cancelModal() {
-      modal.classList.add('hidden');
-      clearInterval(countdownTimer);
-    }
-    
-    function onKeyDown(event) {
-      if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
-        cancelModal();
-      }
-    }
-    
-    if (cancelBtn) {
-      cancelBtn.addEventListener('click', cancelModal);
-    }
-    
-    if (confirmBtn) {
-      confirmBtn.addEventListener('click', confirmAndSubmit);
-    }
-    
-    window.addEventListener('keydown', onKeyDown);
-  })();
-
-  document.querySelectorAll("[id^='replyButton']").forEach(button => {
-    button.addEventListener('click', function() {
-      const commentId = this.id.split('-')[1];
-      const form = document.getElementById(`replyForm-${commentId}`);
-      form.classList.toggle('hidden');
-    });
-  });
-</script>
+  <script src="{% static 'js/educational_plan/pei_completion_modal_confirm.js' %}"></script>
 {% endblock inline_javascript %}

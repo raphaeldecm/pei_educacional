@@ -105,6 +105,28 @@ class Pei(BaseModel):
             else:
                 self.status = self.StatusChoice.NOT_START
 
+    def get_missing_opinions(self):
+        missing = []
+
+        if not self.academic_opinion_1:
+            missing.append("1º Bimestre")
+        if not self.academic_opinion_2:
+            missing.append("2º Bimestre")
+
+        if self.enrollment.offer.subject.subject_type == "YEAR":
+            if not self.academic_opinion_3:
+                missing.append("3º Bimestre")
+            if not self.academic_opinion_4:
+                missing.append("4º Bimestre")
+
+        if not self.academic_opinion_final:
+            missing.append("Parecer Final")
+
+        return missing
+    
+    def has_missing_opinions(self):
+        return len(self.get_missing_opinions()) > 0
+
     def save(self, *args, **kwargs):
         self.update_status()
         super().save(*args, **kwargs)
