@@ -41,7 +41,7 @@ class PeiListView(
     title = _("PEIs")
     paginate_by = constants.DEFAULT_PAGE_SIZE
     filterset_class = PeiFilter
-    template_name = "educational_plan/peis/pei_list.html"
+    template_name = "pei/pei_list.html"
 
     def get_queryset(self):
         queryset = models.Pei.objects.all()
@@ -59,7 +59,7 @@ class PeiUpdateView(
     model = models.Pei
     form_class = PeiForm
     success_message = _("O PEI foi atualizado com sucesso.")
-    template_name = "educational_plan/peis/pei_form.html"
+    template_name = "pei/pei_form.html"
     success_url = reverse_lazy("educational_plan:pei_list")
 
     def dispatch(self, request, *args, **kwargs):
@@ -82,7 +82,7 @@ class PeiUpdateView(
 class PeiDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
     model = models.Pei
     title = _("Detalhes do PEI")
-    template_name = "educational_plan/peis/pei_detail.html"
+    template_name = "pei/pei_detail.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -123,7 +123,7 @@ class PeiExportPdfView(LoginRequiredMixin, View):
 
 class PeiExportPreviewView(LoginRequiredMixin, DetailView):
     model = Pei
-    template_name = "educational_plan/peis/pei_export.html"
+    template_name = "pei/pei_export.html"
     context_object_name = "pei"
 
     def get_context_data(self, **kwargs):
