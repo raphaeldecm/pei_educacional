@@ -67,13 +67,13 @@
       <!-- Objetivos -->
       <div>
         <h2 class="text-[24px] font-medium">Objetivos da Disciplina:</h2>
-        <div class="text-[18px] text-slate-500 whitespace-pre-line">
+        <div class="text-[18px] text-slate-500 whitespace-pre-line max-h-80 overflow-y-auto pr-2">
           {{ object.enrollment.offer.subject.objective|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
         </div>
       </div>
       <div>
         <h2 class="text-[24px] font-medium">Objetivos Adaptados:</h2>
-        <div class="text-[18px] text-slate-500 whitespace-pre-line">
+        <div class="text-[18px] text-slate-500 whitespace-pre-line max-h-80 overflow-y-auto pr-2 ">
           {{ object.adapted_objective|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
         </div>
       </div>
@@ -82,13 +82,13 @@
       <!-- Conteúdo -->
       <div>
         <h2 class="text-[24px] font-medium">Conteúdo Programático:</h2>
-        <div class="text-[18px] text-slate-500 whitespace-pre-line">
+        <div class="text-[18px] text-slate-500 whitespace-pre-line max-h-80 overflow-y-auto pr-2">
           {{ object.enrollment.offer.subject.content|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
         </div>
       </div>
       <div>
         <h2 class="text-[24px] font-medium">Conteúdos Adaptados:</h2>
-        <div class="text-[18px] text-slate-500 whitespace-pre-line">
+        <div class="text-[18px] text-slate-500 whitespace-pre-line max-h-80 overflow-y-auto pr-2">
           {{ object.adapted_content|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
         </div>
       </div>
@@ -97,13 +97,13 @@
       <!-- Metodologias -->
       <div>
         <h2 class="text-[24px] font-medium">Metodologias:</h2>
-        <div class="text-[18px] text-slate-500 whitespace-pre-line">
+        <div class="text-[18px] text-slate-500 whitespace-pre-line max-h-80 overflow-y-auto pr-2">
           {{ object.enrollment.offer.subject.methodology|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
         </div>
       </div>
       <div>
         <h2 class="text-[24px] font-medium">Metodologias Adaptadas:</h2>
-        <div class="text-[18px] text-slate-500 whitespace-pre-line">
+        <div class="text-[18px] text-slate-500 whitespace-pre-line max-h-80 overflow-y-auto pr-2">
           {{ object.adapted_methodology|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
         </div>
       </div>
@@ -112,13 +112,13 @@
       <!-- Recursos -->
       <div>
         <h2 class="text-[24px] font-medium">Recursos Didáticos:</h2>
-        <div class="text-[18px] text-slate-500 whitespace-pre-line">
+        <div class="text-[18px] text-slate-500 whitespace-pre-line max-h-80 overflow-y-auto pr-2">
           {{ object.enrollment.offer.subject.resources|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
         </div>
       </div>
       <div>
         <h2 class="text-[24px] font-medium">Recursos Didáticos Adaptados:</h2>
-        <div class="text-[18px] text-slate-500 whitespace-pre-line">
+        <div class="text-[18px] text-slate-500 whitespace-pre-line max-h-80 overflow-y-auto pr-2">
           {{ object.adapted_resources|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
         </div>
       </div>
@@ -127,29 +127,30 @@
       <!-- Avaliações -->
       <div>
         <h2 class="text-[24px] font-medium">Avaliações:</h2>
-        <div class="text-[18px] text-slate-500 whitespace-pre-line">
+        <div class="text-[18px] text-slate-500 whitespace-pre-line max-h-80 overflow-y-auto pr-2">
           {{ object.enrollment.offer.subject.assessments|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
         </div>
       </div>
       <div>
         <h2 class="text-[24px] font-medium">Avaliações Adaptadas:</h2>
-        <div class="text-[18px] text-slate-500 whitespace-pre-line">
+        <div class="text-[18px] text-slate-500 whitespace-pre-line max-h-80 overflow-y-auto pr-2">
           {{ object.adapted_assessments|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
         </div>
       </div>
       <hr class="col-span-2 my-6 border-slate-200">
     </div>
 
+    <!-- Pareceres -->
     <div class="my-6" data-opinion="1">
       <h2 class="text-[24px] font-medium">Parecer do 1º Bimestre:</h2>
-      <div class="text-[18px] text-slate-500 whitespace-pre-line">
+      <div class="text-[18px] text-slate-500 whitespace-pre-line max-h-80 overflow-y-auto pr-2">
         {{ object.academic_opinion_1|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
       </div>
     </div>
 
     <div class="my-6" data-opinion="2">
       <h2 class="text-[24px] font-medium">Parecer do 2º Bimestre:</h2>
-      <div class="text-[18px] text-slate-500 whitespace-pre-line">
+      <div class="text-[18px] text-slate-500 whitespace-pre-line max-h-80 overflow-y-auto pr-2">
         {{ object.academic_opinion_2|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
       </div>
     </div>
@@ -157,14 +158,14 @@
     {% if object.enrollment.offer.subject.subject_type == "YEAR" %}
       <div class="my-6" data-opinion="3">
         <h2 class="text-[24px] font-medium">Parecer do 3º Bimestre:</h2>
-        <div class="text-[18px] text-slate-500 whitespace-pre-line">
+        <div class="text-[18px] text-slate-500 whitespace-pre-line max-h-80 overflow-y-auto pr-2">
           {{ object.academic_opinion_3|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
         </div>
       </div>
 
       <div class="my-6" data-opinion="4">
         <h2 class="text-[24px] font-medium">Parecer do 4º Bimestre:</h2>
-        <div class="text-[18px] text-slate-500 whitespace-pre-line">
+        <div class="text-[18px] text-slate-500 whitespace-pre-line max-h-80 overflow-y-auto pr-2">
           {{ object.academic_opinion_4|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
         </div>
       </div>
@@ -172,7 +173,7 @@
 
     <div class="my-6" data-opinion="final">
       <h2 class="text-[24px] font-medium">Parecer Final:</h2>
-      <div class="text-[18px] text-slate-500 whitespace-pre-line">
+      <div class="text-[18px] text-slate-500 whitespace-pre-line max-h-80 overflow-y-auto pr-2">
         {{ object.academic_opinion_final|default:"<span class='italic text-slate-400'>Conteúdo não preenchido.</span>"|safe }}
       </div>
     </div>
