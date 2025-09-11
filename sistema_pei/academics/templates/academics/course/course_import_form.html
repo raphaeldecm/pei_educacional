@@ -48,7 +48,8 @@
         <div class="w-full flex gap-8 mt-8">
           <label for="file-upload" class="cursor-pointer w-[50%]">
             <div id="upload-div"
-                 class="w-full rounded-lg flex-1 border border-green-600 p-4 flex flex-col items-center justify-center gap-4 hover:text-white hover:bg-green-600 transition-all">
+                 class="capitalize text-[18px] py-[11px] px-[22px] min-w-[233px] border border-green-600 rounded-lg text-green-600 font-semibold cursor-pointer flex items-center justify-center gap-2">
+              <img src="{%static 'images/icons/icon-upload-file.svg'%}" />
               <span id="upload-label">Enviar planilha preenchida</span>
               <input id="file-upload"
                      name="file"
@@ -60,7 +61,8 @@
           <a href="{% static 'csv_templates/import_course_example.csv' %}"
              class="w-[50%]"
              download>
-            <div class="rounded-lg flex-1 border border-blue-600 p-4 flex flex-col items-center justify-center gap-4 cursor-pointer hover:text-white hover:bg-blue-600 transition-all">
+            <div class="capitalize text-[18px] py-[11px] px-[22px] min-w-[233px] border border-blue-600 rounded-lg text-blue-600 font-semibold cursor-pointer flex items-center justify-center gap-2">
+              <img src="{%static 'images/icons/icon-download-file.svg'%}" />
               Baixar modelo de planilha
             </div>
           </a>
