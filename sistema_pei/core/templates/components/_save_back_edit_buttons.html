@@ -2,17 +2,17 @@
 
 <div class="flex items-center justify-start gap-5">
   <button onclick="history.back()"
-     class="mr-2 text-[18px] py-[11px] px-[44px] border border-orange-400 rounded-lg font-medium cursor-pointer {% if not no_margin %}mt-[56px]{% endif %} hover:bg-orange-500 transition-colors duration-300">
+     class="{% if not no_margin %}mt-[56px]{% endif %} capitalize text-[18px] py-[11px] px-[22px] min-w-[150px] border border-orange-600 rounded-lg text-orange-600 font-semibold cursor-pointer flex items-center justify-center gap-2">
     Voltar
   </button>
   {% if not no_save %}
     {% if edit_url %}
       <a href="{% url edit_url object.pk %}"
-         class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer {% if not no_margin %}mt-[56px]{% endif %} hover:bg-green-500 hover:text-white transition-colors duration-300">
+         class="{% if not no_margin %}mt-[56px]{% endif %} capitalize text-[18px] py-[11px] px-[22px] min-w-[150px] border border-blue-600 rounded-lg text-blue-600 font-semibold cursor-pointer flex items-center justify-center gap-2">
         Editar
       </a>
     {% else %}
-      <button class="text-[18px] py-[11px] px-[44px] border border-green-600 rounded-lg font-medium cursor-pointer {% if not no_margin %}mt-[56px]{% endif %} hover:bg-green-500 hover:text-white transition-colors duration-300">
+      <button class="{% if not no_margin %}mt-[56px]{% endif %} capitalize text-[18px] py-[11px] px-[22px] min-w-[150px] border border-green-600 rounded-lg text-green-600 font-semibold cursor-pointer flex items-center justify-center gap-2">
         Salvar
       </button>
     {% endif %}
