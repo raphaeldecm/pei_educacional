@@ -1,3 +1,4 @@
+// Atualiza seletor de quantidade de periodos ao alterar tipo de duração (anual/semestral)
 document.addEventListener('DOMContentLoaded', function() {
   const durationSelect = document.getElementById(window.courseFormConfig.durationId);
   const periodsLabel = document.getElementById('periods-label');
