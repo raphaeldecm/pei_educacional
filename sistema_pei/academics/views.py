@@ -6,7 +6,7 @@ from django.db.models import ProtectedError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.utils.timezone import now
 from django.db.models.functions import Lower
@@ -269,7 +269,7 @@ class RemoveStudentFromOfferView(SuccessMessageMixin, LoginRequiredMixin, View):
                 "porque existem PEIs associados.",
             )
 
-        return redirect(f"/offers/detail/{offer.id}/")
+        return redirect(reverse("academics:offer_detail", args=[offer.id]))
 
 
 class AddStudentToOfferView(LoginRequiredMixin, View):
@@ -292,7 +292,8 @@ class AddStudentToOfferView(LoginRequiredMixin, View):
                     updated_by=self.request.user,
                 )
 
-        return redirect(f"/offers/detail/{offer.id}/")
+        return redirect(reverse("academics:offer_detail", args=[offer.id]))
+
 
 
 class GetSubjectsByCourseView(LoginRequiredMixin, View):
