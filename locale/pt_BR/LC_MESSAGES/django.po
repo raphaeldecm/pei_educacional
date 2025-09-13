@@ -2551,3 +2551,14 @@ msgstr "Você não possui permissão para acessar esta página."
 
 msgid "If you think this is a mistake, please contact the administrator."
 msgstr "Se você acha que isso é um erro, entre em contato com o administrador."
+
+#not found page translate
+
+msgid "page not found"
+msgstr "Página não encontrada"
+
+msgid "this is not the page you were looking for."
+msgstr "Essa Não é a Página que Você esta procurando"
+
+msgid "not found"
+msgstr "Não encontrado"
