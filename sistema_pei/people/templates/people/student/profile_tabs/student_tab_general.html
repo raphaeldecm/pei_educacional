@@ -119,7 +119,7 @@
 
               {%action_item default_icon='images/icons/eye-action-icon.svg' hover_icon='images/icons/eye-action-hover-icon.svg' message="Visualizar Pei" border_class='border-[#deedfe]' hover_class='hover:bg-[#2462eb]' link=detail_url %}
               
-              {%if pei.responsible_teacher.email == request.user.email%}
+              {% if pei.responsible_teacher.user == request.user %}
 
               {% url 'educational_plan:pei_update' pei.id as edit_url %}
 
