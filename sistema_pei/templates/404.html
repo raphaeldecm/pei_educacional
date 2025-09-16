@@ -1,15 +1,32 @@
 {% extends "layouts/base.html" %}
 
+{% load i18n %}
+{% load translate %}
+
 {% block title %}
   Page not found
 {% endblock title %}
 {% block content %}
-  <h1>Page not found</h1>
-  <p>
-    {% if exception %}
-      {{ exception }}
-    {% else %}
-      This is not the page you were looking for.
-    {% endif %}
-  </p>
+  <div class="my-5 w-full h-[40vh] flex flex-col items-center justify-center">
+    <h1 class="text-3xl mb-4 text-center max-sm:text-2xl">
+      {{"Page not found"|translate}}
+    </h1>
+    <p class='font-light'>
+      {% if exception %}
+        {{ exception|translate }}
+      {% else %}
+        {%blocktrans%}this is not the page you were looking for.{%endblocktrans%}
+      {% endif %}
+    </p>
+    {% with source_url=request.META.HTTP_REFERER%}
+    <a href="{%if source_url%} {{source_url}} {%else%} {%url 'home'%} {%endif%}" class="px-4 py-4 bg-green-500 hover:bg-green-600 mt-5 text-white rounded-[10px] font-medium capitalize">
+      Voltar para a
+      {% if source_url %}
+        Página anterior
+      {%else%}
+        Página inicial
+      {%endif%}
+    </a>
+    {%endwith%}
+  </div>
 {% endblock content %}

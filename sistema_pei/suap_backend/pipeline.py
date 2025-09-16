@@ -64,7 +64,7 @@ def process_teacher(user, response):
         defaults={
             "user": user,
             "name": response.get("nome"),
-            "email": response.get("email_preferencial"),
+            "email": response.get("email") or response.get("email_preferencial"),
             "campus": Campus.objects.get(abbreviation=response.get("campus")),
             "code": response.get("identificacao"),
             "photo": response.get("foto"),
@@ -86,7 +86,7 @@ def update_teacher_data(teacher, response):
     Atualiza os dados do professor.
     """
     teacher.name = response.get("nome")
-    teacher.email = response.get("email_preferencial")
+    teacher.email = response.get("email") or response.get("email_preferencial")
     teacher.campus = Campus.objects.get(abbreviation=response.get("campus"))
     teacher.code = response.get("identificacao")
     teacher.photo = response.get("foto")
