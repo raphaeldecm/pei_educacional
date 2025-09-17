@@ -240,6 +240,12 @@ class ProfilePageView(LoginRequiredMixin, TemplateView):
         # Sync status constants
         context["SYNC_RECENT_INTERVAL"] = SYNC_RECENT_INTERVAL
         context["SYNC_REGULAR_INTERVAL"] = SYNC_REGULAR_INTERVAL
+        
+        student_offers_filter = {}
+        
+        if(self.request.user.groups.filter(name='Teacher').exists()):
+            student_offers_filter['teachers'] = self.request.user.teacher
+        context["student_offers"] = student.get_offers(**student_offers_filter)
 
         # Tabs
         allowed_tabs = ("general", "historic", "grades", "edit_student_data")
@@ -267,7 +273,7 @@ class ProfilePageView(LoginRequiredMixin, TemplateView):
                 "course"
             ]
         if "teacher" in self.request.GET:
-            filters["enrollment__offer__teacher__id"] = self.request.GET["teacher"]
+            filters["enrollment__offer__teachers__id"] = self.request.GET["teacher"]
         if "period" in self.request.GET:
             filters["enrollment__offer__subject__courses__period"] = self.request.GET[
                 "period"
