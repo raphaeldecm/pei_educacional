@@ -1,3 +1,4 @@
+// Mostra mensagens ao passar o mouse sobre os ícones de status do preenchimento
 document.addEventListener("DOMContentLoaded", () => {
   const filled_icons = Array.from(document.getElementsByClassName("filled_icon"));
   const filled_messages = Array.from(document.getElementsByClassName("filled_message"));

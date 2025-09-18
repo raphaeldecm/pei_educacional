@@ -1,3 +1,4 @@
+// Valida seleção de matriz no formulário de disciplinas e controla modal de confirmação
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("subject_form")
   const withoutMatrxModal = document.getElementById("WithoutMatrxConfirmModal")
