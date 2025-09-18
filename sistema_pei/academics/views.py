@@ -16,6 +16,8 @@ from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
 from django_filters.views import FilterView
 from django.db.models.functions import Lower
+from django.core.exceptions import ValidationError
+
 
 from sistema_pei.academics import filters
 from sistema_pei.academics import forms
@@ -275,22 +277,18 @@ class RemoveStudentFromOfferView(SuccessMessageMixin, LoginRequiredMixin, View):
 class AddStudentToOfferView(LoginRequiredMixin, View):
     def post(self, request, pk):
         offer = get_object_or_404(models.Offer, id=pk)
-        student_ids = request.POST.getlist(
-            "students"
-        )  # Recebe todos os IDs selecionados
+        student_ids = request.POST.getlist("students")
 
         for student_id in student_ids:
             student = get_object_or_404(Student, id=student_id)
-            if not models.Enrollment.objects.filter(
-                offer=offer, student=student
-            ).exists():
-                models.Enrollment.objects.create(
-                    offer=offer,
-                    student=student,
-                    YearSemesterReference=student.reference_period,
-                    created_by=self.request.user,
-                    updated_by=self.request.user,
+            try:
+                offer.add_student(student, request.user)
+                messages.success(
+                    request, 
+                    f"O discente {student.name} foi incluído na oferta com sucesso."
                 )
+            except ValidationError as e:
+                messages.warning(request, e.message)
 
         return redirect(reverse("academics:offer_detail", args=[offer.id]))
 

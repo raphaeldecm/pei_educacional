@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from django.forms.models import model_to_dict
+from django.core.exceptions import ValidationError
 
 from sistema_pei.academics import managers
 from sistema_pei.academics.constants import COURSE_TYPE
@@ -161,6 +162,22 @@ class Offer(BaseModel):
 
     def student_count(self):
         return self.enrollments.count()
+    
+    def add_student(self, student, user):
+        if self.status != Offer.OfferStatus.OPEN:
+            raise ValidationError(_("Não é possível adicionar alunos em uma oferta fechada."))
+
+        if Enrollment.objects.filter(offer=self, student=student).exists():
+            raise ValidationError(_("Aluno já matriculado nesta oferta."))
+
+        enrollment = Enrollment.objects.create(
+            offer=self,
+            student=student,
+            YearSemesterReference=student.reference_period,
+            created_by=user,
+            updated_by=user,
+        )
+        return enrollment
 
     def __str__(self):
         return self.subject.name
