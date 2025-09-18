@@ -253,23 +253,10 @@ class RemoveStudentFromOfferView(SuccessMessageMixin, LoginRequiredMixin, View):
         student = get_object_or_404(Student, id=student_id)
 
         try:
-            enrollment = get_object_or_404(
-                models.Enrollment,
-                offer=offer,
-                student=student,
-            )
-            
-            Pei.objects.filter(enrollment=enrollment).delete()
-            
-            enrollment.delete()
-            messages.success(request, "Discente removido com sucesso da oferta.")
-            
-        except ProtectedError:
-            messages.error(
-                request,
-                "Não é possível remover o discente desta oferta "
-                "porque existem PEIs associados.",
-            )
+            offer.remove_student(student)
+            messages.success(request, f"O discente {student.name} foi removido da oferta com sucesso.")
+        except ValidationError as e:
+            messages.error(request, e.message)
 
         return redirect(reverse("academics:offer_detail", args=[offer.id]))
 

@@ -4,11 +4,14 @@ from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from django.forms.models import model_to_dict
 from django.core.exceptions import ValidationError
+from django.apps import apps
 
 from sistema_pei.academics import managers
 from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.core.constants import SMALL_CHAR_FIELD_NAME_LENGTH
 from sistema_pei.core.models import BaseModel
+from django.db.models import ProtectedError
+
 from sistema_pei.people.models import Teacher
 
 
@@ -178,6 +181,24 @@ class Offer(BaseModel):
             updated_by=user,
         )
         return enrollment
+    
+    def remove_student(self, student):
+        Enrollment = apps.get_model('academics', 'Enrollment')
+        Pei = apps.get_model('educational_plan', 'Pei') 
+
+        enrollment = Enrollment.objects.filter(offer=self, student=student).first()
+        if not enrollment:
+            raise ValidationError(_("Este discente não está matriculado nesta oferta."))
+
+        try:
+            Pei.objects.filter(enrollment=enrollment).delete()
+            enrollment.delete()
+        except ProtectedError:
+            raise ValidationError(
+                _("Não é possível remover o discente desta oferta pois existem PEIs associados.")
+            )
+
+        return True
 
     def __str__(self):
         return self.subject.name
