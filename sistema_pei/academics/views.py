@@ -219,15 +219,10 @@ class OfferDetailView(LoginRequiredMixin, FilterView, generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        offer_id = self.kwargs.get("pk")
-        offer = get_object_or_404(models.Offer, id=offer_id)
+        offer = get_object_or_404(models.Offer, id=self.kwargs.get("pk"))
 
         context["offer"] = offer
-
-        context["selector_students"] = Student.objects.filter(
-            course=offer.course,
-        ).exclude(id__in=offer.enrollments.values_list("student_id", flat=True))
+        context["selector_students"] = offer.available_students()
 
         return context
 
