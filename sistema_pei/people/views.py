@@ -245,6 +245,8 @@ class ProfilePageView(LoginRequiredMixin, TemplateView):
         
         if(self.request.user.groups.filter(name='Teacher').exists()):
             student_offers_filter['teachers'] = self.request.user.teacher
+            context['is_teacher'] = True
+            
         context["student_offers"] = student.get_offers(**student_offers_filter)
 
         # Tabs
