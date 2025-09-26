@@ -124,6 +124,7 @@
                 {% endif %}
               </td>
               <td class="flex justify-center items-center h-[97px] gap-[30px] relative pr-[26px]">
+                {% url 'users:detail' object.id as detail_url %}
                 {% action_item default_icon='images/icons/eye-action-icon.svg' hover_icon='images/icons/eye-action-hover-icon.svg' message="Visualizar Usuario" border_class='border-[#deedfe]' hover_class='hover:bg-[#2462eb]' link=detail_url%}
                 {% comment %} <a class="hover:bg-slate-100 p-2 rounded-full" href="{% url 'people:teacher_update' object.pk %}">
                   <img src="{% static 'images/icons/icon-edit-element.svg' %}" alt="" width="24px" height="24px" class="cursor-pointer" />
