@@ -66,18 +66,6 @@
                   {% if request.GET.status == 'COMPLETED' %}selected{% endif %}>Finalizado</option>
         </select>
       </div>
-      <div id="offerTab" class="flex w-[322px] h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2 hidden tab">
-        <img src="{% static 'images/icons/icon-search.svg' %}"
-           alt=""
-           width="18px"
-           height="18px" />
-        <input type="text"
-             name="subject"
-             placeholder="Disciplina"
-             class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50 placeholder:text-slate-500"
-             id="subject_search"
-             />
-      </div>
       <button class="flex items-center justify-center gap-[10px] min-w-[100px] h-[48px] bg-green-500 rounded-[6px] text-neutral-50">
         <img src="{% static 'images/icons/icon-filter.svg' %}"
              alt=""
@@ -158,77 +146,8 @@
       </tbody>
     </table>
   </div>
-  {%if is_teacher%}
-    <div class="hidden tab w-full h-[50px] flex items-center justify-center mt-10 bg-amber-500" id="offerTab">
-      <h1 class="text-white font-semibold">
-        Ofertas relacionadas a você como professor.
-      </h1>
-    </div>
-  {%endif%}
-  <div id="offerTab" class="mt-[36px] tab w-full h-max overflow-x-auto border border-slate-300 rounded-lg hidden">
-  <table class="table-auto w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px]">
-    <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">
-      <tr>
-        <th class="pl-[76px]">Disciplina</th>
-        <th>Professor</th>
-        <!--<th>Situação</th>-->
-        <th style="text-align: center" class='pr-[30px]'>Ações</th>
-      </tr>
-    </thead>
-    <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
-      {% for offer in student_offers%}
-        <tr>
-          <td class="pl-[76px] offer_label">
-            {{ offer.subject }}
-            <br />
-          </td>
-          <td>
-            {%for teacher in offer.teachers.all %}
-              {{teacher}}
-            {%endfor%}
-          </td>
-          <td>
-            <span class="flex justify-center items-center h-[97px] relative gap-4 pr-[26px]">
-              {% url 'academics:offer_detail' offer.id  as detail_url%}
-
-              {%action_item default_icon='images/icons/eye-action-icon.svg' hover_icon='images/icons/eye-action-hover-icon.svg' message="Visualizar Oferta" border_class='border-[#deedfe]' hover_class='hover:bg-[#2462eb]' link=detail_url %}
-              
-              {%if request.user|has_group:'Coordinator'%}
-              {% url 'academics:offer_update' offer.id as edit_url %}
-
-              {%action_item default_icon='images/icons/edit-icon.svg' hover_icon='images/icons/edit-hover-icon.svg' message="Editar Oferta"  border_class='border-[#f4e7d9]' hover_class='hover:bg-[#ee8e5f]' link=edit_url %}
-
-              {%endif%}
-
-              {% comment %} <button type="button" id="openModal{{ pei.id }}" data-modal-id="confirmationModal{{ pei.id }}">
-                <img src="{% static 'images/icons/icon-remove-element.svg' %}" alt="" height="24px" class="cursor-pointer" />
-              </button> {% endcomment %}
-            </span>
-          </td>
-          {%empty%}
-            {%if student.has_offers %}
-            <tr>
-              <td colspan="3" class="text-center">Nenhuma Oferta Sua relacionada a esse Discente.</td>
-            </tr>
-            {%else%}
-               <tr>
-              <td colspan="3" class="text-center">Nenhuma Oferta Para esse Discente.</td>
-            </tr>
-            {%endif%}
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
   <div class="mt-[50px] mb-[26px] w-full flex items-center justify-between text-[14px]">
     <span class="font-semibold">Página {{ student_peis.number }} de {{ student_peis.paginator.num_pages }}</span>
-  <div class="flex w-[250px] justify-around">
-    <button onclick="showTabById('peiTab','tab')" id="buttonPeiTab" class="buttonTab w-[110px] h-[44px] flex justify-center items-center font-medium text-white border bg-green-500 border-green-500 rounded-lg">
-      Peis
-    </button>
-    <button onclick="showTabById('offerTab','tab')" id="buttonOfferTab" class="buttonTab w-[110px] h-[44px] flex justify-center items-center font-medium text-slate-500 border border-slate-400 rounded-lg">
-      Ofertas
-    </button>
-  </div>
     <div class="flex gap-[36px]">
       {% if student_peis.has_previous %}
         <a href="?{% if request.GET.course %}course={{ request.GET.course }}&{% endif %}{% if request.GET.teacher %}teacher={{ request.GET.teacher }}&{% endif %}{% if request.GET.period %}period={{ request.GET.period }}&{% endif %}{% if request.GET.status %}status={{ request.GET.status }}&{% endif %}{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}page={{ student_peis.previous_page_number }}">
@@ -245,88 +164,3 @@
         </a>
       {% endif %}
     </div>
-  </div>
-
-{%block inline_javascript%}
-<script>
-
-  window.addEventListener("DOMContentLoaded",()=>{
-    const params = new URLSearchParams(window.location.search);
-    const subjectSelected = params.get('subject');
-    const subject_search = document.getElementById('subject_search')
-    const elementNotFoundMessage = createNotFoundMessage()
-
-    if(subjectSelected){
-      showTabById('offerTab','tab');
-      subject_search.value = subjectSelected
-      search('offer_label',subjectSelected,elementNotFoundMessage)
-    }
-
-    subject_search.addEventListener('input',(e)=>{
-      search('offer_label',e.target.value,elementNotFoundMessage)
-    })
-
-  })
-
-  function showTabById(tabId,tabClass){
-    const tabItems = Array.from(document.getElementsByClassName(tabClass))
-
-    tabItems.forEach(element=>{ 
-        const match = element.id.toLowerCase() == tabId.toLowerCase()
-        element.classList.toggle('block', match)
-        element.classList.toggle('hidden', !match)
-    })
-
-    tabSelectEfect(tabId)
-  }
-
-  function tabSelectEfect(tabId){
-    const buttonsTab = Array.from(document.getElementsByClassName('buttonTab'))
-    const buttonSelectId = `button${tabId}`
-
-    buttonsTab.forEach(element=>{
-      if(element.id.toLowerCase() == buttonSelectId.toLowerCase()){
-        element.classList.add('bg-green-500','text-white','border-green-500')
-        element.classList.remove('text-slate-500','border-slate-400')
-      }else{
-        element.classList.remove('bg-green-500','text-white','border-green-500')
-        element.classList.add('text-slate-500','border-slate-400')
-      }
-    })
-  }
-
-  function createNotFoundMessage(message='Nenhum resultado encontrado.'){
-    let tr = document.createElement('tr')
-    let td = document.createElement('td')
-    td.classList.add('text-center','py-4')
-    td.textContent = message
-    td.colSpan = 3
-    tr.appendChild(td)
-    return tr
-  }
-  
-
-  function search(elementsClass,value,notFoundElement){
-    const elements = Array.from(document.getElementsByClassName(elementsClass))
-    const valueLower = value.toLowerCase()
-    const elementFather = elements[0].parentNode.parentNode
-    let hasResult = false
-
-    elements.forEach(element=>{
-      const parent = element.parentNode
-      const match = element.textContent.toLowerCase().includes(valueLower)
-
-      parent.classList.toggle('hidden', !match)
-      parent.classList.toggle('table-row', match)
-
-      if(match) hasResult = true;
-    })
-
-    !hasResult ? elementFather.append(notFoundElement) : elementFather.contains(notFoundElement) ? elementFather.removeChild(notFoundElement) : null
-
-  }
-
-
-
-</script>
-{%endblock inline_javascript%}

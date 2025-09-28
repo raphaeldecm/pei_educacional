@@ -1,0 +1,141 @@
+{% load static i18n %}
+{% load action_buttons %}
+{% load has_group %}
+
+<div>
+  <form action="{{request.path}}?tab=offers" method="get" class="flex justify-between items-center" id="formOffers">
+    <input type="text" name="tab" value="offers" class="hidden">
+      <div class="flex w-[92%] h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
+        <img src="{% static 'images/icons/icon-search.svg' %}"
+            alt=""
+            width="18px"
+            height="18px" />
+          <input type="text"
+            name="subject"
+            placeholder="Disciplina"
+            class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50 placeholder:text-slate-500"
+            id="subject_search"
+            value="{{request.GET.subject}}"
+             />
+      </div>
+      <button class="flex items-center justify-center gap-[10px] min-w-[100px] h-[48px] bg-green-500 rounded-[6px] text-neutral-50">
+        <img src="{% static 'images/icons/icon-filter.svg' %}"
+            alt=""
+            width="24px"
+            height="24px" />
+            <span>Filtrar</span>
+      </button>
+  </form>
+  
+  {%if is_teacher%}
+  <div class="tab w-full h-[50px] flex items-center justify-center mt-10 bg-amber-500" id="offerTab">
+      <h1 class="text-white font-semibold">
+        Ofertas relacionadas a você como professor.
+      </h1>
+    </div>
+    {%endif%}
+  <div id="offerTab" class="mt-[36px] tab w-full h-max overflow-x-auto border border-slate-300 rounded-lg ">
+  <table class="table-auto w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px]">
+    <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">
+      <tr>
+        <th class="pl-[76px]">Disciplina</th>
+        <th>Professor</th>
+        <!--<th>Situação</th>-->
+        <th style="text-align: center" class='pr-[30px]'>Ações</th>
+      </tr>
+    </thead>
+    <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
+      {% for offer in student_offers%}
+        <tr>
+          <td class="pl-[76px] offer_label">
+            {{ offer.subject }}
+            <br />
+          </td>
+          <td>
+            {%for teacher in offer.teachers.all %}
+              {{teacher}}
+            {%endfor%}
+          </td>
+          <td>
+            <span class="flex justify-center items-center h-[97px] relative gap-4 pr-[26px]">
+              {% url 'academics:offer_detail' offer.id  as detail_url%}
+
+              {%action_item default_icon='images/icons/eye-action-icon.svg' hover_icon='images/icons/eye-action-hover-icon.svg' message="Visualizar Oferta" border_class='border-[#deedfe]' hover_class='hover:bg-[#2462eb]' link=detail_url %}
+              
+              {%if request.user|has_group:'Coordinator'%}
+              {% url 'academics:offer_update' offer.id as edit_url %}
+
+              {%action_item default_icon='images/icons/edit-icon.svg' hover_icon='images/icons/edit-hover-icon.svg' message="Editar Oferta"  border_class='border-[#f4e7d9]' hover_class='hover:bg-[#ee8e5f]' link=edit_url %}
+
+              {%endif%}
+
+              {% comment %} <button type="button" id="openModal{{ pei.id }}" data-modal-id="confirmationModal{{ pei.id }}">
+                <img src="{% static 'images/icons/icon-remove-element.svg' %}" alt="" height="24px" class="cursor-pointer" />
+              </button> {% endcomment %}
+            </span>
+          </td>
+          {%empty%}
+            {%if student.has_offers %}
+            <tr>
+              <td colspan="3" class="text-center">Nenhuma Oferta Sua relacionada a esse Discente.</td>
+            </tr>
+            {%else%}
+               <tr>
+              <td colspan="3" class="text-center">Nenhuma Oferta Para esse Discente.</td>
+            </tr>
+            {%endif%}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+</div>
+    
+{% block inline_javascript %}
+  <script>
+
+    window.addEventListener("DOMContentLoaded",()=>{
+      const params = new URLSearchParams(window.location.search);
+      const subject_search = document.getElementById('subject_search')
+      const elementNotFoundMessage = createNotFoundMessage();
+      const formOffers = document.getElementById("formOffers");
+
+      subject_search.addEventListener('input',(e)=>{
+        search('offer_label',e.target.value,elementNotFoundMessage)
+      })
+
+  })
+
+
+    function createNotFoundMessage(message='Nenhum resultado encontrado.'){
+      let tr = document.createElement('tr')
+      let td = document.createElement('td')
+      td.classList.add('text-center','py-4')
+      td.textContent = message
+      td.colSpan = 3
+      tr.appendChild(td)
+      return tr
+  }
+  
+
+  function search(elementsClass,value,notFoundElement){
+    const elements = Array.from(document.getElementsByClassName(elementsClass))
+    const valueLower = value.toLowerCase()
+    const elementFather = elements[0].parentNode.parentNode
+    let hasResult = false
+
+    elements.forEach(element=>{
+      const parent = element.parentNode
+      const match = element.textContent.toLowerCase().includes(valueLower)
+
+      parent.classList.toggle('hidden', !match)
+      parent.classList.toggle('table-row', match)
+
+      if(match) hasResult = true;
+    })
+
+    !hasResult ? elementFather.append(notFoundElement) : elementFather.contains(notFoundElement) ? elementFather.removeChild(notFoundElement) : null
+
+  }
+  </script>
+{% endblock %}

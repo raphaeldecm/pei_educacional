@@ -250,7 +250,7 @@ class ProfilePageView(LoginRequiredMixin, TemplateView):
         context["student_offers"] = student.get_offers(**student_offers_filter)
 
         # Tabs
-        allowed_tabs = ("general", "historic", "grades", "edit_student_data")
+        allowed_tabs = ("general", "historic", "grades", "edit_student_data",'offers')
         requested_tab = self.request.GET.get("tab", "general")
         if requested_tab in allowed_tabs:
             context["active_tab"] = requested_tab
