@@ -35,26 +35,31 @@
     </div>
     {%endif%}
   <div id="offerTab" class="mt-[36px] tab w-full h-max overflow-x-auto border border-slate-300 rounded-lg ">
-  <table class="table-auto w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px]">
+  <table class="table-fixed w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px]">
     <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">
       <tr>
-        <th class="pl-[76px]">Disciplina</th>
-        <th>Professor</th>
+        <th class="pl-[76px] max-w-[40%]">Disciplina</th>
+        <th class="max-w-[40%] ">Professor</th>
         <!--<th>Situação</th>-->
-        <th style="text-align: center" class='pr-[30px]'>Ações</th>
+        <th style="text-align: center" class='pr-[30px] max-w-[20%]'>Ações</th>
       </tr>
     </thead>
     <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px]">
       {% for offer in student_offers%}
         <tr>
-          <td class="pl-[76px] offer_label">
+          <td class="pl-[76px] offer_label w-[40%]">
             {{ offer.subject }}
             <br />
           </td>
-          <td>
-            {%for teacher in offer.teachers.all %}
-              {{teacher}}
-            {%endfor%}
+          <td class="px-2 max-w-[40%] overflow-hidden text-ellipsis text-nowrap">
+            {%for teacher in offer.teachers.all|slice:3 %}              
+                {{teacher}}
+               {% if not forloop.last %}
+                    ,
+                    <br />
+                {% endif %}
+              {%endfor%}
+            {% if offer.teachers.count > 3 %}...{% endif %}
           </td>
           <td>
             <span class="flex justify-center items-center h-[97px] relative gap-4 pr-[26px]">
