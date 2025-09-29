@@ -119,34 +119,5 @@
 {% endblock content %}
 
 {%block inline_javascript%}
-<script>
-  let filled_icons = Array.from(document.getElementsByClassName("filled_icon")) 
-  let filled_messages = Array.from(document.getElementsByClassName("filled_message"))
-
-  let CalculateMessagePosition = (element,margin_top=0)=>{
-    let element_position = element.getBoundingClientRect()
-    return window.scrollY + element_position.top + margin_top
-  }
-
-  let ShowMessage = (message_element,position)=>{
-    message_element.style.transform = `translateY(${position}px)`
-    message_element.style.display = 'block'
-  }
-
-  let HiddenMessage = (message_element)=>{message_element.style.display='none'}
-
-
-  filled_icons.forEach((element,index)=>{
-    let element_filled_message = filled_messages[index]
-
-    element.addEventListener('mouseenter',()=>{
-      let filled_message_position = CalculateMessagePosition(element,50)
-      ShowMessage(element_filled_message,filled_message_position)
-    })
-
-    element.addEventListener("mouseleave",()=>{HiddenMessage(element_filled_message)})
-  })
-
-
-</script>
+<script src="{% static 'js/academics/subjects/subject_list.js' %}"></script>
 {%endblock inline_javascript%}
