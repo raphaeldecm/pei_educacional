@@ -19,7 +19,7 @@
       {% endif %}
     </p>
     {% with source_url=request.META.HTTP_REFERER%}
-    <a href="{%if source_url%} {{source_url}} {%else%} {%url 'home'%} {%endif%}" class="px-4 py-4 bg-green-500 hover:bg-green-600 mt-5 text-white rounded-[10px] font-medium capitalize">
+    <a href="{%if source_url%} {{source_url}} {%else%} {%url 'home'%} {%endif%}" class="px-4 py-4 bg-green-500 hover:bg-green-600 mt-5 text-white rounded-[10px] font-medium capitalize hover:scale-105 transition-all">
       Voltar para a
       {% if source_url %}
         Página anterior

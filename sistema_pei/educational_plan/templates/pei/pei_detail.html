@@ -40,7 +40,7 @@
           <hr class="mt-6" />
           <div class="flex gap-6">
             <a href="{% url 'people:profile' object.enrollment.student.id %}"
-               class="w-max cursor-pointer flex items-center justify-center mt-6 gap-[10px] p-[10px] h-[44px] bg-green-500 rounded-[6px] text-neutral-50 hover:opacity-85">
+               class="w-max cursor-pointer flex items-center justify-center mt-6 gap-[10px] p-[10px] h-[44px] bg-green-500 rounded-[6px] text-neutral-50 transition-all hover:scale-105">
               <img src="{% static 'images/icons/icon-eye-white.svg' %}"
                    alt=""
                    width="24px"
@@ -51,7 +51,7 @@
               <a href="{% if not has_missing_opinions %}{% url 'educational_plan:pei_mark_completed' object.pk %}{% else %}#{% endif %}"
                 id="markCompletedBtn"
                 data-completion-url="{% url 'educational_plan:pei_mark_completed' object.pk %}"
-                class="w-max cursor-pointer flex items-center justify-center mt-6 gap-[10px] p-[10px] h-[44px] bg-blue-600 rounded-[6px] text-neutral-50 hover:opacity-85">
+                class="w-max cursor-pointer flex items-center justify-center mt-6 gap-[10px] p-[10px] h-[44px] bg-blue-600 rounded-[6px] text-neutral-50 transition-all hover:scale-105">
                 <img src="{% static 'images/icons/icon-checked-white.svg' %}"
                     alt=""
                     width="24px"
