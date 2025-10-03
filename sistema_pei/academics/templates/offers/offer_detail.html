@@ -134,25 +134,5 @@
   </div>
 {% endblock content %}
 {% block inline_javascript %}
-  <script>
-    function filterStudents() {
-      const searchValue = document.getElementById("studentSearch").value.toLowerCase();
-      const students = document.querySelectorAll(".student-item");
-      let hasResults = false;
-
-      students.forEach(student => {
-        const studentName = student.querySelector(".student-name").textContent.toLowerCase();
-        if (studentName.includes(searchValue)) {
-          student.style.display = "flex"; // Mostra o item
-          hasResults = true;
-        } else {
-          student.style.display = "none"; // Oculta o item
-        }
-      });
-
-      // Exibe a mensagem de "Nenhum resultado encontrado" caso não tenha resultados
-      document.getElementById("noResultsMessage").style.display = hasResults ? "none" : "block";
-      document.getElementById("studentList").style.display = searchValue && hasResults ? "block" : "none";
-    }
-  </script>
+  <script src="{% static 'js/academics/offers/offer_detail.js' %}"></script>
 {% endblock inline_javascript %}

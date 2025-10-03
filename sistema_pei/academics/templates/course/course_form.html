@@ -110,28 +110,10 @@
 {% endblock content %}
 {% block inline_javascript %}
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const durationSelect = document.getElementById('{{ form.duration_type.id_for_label }}');
-      const periodsLabel = document.getElementById('periods-label');
-      const periodsInput = document.getElementById('{{ form.number_of_periods.id_for_label }}');
-
-      function updatePeriodsLabelAndValue() {
-        const selectedValue = durationSelect.value;
-        if (selectedValue === 'SEMESTER') {
-          periodsLabel.textContent = 'Qtd. de Semestres:';
-          periodsInput.value = 7;
-        } else if (selectedValue === 'YEAR') {
-          periodsLabel.textContent = 'Qtd. de Anos:';
-          periodsInput.value = 4;
-        } else {
-          periodsLabel.textContent = 'Qtd. Períodos:';
-          periodsInput.value = '';
-        }
-      }
-
-      updatePeriodsLabelAndValue();
-
-      durationSelect.addEventListener('change', updatePeriodsLabelAndValue);
-    });
+    window.courseFormConfig = {
+      durationId: "{{ form.duration_type.id_for_label }}",
+      periodsId: "{{ form.number_of_periods.id_for_label }}"
+    }
   </script>
+  <script src="{% static 'js/academics/course/course_form.js' %}"></script>
 {% endblock inline_javascript %}

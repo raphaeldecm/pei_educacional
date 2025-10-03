@@ -227,38 +227,5 @@
 {%endblock modal%}
 
 {%block inline_javascript%}
-<script>
-  //global vars
-  const form = document.getElementById("subject_form")
-  const withoutMatrxModal = document.getElementById("WithoutMatrxConfirmModal")
-  const confirmModelBtn = document.getElementById("confirmModalBtn")
-  const cancelModalBtn = document.getElementById("cancelModalBtn")
-  const matrixArray = Array.from(document.getElementsByClassName("matrix_checkbox"))
-
-  form.addEventListener("submit",(e)=>{FormSubmit(e,form)})
-  
-  cancelModalBtn.addEventListener('click',()=>{withoutMatrxModal.classList.add("hidden")})
-  confirmModelBtn.addEventListener('click',()=>{form.submit()})
-  
-  
-  function FormSubmit(event,form){
-    event.preventDefault()
-    let hasMatrixSelected = false
-
-    matrixArray.forEach(element=>{if(element.checked)hasMatrixSelected=true})
-  
-    !hasMatrixSelected && matrixArray.length > 0 ? withoutMatrxModal.classList.remove('hidden') : form.submit()
-  }
-
-  function RadioEfect(elementsClass,elementCheckedId){
-    const Elements = Array.from(document.getElementsByClassName(elementsClass))
-
-    Elements.map(element=>{
-      if(element.id != elementCheckedId) element.checked = false}
-    )
-  
-  }
-  
-  
-</script>
+<script src="{% static 'js/academics/subjects/subject_form.js' %}"></script>
 {%endblock inline_javascript %}

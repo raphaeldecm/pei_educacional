@@ -12,7 +12,13 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   # dependencies for building Python packages
   build-essential \
   # psycopg dependencies
-  libpq-dev
+  libpq-dev \
+  # Cairo dependencies for generating PDFs
+  libcairo2-dev \
+  python3-dev \
+  # nodejs and npm for building front-end assets
+  nodejs \
+  npm
 
 # Requirements are installed here to ensure they will be cached.
 COPY ./requirements .
@@ -44,6 +50,9 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   libpq-dev \
   # Translations dependencies
   gettext \
+  # Cairo dependencies for generating PDFs
+  libcairo2-dev \
+  python3-dev \
   # cleaning up unused files
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
