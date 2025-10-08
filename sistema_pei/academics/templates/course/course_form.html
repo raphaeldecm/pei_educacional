@@ -32,13 +32,13 @@
         <div class="flex-1">
           <label for="{{ form.period.id_for_label }}" class="font-medium text-[18px]">Turno:</label>
           <div class="relative w-full cursor-pointer mt-[16px]">
-            <img class="absolute top-[12px] right-[10px]"
+            <img class="absolute top-[12px] right-[10px] pointer-events-none"
                  src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                  width="24px"
                  height="24px" />
             <select name="{{ form.period.name }}"
                     id="{{ form.period.id_for_label }}"
-                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
+                    class="cursor-pointer outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
               <option value="default" selected disabled>Selecione o turno...</option>
               {% for key, value in form.period.field.choices %}
                 <option value="{{ key }}"
@@ -51,13 +51,13 @@
           <label for="{{ form.duration_type.id_for_label }}"
                  class="font-medium text-[18px]">Duração:</label>
           <div class="relative w-full cursor-pointer mt-[16px]">
-            <img class="absolute top-[12px] right-[10px]"
+            <img class="absolute top-[12px] right-[10px] pointer-events-none"
                  src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                  width="24px"
                  height="24px" />
             <select name="{{ form.duration_type.name }}"
                     id="{{ form.duration_type.id_for_label }}"
-                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50"
+                    class="cursor-pointer outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50"
                     required>
               <option value="default" selected disabled>Selecione a duração...</option>
               {% for key, value in form.duration_type.field.choices %}
@@ -87,13 +87,13 @@
           <label for="{{ form.course_type.id_for_label }}"
                  class="font-medium text-[18px]">Tipo:</label>
           <div class="relative w-full cursor-pointer mt-[16px]">
-            <img class="absolute top-[12px] right-[10px]"
+            <img class="absolute top-[12px] right-[10px] pointer-events-none"
                  src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                  width="24px"
                  height="24px" />
             <select name="{{ form.course_type.name }}"
                     id="{{ form.course_type.id_for_label }}"
-                    class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50"
+                    class="cursor-pointer outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50"
                     required>
               <option value="default" selected disabled>Selecione o tipo...</option>
               {% for key, value in form.course_type.field.choices %}
