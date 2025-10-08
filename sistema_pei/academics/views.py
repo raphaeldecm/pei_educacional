@@ -283,14 +283,6 @@ class GetSubjectsByCourseView(LoginRequiredMixin, View):
         return JsonResponse({"subjects": subjects_data})
 
 
-class RemoveStudentFromSubjectView(View):
-    def get(self, request, subject_id, student_id):
-        subject = get_object_or_404(models.Subject, id=subject_id)
-        student = get_object_or_404(Student, id=student_id)
-        subject.students.remove(student)
-        return redirect(f"/subjects/edit/{subject.id}")
-
-
 class SubjectDeleteView(
     LoginRequiredMixin,
     ProtectedErrorMessageMixin,
