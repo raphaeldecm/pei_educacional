@@ -122,16 +122,6 @@ class PeiExportPdfView(LoginRequiredMixin, View):
         return response
 
 
-class PeiExportPreviewView(LoginRequiredMixin, DetailView):
-    model = Pei
-    template_name = "pei/pei_export.html"
-    context_object_name = "pei"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
-
-
 class CommentCreateView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         pei = Pei.objects.get(pk=self.kwargs["pk"])
