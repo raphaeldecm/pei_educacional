@@ -275,14 +275,6 @@ class AddStudentToOfferView(LoginRequiredMixin, View):
         return redirect(reverse("academics:offer_detail", args=[offer.id]))
 
 
-
-class GetSubjectsByCourseView(LoginRequiredMixin, View):
-    def get(self, request, pk):
-        subjects = models.Subject.objects.filter(courses=pk)
-        subjects_data = list(subjects.values("id", "name"))
-        return JsonResponse({"subjects": subjects_data})
-
-
 class SubjectDeleteView(
     LoginRequiredMixin,
     ProtectedErrorMessageMixin,
