@@ -138,8 +138,8 @@
          aria-label="Menu de navegação do perfil do aluno"
          class="mt-2 mb-8">
       <ul class="flex flex-wrap gap-5 py-2">
-        <li class="pb-1 font-poppins {% if active_tab == 'general' %} text-green-500 border-b border-green-500 {% else %} text-slate-500 {% endif %} cursor-pointer hover:text-green-500 hover:border-b hover:border-green-500 transition duration-300 ease-in-out">
-          <a href="?tab=general#tab">
+        <li class="pb-1 font-poppins {% if active_tab == 'peis' %} text-green-500 border-b border-green-500 {% else %} text-slate-500 {% endif %} cursor-pointer hover:text-green-500 hover:border-b hover:border-green-500 transition duration-300 ease-in-out">
+          <a href="?tab=peis#tab">
             <svg xmlns="http://www.w3.org/2000/svg"
                  fill="none"
                  viewBox="0 0 24 24"
@@ -148,7 +148,20 @@
                  class="inline-block size-6 text-inherit">
               <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
             </svg>
-            Geral
+            Peis
+          </a>
+        </li>
+        <li class="pb-1 font-poppins {% if active_tab == 'offers' %} text-green-500 border-b border-green-500 {% else %} text-slate-500 {% endif %} cursor-pointer hover:text-green-500 hover:border-b hover:border-green-500 transition duration-300 ease-in-out">
+          <a href="?tab=offers#tab">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke-width="1.5"
+                 stroke="currentColor"
+                 class="inline-block size-6 text-inherit">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+            </svg>
+            Ofertas 
           </a>
         </li>
         <li class="pb-1 font-poppins {% if active_tab == 'historic' %} text-green-500 border-b border-green-500 {% else %} text-slate-500 {% endif %} cursor-pointer hover:text-green-500 hover:border-b hover:border-green-500 transition duration-300 ease-in-out">
@@ -195,10 +208,12 @@
       </ul>
     </nav>
     <section>
-      {% if active_tab == 'general' %}
+      {% if active_tab == 'peis' %}
         {% include "people/student/profile_tabs/student_tab_general.html" %}
       {% elif active_tab == 'historic' %}
         {% include "people/student/profile_tabs/student_tab_historic.html" %}
+      {% elif active_tab == 'offers' %}
+        {% include "people/student/profile_tabs/student_tab_offers.html" %}
       {% elif active_tab == 'grades' %}
         {% include "people/student/profile_tabs/student_tab_grades.html" %}
       {% elif active_tab == 'edit_student_data' and request.user|has_some_group:'Coordinator collaborator'%}

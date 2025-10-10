@@ -4,7 +4,7 @@ from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core.paginator import PageNotAnInteger
+from django.core.paginator import PageNotAnInteger , EmptyPage
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
@@ -227,6 +227,7 @@ class StudentImportView(
 class ProfilePageView(LoginRequiredMixin, TemplateView):
     template_name = "people/student/student_profile.html"
     paginate_by = 10
+    default_tab = 'peis'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -240,19 +241,38 @@ class ProfilePageView(LoginRequiredMixin, TemplateView):
         # Sync status constants
         context["SYNC_RECENT_INTERVAL"] = SYNC_RECENT_INTERVAL
         context["SYNC_REGULAR_INTERVAL"] = SYNC_REGULAR_INTERVAL
+        
+        student_offers_filter = {}
+        student_offers_filter['subject__name__icontains'] = self.request.GET.get("subject",'')
+        
+        if(self.request.user.groups.filter(name='Teacher').exists()):
+            student_offers_filter['teachers'] = self.request.user.teacher
+            context['is_teacher'] = True
+            
+        student_offers = student.get_offers(**student_offers_filter).order_by('id')
+        
+        offers_paginator = Paginator(student_offers, self.paginate_by)
+        offers_page_number = self.request.GET.get("offers_page")
+        
+        try:
+            student_offers = offers_paginator.page(offers_page_number)
+        except (PageNotAnInteger, EmptyPage):
+            student_offers = offers_paginator.page(1)
+            
+        context["student_offers"] = student_offers
 
         # Tabs
-        allowed_tabs = ("general", "historic", "grades", "edit_student_data")
-        requested_tab = self.request.GET.get("tab", "general")
+        allowed_tabs = ("peis", "historic", "grades", "edit_student_data","offers")
+        requested_tab = self.request.GET.get("tab", self.default_tab)
         if requested_tab in allowed_tabs:
             context["active_tab"] = requested_tab
         else:
-            context["active_tab"] = "general"
+            context["active_tab"] = self.default_tab
 
         sub_tab = self.request.GET.get("sub_tab", "edit_personal_data")
         context["sub_active_tab"] = sub_tab
 
-        ##^ Tab General
+        ##^ Tab Peis
         student_peis = context["student_peis"] = Pei.objects.filter(
             enrollment__student=student,
         )
@@ -267,7 +287,7 @@ class ProfilePageView(LoginRequiredMixin, TemplateView):
                 "course"
             ]
         if "teacher" in self.request.GET:
-            filters["enrollment__offer__teacher__id"] = self.request.GET["teacher"]
+            filters["enrollment__offer__teachers__id"] = self.request.GET["teacher"]
         if "period" in self.request.GET:
             filters["enrollment__offer__subject__courses__period"] = self.request.GET[
                 "period"
