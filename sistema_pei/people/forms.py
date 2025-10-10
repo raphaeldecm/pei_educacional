@@ -57,7 +57,7 @@ class TeacherForm(forms.ModelForm):
         empty_label=_("Selecione um campus..."),
         widget=forms.Select(
             attrs={
-                "class": "outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-500 appearance-none bg-neutral-50",  # noqa: E501
+                "class": "cursor-pointer outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 w-full text-slate-500 appearance-none bg-neutral-50",  # noqa: E501
             },
         ),
     )

@@ -3,11 +3,15 @@ from django.db import models
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from django.forms.models import model_to_dict
+from django.core.exceptions import ValidationError
+from django.apps import apps
 
 from sistema_pei.academics import managers
 from sistema_pei.academics.constants import COURSE_TYPE
 from sistema_pei.core.constants import SMALL_CHAR_FIELD_NAME_LENGTH
 from sistema_pei.core.models import BaseModel
+from django.db.models import ProtectedError
+
 from sistema_pei.people.models import Teacher
 
 
@@ -161,6 +165,49 @@ class Offer(BaseModel):
 
     def student_count(self):
         return self.enrollments.count()
+    
+    def available_students(self):
+        """Retorna alunos disponíveis para inclusão que ainda não estão matriculados nesta oferta."""
+        Student = apps.get_model('people', 'Student')
+        return Student.objects.filter(course=self.course).exclude(
+            id__in=self.enrollments.values_list("student_id", flat=True)
+        )
+
+    def add_student(self, student, user):
+        """Adiciona um aluno à oferta. Levanta ValidationError se não for possível."""
+        if self.status != Offer.OfferStatus.OPEN:
+            raise ValidationError(_("Não é possível adicionar alunos em uma oferta fechada."))
+
+        Enrollment = apps.get_model('academics', 'Enrollment')
+        if Enrollment.objects.filter(offer=self, student=student).exists():
+            raise ValidationError(_("Aluno já matriculado nesta oferta."))
+
+        return Enrollment.objects.create(
+            offer=self,
+            student=student,
+            YearSemesterReference=student.reference_period,
+            created_by=user,
+            updated_by=user,
+        )
+
+    def remove_student(self, student):
+        """Remove um aluno da oferta, excluindo também PEIs associados. Levanta ValidationError se não for possível."""
+        Enrollment = apps.get_model('academics', 'Enrollment')
+        Pei = apps.get_model('educational_plan', 'Pei')
+
+        enrollment = Enrollment.objects.filter(offer=self, student=student).first()
+        if not enrollment:
+            raise ValidationError(_("Este discente não está matriculado nesta oferta."))
+
+        try:
+            Pei.objects.filter(enrollment=enrollment).delete()
+            enrollment.delete()
+        except ProtectedError:
+            raise ValidationError(
+                _("Não é possível remover o discente desta oferta pois existem PEIs associados.")
+            )
+
+        return True
 
     def __str__(self):
         return self.subject.name

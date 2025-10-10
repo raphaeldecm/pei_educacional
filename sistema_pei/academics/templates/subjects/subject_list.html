@@ -32,12 +32,12 @@
           {%search_option object_name='courses' query=filter.form.courses.field.queryset input_placeholder='Selecione o curso...'%}
         </div>
         <div class="relative w-[322px] cursor-pointer">
-          <img class="absolute top-[12px] right-[10px]"
+          <img class="absolute top-[12px] right-[10px] pointer-events-none"
                src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                width="24px"
                height="24px" />
           <select name="subject_type"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
+                  class="cursor-pointer outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
             <option value="default" selected disabled>Selecione a duração...</option>
             {% for key, value in filter.form.subject_type.field.choices %}
               <option value="{{ key }}"
@@ -119,34 +119,5 @@
 {% endblock content %}
 
 {%block inline_javascript%}
-<script>
-  let filled_icons = Array.from(document.getElementsByClassName("filled_icon")) 
-  let filled_messages = Array.from(document.getElementsByClassName("filled_message"))
-
-  let CalculateMessagePosition = (element,margin_top=0)=>{
-    let element_position = element.getBoundingClientRect()
-    return window.scrollY + element_position.top + margin_top
-  }
-
-  let ShowMessage = (message_element,position)=>{
-    message_element.style.transform = `translateY(${position}px)`
-    message_element.style.display = 'block'
-  }
-
-  let HiddenMessage = (message_element)=>{message_element.style.display='none'}
-
-
-  filled_icons.forEach((element,index)=>{
-    let element_filled_message = filled_messages[index]
-
-    element.addEventListener('mouseenter',()=>{
-      let filled_message_position = CalculateMessagePosition(element,50)
-      ShowMessage(element_filled_message,filled_message_position)
-    })
-
-    element.addEventListener("mouseleave",()=>{HiddenMessage(element_filled_message)})
-  })
-
-
-</script>
+<script src="{% static 'js/academics/subjects/subject_list.js' %}"></script>
 {%endblock inline_javascript%}
