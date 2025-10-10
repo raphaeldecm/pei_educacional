@@ -17,9 +17,9 @@
       <p class="text-[14px]">Seja bem-vindo (a)</p>
     </div>
     {% if "Teacher" in user.groups.values_list %}<h1>{{ user.groups.values_list }}</h1>{% endif %}
-    <div class="flex gap-[28px] w-[calc(100vw-100px)] max-w-[1693px] overflow-x-auto">
+    <div class="flex gap-[28px] w-[calc(100vw-100px)] max-w-[1693px] overflow-x-auto p-6 translate-x-[-24px] mt-6">
       <a href="?&status=NOT_START">
-        <div class="flex rounded-lg items-center justify-center cursor-pointer mt-10 gap-[12px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-red-500 to-red-700">
+        <div class="flex rounded-lg items-center justify-center cursor-pointer hover:scale-110 transition-all hover:shadow-lg gap-[12px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-red-500 to-red-700">
           <img src="{% static 'images/icons/icon-uninitiated-peis.svg' %}"
                alt=""
                width="85px"
@@ -35,7 +35,7 @@
         </div>
       </a>
       <a href="?&status=IN_PROGRESS">
-        <div class="flex rounded-lg items-center justify-center cursor-pointer mt-10 gap-[12px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-amber-400 to-amber-500">
+        <div class="flex rounded-lg items-center justify-center cursor-pointer hover:scale-110 transition-all hover:shadow-lg gap-[12px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-amber-400 to-amber-500">
           <img src="{% static 'images/icons/icon-in-progress-peis.svg' %}"
                alt=""
                width="85px"
@@ -51,7 +51,7 @@
         </div>
       </a>
       <a href="?&status=FEEDBACK">
-        <div class="flex rounded-lg items-center justify-center cursor-pointer mt-10 gap-[12px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-blue-600 to-blue-700"
+        <div class="flex rounded-lg items-center justify-center cursor-pointer hover:scale-110 transition-all hover:shadow-lg gap-[12px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-blue-600 to-blue-700"
              title="Foram preenchidos mas ainda sem parecer, pois o semestre ainda está em andamento.">
           <img src="{% static 'images/icons/icon-filled-peis.svg' %}"
                alt=""
@@ -68,7 +68,7 @@
         </div>
       </a>
       <a href="?&status=COMPLETED">
-        <div class="flex rounded-lg items-center justify-center cursor-pointer mt-10 gap-[12px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-green-600 to-green-700"
+        <div class="flex rounded-lg items-center justify-center cursor-pointer hover:scale-110 transition-all hover:shadow-lg gap-[12px] h-[178px] w-[365px] min-w-[365px] bg-gradient-to-r from-green-600 to-green-700"
              title="Preenchidos totalmente e finalizados.">
           <img src="{% static 'images/icons/icon-finished-peis.svg' %}"
                alt=""
@@ -120,12 +120,12 @@
                    value="{{ filter.form.year.value }}" />
           </div>
           <div class="relative cursor-pointer w-full max-w-xs">
-            <img class="absolute top-[12px] right-[10px]"
+            <img class="absolute top-[12px] right-[10px] pointer-events-none"
                  src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                  width="24px"
                  height="24px" />
                 <select name="semester"
-                        class="outline-none text-[14px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
+                        class="cursor-pointer outline-none text-[14px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
                   <option value="" {% if not request.GET.semester %}selected{% endif %} disabled>Selecione o semestre...</option>
                   {% for semester_value, semester_label in filter.form.fields.semester.choices %}
                     <option value="{{ semester_value }}"
@@ -136,12 +136,12 @@
                 </select>
           </div>
           <div class="relative w-[322px] cursor-pointer">
-            <img class="absolute top-[12px] right-[10px]"
+            <img class="absolute top-[12px] right-[10px] pointer-events-none  "
                  src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                  width="24px"
                  height="24px" />
             <select name="status"
-                    class="outline-none text-[14px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
+                    class="cursor-pointer outline-none text-[14px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
               <option value="default" selected disabled>Selecione a situação...</option>
               {% for key, value in filter.form.status.field.choices %}
                 <option value="{{ key }}"
@@ -150,12 +150,12 @@
             </select>
           </div>
           <div class="relative w-[322px] cursor-pointer">
-            <img class="absolute top-[12px] right-[10px]"
+            <img class="absolute top-[12px] right-[10px] pointer-events-none"
                  src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                  width="24px"
                  height="24px" />
             <select name="offer_type"
-            class="outline-none text-[14px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
+            class="cursor-pointer outline-none text-[14px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
               <option value="default" disabled selected>
                 Selecionar Tipo de oferta
               </option>
@@ -166,7 +166,7 @@
               {%endfor%}
             </select>
           </div>
-          <button class="flex items-center justify-center gap-[10px] min-w-[100px] h-[48px] bg-green-500 rounded-[6px] text-neutral-50">
+          <button class="flex items-center justify-center gap-[10px] min-w-[100px] h-[48px] bg-green-500 rounded-[6px] text-neutral-50 hover:scale-105 transition-all">
             <img src="{% static 'images/icons/icon-filter.svg' %}"
                  alt=""
                  width="24px"
@@ -175,7 +175,7 @@
           </button>
           {% if request.GET %}
             <a href="{{ request.path }}"
-              class="flex items-center justify-center gap-[10px] min-w-[100px] h-[48px] bg-slate-500 rounded-[6px] text-neutral-50">
+              class="flex items-center justify-center gap-[10px] min-w-[100px] h-[48px] bg-slate-500 rounded-[6px] text-neutral-50 hover:scale-105 transition-all">
               <img src="{% static 'images/icons/icon-filter-remove.svg' %}"
                   alt=""
                   width="20px"

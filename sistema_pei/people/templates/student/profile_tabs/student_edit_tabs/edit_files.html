@@ -1,0 +1,78 @@
+{% load static %}
+
+<div>
+  <h2 class="font-sans font-medium text-lg text-ls block mb-4">Anexos</h2>
+  <ul class="space-y-4">
+    {% for file in student_files %}
+       <li class="flex flex-wrap justify-between gap-2 bg-transparent font-sans appearance-none border rounded w-full py-6 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 shadow-black transition-all duration-75 hover:shadow-md">
+        <span class="flex gap-2 text-gray-700 truncate text-ellipsis w-9/12">
+          <img src="{% static 'images/icons/clip_icon.svg' %}"
+               alt="icone de clip de papel, representa um arquivo anexado" />
+          {{ file.file.name|slice:"14:" }}
+        </span>
+        <div class="flex h-full items-center">
+         <a href="{{ file.file.url }}" class="text-slate-900 mx-2 group" target="_blank">
+            <img src="{% static 'images/icons/icon-eye.svg' %}" alt="icon de visualização" class=" w-[26px] block group-hover:hidden">
+            <img src="{% static 'images/icons/icon-eye-green.svg' %}" alt="icon de visualização" class=" w-[26px] hidden group-hover:block">
+          </a>
+           <a href="{{ file.file.url }}" class="text-slate-900 mx-2 group" download>
+            <img src="{% static 'images/icons/icon-download.svg' %}" alt="icon de download" class=" w-[26px]  block group-hover:hidden">
+            <img src="{% static 'images/icons/icon-download-green.svg' %}" alt="icon de download" class=" hidden  w-[26px]  group-hover:block">
+          </a>
+          <form action="{% url 'people:student_delete_file' student.id %}"
+                method="post"
+                class="inline">
+            {% csrf_token %}
+            <input type="hidden" name="file_id" value="{{ file.id }}" />
+            <button type="submit"
+              class="removeFile mr-4 text-red-500 cursor-pointer flex items-center group">
+              <img src="{% static 'images/icons/delete-icon.svg' %}" alt="icon de delete" class="hidden group-hover:block w-[26px]">      
+              <img src="{% static 'images/icons/delete-slate-icon.svg' %}" alt="icon de delete" class="block group-hover:hidden w-[26px]">      
+            </button>
+          </form>
+        </div>
+      </li>
+    {% empty %}
+      <li>Não há arquivos disponíveis para este aluno.</li>
+    {% endfor %}
+  </ul>
+  <form id="updateForm"
+        action="{% url 'people:student_upload_files' student.id %}"
+        method="post"
+        enctype="multipart/form-data"
+        class="mt-10 space-y-4">
+    {% csrf_token %}
+    <label class="font-sans font-medium text-lg text-ls block mb-4">Enviar novos Anexos</label>
+    <div class="w-full">
+      <div id="file-list" class="my-4 space-y-2"></div>
+      <div>
+        <input id="{{ form.files.id_for_label }}"
+               name="{{ form.files.name }}"
+               type="file"
+               accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls"
+               multiple
+               class="hidden" />
+        <button type="button"
+                id="add-files-button"
+                class="flex gap-2 bg-transparent font-sans appearance-none border rounded w-full py-6 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">
+          <img src="{% static 'images/icons/clip_icon.svg' %}"
+               alt="icone de clip de papel, representa um arquivo anexado" />
+          Escolha o anexo
+        </button>
+      </div>
+    </div>
+    {% if form.files.errors %}
+      <ul class="list-disc p-2">
+        {% for error in form.files.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+      </ul>
+    {% endif %}
+    <button id="submit-button"
+            type="submit"
+            class="w-full font-poppins bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded transition duration-300 ease-in-out">
+      Adicionar arquivos
+    </button>
+  </form>
+</div>
+{% block inline_javascript %}
+  <script src="{% static 'js/people/student_edit_files.js' %}"></script>
+{% endblock inline_javascript %}

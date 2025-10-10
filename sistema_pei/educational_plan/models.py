@@ -6,8 +6,6 @@ from sistema_pei.core.models import BaseModel
 from sistema_pei.educational_plan import managers
 from sistema_pei.people.models import Teacher
 
-
-# Create your models here.
 class Pei(BaseModel):
     class StatusChoice(models.TextChoices):
         NOT_START = "NOT_START", _("Não iniciado")

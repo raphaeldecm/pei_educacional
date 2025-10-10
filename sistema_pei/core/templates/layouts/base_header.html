@@ -80,10 +80,10 @@
              placeholder="Pesquisar..."
              class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50 placeholder:text-slate-500" />
     </div> {% endcomment %}
-    <div id="notificationIcon" class="cursor-pointer relative">
+    <div id="notificationIcon" class="cursor-pointer relative group">
       {% if notifications %}
         <div id="notificationCount"
-             class="h-5 w-5 bg-green-500 rounded-full text-[10px] text-white flex items-center justify-center absolute top-[-10px] right-[-5px]">
+             class="h-5 w-5 bg-green-500 rounded-full text-[10px] text-white flex items-center justify-center absolute top-[-10px] right-[-5px] transition-all group-hover:scale-110 z-10">
           {% if notifications|length > 9 %}
             9+
           {% else %}
@@ -92,7 +92,7 @@
         </div>
       {% endif %}
       <img src="{% static 'images/icons/icon-notification.svg' %}"
-           class="min-w-[31px] min-h-[33px] max-w-full"
+           class="min-w-[31px] min-h-[33px] max-w-full transition-all group-hover:scale-110"
            alt="" />
       <!-- Modal -->
       <div id="notificationModal"
@@ -118,7 +118,7 @@
                   </div>
                 </a>
                 <button onclick="markAsViewed({{ notification.pk }})"
-                        class="flex flex-col items-center">
+                        class="flex flex-col items-center hover:scale-110 transition-all">
                   <img src="{% static 'images/icons/icon-checked.svg' %}"
                        class="w-[30px] h-[30px] mt-2"
                        alt="Marcar como lido" />
@@ -139,7 +139,7 @@
     <div>
       <a onclick="toggleDropdown()"
          type="button"
-         class="inline-flex w-max justify-center items-center rounded-md py-2 text-sm font-semibold hover:cursor-pointer hover:bg-zinc-200/10"
+         class="inline-flex w-max justify-center items-center rounded-md py-2 text-sm font-semibold hover:cursor-pointer hover:bg-zinc-200/10 transition-all hover:scale-110"
          id="menu-button"
          aria-expanded="true"
          aria-haspopup="true">

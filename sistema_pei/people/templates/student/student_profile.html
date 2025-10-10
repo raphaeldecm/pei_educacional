@@ -1,0 +1,243 @@
+{% extends "layouts/base.html" %}
+
+{% load static i18n %}
+{% load breadcrumb_item %}
+{% load has_group %}
+
+{% block breadcrumb %}
+  {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
+  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" url="academics:dashboard" groups='collaborator coordinator responsible'%}
+  {% breadcrumb_item text="Discentes" url="people:student_list" icon="images/icons/icon-user-green.svg" groups='collaborator coordinator responsible'%}
+  {% breadcrumb_item text="Perfil do discente" icon="images/icons/icon-user-green.svg" %}
+{% endblock breadcrumb %}
+{% block content %}
+  <div class="w-full">
+    <div>
+      <h1 class="font-semibold text-[30px] mb-[33px]">Perfil do Aluno</h1>
+      <div class="bg-amber-100 rounded-lg  p-[20px] flex gap-[16px]">
+        <div class="w-[48px] h-[40px] rounded-full bg-amber-300 flex justify-center items-center">
+          <img src="{% static 'images/icons/icon-alert.svg' %}"
+               alt=""
+               width="20px"
+               height="17px" />
+        </div>
+        <div>
+          <p class="text-[18px] text-amber-500 font-medium">Alerta ético</p>
+          <p class="font-light text-[16px] text-amber-500">
+            As informações contidas nesta página são consideradas reservadas e o compartilhamento das mesmas deve ser restrito apenas ás\aos envolvidos na ação pedagógica, sob pena de implicações legais
+          </p>
+        </div>
+      </div>
+      <div class="mx-[166px] mt-[65px] flex items-start gap-[10%] relative">
+        <div class="flex flex-col justify-center items-center">
+          <div class="w-[219px] h-[219px] rounded-full bg-amber-600 flex justify-center overflow-hidden items-center">
+            <img src="{{ student.image.url }}"
+                 class="w-full h-full object-cover"
+                 alt="Student Image" />
+          </div>
+
+          <div class='mt-[24px] flex items-center justify-center'>
+            <p class="bg-green-950 border border-green-500 rounded-full text-neutral-50 px-[8px]">
+              # {{ student.registration }}
+            </p>
+
+            {% with last_sync_days=student.last_sync_time %}
+            {% with last_sync_date=student.last_sync_date%}
+
+            {%if last_sync_days is none%}
+                <div class="m-auto w-fit relative [&_span]:hover:visible">
+                  <img src="{%static 'images/icons/not-sync-icon.svg'%}" alt="Icone que demonstra que não ha nenhuma sicronização até o momento" class="w-[36px] cursor-pointer">
+                    <span class="absolute top-full left-[-105px] w-[250px] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
+                      Nenhuma sincronização feita até o momento
+                    </span>
+                </div>
+            {%elif last_sync_days <= SYNC_RECENT_INTERVAL %}
+                  <div class="m-auto w-fit relative [&_span]:hover:visible">
+                    <img src="{%static 'images/icons/sync-updated-icon.svg'%}" alt="icone de sincronização recente" class='w-[36px] cursor-pointer'>
+                     <span class="absolute top-full left-[-105px] w-[250px] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
+                      Sincronização recente (feita em {{last_sync_date|date:"d/m/Y"}})
+                    </span>
+                  </div>
+            {%elif last_sync_days <= SYNC_REGULAR_INTERVAL %}
+                  <div class="m-auto w-fit relative [&_span]:hover:visible">
+                    <img src="{%static 'images/icons/sync-outdated-icon.svg'%}" alt="icone de sicronização regular" class='w-[36px] cursor-pointer'>
+                     <span class= "absolute top-full left-[-105px] w-[250px] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
+                      Sincronização feita em {{last_sync_date|date:"d/m/Y"}}
+                    </span>
+                  </div>
+      
+            {%else%}
+                  <div class="m-auto w-fit relative [&_span]:hover:visible">
+                    <img src="{%static 'images/icons/sync-not-updated-icon.svg'%}" alt="icone de sicronização antiga" class='w-[36px] cursor-pointer'>
+                      <span class="absolute top-full left-[-105px] w-[250px] text-center p-2 bg-neutral-200 rounded-2xl z-10 invisible">
+                      Ultima Sincronização feita a muito tempo ({{last_sync_date|date:"d/m/Y"}})
+                    </span>
+                  </div>
+      
+            {%endif%}
+            {% endwith %}
+            {% endwith %}
+          </div>
+        </div>
+        <div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-0 h-[237px] mb-[20px]">
+            <div class="border-b border-slate-300 pr-[12px]">
+              <p class="text-slate-900 font-medium text-[18px] mb-[28px]">Nome completo</p>
+              <p class="text-slate-500 text-[16px] truncate">{{ student.name }}</p>
+            </div>
+            <div class="border-b border-slate-300">
+              <p class="text-slate-900 font-medium text-[18px] mb-[28px]">Curso</p>
+              <p class="text-slate-500 text-[16px] truncate">{{ student.course.name }}</p>
+            </div>
+            <div class="border-b border-slate-300 pr-[12px]">
+              <p class="text-slate-900 font-medium text-[18px] mb-[28px]">Equipe multiprofissional responsável:</p>
+              <div class="flex gap-[8px] h-[52px] overflow-x-auto custom-scrollbar pb-[8px]">
+                {% for sector in student.sectors %}
+                  <span class="bg-amber-400 text-white px-3 h-full rounded-full flex items-center">{{ sector }}</span>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="border-b border-slate-300">
+              <p class="text-slate-900 font-medium text-[18px] mb-[28px]">Necessidades especiais específicas:</p>
+              <div class="flex gap-[8px] h-[52px] overflow-x-auto custom-scrollbar pb-[8px]">
+                {% for necessitie in student.educational_necessities.all %}
+                  <span class="bg-blue-400 text-white px-3 h-full rounded-full flex items-center whitespace-nowrap">{{ necessitie }}</span>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          {% if student_files|length > 0 %}
+            <div class="relative">
+              <p class="text-slate-900 font-medium text-[18px]">Anexos:</p>
+              {% for file in student_files %}
+                <div class="flex justify-between items-center gap-2 bg-transparent appearance-none border rounded w-full h-[77px] px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 mt-[19px]  shadow-black transition-all duration-75 hover:shadow-md">
+                  <div class="flex gap-2 w-[70%] max-w-[400px]">
+                    <img src="{% static 'images/icons/clip_icon.svg' %}"
+                         alt="icone de clip de papel, representa um arquivo anexado" />
+                    <p class="text-nowrap text-ellipsis overflow-hidden w-full">{{ file.file.name|slice:"14:" }}</p>
+                  </div>
+                  <div class="right-2 flex justify-between items-center">
+                    <a href="{{ file.file.url }}" class="text-slate-900 mx-2 group min-w-[22px]" target="_blank">
+                      <img src="{% static 'images/icons/icon-eye.svg' %}" alt="icon de visualização" class=" block group-hover:hidden">
+                      <img src="{% static 'images/icons/icon-eye-green.svg' %}" alt="icon de visualização" class=" hidden group-hover:block">
+                    </a>
+                    <a href="{{ file.file.url }}" class="text-slate-900 mx-2 group min-w-[22px]" download>
+                      <img src="{% static 'images/icons/icon-download.svg' %}" alt="icon de download" class=" block group-hover:hidden">
+                      <img src="{% static 'images/icons/icon-download-green.svg' %}" alt="icon de download" class=" hidden group-hover:block">
+                    </a>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <hr class="mt-10" />
+    <nav id="tab"
+         aria-label="Menu de navegação do perfil do aluno"
+         class="mt-2 mb-8">
+      <ul class="flex flex-wrap gap-5 py-2">
+        <li class="pb-1 font-poppins {% if active_tab == 'peis' %} text-green-500 border-b border-green-500 {% else %} text-slate-500 {% endif %} cursor-pointer hover:text-green-500 hover:border-b hover:border-green-500 transition duration-300 ease-in-out">
+          <a href="?tab=peis#tab">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke-width="1.5"
+                 stroke="currentColor"
+                 class="inline-block size-6 text-inherit">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+            </svg>
+            Peis
+          </a>
+        </li>
+        <li class="pb-1 font-poppins {% if active_tab == 'offers' %} text-green-500 border-b border-green-500 {% else %} text-slate-500 {% endif %} cursor-pointer hover:text-green-500 hover:border-b hover:border-green-500 transition duration-300 ease-in-out">
+          <a href="?tab=offers#tab">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke-width="1.5"
+                 stroke="currentColor"
+                 class="inline-block size-6 text-inherit">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+            </svg>
+            Ofertas 
+          </a>
+        </li>
+        <li class="pb-1 font-poppins {% if active_tab == 'historic' %} text-green-500 border-b border-green-500 {% else %} text-slate-500 {% endif %} cursor-pointer hover:text-green-500 hover:border-b hover:border-green-500 transition duration-300 ease-in-out">
+          <a href="?tab=historic#tab">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke-width="1.5"
+                 stroke="currentColor"
+                 class="inline-block size-6 text-inherit">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+            </svg>
+            Histórico
+          </a>
+        </li>
+        <li class="pb-1 font-poppins {% if active_tab == 'grades' %} text-green-500 border-b border-green-500 {% else %} text-slate-500 {% endif %} cursor-pointer hover:text-green-500 hover:border-b hover:border-green-500 transition duration-300 ease-in-out">
+          <a href="?tab=grades#tab">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke-width="1.5"
+                 stroke="currentColor"
+                 class="inline-block size-6 text-inherit">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 8.25h15m-16.5 7.5h15m-1.8-13.5-3.9 19.5m-2.1-19.5-3.9 19.5" />
+            </svg>
+            Notas
+          </a>
+        </li>
+        {%if request.user|has_some_group:'coordinator collaborator'%}
+        <li class="pb-1 font-poppins {% if active_tab == 'edit_student_data' %} text-green-500 border-b border-green-500 {% else %} text-slate-500 {% endif %} cursor-pointer hover:text-green-500 hover:border-b hover:border-green-500 transition duration-300 ease-in-out">
+          <a href="?tab=edit_student_data#tab">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke-width="1.5"
+                 stroke="currentColor"
+                 class="inline-block size-6 text-inherit">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+            </svg>
+            Editar Dados
+          </a>
+        </li>
+        {%endif%}
+      </ul>
+    </nav>
+    <section>
+      {% if active_tab == 'peis' %}
+        {% include "student/profile_tabs/student_tab_general.html" %}
+      {% elif active_tab == 'historic' %}
+        {% include "student/profile_tabs/student_tab_historic.html" %}
+      {% elif active_tab == 'offers' %}
+        {% include "student/profile_tabs/student_tab_offers.html" %}
+      {% elif active_tab == 'grades' %}
+        {% include "student/profile_tabs/student_tab_grades.html" %}
+      {% elif active_tab == 'edit_student_data' and request.user|has_some_group:'Coordinator collaborator'%}
+        {% include "student/profile_tabs/student_tab_edit.html" %}
+      {%else%}
+        {% include "student/profile_tabs/student_tab_general.html" %}
+      {% endif %}
+    </section>
+  </div>
+  <!-- Modal -->
+  <div id="confirmationModal"
+       class="fixed inset-0 bg-gray-800 bg-opacity-75 flex flex-wrap items-center justify-center hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+      <h2 class="text-xl font-semibold mb-4">Confirmar Atualização</h2>
+      <p class="mb-4 text-slate-500">Tem certeza de que deseja atualizar seus dados? Esta ação não pode ser desfeita.</p>
+      <div class="flex justify-end space-x-4">
+        <button id="cancelButton"
+                class="text-slate-900 hover:text-red-700 hover:underline py-2 px-4 rounded">Cancelar</button>
+        <button id="confirmButton"
+                class="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded">Confirmar</button>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+{% block inline_javascript %}
+  <script src="{% static 'js/people/student_profile.js' %}"></script>
+{% endblock inline_javascript %}

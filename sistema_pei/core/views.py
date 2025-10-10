@@ -19,6 +19,10 @@ class HomeListView(
     template_name = "home.html"
 
     def get_teacher_peis_queryset(self):
+        """
+        Retorna a lista de peis do professor logado por padrão. 
+        Na alteração do filtro de professor, retorna os peis deste professor.
+        """
         queryset = Pei.objects.all()
         has_professor_filter = self.request.GET.get("teacher")
 
@@ -27,6 +31,13 @@ class HomeListView(
                 responsible_teacher__user=self.request.user
             )
 
+        return queryset
+    
+    def get_teacher_dashboard_queryset(self):
+        """Retorna sempre a lista de peis do professor logado independente do filtro aplicado."""
+        queryset = Pei.objects.all()
+        if self.request.user.groups.filter(name="Teacher").exists():
+            queryset = queryset.filter(responsible_teacher__user=self.request.user)
         return queryset
 
     def get_queryset(self):
@@ -38,7 +49,7 @@ class HomeListView(
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        base_queryset = self.get_teacher_peis_queryset()
+        base_queryset = self.get_teacher_dashboard_queryset()
 
         context["pending_peis"] = base_queryset.filter(status="NOT_START").count()
         context["in_progress_peis"] = base_queryset.filter(status="IN_PROGRESS").count()

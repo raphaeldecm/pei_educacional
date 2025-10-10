@@ -1,0 +1,89 @@
+{% extends "layouts/base.html" %}
+
+{% load static i18n %}
+{% load breadcrumb_item %}
+
+{% block breadcrumb %}
+  {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
+  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-home-green.svg" url="academics:dashboard" %}
+  {% breadcrumb_item text="Docentes" icon="images/icons/icon-multiple-users-green.svg" url="people:teacher_list" %}
+  {% breadcrumb_item text="Cadastrar Docente" icon="images/icons/icon-register-student-green.svg" %}
+{% endblock breadcrumb %}
+{% block alerts %}
+  <div class="fixed p-4 top-20 flex flex-col gap-4">{% include "layouts/alerts.html" %}</div>
+{% endblock alerts %}
+{% block content %}
+  <div class="w-full">
+    <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
+    <form method="post" enctype="multipart/form-data" autocomplete="off">
+      {% csrf_token %}
+      <div class="mb-4 col-span-2 flex flex-col items-center gap-4">
+        <img id="profileImage"
+          src="{% if form.instance.photoAlt %}{{ form.instance.photoAlt.url }}{% elif form.instance.photo %}{{ form.instance.photo }}{% else %}{% static 'images/img/boy_user-profile.svg' %}{% endif %}"
+          alt="imagem de perfil"
+          class="h-40 w-40 rounded-full bg-transparent border object-cover text-transparent" />
+        <label for="{{ form.photoAlt.id_for_label }}"
+               class="font-sans font-medium text-lg text-ls block mb-4">
+          Foto do docente <span class="text-red-500">*</span>
+        </label>
+        {{ form.photoAlt }}
+        {% comment %} /List Erros {% endcomment %}
+        {% if form.image.errors %}
+          <ul class="list-disc p-2">
+            {% for error in form.image.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      <div class="flex items-center gap-[3%]">
+        <div class="flex-1">
+          <label for="{{ form.name.id_for_label }}" class="font-medium text-[18px]">{{ form.name.label }}</label>
+          {{ form.name }}
+        </div>
+        <div class="flex-1">
+          <label for="{{ form.code.id_for_label }}" class="font-medium text-[18px]">{{ form.code.label }}</label>
+          {{ form.code }}
+        </div>
+      </div>
+      <div class="flex items-center gap-[3%] mt-[24px]">
+        <div class="flex-1">
+          <label for="{{ form.campus.id_for_label }}" class="font-medium text-[18px]">{{ form.campus.label }}</label>
+          <div class="relative w-full cursor-pointer mt-[16px]">
+            <img class="absolute top-[12px] right-[10px] pointer-events-none"
+                 src="{% static 'images/icons/icon-updown-arrow.svg' %}"
+                 width="24px"
+                 height="24px" />
+            {{ form.campus }}
+          </div>
+        </div>
+        <div class="flex-1">
+          <label for="{{ form.email.id_for_label }}" class="font-medium text-[18px]">{{ form.email.label }}</label>
+          {{ form.email }}
+        </div>
+      </div>
+      {% include "components/_save_back_edit_buttons.html" with link_to_back='people:teacher_list' %}
+    </form>
+  </div>
+{% endblock content %}
+{% block inline_javascript %}
+  <script>
+    function previewImage(event) {
+
+      /*
+      Preview da imagen de perfil
+      */
+
+      const input = event.target;
+      const file = input.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        const preview = document.getElementById('profileImage');
+        preview.src = e.target.result;
+      };
+
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    }
+  </script>
+{% endblock inline_javascript %}

@@ -61,11 +61,6 @@ urlpatterns = [
         name="subject_delete",
     ),
     path(
-        "subjects/remove_student_from_subject/<int:subject_id>/<int:student_id>",
-        views.RemoveStudentFromSubjectView.as_view(),
-        name="remove_student_from_subject",
-    ),
-    path(
         "subjects/detail/<int:pk>/",
         views.SubjectDetailView.as_view(),
         name="subject_detail",
@@ -104,11 +99,6 @@ urlpatterns = [
         "offers/add_student_to_offer/<int:pk>/",
         views.AddStudentToOfferView.as_view(),
         name="add_student_to_offer",
-    ),
-    path(
-        "offers/get_subjects_by_course_id/<int:pk>/",
-        views.GetSubjectsByCourseView.as_view(),
-        name="get_subjects_by_course",
     ),
     path(
         'matrix/list/',

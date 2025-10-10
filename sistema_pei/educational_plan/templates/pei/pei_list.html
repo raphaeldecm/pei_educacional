@@ -37,12 +37,12 @@
           {%search_option object_name='teacher' query=filter.form.teacher.field.queryset input_placeholder='Selecione o professor...' %}
         </div>
         <div class="relative w-[322px] cursor-pointer">
-          <img class="absolute top-[12px] right-[10px]"
+          <img class="absolute top-[12px] right-[10px] pointer-events-none"
                src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                width="24px"
                height="24px" />
           <select name="status"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
+                  class="cursor-pointer outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
             <option value="default" selected disabled>Selecione a situação...</option>
             {% for key, value in filter.form.status.field.choices %}
               <option value="{{ key }}"
@@ -58,12 +58,12 @@
                  value="{{ filter.form.year.value }}" />
         </div>
         <div class="relative cursor-pointer w-full max-w-xs">
-          <img class="absolute top-[12px] right-[10px]"
+          <img class="absolute top-[12px] right-[10px] pointer-events-none"
                src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                width="24px"
                height="24px" />
           <select name="semester"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
+                  class="cursor-pointer outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
             <option value="" {% if not request.GET.semester %}selected{% endif %} disabled>Selecione o semestre...</option>
             {% for semester_value, semester_label in filter.form.fields.semester.choices %}
               <option value="{{ semester_value }}"
@@ -74,12 +74,12 @@
           </select>
         </div>
          <div class="relative w-[322px] cursor-pointer">
-            <img class="absolute top-[12px] right-[10px]"
+            <img class="absolute top-[12px] right-[10px] pointer-events-none"
                  src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                  width="24px"
                  height="24px" />
             <select name="offer_type"
-            class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
+            class="cursor-pointer outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
               <option value="default" disabled selected>
                 Selecionar Tipo de oferta
               </option>
@@ -90,7 +90,7 @@
               {%endfor%}
             </select>
           </div>
-        <button class="flex items-center justify-center gap-[10px] min-w-[100px] h-[48px] bg-green-500 rounded-[6px] text-neutral-50">
+        <button class="flex items-center justify-center gap-[10px] min-w-[100px] h-[48px] bg-green-500 rounded-[6px] text-neutral-50 hover:scale-105 transition-all">
           <img src="{% static 'images/icons/icon-filter.svg' %}"
                alt=""
                width="24px"

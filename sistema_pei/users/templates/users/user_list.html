@@ -40,13 +40,13 @@
       </div>
       <div class="flex gap-[8px]">
         <div class="relative w-[322px] cursor-pointer">
-          <img class="absolute top-[12px] right-[10px]"
+          <img class="absolute top-[12px] right-[10px] pointer-events-none"
                src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                width="24px"
                height="24px" />
           <select name="sector"
                   id="id_sector"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
+                  class="cursor-pointer outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
             <option value="" selected disabled>Selecione o setor ...</option>
             {% for sector in filter.form.sector.field.choices %}
               <option value="{{ sector.0 }}"
@@ -57,13 +57,13 @@
           </select>
         </div>
         <div class="relative w-[322px] cursor-pointer">
-          <img class="absolute top-[12px] right-[10px]"
+          <img class="absolute top-[12px] right-[10px] pointer-events-none"
                src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                width="24px"
                height="24px" />
           <select name="group"
                   id="group"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
+                  class="cursor-pointer outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
             <option value="" selected disabled>Selecione o tipo ...</option>
             {% for group in filter.form.groups.field.queryset %}
               <option value="{{ group.id }}"
@@ -73,7 +73,7 @@
             {% endfor %}
           </select>
         </div>
-        <button class="flex items-center justify-center gap-[10px] min-w-[100px] h-[48px] bg-green-500 hover:bg-green-400 rounded-[6px] text-neutral-50">
+        <button class="flex items-center justify-center gap-[10px] min-w-[100px] h-[48px] bg-green-500 rounded-[6px] text-neutral-50 hover:scale-105 transition-all">
           <img src="{% static 'images/icons/icon-filter.svg' %}"
                alt=""
                width="24px"
@@ -124,6 +124,7 @@
                 {% endif %}
               </td>
               <td class="flex justify-center items-center h-[97px] gap-[30px] relative pr-[26px]">
+                {% url 'users:detail' object.id as detail_url %}
                 {% action_item default_icon='images/icons/eye-action-icon.svg' hover_icon='images/icons/eye-action-hover-icon.svg' message="Visualizar Usuario" border_class='border-[#deedfe]' hover_class='hover:bg-[#2462eb]' link=detail_url%}
                 {% comment %} <a class="hover:bg-slate-100 p-2 rounded-full" href="{% url 'people:teacher_update' object.pk %}">
                   <img src="{% static 'images/icons/icon-edit-element.svg' %}" alt="" width="24px" height="24px" class="cursor-pointer" />
