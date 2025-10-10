@@ -208,6 +208,12 @@ class Student(Person):
     def __str__(self):
         return self.name
     
+    def get_offers(self,**filters)->list:
+        return self.course.courses.filter(**filters).all()
+    
+    def has_offers(self)->bool:
+        return self.course.courses.exists()    
+    
     def last_sync_time(self):
         """
             retorna quantos dias fazem desde a ultima sincronização

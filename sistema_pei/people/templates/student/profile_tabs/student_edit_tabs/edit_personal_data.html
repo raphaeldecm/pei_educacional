@@ -66,7 +66,7 @@
         <div class="relative">
           <select id="{{ form.course.id_for_label }}"
                   name="{{ form.course.name }}"
-                  class="bg-transparent font-sans appearance-none border rounded-lg h-11 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">
+                  class="cursor-pointer bg-transparent font-sans appearance-none border rounded-lg h-11 w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500">
             {% for value, label in form.course.field.choices %}
               <option value="{{ value }}"
                       {% if value|stringformat:"s" == form.course.value|stringformat:"s" %}selected{% endif %}>
@@ -74,7 +74,7 @@
               </option>
             {% endfor %}
           </select>
-          <img class="absolute top-[12px] right-[10px]"
+          <img class="absolute top-[12px] right-[10px] pointer-events-none"
                src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                width="24px"
                height="24px" />

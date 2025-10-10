@@ -329,39 +329,6 @@
   </div>
 {% endblock content %}
 {% block inline_javascript %}
-<script>
-  //vars
-  const peiEditContainer = document.getElementById('pei_edit_container') // elemento inicial da pagina
-  const behaviorUnSupportedNavigators = ['firefox'];
-
-  function isNavigatorSupported(unsupportedList) {
-    const userAgent = navigator.userAgent.toLowerCase();
-    return !unsupportedList.some(navigator => userAgent.includes(navigator));
-  }
-
-  function scrollToElement(element){
-    let {top} = element.getBoundingClientRect()
-    isNavigatorSupported(behaviorUnSupportedNavigators) ? window.scrollTo({top : top,behavior: "smooth",}) :window.scrollTo({top : top})
-  }
-
-  function showTab(tab) {
-      scrollToElement(peiEditContainer)
-        document.querySelectorAll('.tab-content').forEach(function(content) {
-          content.classList.add('hidden');
-        });
-        
-        document.querySelectorAll('nav ul li').forEach(function(tabItem) {
-          tabItem.classList.remove();
-        });
-        
-        document.getElementById('content-' + tab).classList.remove('hidden');
-
-    }
-
-    // Inicializa a aba Metodologia marcada por padrão ao carregar a página
-    document.addEventListener('DOMContentLoaded', function() {
-      showTab('metodologia');
-    });
-  </script>
-  {% endblock inline_javascript %}
+  <script src="{% static 'js/educational_plan/pei_form.js' %}"></script>
+{% endblock inline_javascript %}
   

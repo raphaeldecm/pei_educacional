@@ -4,7 +4,7 @@ from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core.paginator import PageNotAnInteger
+from django.core.paginator import PageNotAnInteger , EmptyPage
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
@@ -72,7 +72,7 @@ class TeacherListView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.Li
     title = _("Docentes")
     paginate_by = constants.DEFAULT_PAGE_SIZE
     filterset_class = TeacherFilter
-    template_name = "people/teacher/teacher_list.html"
+    template_name = "teacher/teacher_list.html"
     ordering = ["name"]
 
 
@@ -87,7 +87,7 @@ class TeacherCreateView(
     form_class = TeacherForm
     success_url = reverse_lazy("people:teacher_list")
     success_message = _("O professor foi cadastrado com sucesso.")
-    template_name = "people/teacher/teacher_form.html"
+    template_name = "teacher/teacher_form.html"
 
     def form_valid(self, form):
         form.instance.created_by = self.request.user
@@ -104,7 +104,7 @@ class TeacherImportView(
     model = Teacher
     title = _("Importar Docentes")
     form_class = CSVImportForm
-    template_name = "people/teacher/teacher_import_form.html"
+    template_name = "teacher/teacher_import_form.html"
     success_url = reverse_lazy("people:teacher_list")
 
     def form_valid(self, form):
@@ -124,7 +124,7 @@ class TeacherUpdateView(
     form_class = TeacherForm
     success_url = reverse_lazy("people:teacher_list")
     success_message = _("O professor foi atualizado com sucesso.")
-    template_name = "people/teacher/teacher_form.html"
+    template_name = "teacher/teacher_form.html"
 
     def form_valid(self, form):
         form.instance.updated_by = self.request.user
@@ -141,7 +141,7 @@ class TeacherDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
     model = Teacher
     context_object_name = "teacher"
     title = _("Detalhes do Docente")
-    template_name = "people/teacher/teacher_detail.html"
+    template_name = "teacher/teacher_detail.html"
 
 
 class StudentListView(
@@ -155,7 +155,7 @@ class StudentListView(
     title = _("Discentes")
     paginate_by = constants.DEFAULT_PAGE_SIZE
     filterset_class = StudentFilter
-    template_name = "people/student/student_list.html"
+    template_name = "student/student_list.html"
     ordering = ["name"]
 
 
@@ -177,7 +177,7 @@ class StudentDeleteView(
 class StudentCreateView(DontBeTeacherPermission,LoginRequiredMixin, CreateView):
     model = Student
     form_class = ViewStudentForm
-    template_name = "people/student/student_create.html"
+    template_name = "student/student_create.html"
     success_url = reverse_lazy("people:student_create")
 
     def form_valid(self, form):
@@ -213,7 +213,7 @@ class StudentImportView(
 ):
     form_class = forms.CSVImportForm
     title = _("Importar Discentes")
-    template_name = "people/student/student_import_form.html"
+    template_name = "student/student_import_form.html"
     success_url = reverse_lazy("people:student_list")
 
     def form_valid(self, form):
@@ -225,8 +225,9 @@ class StudentImportView(
 
 
 class ProfilePageView(LoginRequiredMixin, TemplateView):
-    template_name = "people/student/student_profile.html"
+    template_name = "student/student_profile.html"
     paginate_by = 10
+    default_tab = 'peis'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -240,19 +241,38 @@ class ProfilePageView(LoginRequiredMixin, TemplateView):
         # Sync status constants
         context["SYNC_RECENT_INTERVAL"] = SYNC_RECENT_INTERVAL
         context["SYNC_REGULAR_INTERVAL"] = SYNC_REGULAR_INTERVAL
+        
+        student_offers_filter = {}
+        student_offers_filter['subject__name__icontains'] = self.request.GET.get("subject",'')
+        
+        if(self.request.user.groups.filter(name='Teacher').exists()):
+            student_offers_filter['teachers'] = self.request.user.teacher
+            context['is_teacher'] = True
+            
+        student_offers = student.get_offers(**student_offers_filter).order_by('id')
+        
+        offers_paginator = Paginator(student_offers, self.paginate_by)
+        offers_page_number = self.request.GET.get("offers_page")
+        
+        try:
+            student_offers = offers_paginator.page(offers_page_number)
+        except (PageNotAnInteger, EmptyPage):
+            student_offers = offers_paginator.page(1)
+            
+        context["student_offers"] = student_offers
 
         # Tabs
-        allowed_tabs = ("general", "historic", "grades", "edit_student_data")
-        requested_tab = self.request.GET.get("tab", "general")
+        allowed_tabs = ("peis", "historic", "grades", "edit_student_data","offers")
+        requested_tab = self.request.GET.get("tab", self.default_tab)
         if requested_tab in allowed_tabs:
             context["active_tab"] = requested_tab
         else:
-            context["active_tab"] = "general"
+            context["active_tab"] = self.default_tab
 
         sub_tab = self.request.GET.get("sub_tab", "edit_personal_data")
         context["sub_active_tab"] = sub_tab
 
-        ##^ Tab General
+        ##^ Tab Peis
         student_peis = context["student_peis"] = Pei.objects.filter(
             enrollment__student=student,
         )
@@ -267,7 +287,7 @@ class ProfilePageView(LoginRequiredMixin, TemplateView):
                 "course"
             ]
         if "teacher" in self.request.GET:
-            filters["enrollment__offer__teacher__id"] = self.request.GET["teacher"]
+            filters["enrollment__offer__teachers__id"] = self.request.GET["teacher"]
         if "period" in self.request.GET:
             filters["enrollment__offer__subject__courses__period"] = self.request.GET[
                 "period"
@@ -362,7 +382,7 @@ class EditPersonalDataView(DontBeTeacherPermission,LoginRequiredMixin, View):
             request.session["form_data"] = request.POST
 
         return redirect(
-            f"/people/profile/{student.id}?tab=edit_student_data&sub_tab=edit_personal_data#tab",
+            f"/profile/{student.id}?tab=edit_student_data&sub_tab=edit_personal_data#tab",
         )
 
 
@@ -387,7 +407,7 @@ class EditHistoricPersonalDataView(DontBeTeacherPermission,LoginRequiredMixin, V
             request.session["form_data"] = request.POST
 
         return redirect(
-            f"/people/profile/{student.id}?tab=edit_student_data&sub_tab=edit_historic#tab",
+            f"/profile/{student.id}?tab=edit_student_data&sub_tab=edit_historic#tab",
         )
 
 
@@ -411,7 +431,7 @@ class DeletePersonalFilesView(DontBeTeacherPermission,LoginRequiredMixin, View):
             messages.error(self.request, error_message)
 
         return redirect(
-            f"/people/profile/{student.id}?tab=edit_student_data&sub_tab=edit_files#tab",
+            f"/profile/{student.id}?tab=edit_student_data&sub_tab=edit_files#tab",
         )
 
 
@@ -436,7 +456,7 @@ class UploadStudentFilesView(LoginRequiredMixin, View):
             request.session["form_data"] = request.POST
 
         return redirect(
-            f"/people/profile/{student.id}?tab=edit_student_data&sub_tab=edit_files#tab",
+            f"/profile/{student.id}?tab=edit_student_data&sub_tab=edit_files#tab",
         )
 
 

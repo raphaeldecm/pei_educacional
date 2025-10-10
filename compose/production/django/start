@@ -4,8 +4,10 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-python /app/manage.py load_db_data
+python manage.py migrate
 
 python /app/manage.py collectstatic --noinput --disable-collectfast
+
+npm run dev
 
 exec /usr/local/bin/gunicorn config.asgi --bind 0.0.0.0:8000 --chdir=/app -k uvicorn.workers.UvicornWorker

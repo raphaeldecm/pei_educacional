@@ -44,12 +44,12 @@
                  value="{{ filter.form.year.value }}" />
         </div>
         <div class="relative cursor-pointer w-full max-w-xs">
-          <img class="absolute top-[12px] right-[10px]"
+          <img class="absolute top-[12px] right-[10px] pointer-events-none"
                src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                width="24px"
                height="24px" />
           <select name="semester"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
+                  class="cursor-pointer outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
             <option value="default" selected disabled>Selecione o semestre...</option>
             {% for semester_value, semester_label in filter.form.fields.semester.choices %}
               <option value="{{ semester_value }}"
@@ -63,12 +63,12 @@
           {%search_option object_name='course' query=filter.form.course.field.queryset input_placeholder='Buscar curso...'%}
         </div>
         <div class="relative cursor-pointer w-full max-w-xs">
-          <img class="absolute top-[12px] right-[10px]"
+          <img class="absolute top-[12px] right-[10px] pointer-events-none"
                src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                width="24px"
                height="24px" />
           <select name="period"
-                  class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
+                  class="cursor-pointer outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
             <option value="default" selected disabled>Selecione o Turno...</option>
             {% for period_value, period_label in filter.form.fields.period.choices %}
               <option value="{{ period_value }}" {%if request.GET.period == period_value%}selected{%endif%}>

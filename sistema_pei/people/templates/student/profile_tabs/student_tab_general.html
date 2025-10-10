@@ -1,5 +1,6 @@
 {% load static i18n %}
 {% load action_buttons %}
+{% load has_group %}
 
 <div>
   <form method="GET">
@@ -16,12 +17,12 @@
     </div>
     <div class="mt-[35px] flex gap-[19px]">
       <div class="relative w-[322px] cursor-pointer">
-        <img class="absolute top-[12px] right-[10px]"
+        <img class="absolute top-[12px] right-[10px] pointer-events-none"
              src="{% static 'images/icons/icon-updown-arrow.svg' %}"
              width="24px"
              height="24px" />
         <select name="teacher"
-                class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
+                class="cursor-pointer outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
           <option value="default" selected disabled>Selecione o professor...</option>
           {% for teacher in selector_teachers %}
             <option value="{{ teacher.id }}"
@@ -32,12 +33,12 @@
         </select>
       </div>
       <div class="relative w-[322px] cursor-pointer">
-        <img class="absolute top-[12px] right-[10px]"
+        <img class="absolute top-[12px] right-[10px] pointer-events-none"
              src="{% static 'images/icons/icon-updown-arrow.svg' %}"
              width="24px"
              height="24px" />
         <select name="period"
-                class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
+                class="cursor-pointer outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
           <option value="default" selected disabled>Selecione o turno...</option>
           <option value="MORNING"
                   {% if request.GET.period == 'MORNING' %}selected{% endif %}>Matutino</option>
@@ -48,12 +49,12 @@
         </select>
       </div>
       <div class="relative w-[322px] cursor-pointer">
-        <img class="absolute top-[12px] right-[10px]"
+        <img class="absolute top-[12px] right-[10px] pointer-events-none"
              src="{% static 'images/icons/icon-updown-arrow.svg' %}"
              width="24px"
              height="24px" />
         <select name="status"
-                class="outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
+                class="cursor-pointer outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
           <option value="default" selected disabled>Selecione a situação...</option>
           <option value="NOT_START"
                   {% if request.GET.status == 'NOT_START' %}selected{% endif %}>Não iniciado</option>
@@ -72,10 +73,20 @@
              height="24px" />
         <span>Filtrar</span>
       </button>
+      {% if request.GET %}
+         <a href="{{ request.path }}"
+           class="flex items-center justify-center gap-[10px] min-w-[100px] h-[48px] bg-slate-500 rounded-[6px] text-neutral-50">
+           <img src="{% static 'images/icons/icon-filter-remove.svg' %}"
+               alt=""
+               width="20px"
+               height="20px" />
+           <span class="text-[14px]">Limpar</span>
+         </a>
+       {% endif %}
     </div>
   </form>
 </div>
-<div class="mt-[36px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg">
+<div id="peiTab" class="mt-[36px] tab w-full h-max overflow-x-auto border border-slate-300 rounded-lg">
   <table class="table-auto w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px]">
     <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">
       <tr>
@@ -153,4 +164,3 @@
         </a>
       {% endif %}
     </div>
-  </div>
