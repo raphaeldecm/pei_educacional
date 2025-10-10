@@ -45,10 +45,11 @@ services:
     volumes:
       - static_data:/app/staticfiles
       - media_data:/app/sistema_pei/media
-
     ports:
       - 80:80
-    restart: unless-stopped  
+    restart: unless-stopped
+    depends_on:
+      - django
 
   redis:
     image: docker.io/redis:6
