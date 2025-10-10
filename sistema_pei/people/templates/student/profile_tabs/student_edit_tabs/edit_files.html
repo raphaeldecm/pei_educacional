@@ -74,21 +74,5 @@
   </form>
 </div>
 {% block inline_javascript %}
-<script>
-  document.getElementById("add-files-button").addEventListener("click", function () {
-    document.getElementById("{{ form.files.id_for_label }}").click();
-  });
-
-  document.getElementById("{{ form.files.id_for_label }}").addEventListener("change", function (event) {
-    const fileList = event.target.files;
-    const fileListContainer = document.getElementById("file-list");
-    fileListContainer.innerHTML = "";
-    for (let i = 0; i < fileList.length; i++) {
-      const file = fileList[i];
-      const p = document.createElement("p");
-      p.textContent = file.name;
-      fileListContainer.appendChild(p);
-    }
-  });
-</script>
+  <script src="{% static 'js/people/student_edit_files.js' %}"></script>
 {% endblock inline_javascript %}
