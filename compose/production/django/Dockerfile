@@ -15,7 +15,10 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   libpq-dev \
   # Cairo dependencies for generating PDFs
   libcairo2-dev \
-  python3-dev
+  python3-dev \
+  # nodejs and npm for building front-end assets
+  nodejs \
+  npm
 
 # Requirements are installed here to ensure they will be cached.
 COPY ./requirements .
