@@ -1,0 +1,85 @@
+volumes:
+  hmg_pei_postgres_data: {}
+  hmg_pei_postgres_data_backups: {}
+  hmg_pei_redis_data: {}
+  hmg_pei_media_data: {}
+  hmg_pei_static_data: {}
+
+services:
+  django: &django
+    build:
+      context: .
+      dockerfile: ./compose/production/django/Dockerfile
+    image: hmg_pei_django
+    container_name: hmg_pei_django
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - hmg_pei_static_data:/app/staticfiles
+      - hmg_pei_media_data:/app/sistema_pei/media
+    env_file:
+      - ./.envs/.hmg/.django
+      - ./.envs/.hmg/.postgres
+    command: /start
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./compose/production/postgres/Dockerfile
+    image: hmg_pei_postgres
+    container_name: hmg_pei_postgres
+    volumes:
+      - hmg_pei_postgres_data:/var/lib/postgresql/data
+      - hmg_pei_postgres_data_backups:/backups
+    env_file:
+      - ./.envs/.hmg/.postgres
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./compose/production/nginx/Dockerfile
+    image: hmg_pei_nginx
+    container_name: hmg_pei_nginx
+    volumes:
+      - hmg_pei_static_data:/app/staticfiles
+      - hmg_pei_media_data:/app/sistema_pei/media
+    ports:
+      - 8080:80  # 🔸 PORTA PARA HOMOLOGAÇÃO
+    restart: unless-stopped
+    depends_on:
+      - django
+
+  redis:
+    image: docker.io/redis:6
+    container_name: hmg_pei_redis
+    volumes:
+      - hmg_pei_redis_data:/data
+
+  celeryworker:
+    <<: *django
+    image: hmg_pei_celeryworker
+    container_name: hmg_pei_celeryworker
+    depends_on:
+      - redis
+      - postgres
+    ports: []
+    command: /start-celeryworker
+
+  celerybeat:
+    <<: *django
+    image: hmg_pei_celerybeat
+    container_name: hmg_pei_celerybeat
+    depends_on:
+      - redis
+      - postgres
+    ports: []
+    command: /start-celerybeat
+
+  flower:
+    <<: *django
+    image: hmg_pei_flower
+    container_name: hmg_pei_flower
+    ports:
+      - '5556:5555'  # 🔸 PORTA PARA FLOWER HOMOLOGAÇÃO
+    command: /start-flower
