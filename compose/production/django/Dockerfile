@@ -95,6 +95,9 @@ RUN chmod +x /start-flower
 # copy application code to WORKDIR
 COPY --chown=django:django . ${APP_HOME}
 
+# Install npm dependencies
+RUN npm install
+
 # make django owner of the WORKDIR directory as well.
 RUN chown -R django:django ${APP_HOME}
 
