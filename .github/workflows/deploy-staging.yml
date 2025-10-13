@@ -31,8 +31,6 @@ jobs:
         EOF
 
     - name: Deploy to staging server
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         ssh app-server '
           set -e
@@ -50,10 +48,10 @@ jobs:
 
           echo "📥 Updating source code..."
 
-          # Configure git to use HTTPS instead of SSH
-          git remote set-url origin https://github.com/'"$GITHUB_REPOSITORY"'.git
+          # Ensure we are using SSH for GitHub (correct repository)
+          git remote set-url origin git@github.com:ifrn-pei/sistema_pei.git
 
-          # Fetch and pull using HTTPS
+          # Fetch and pull using SSH
           git fetch origin
           git checkout staging
           git pull origin staging
