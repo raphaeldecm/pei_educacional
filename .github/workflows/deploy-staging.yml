@@ -1,0 +1,78 @@
+name: CICD - Deploy to staging environment
+
+on:
+  push:
+    branches: [staging]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    environment: staging
+
+    steps:
+    - name: Install SSH Key
+      uses: shimataro/ssh-key-action@v2
+      with:
+        key: ${{ secrets.SSH_PRIVATE_KEY_HMG }}
+        known_hosts: ${{ secrets.KNOWN_HOSTS_HMG }}
+        if_key_exists: replace
+
+    - name: Deploy to staging server
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ vars.SSH_USER_HMG }}@${{ vars.SSH_HOST_HMG }} << 'EOF'
+          set -e
+          echo "🚀 Starting staging deployment..."
+
+          # Navigate to project directory
+          cd ${{ vars.PROJECT_PATH_HMG }}
+
+          # Check current branch
+          echo "📂 Checking current branch..."
+          git branch --show-current
+
+          # Update source code
+          echo "📥 Updating source code..."
+          git fetch origin
+          git checkout staging
+          git pull origin staging
+
+          # Verify configuration files exist
+          echo "🔧 Verifying configurations..."
+          if [ ! -f ".envs/.hmg/.django" ]; then
+            echo "❌ ERROR: Django config file not found!"
+            echo "Please ensure .envs/.hmg/.django exists on the server"
+            exit 1
+          fi
+
+          # Stop existing containers
+          echo "🛑 Stopping existing containers..."
+          sudo docker compose -f docker-compose.hmg.yml down || true
+
+          # Clean up unnecessary resources
+          echo "🧹 Cleaning up old resources..."
+          sudo docker image prune -f || true
+
+          # Build and start containers
+          echo "🔨 Building and starting containers..."
+          sudo docker compose -f docker-compose.hmg.yml build --no-cache
+          sudo docker compose -f docker-compose.hmg.yml up -d
+
+          # Wait for containers to start
+          echo "⏳ Waiting for containers to start..."
+          sleep 30
+
+          # Check if containers are running
+          echo "✅ Checking container status..."
+          sudo docker compose -f docker-compose.hmg.yml ps
+
+          # Basic health check
+          echo "🏥 Testing application health..."
+          curl -f -s -o /dev/null http://localhost:8080/static/css/project.css || echo "⚠️  Warning: CSS not accessible"
+
+          # Show recent logs
+          echo "📋 Recent application logs..."
+          sudo docker compose -f docker-compose.hmg.yml logs --tail=20 django
+
+          echo "🎉 Staging deployment completed!"
+        EOF
