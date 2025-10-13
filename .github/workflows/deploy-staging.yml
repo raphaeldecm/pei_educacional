@@ -23,16 +23,19 @@ jobs:
         ssh -p ${{ vars.SSH_PORT_HMG }} -o StrictHostKeyChecking=no -o ConnectTimeout=30 ${{ vars.SSH_USER_HMG }}@${{ vars.SSH_HOST_HMG }} "echo 'Connection test successful'"
 
     - name: Deploy to staging server
+      env:
+        PROJECT_PATH: ${{ vars.PROJECT_PATH_HMG }}
       run: |
-        ssh -p ${{ vars.SSH_PORT_HMG }} -o StrictHostKeyChecking=no -o ConnectTimeout=30 -o ServerAliveInterval=60 ${{ vars.SSH_USER_HMG }}@${{ vars.SSH_HOST_HMG }} << 'EOF'
+        ssh -p ${{ vars.SSH_PORT_HMG }} -o StrictHostKeyChecking=no -o ConnectTimeout=30 -o ServerAliveInterval=60 ${{ vars.SSH_USER_HMG }}@${{ vars.SSH_HOST_HMG }} << EOF
           set -e
           echo "🚀 Starting staging deployment..."
 
           # Navigate to project directory
-          cd ${{ vars.PROJECT_PATH_HMG }}
+          echo "📂 Navigating to: $PROJECT_PATH"
+          cd $PROJECT_PATH
 
           # Check current branch
-          echo "📂 Current branch: $(git branch --show-current)"
+          echo "📂 Current branch: \$(git branch --show-current)"
 
           # Update source code
           echo "📥 Updating source code..."
@@ -75,13 +78,13 @@ jobs:
             if curl -f -s -o /dev/null http://localhost:8080 || curl -f -s -o /dev/null http://localhost; then
               echo "✅ Health check passed"
               break
-            elif [ $i -eq 3 ]; then
+            elif [ \$i -eq 3 ]; then
               echo "❌ Health check failed after 3 attempts"
               echo "Container logs:"
               docker compose -f docker-compose.hmg.yml logs --tail=50
               exit 1
             else
-              echo "⏳ Health check attempt $i/3 failed, retrying..."
+              echo "⏳ Health check attempt \$i/3 failed, retrying..."
               sleep 10
             fi
           done
