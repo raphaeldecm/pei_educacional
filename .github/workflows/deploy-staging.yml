@@ -23,16 +23,14 @@ jobs:
         ssh -p ${{ vars.SSH_PORT_HMG }} -o StrictHostKeyChecking=no -o ConnectTimeout=30 ${{ vars.SSH_USER_HMG }}@${{ vars.SSH_HOST_HMG }} "echo 'Connection test successful'"
 
     - name: Deploy to staging server
-      env:
-        PROJECT_PATH: ${{ vars.PROJECT_PATH_HMG }}
       run: |
         ssh -p ${{ vars.SSH_PORT_HMG }} -o StrictHostKeyChecking=no -o ConnectTimeout=30 -o ServerAliveInterval=60 ${{ vars.SSH_USER_HMG }}@${{ vars.SSH_HOST_HMG }} << EOF
           set -e
           echo "🚀 Starting staging deployment..."
 
           # Navigate to project directory
-          echo "📂 Navigating to: $PROJECT_PATH"
-          cd $PROJECT_PATH
+          echo "📂 Navigating to: ${{ vars.PROJECT_PATH_HMG }}"
+          cd ${{ vars.PROJECT_PATH_HMG }}
 
           # Check current branch
           echo "📂 Current branch: \$(git branch --show-current)"
