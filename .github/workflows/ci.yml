@@ -7,14 +7,14 @@ env:
 
 on:
   pull_request:
-    branches: ['main', 'stagin']
+    branches: ['main', 'staging']
     paths-ignore:
       - 'docs/**'
       - 'templates/pages/profile_tabs/student_grades.html'
 
 
   push:
-    branches: ['main', 'stagin']
+    branches: ['main', 'staging']
     paths-ignore:
       - 'docs/**'
       - 'templates/pages/profile_tabs/student_grades.html'

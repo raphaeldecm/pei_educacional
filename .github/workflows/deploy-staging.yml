@@ -7,7 +7,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     environment: staging
 
     steps:
@@ -18,9 +17,14 @@ jobs:
         known_hosts: ${{ secrets.KNOWN_HOSTS_HMG }}
         if_key_exists: replace
 
+    - name: Test SSH Connection
+      run: |
+        echo "Testing SSH connection via tunnel..."
+        ssh -p ${{ vars.SSH_PORT_HMG }} -o StrictHostKeyChecking=no -o ConnectTimeout=30 ${{ vars.SSH_USER_HMG }}@${{ vars.SSH_HOST_HMG }} "echo 'Connection test successful'"
+
     - name: Deploy to staging server
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ vars.SSH_USER_HMG }}@${{ vars.SSH_HOST_HMG }} << 'EOF'
+        ssh -p ${{ vars.SSH_PORT_HMG }} -o StrictHostKeyChecking=no -o ConnectTimeout=30 -o ServerAliveInterval=60 ${{ vars.SSH_USER_HMG }}@${{ vars.SSH_HOST_HMG }} << 'EOF'
           set -e
           echo "🚀 Starting staging deployment..."
 
@@ -28,8 +32,7 @@ jobs:
           cd ${{ vars.PROJECT_PATH_HMG }}
 
           # Check current branch
-          echo "📂 Checking current branch..."
-          git branch --show-current
+          echo "📂 Current branch: $(git branch --show-current)"
 
           # Update source code
           echo "📥 Updating source code..."
@@ -45,13 +48,16 @@ jobs:
             exit 1
           fi
 
-          # Stop existing containers
-          echo "🛑 Stopping existing containers..."
-          sudo docker compose -f docker-compose.hmg.yml down || true
+          # Create log directory if not exists
+          mkdir -p logs
 
-          # Clean up unnecessary resources
+          # Stop existing containers gracefully
+          echo "🛑 Stopping existing containers..."
+          sudo docker compose -f docker-compose.hmg.yml down --timeout 30 || true
+
+          # Clean up old images (keep some for rollback)
           echo "🧹 Cleaning up old resources..."
-          sudo docker image prune -f || true
+          sudo docker image prune -f --filter "until=72h" || true
 
           # Build and start containers
           echo "🔨 Building and starting containers..."
@@ -62,17 +68,29 @@ jobs:
           echo "⏳ Waiting for containers to start..."
           sleep 30
 
-          # Check if containers are running
-          echo "✅ Checking container status..."
+          # Health check with retry
+          echo "🏥 Testing application health..."
+          for i in {1..3}; do
+            if curl -f -s -o /dev/null http://localhost:8080/static/css/project.css; then
+              echo "✅ Health check passed"
+              break
+            elif [ $i -eq 3 ]; then
+              echo "❌ Health check failed after 3 attempts"
+              sudo docker compose -f docker-compose.hmg.yml logs --tail=50 django
+              exit 1
+            else
+              echo "⏳ Health check attempt $i/3 failed, retrying..."
+              sleep 10
+            fi
+          done
+
+          # Check container status
+          echo "📊 Container status:"
           sudo docker compose -f docker-compose.hmg.yml ps
 
-          # Basic health check
-          echo "🏥 Testing application health..."
-          curl -f -s -o /dev/null http://localhost:8080/static/css/project.css || echo "⚠️  Warning: CSS not accessible"
-
-          # Show recent logs
-          echo "📋 Recent application logs..."
+          # Show recent logs for monitoring
+          echo "📋 Recent application logs:"
           sudo docker compose -f docker-compose.hmg.yml logs --tail=20 django
 
-          echo "🎉 Staging deployment completed!"
+          echo "🎉 Staging deployment completed successfully!"
         EOF
