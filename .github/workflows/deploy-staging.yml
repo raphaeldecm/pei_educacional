@@ -17,68 +17,75 @@ jobs:
         known_hosts: ${{ secrets.KNOWN_HOSTS_HMG }}
         if_key_exists: replace
 
-    - name: Add application server to known_hosts
+    - name: Setup SSH config for tunnel
       run: |
-        ssh-keyscan -t rsa 10.21.0.125 >> ~/.ssh/known_hosts
+        mkdir -p ~/.ssh
+        cat > ~/.ssh/config << EOF
+        Host app-server
+          HostName 10.21.0.125
+          User raphael
+          Port 22
+          ProxyCommand ssh -p ${{ vars.SSH_PORT_HMG }} -W %h:%p ${{ vars.SSH_USER_HMG }}@${{ vars.SSH_HOST_HMG }}
+          StrictHostKeyChecking no
+          UserKnownHostsFile /dev/null
+        EOF
 
-    - name: Deploy to staging server via tunnel
+    - name: Deploy to staging server
       run: |
-        ssh -p ${{ vars.SSH_PORT_HMG }} -o StrictHostKeyChecking=no -o ConnectTimeout=30 -o ServerAliveInterval=60 ${{ vars.SSH_USER_HMG }}@${{ vars.SSH_HOST_HMG }} "
-          ssh -o StrictHostKeyChecking=no raphael@10.21.0.125 '
-            set -e
-            echo \"🚀 Starting staging deployment...\"
+        ssh app-server '
+          set -e
+          echo "🚀 Starting staging deployment..."
 
-            echo \"📂 Navigating to: /opt/sistema_pei_hmg\"
-            cd /opt/sistema_pei_hmg
+          echo "📂 Navigating to: /opt/sistema_pei_hmg"
+          cd /opt/sistema_pei_hmg
 
-            echo \"📂 Current branch:\"
-            git branch --show-current
+          echo "📂 Current branch:"
+          git branch --show-current
 
-            echo \"📥 Updating source code...\"
-            git fetch origin
-            git checkout staging
-            git pull origin staging
+          echo "📥 Updating source code..."
+          git fetch origin
+          git checkout staging
+          git pull origin staging
 
-            echo \"🔧 Verifying configurations...\"
-            if [ ! -f \".envs/.hmg/.django\" ]; then
-              echo \"❌ ERROR: Django config file not found!\"
-              find .envs -type f 2>/dev/null || echo \"No .envs directory found\"
+          echo "🔧 Verifying configurations..."
+          if [ ! -f ".envs/.hmg/.django" ]; then
+            echo "❌ ERROR: Django config file not found!"
+            find .envs -type f 2>/dev/null || echo "No .envs directory found"
+            exit 1
+          fi
+
+          mkdir -p logs
+
+          echo "🛑 Stopping existing containers..."
+          docker compose -f docker-compose.hmg.yml down --timeout 30 || true
+
+          echo "🧹 Cleaning up old resources..."
+          docker image prune -f --filter "until=72h" || true
+
+          echo "🔨 Building and starting containers..."
+          docker compose -f docker-compose.hmg.yml build --no-cache
+          docker compose -f docker-compose.hmg.yml up -d
+
+          echo "⏳ Waiting for containers to start..."
+          sleep 30
+
+          echo "🏥 Testing application health..."
+          for i in {1..3}; do
+            if curl -f -s -o /dev/null http://localhost:8080 || curl -f -s -o /dev/null http://localhost; then
+              echo "✅ Health check passed"
+              break
+            elif [ $i -eq 3 ]; then
+              echo "❌ Health check failed after 3 attempts"
+              docker compose -f docker-compose.hmg.yml logs --tail=50
               exit 1
+            else
+              echo "⏳ Health check attempt $i/3 failed, retrying..."
+              sleep 10
             fi
+          done
 
-            mkdir -p logs
+          echo "📊 Container status:"
+          docker compose -f docker-compose.hmg.yml ps
 
-            echo \"🛑 Stopping existing containers...\"
-            docker compose -f docker-compose.hmg.yml down --timeout 30 || true
-
-            echo \"🧹 Cleaning up old resources...\"
-            docker image prune -f --filter \"until=72h\" || true
-
-            echo \"🔨 Building and starting containers...\"
-            docker compose -f docker-compose.hmg.yml build --no-cache
-            docker compose -f docker-compose.hmg.yml up -d
-
-            echo \"⏳ Waiting for containers to start...\"
-            sleep 30
-
-            echo \"🏥 Testing application health...\"
-            for i in {1..3}; do
-              if curl -f -s -o /dev/null http://localhost:8080 || curl -f -s -o /dev/null http://localhost; then
-                echo \"✅ Health check passed\"
-                break
-              elif [ \$i -eq 3 ]; then
-                echo \"❌ Health check failed after 3 attempts\"
-                docker compose -f docker-compose.hmg.yml logs --tail=50
-                exit 1
-              else
-                echo \"⏳ Health check attempt \$i/3 failed, retrying...\"
-                sleep 10
-              fi
-            done
-
-            echo \"📊 Container status:\"
-            docker compose -f docker-compose.hmg.yml ps
-
-            echo \"🎉 Staging deployment completed successfully!\"
-          '
-        "
+          echo "🎉 Staging deployment completed successfully!"
+        '
