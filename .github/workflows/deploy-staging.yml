@@ -79,13 +79,23 @@ jobs:
           sleep 30
 
           echo "🏥 Testing application health..."
+
+          # Check container status first
+          echo "📊 Container status:"
+          docker compose -f docker-compose.hmg.yml ps
+
+          # Test with the correct host that is in ALLOWED_HOSTS
           for i in {1..3}; do
-            if curl -f -s -o /dev/null http://localhost:8080 || curl -f -s -o /dev/null http://localhost; then
-              echo "✅ Health check passed"
+            if curl -f -s -o /dev/null -H "Host: pei-hmg.ifrn.edu.br" http://10.21.0.125:8080 || \
+               curl -f -s -o /dev/null http://10.21.0.125:8080; then
+              echo "✅ Health check passed (attempt $i)"
               break
             elif [ $i -eq 3 ]; then
               echo "❌ Health check failed after 3 attempts"
-              docker compose -f docker-compose.hmg.yml logs --tail=50
+              echo "🔍 Checking Django container health..."
+              docker compose -f docker-compose.hmg.yml exec -T django python manage.py check --deploy || true
+              echo "📋 Recent container logs:"
+              docker compose -f docker-compose.hmg.yml logs --tail=20 django
               exit 1
             else
               echo "⏳ Health check attempt $i/3 failed, retrying..."
@@ -93,8 +103,15 @@ jobs:
             fi
           done
 
-          echo "📊 Container status:"
-          docker compose -f docker-compose.hmg.yml ps
+          echo "🔍 Final container verification..."
+          RUNNING_CONTAINERS=$(docker compose -f docker-compose.hmg.yml ps --services --filter "status=running" | wc -l)
+          if [ "$RUNNING_CONTAINERS" -gt 0 ]; then
+            echo "✅ $RUNNING_CONTAINERS containers are running"
+          else
+            echo "❌ No containers are running"
+            exit 1
+          fi
 
           echo "🎉 Staging deployment completed successfully!"
+          echo "🌐 Application should be available at: https://pei-hmg.ifrn.edu.br/"
         '
