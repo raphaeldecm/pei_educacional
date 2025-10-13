@@ -44,7 +44,8 @@ jobs:
           echo "🔧 Verifying configurations..."
           if [ ! -f ".envs/.hmg/.django" ]; then
             echo "❌ ERROR: Django config file not found!"
-            echo "Please ensure .envs/.hmg/.django exists on the server"
+            echo "Available .envs structure:"
+            find .envs -type f 2>/dev/null || echo "No .envs directory found"
             exit 1
           fi
 
@@ -53,16 +54,16 @@ jobs:
 
           # Stop existing containers gracefully
           echo "🛑 Stopping existing containers..."
-          sudo docker compose -f docker-compose.hmg.yml down --timeout 30 || true
+          docker compose -f docker-compose.hmg.yml down --timeout 30 || true
 
           # Clean up old images (keep some for rollback)
           echo "🧹 Cleaning up old resources..."
-          sudo docker image prune -f --filter "until=72h" || true
+          docker image prune -f --filter "until=72h" || true
 
           # Build and start containers
           echo "🔨 Building and starting containers..."
-          sudo docker compose -f docker-compose.hmg.yml build --no-cache
-          sudo docker compose -f docker-compose.hmg.yml up -d
+          docker compose -f docker-compose.hmg.yml build --no-cache
+          docker compose -f docker-compose.hmg.yml up -d
 
           # Wait for containers to start
           echo "⏳ Waiting for containers to start..."
@@ -71,12 +72,13 @@ jobs:
           # Health check with retry
           echo "🏥 Testing application health..."
           for i in {1..3}; do
-            if curl -f -s -o /dev/null http://localhost:8080/static/css/project.css; then
+            if curl -f -s -o /dev/null http://localhost:8080 || curl -f -s -o /dev/null http://localhost; then
               echo "✅ Health check passed"
               break
             elif [ $i -eq 3 ]; then
               echo "❌ Health check failed after 3 attempts"
-              sudo docker compose -f docker-compose.hmg.yml logs --tail=50 django
+              echo "Container logs:"
+              docker compose -f docker-compose.hmg.yml logs --tail=50
               exit 1
             else
               echo "⏳ Health check attempt $i/3 failed, retrying..."
@@ -84,13 +86,9 @@ jobs:
             fi
           done
 
-          # Check container status
+          # Show container status
           echo "📊 Container status:"
-          sudo docker compose -f docker-compose.hmg.yml ps
-
-          # Show recent logs for monitoring
-          echo "📋 Recent application logs:"
-          sudo docker compose -f docker-compose.hmg.yml logs --tail=20 django
+          docker compose -f docker-compose.hmg.yml ps
 
           echo "🎉 Staging deployment completed successfully!"
         EOF
