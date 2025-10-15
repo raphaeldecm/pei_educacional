@@ -39,7 +39,6 @@ from sistema_pei.people.models import Notification
 from sistema_pei.people.models import Student
 from sistema_pei.people.models import StudentFile
 from sistema_pei.people.models import Teacher
-from sistema_pei.people.models import User
 from sistema_pei.people.services import import_student_csv
 from sistema_pei.people.services import teachers_import
 from sistema_pei.users.permissions import DontBeTeacherPermission
@@ -233,7 +232,8 @@ class ProfilePageView(LoginRequiredMixin, TemplateView):
     paginate_by = 10
     default_tab = "peis"
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs):  # noqa: C901, PLR0912, PLR0915
+        # TODO: Refatorar esse método. Está muito complexo.
         context = super().get_context_data(**kwargs)
         student_id = self.kwargs.get("pk")
         student = get_object_or_404(Student, id=student_id)
@@ -248,7 +248,8 @@ class ProfilePageView(LoginRequiredMixin, TemplateView):
 
         student_offers_filter = {}
         student_offers_filter["subject__name__icontains"] = self.request.GET.get(
-            "subject", ""
+            "subject",
+            "",
         )
 
         if self.request.user.groups.filter(name="Teacher").exists():
@@ -431,7 +432,7 @@ class DeletePersonalFilesView(DontBeTeacherPermission, LoginRequiredMixin, View)
             file.delete()
             success_message = "Arquivo deletado com sucesso!"
             messages.success(self.request, success_message)
-        except Exception as e:
+        except StudentFile.DoesNotExist as e:
             error_message = f"Erro ao deletar arquivo: {e!s}"
             messages.error(self.request, error_message)
 
