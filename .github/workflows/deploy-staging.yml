@@ -1,13 +1,16 @@
 name: CICD - Deploy to staging environment
 
 on:
-  push:
+  workflow_run:
+    workflows: ["CI"]
     branches: [staging]
+    types: [completed]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: staging
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
     - name: Install SSH Key
