@@ -13,7 +13,6 @@ from .managers import UserManager
 
 
 class User(AbstractUser):
-
     GROUP_TRANSLATIONS = {
         "Coordinator": _("Coordenador"),
         "Collaborator": _("Colaborador"),

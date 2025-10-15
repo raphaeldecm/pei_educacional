@@ -9,7 +9,7 @@ DEFAULT_PAGE_SIZE = 10
 SUAP_VALIDATION_URL = "https://suap.ifrn.edu.br/api/token/verify"
 STATUS_CODE_OK = 200
 
-#sync status time
+# sync status time
 SYNC_RECENT_INTERVAL = 30
 SYNC_REGULAR_INTERVAL = 60
 SYNC_OLD_INTERVAL = 7305

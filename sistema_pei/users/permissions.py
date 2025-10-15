@@ -45,10 +45,11 @@ class AnyGroupPermission(UserPassesTestMixin):
             ).exists()
         )
 
+
 class DontBeTeacherPermission(UserPassesTestMixin):
-    """ Mixin that checks if user is not teacher """
-    
+    """Mixin that checks if user is not teacher"""
+
     def test_func(self):
         return not self.request.user.groups.filter(
-            name='Teacher'
+            name="Teacher",
         ).exists()

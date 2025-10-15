@@ -5,7 +5,6 @@ from django_filters.views import FilterView
 from sistema_pei.core import constants
 from sistema_pei.educational_plan.filters import PeiFilter
 from sistema_pei.educational_plan.models import Pei
-from sistema_pei.users.permissions import AnyGroupPermission
 
 
 class HomeListView(
@@ -20,19 +19,22 @@ class HomeListView(
 
     def get_teacher_peis_queryset(self):
         """
-        Retorna a lista de peis do professor logado por padrão. 
+        Retorna a lista de peis do professor logado por padrão.
         Na alteração do filtro de professor, retorna os peis deste professor.
         """
         queryset = Pei.objects.all()
         has_professor_filter = self.request.GET.get("teacher")
 
-        if not has_professor_filter and self.request.user.groups.filter(name="Teacher").exists():
+        if (
+            not has_professor_filter
+            and self.request.user.groups.filter(name="Teacher").exists()
+        ):
             queryset = queryset.filter(
-                responsible_teacher__user=self.request.user
+                responsible_teacher__user=self.request.user,
             )
 
         return queryset
-    
+
     def get_teacher_dashboard_queryset(self):
         """Retorna sempre a lista de peis do professor logado independente do filtro aplicado."""
         queryset = Pei.objects.all()
@@ -42,9 +44,11 @@ class HomeListView(
 
     def get_queryset(self):
         queryset = self.get_teacher_peis_queryset()
-        
+
         return self.filterset_class(
-            self.request.GET, queryset=queryset, request=self.request
+            self.request.GET,
+            queryset=queryset,
+            request=self.request,
         ).qs
 
     def get_context_data(self, **kwargs):
@@ -57,4 +61,3 @@ class HomeListView(
         context["finished_peis"] = base_queryset.filter(status="COMPLETED").count()
 
         return context
-

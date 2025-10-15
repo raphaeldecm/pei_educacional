@@ -15,14 +15,14 @@ class PeiFilter(django_filters.FilterSet):
         field_name="enrollment__offer__course",
         label="course",
     )
-    
+
     offer_type = django_filters.ChoiceFilter(
         field_name="enrollment__offer__subject__subject_type",
-        choices=models.Subject.SubjectsDuration.choices
+        choices=models.Subject.SubjectsDuration.choices,
     )
 
     subject = django_filters.ModelChoiceFilter(
-        queryset=models.Subject.objects.order_by('name').distinct('name'),
+        queryset=models.Subject.objects.order_by("name").distinct("name"),
         field_name="enrollment__offer__subject",
         label="Disciplina",
     )

@@ -6,6 +6,7 @@ from sistema_pei.core.models import BaseModel
 from sistema_pei.educational_plan import managers
 from sistema_pei.people.models import Teacher
 
+
 class Pei(BaseModel):
     class StatusChoice(models.TextChoices):
         NOT_START = "NOT_START", _("Não iniciado")
@@ -121,7 +122,7 @@ class Pei(BaseModel):
             missing.append("Parecer Final")
 
         return missing
-    
+
     def has_missing_opinions(self):
         return len(self.get_missing_opinions()) > 0
 
@@ -130,7 +131,7 @@ class Pei(BaseModel):
         super().save(*args, **kwargs)
 
     class Meta:
-        ordering = ['id']
+        ordering = ["id"]
 
 
 class FeedbackPei(BaseModel):

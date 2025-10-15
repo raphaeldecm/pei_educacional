@@ -15,6 +15,7 @@ from .serializers import SUAPTokenSerializer
 
 User = get_user_model()
 
+
 class SuapTokenValidateView(APIView):
     permission_classes = [AllowAny]
     serializer_class = SUAPTokenSerializer
@@ -29,8 +30,13 @@ class SuapTokenValidateView(APIView):
 
         student = Student.objects.filter(registration=suap_code).first()
         if not student:
-            return Response({"error": "Discente não encontrado no sistema pei. "
-                             "Entre em contato com o setor responsável"}, status=404)
+            return Response(
+                {
+                    "error": "Discente não encontrado no sistema pei. "
+                    "Entre em contato com o setor responsável"
+                },
+                status=404,
+            )
 
         verify_response = requests.post(
             SUAP_VALIDATION_URL,
@@ -59,7 +65,9 @@ class SuapTokenValidateView(APIView):
 
         refresh = RefreshToken.for_user(user)
 
-        return Response({
-            "access": str(refresh.access_token),
-            "refresh": str(refresh),
-        })
+        return Response(
+            {
+                "access": str(refresh.access_token),
+                "refresh": str(refresh),
+            }
+        )

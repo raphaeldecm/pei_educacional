@@ -2,10 +2,10 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import models
 from django.db import models
 from django.db import transaction
-from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
-from multiselectfield import MultiSelectField
 from django.utils.timezone import now
+from django.utils.translation import gettext_lazy as _
+from multiselectfield import MultiSelectField
 
 from sistema_pei.core import constants
 from sistema_pei.core.models import BaseModel
@@ -14,6 +14,7 @@ from sistema_pei.users.decorators import profile
 from sistema_pei.users.models import User
 
 User = get_user_model()
+
 
 # Create your models here.
 class Campus(BaseModel):
@@ -81,7 +82,7 @@ class Teacher(Person):
         upload_to="teachers",
         blank=True,
         null=True,
-        verbose_name=_("Foto alternativa")
+        verbose_name=_("Foto alternativa"),
     )
     code = models.CharField(
         verbose_name=_("Matrícula"),
@@ -135,6 +136,7 @@ class SpecificNecessitie(BaseModel):
 
     def __str__(self):
         return self.name
+
 
 @profile
 class Student(Person):
@@ -207,42 +209,52 @@ class Student(Person):
 
     def __str__(self):
         return self.name
-    
-    def get_offers(self,**filters)->list:
+
+    def get_offers(self, **filters) -> list:
         return self.course.courses.filter(**filters).all()
-    
-    def has_offers(self)->bool:
-        return self.course.courses.exists()    
-    
+
+    def has_offers(self) -> bool:
+        return self.course.courses.exists()
+
     def last_sync_time(self):
         """
-            retorna quantos dias fazem desde a ultima sincronização
+        retorna quantos dias fazem desde a ultima sincronização
         """
         date_now = now().date()
-        
-        #retorna a ultima inscrição atualizada excluindo as que não tem data de sincronização
-        last_sync = self.enrollment_set.all().exclude(last_synced_at=None).order_by("-updated_at").first()
-        
+
+        # retorna a ultima inscrição atualizada excluindo as que não tem data de sincronização
+        last_sync = (
+            self.enrollment_set.all()
+            .exclude(last_synced_at=None)
+            .order_by("-updated_at")
+            .first()
+        )
+
         if not last_sync:
-            return  
-        
+            return None
+
         last_sync_date = last_sync.last_synced_at
-        
+
         if not last_sync_date:
-            return 
-        
+            return None
+
         return abs(last_sync_date.date() - date_now).days
-    
+
     def last_sync_date(self):
         """
-            retorna a data da ultima sincronização feita
+        retorna a data da ultima sincronização feita
         """
-        
-        #retorna a ultima inscrição atualizada excluindo as que não tem data de sincronização
-        last_sync = self.enrollment_set.all().exclude(last_synced_at=None).order_by("-updated_at").first()
+
+        # retorna a ultima inscrição atualizada excluindo as que não tem data de sincronização
+        last_sync = (
+            self.enrollment_set.all()
+            .exclude(last_synced_at=None)
+            .order_by("-updated_at")
+            .first()
+        )
         if not last_sync:
-            return
-        
+            return None
+
         return last_sync.last_synced_at
 
 
@@ -294,22 +306,38 @@ class Notification(BaseModel):
     def __str__(self) -> str:
         return super().__str__()
 
-class AlertaGlobal(models.Model):
 
+class AlertaGlobal(models.Model):
     COR_CHOICES = [
-        ('yellow', 'Amarelo'),
-        ('red', 'Vermelho'),
-        ('green', 'Verde'),
-        ('blue', 'Azul'),
-        ('gray', 'Cinza'),
+        ("yellow", "Amarelo"),
+        ("red", "Vermelho"),
+        ("green", "Verde"),
+        ("blue", "Azul"),
+        ("gray", "Cinza"),
     ]
 
     COR_MAP = {
-        'yellow': {'bg': 'bg-yellow-100', 'text': 'text-yellow-800', 'border': 'border-yellow-300'},
-        'red': {'bg': 'bg-red-100', 'text': 'text-red-800', 'border': 'border-red-300'},
-        'green': {'bg': 'bg-green-100', 'text': 'text-green-800', 'border': 'border-green-300'},
-        'blue': {'bg': 'bg-blue-100', 'text': 'text-blue-800', 'border': 'border-blue-300'},
-        'gray': {'bg': 'bg-gray-100', 'text': 'text-gray-800', 'border': 'border-gray-300'},
+        "yellow": {
+            "bg": "bg-yellow-100",
+            "text": "text-yellow-800",
+            "border": "border-yellow-300",
+        },
+        "red": {"bg": "bg-red-100", "text": "text-red-800", "border": "border-red-300"},
+        "green": {
+            "bg": "bg-green-100",
+            "text": "text-green-800",
+            "border": "border-green-300",
+        },
+        "blue": {
+            "bg": "bg-blue-100",
+            "text": "text-blue-800",
+            "border": "border-blue-300",
+        },
+        "gray": {
+            "bg": "bg-gray-100",
+            "text": "text-gray-800",
+            "border": "border-gray-300",
+        },
     }
 
     mensagem = models.TextField("Mensagem do alerta")
@@ -319,7 +347,7 @@ class AlertaGlobal(models.Model):
         "Cor base",
         max_length=20,
         choices=COR_CHOICES,
-        default='yellow',
+        default="yellow",
     )
     criado_em = models.DateTimeField(auto_now_add=True)
     atualizado_em = models.DateTimeField(auto_now=True)
@@ -328,6 +356,5 @@ class AlertaGlobal(models.Model):
         return f"Alerta Global: {self.mensagem[:50]}..."
 
     def esta_valido(self):
-        from django.utils import timezone
         now = timezone.now()
         return self.data_inicio <= now <= self.data_fim

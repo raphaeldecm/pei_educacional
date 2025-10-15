@@ -18,7 +18,7 @@ def import_student_csv(self, uploaded_file):
     error_counter = 0
 
     try:
-        data = pd.read_csv(uploaded_file, encoding='utf-8')
+        data = pd.read_csv(uploaded_file, encoding="utf-8")
 
         data.columns = data.columns.str.strip().str.lower()
 
@@ -48,7 +48,7 @@ def import_student_csv(self, uploaded_file):
 
         default_image_path = static("images/img/login-cover.webp")
 
-        for index, row in data.iterrows():
+        for _index, row in data.iterrows():
             try:
                 course = Course.objects.filter(name=row["curso"]).first()
                 if not course:
@@ -61,13 +61,21 @@ def import_student_csv(self, uploaded_file):
                         "name": row["nome"],
                         "registration": row["matrícula"],
                         "personal_history": row["histórico"],
-                        "specific_necessities": row["necessidades especiais específicas"],
-                        "general_necessitie": row["outras necessidades educacionais especificas do(a) estudante"],
-                        "creation_reasons": row["questões geradoras para criação do pei/adaptações"],
+                        "specific_necessities": row[
+                            "necessidades especiais específicas"
+                        ],
+                        "general_necessitie": row[
+                            "outras necessidades educacionais especificas do(a) estudante"
+                        ],
+                        "creation_reasons": row[
+                            "questões geradoras para criação do pei/adaptações"
+                        ],
                         "dificulties": row["dificuldades"],
                         "abilities": row["aptidão e dificuldades apresentadas"],
                         "course": course,
-                        "reference_period": row["período de referência (periodo atual do aluno)"],
+                        "reference_period": row[
+                            "período de referência (periodo atual do aluno)"
+                        ],
                         "sectors": [User.Sector.NAPNE],
                         "image": default_image_path,
                     },
@@ -107,14 +115,15 @@ def teachers_import(self, uploaded_file):
             )
             return redirect(self.success_url)
 
-        for index, row in data.iterrows():
+        for _index, row in data.iterrows():
             # validar o formato do email
             try:
                 email = row["email"]
                 validate_email(email)
             except ValidationError:
                 messages.error(
-                    self.request, _("O campo 'email' não é um email válido.")
+                    self.request,
+                    _("O campo 'email' não é um email válido."),
                 )
                 errors += 1
                 return redirect(self.success_url)
@@ -125,7 +134,8 @@ def teachers_import(self, uploaded_file):
                 int(matricula)
             except ValueError:
                 messages.error(
-                    self.request, _("O campo 'matricula' não é um número inteiro.")
+                    self.request,
+                    _("O campo 'matricula' não é um número inteiro."),
                 )
                 errors += 1
                 return redirect(self.success_url)

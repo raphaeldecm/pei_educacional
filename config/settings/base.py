@@ -115,8 +115,8 @@ MIGRATION_MODULES = {"sites": "sistema_pei.contrib.sites.migrations"}
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#authentication-backends
 AUTHENTICATION_BACKENDS = [
-    "suap_backend.backends.SuapCredentialsBackend",  
-    "suap_backend.backends.SuapOAuth2",             
+    "suap_backend.backends.SuapCredentialsBackend",
+    "suap_backend.backends.SuapOAuth2",
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
@@ -165,7 +165,7 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
     "social_django.middleware.SocialAuthExceptionMiddleware",
     "sistema_pei.users.middleware.GroupRedirectMiddleware",
-    "easyaudit.middleware.easyaudit.EasyAuditMiddleware"
+    "easyaudit.middleware.easyaudit.EasyAuditMiddleware",
 ]
 
 DJANGO_EASY_AUDIT_WATCH_MODEL_EVENTS = True

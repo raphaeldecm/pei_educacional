@@ -4,7 +4,8 @@ from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core.paginator import PageNotAnInteger , EmptyPage
+from django.core.paginator import EmptyPage
+from django.core.paginator import PageNotAnInteger
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
@@ -24,7 +25,8 @@ from sistema_pei.academics import forms
 from sistema_pei.academics.forms import CSVImportForm
 from sistema_pei.academics.models import Enrollment
 from sistema_pei.core import constants
-from sistema_pei.core.forms import EnrollmentForm
+from sistema_pei.core.constants import SYNC_RECENT_INTERVAL
+from sistema_pei.core.constants import SYNC_REGULAR_INTERVAL
 from sistema_pei.core.mixins import ProtectedErrorMessageMixin
 from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.educational_plan.models import Pei
@@ -40,7 +42,6 @@ from sistema_pei.people.models import Teacher
 from sistema_pei.people.models import User
 from sistema_pei.people.services import import_student_csv
 from sistema_pei.people.services import teachers_import
-from sistema_pei.core.constants import SYNC_RECENT_INTERVAL,SYNC_REGULAR_INTERVAL
 from sistema_pei.users.permissions import DontBeTeacherPermission
 
 from .forms import TeacherForm
@@ -174,7 +175,7 @@ class StudentDeleteView(
     )
 
 
-class StudentCreateView(DontBeTeacherPermission,LoginRequiredMixin, CreateView):
+class StudentCreateView(DontBeTeacherPermission, LoginRequiredMixin, CreateView):
     model = Student
     form_class = ViewStudentForm
     template_name = "student/student_create.html"
@@ -209,7 +210,10 @@ class StudentCreateView(DontBeTeacherPermission,LoginRequiredMixin, CreateView):
 
 
 class StudentImportView(
-    TitleViewMixin, LoginRequiredMixin, SuccessMessageMixin, generic.FormView
+    TitleViewMixin,
+    LoginRequiredMixin,
+    SuccessMessageMixin,
+    generic.FormView,
 ):
     form_class = forms.CSVImportForm
     title = _("Importar Discentes")
@@ -227,7 +231,7 @@ class StudentImportView(
 class ProfilePageView(LoginRequiredMixin, TemplateView):
     template_name = "student/student_profile.html"
     paginate_by = 10
-    default_tab = 'peis'
+    default_tab = "peis"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -237,32 +241,34 @@ class ProfilePageView(LoginRequiredMixin, TemplateView):
         # Profile data
         context["student"] = student
         context["student_files"] = StudentFile.objects.filter(student=student)
-        
+
         # Sync status constants
         context["SYNC_RECENT_INTERVAL"] = SYNC_RECENT_INTERVAL
         context["SYNC_REGULAR_INTERVAL"] = SYNC_REGULAR_INTERVAL
-        
+
         student_offers_filter = {}
-        student_offers_filter['subject__name__icontains'] = self.request.GET.get("subject",'')
-        
-        if(self.request.user.groups.filter(name='Teacher').exists()):
-            student_offers_filter['teachers'] = self.request.user.teacher
-            context['is_teacher'] = True
-            
-        student_offers = student.get_offers(**student_offers_filter).order_by('id')
-        
+        student_offers_filter["subject__name__icontains"] = self.request.GET.get(
+            "subject", ""
+        )
+
+        if self.request.user.groups.filter(name="Teacher").exists():
+            student_offers_filter["teachers"] = self.request.user.teacher
+            context["is_teacher"] = True
+
+        student_offers = student.get_offers(**student_offers_filter).order_by("id")
+
         offers_paginator = Paginator(student_offers, self.paginate_by)
         offers_page_number = self.request.GET.get("offers_page")
-        
+
         try:
             student_offers = offers_paginator.page(offers_page_number)
         except (PageNotAnInteger, EmptyPage):
             student_offers = offers_paginator.page(1)
-            
+
         context["student_offers"] = student_offers
 
         # Tabs
-        allowed_tabs = ("peis", "historic", "grades", "edit_student_data","offers")
+        allowed_tabs = ("peis", "historic", "grades", "edit_student_data", "offers")
         requested_tab = self.request.GET.get("tab", self.default_tab)
         if requested_tab in allowed_tabs:
             context["active_tab"] = requested_tab
@@ -320,14 +326,13 @@ class ProfilePageView(LoginRequiredMixin, TemplateView):
         ##^ Tab Notes
         student_notes = Enrollment.objects.filter(student=student)
 
-
         if "selectedPeriod" in self.request.GET:
             student_notes = student_notes.filter(
                 YearSemesterReference=self.request.GET["selectedPeriod"],
             )
         else:
             student_notes = student_notes.filter(
-                YearSemesterReference=1
+                YearSemesterReference=1,
             )
 
         context["student_notes"] = student_notes
@@ -346,7 +351,7 @@ class ProfilePageView(LoginRequiredMixin, TemplateView):
                     form.errors.update(self.request.session["form_errors"])
                     del self.request.session["form_errors"]
                 context["form"] = form
-            elif sub_tab == "edit_files" or sub_tab == "edit_notes":
+            elif sub_tab in ("edit_files", "edit_notes"):
                 form = StudentFilesForm()
                 if "form_errors" in self.request.session:
                     form.errors.update(self.request.session["form_errors"])
@@ -361,7 +366,7 @@ class ProfilePageView(LoginRequiredMixin, TemplateView):
         return context
 
 
-class EditPersonalDataView(DontBeTeacherPermission,LoginRequiredMixin, View):
+class EditPersonalDataView(DontBeTeacherPermission, LoginRequiredMixin, View):
     """
     View para editar os dados pessoais de um aluno.
     """
@@ -386,7 +391,7 @@ class EditPersonalDataView(DontBeTeacherPermission,LoginRequiredMixin, View):
         )
 
 
-class EditHistoricPersonalDataView(DontBeTeacherPermission,LoginRequiredMixin, View):
+class EditHistoricPersonalDataView(DontBeTeacherPermission, LoginRequiredMixin, View):
     """
     View para editar o histórico pessoal de um aluno.
     """
@@ -411,7 +416,7 @@ class EditHistoricPersonalDataView(DontBeTeacherPermission,LoginRequiredMixin, V
         )
 
 
-class DeletePersonalFilesView(DontBeTeacherPermission,LoginRequiredMixin, View):
+class DeletePersonalFilesView(DontBeTeacherPermission, LoginRequiredMixin, View):
     """
     View para deletar arquivos pessoais de um aluno.
     """

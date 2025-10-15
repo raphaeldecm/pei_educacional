@@ -94,16 +94,11 @@ def pei_created(sender, instance, created, **kwargs):
     if created:
         try:
             teacher = instance.pei.responsible_teacher
-            author = instance.created_by 
+            author = instance.created_by
 
             # Não não notificar caso o próprio usuário/professor criou o comentário
             if teacher.user.id == author.id:
                 return
-
-            subject = instance.pei.enrollment.offer.subject
-            student = instance.pei.enrollment.student
-
-        
 
             Notification.objects.create(
                 title=f"Novo comentário em PEI do aluno {instance.pei.enrollment.student}",

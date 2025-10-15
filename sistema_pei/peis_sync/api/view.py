@@ -1,9 +1,12 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
-from sistema_pei.peis_sync.models import AppVersion
-from .serializers import AppVersionSerializer
 from packaging import version
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from sistema_pei.peis_sync.models import AppVersion
+
+from .serializers import AppVersionSerializer
+
 
 class LatestAppVersionView(APIView):
     permission_classes = [AllowAny]

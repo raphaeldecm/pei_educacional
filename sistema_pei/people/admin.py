@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.utils.html import strip_tags
+
 from sistema_pei.people.forms import AdminStudentForm
 
 # Register your models here.
@@ -65,18 +66,26 @@ class NotificationAdmin(admin.ModelAdmin):
     readonly_fields = ["updated_by", "created_at"]
     list_display = ["title", "user", "created_at", "updated_at"]
 
+
 @admin.register(models.AlertaGlobal)
 class AlertaGlobalAdmin(admin.ModelAdmin):
-    list_display = ('mensagem_resumida', 'data_inicio', 'data_fim', 'criado_em', 'atualizado_em')
-    list_filter = ('data_inicio', 'data_fim')
-    search_fields = ('mensagem',)
-    readonly_fields = ('criado_em', 'atualizado_em')
-    ordering = ('-data_inicio',)
+    list_display = (
+        "mensagem_resumida",
+        "data_inicio",
+        "data_fim",
+        "criado_em",
+        "atualizado_em",
+    )
+    list_filter = ("data_inicio", "data_fim")
+    search_fields = ("mensagem",)
+    readonly_fields = ("criado_em", "atualizado_em")
+    ordering = ("-data_inicio",)
 
     def mensagem_resumida(self, obj):
         texto_limpo = strip_tags(obj.mensagem)
-        return texto_limpo[:50] + ('...' if len(texto_limpo) > 50 else '')
-    mensagem_resumida.short_description = 'Mensagem'
+        return texto_limpo[:50] + ("..." if len(texto_limpo) > 50 else "")
+
+    mensagem_resumida.short_description = "Mensagem"
 
 
 admin.site.register(models.Campus, CampusAdmin)

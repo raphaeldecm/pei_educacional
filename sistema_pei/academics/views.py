@@ -2,22 +2,19 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import ProtectedError
-from django.http import JsonResponse
+from django.core.exceptions import ValidationError
+from django.db.models.functions import Lower
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
-from django.urls import reverse, reverse_lazy
-from django.utils.translation import gettext_lazy as _
+from django.urls import reverse
+from django.urls import reverse_lazy
 from django.utils.timezone import now
-from django.db.models.functions import Lower
+from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views import generic
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
 from django_filters.views import FilterView
-from django.db.models.functions import Lower
-from django.core.exceptions import ValidationError
-
 
 from sistema_pei.academics import filters
 from sistema_pei.academics import forms
@@ -88,7 +85,10 @@ class CourseCreateView(
 
 
 class CourseImportView(
-    TitleViewMixin, LoginRequiredMixin, SuccessMessageMixin, generic.FormView
+    TitleViewMixin,
+    LoginRequiredMixin,
+    SuccessMessageMixin,
+    generic.FormView,
 ):
     form_class = forms.CSVImportForm
     title = _("Importar Cursos")
@@ -153,8 +153,11 @@ class OfferListView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.List
             current_year = now().year
             queryset = models.Offer.objects.filter(year=current_year)
 
-        return self.filterset_class(self.request.GET, queryset=queryset).qs.order_by(Lower('subject__name'))
-    
+        return self.filterset_class(self.request.GET, queryset=queryset).qs.order_by(
+            Lower("subject__name")
+        )
+
+
 class OfferCreateView(
     SuccessMessageMixin,
     LoginRequiredMixin,
@@ -175,7 +178,7 @@ class OfferCreateView(
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        context = self.get_context_data(form=form)
+        self.get_context_data(form=form)
         messages.error(self.request, "Erro ao criar oferta")
         return redirect(self.request.headers.get("referer", "/"))
 
@@ -249,7 +252,10 @@ class RemoveStudentFromOfferView(SuccessMessageMixin, LoginRequiredMixin, View):
 
         try:
             offer.remove_student(student)
-            messages.success(request, f"O discente {student.name} foi removido da oferta com sucesso.")
+            messages.success(
+                request,
+                f"O discente {student.name} foi removido da oferta com sucesso.",
+            )
         except ValidationError as e:
             messages.error(request, e.message)
 
@@ -266,8 +272,8 @@ class AddStudentToOfferView(LoginRequiredMixin, View):
             try:
                 offer.add_student(student, request.user)
                 messages.success(
-                    request, 
-                    f"O discente {student.name} foi incluído na oferta com sucesso."
+                    request,
+                    f"O discente {student.name} foi incluído na oferta com sucesso.",
                 )
             except ValidationError as e:
                 messages.warning(request, e.message)
@@ -324,13 +330,16 @@ class CreateSubjectPageView(
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        context = self.get_context_data(form=form)
+        self.get_context_data(form=form)
         messages.error(self.request, "Erro ao criar oferta")
         return redirect(self.request.headers.get("referer", "/"))
 
 
 class SubjectImportView(
-    TitleViewMixin, LoginRequiredMixin, SuccessMessageMixin, generic.FormView
+    TitleViewMixin,
+    LoginRequiredMixin,
+    SuccessMessageMixin,
+    generic.FormView,
 ):
     form_class = forms.CSVImportForm
     title = _("Importar Disciplinas")
@@ -371,64 +380,69 @@ class SubjectDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
     title = _("Detalhes da disciplina")
     template_name = "subjects/subject_detail.html"
 
+
 class MatrixListView(
     TitleViewMixin,
-    FilterView
+    FilterView,
 ):
-    title = _('Matrizes')
-    template_name = 'matrix/matrix_list.html'
+    title = _("Matrizes")
+    template_name = "matrix/matrix_list.html"
     filterset_class = filters.MatrixFilter
-    queryset = models.Matrix.objects.all().order_by('-year')
+    queryset = models.Matrix.objects.all().order_by("-year")
     paginate_by = constants.DEFAULT_PAGE_SIZE
-    context_object_name = 'object_list'
-    
+    context_object_name = "object_list"
+
+
 class MatrixDetailView(
     TitleViewMixin,
-    generic.DeleteView
+    generic.DeleteView,
 ):
-    template_name = 'matrix/matrix_detail.html'
+    template_name = "matrix/matrix_detail.html"
     model = models.Matrix
     title = _("Detalhes da Matriz")
-    
+
+
 class MatrixCreateView(
     SuccessMessageMixin,
     LoginRequiredMixin,
     TitleViewMixin,
-    CreateView
+    CreateView,
 ):
-    template_name = 'matrix/matrix_form.html'
+    template_name = "matrix/matrix_form.html"
     model = models.Matrix
     form_class = forms.MatrixForm
-    success_url = reverse_lazy('academics:matrix_list')
+    success_url = reverse_lazy("academics:matrix_list")
     title = _("Criar matriz")
     success_message = _("A matriz foi criada com sucesso")
-    
+
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         form.instance.updated_by = self.request.user
 
         return super().form_valid(form)
-    
+
     def form_invalid(self, form):
         context = self.get_context_data(form=form)
         messages.error(self.request, "Erro ao criar Matriz")
         return self.render_to_response(context)
-    
+
+
 class MatrixEditView(
     LoginRequiredMixin,
     TitleViewMixin,
     UpdateView,
 ):
-    template_name = 'matrix/matrix_form.html'
+    template_name = "matrix/matrix_form.html"
     model = models.Matrix
     form_class = forms.MatrixForm
-    success_url = reverse_lazy('academics:matrix_list')
+    success_url = reverse_lazy("academics:matrix_list")
     title = _("Atualizar matriz")
     success_message = _("A matriz foi Atualizada com sucesso")
-    
+
     def form_valid(self, form):
         form.instance.updated_by = self.request.user
         return super().form_valid(form)
+
 
 class MatrixDeleteView(
     LoginRequiredMixin,

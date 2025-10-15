@@ -24,7 +24,6 @@ class PeiForm(forms.ModelForm):
         ]
 
 
-
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment

@@ -112,7 +112,7 @@ class AdminStudentForm(forms.ModelForm):
         fields = "__all__"
 
     def __init__(self, *args, **kwargs):
-        super(AdminStudentForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields["course"].empty_label = "Selecione um curso..."
 
     def clean_reference_period(self):
@@ -144,7 +144,6 @@ class ViewStudentForm(OptionalUserFieldMixin, AdminStudentForm):
 
     class Meta(AdminStudentForm.Meta):
         exclude = ("created_by", "updated_by")
-
 
     def clean_files(self):
         files = self.cleaned_data.get("files", [])
@@ -217,7 +216,7 @@ class StudentFilesForm(forms.ModelForm):
         fields = ["files"]
 
     def __init__(self, *args, **kwargs):
-        super(StudentFilesForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields["files"].required = False
 
     def clean_files(self):

@@ -20,7 +20,7 @@ from sistema_pei.core.views import (
 )
 
 urlpatterns = [
-    path('app/', RedirectView.as_view(url='/peis_sync/app/', permanent=False)),
+    path("app/", RedirectView.as_view(url="/peis_sync/app/", permanent=False)),
     path(
         "people/",
         include("sistema_pei.people.urls", namespace="people"),
@@ -52,10 +52,26 @@ urlpatterns = [
     # User management
     path("users/", include("sistema_pei.users.urls", namespace="users")),
     # Rotas de alteração de senha e recuperação (Desativadas)
-    path("accounts/password/change/", page_not_found, kwargs={"exception": Exception("Not Found")}),
-    path("accounts/password/reset/", page_not_found, kwargs={"exception": Exception("Not Found")}),
-    path("accounts/password/reset/done/", page_not_found, kwargs={"exception": Exception("Not Found")}),
-    path("accounts/password/reset/key/<uidb36>/<key>/", page_not_found, kwargs={"exception": Exception("Not Found")}),
+    path(
+        "accounts/password/change/",
+        page_not_found,
+        kwargs={"exception": Exception("Not Found")},
+    ),
+    path(
+        "accounts/password/reset/",
+        page_not_found,
+        kwargs={"exception": Exception("Not Found")},
+    ),
+    path(
+        "accounts/password/reset/done/",
+        page_not_found,
+        kwargs={"exception": Exception("Not Found")},
+    ),
+    path(
+        "accounts/password/reset/key/<uidb36>/<key>/",
+        page_not_found,
+        kwargs={"exception": Exception("Not Found")},
+    ),
     # Allauth (login, logout, signup, etc.)
     path("accounts/", include("allauth.urls")),
     path("activate/<uidb64>/<token>/", activate_account, name="activate"),

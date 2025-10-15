@@ -27,6 +27,7 @@ from social_core.backends.oauth import BaseOAuth2
 
 User = get_user_model()
 
+
 class SuapOAuth2(BaseOAuth2):
     name = "suap"
     AUTHORIZATION_URL = "https://suap.ifrn.edu.br/o/authorize/"
@@ -65,13 +66,14 @@ class SuapOAuth2(BaseOAuth2):
             "name": response["nome"],
         }
 
+
 class SuapCredentialsBackend(BaseBackend):
     API_BASE_URL = "https://suap.ifrn.edu.br/api"
 
     def authenticate(self, request, username=None, password=None):
         resp = requests.post(
             f"{self.API_BASE_URL}/token/pair",
-            json={"username": username, "password": password}
+            json={"username": username, "password": password},
         )
         if resp.status_code != 200:
             return None
@@ -84,22 +86,28 @@ class SuapCredentialsBackend(BaseBackend):
 
         profile_resp = requests.get(
             f"{self.API_BASE_URL}/rh/eu/",
-            headers={"Authorization": f"Bearer {access_token}"}
+            headers={"Authorization": f"Bearer {access_token}"},
         )
         if profile_resp.status_code != 200:
             return None
 
         dados = profile_resp.json()
 
-        full_name = f"{dados.get('primeiro_nome', '')} {dados.get('ultimo_nome', '')}".strip()
+        full_name = (
+            f"{dados.get('primeiro_nome', '')} {dados.get('ultimo_nome', '')}".strip()
+        )
 
-        email = dados.get("email") or dados.get("email_preferencial") or f"{username}@suap.local"
+        email = (
+            dados.get("email")
+            or dados.get("email_preferencial")
+            or f"{username}@suap.local"
+        )
 
         user, created = User.objects.update_or_create(
             email=email,
             defaults={
                 "name": full_name,
-            }
+            },
         )
 
         if request:

@@ -1,9 +1,11 @@
 from django.utils.timezone import now
 from rest_framework import serializers
 
-from sistema_pei.academics.models import Enrollment, Offer, Subject
-from sistema_pei.people.models import Student
 from sistema_pei.academics.constants import DEFAULT_SYNC_SUBJECT_DURATION_TYPE
+from sistema_pei.academics.models import Enrollment
+from sistema_pei.academics.models import Offer
+from sistema_pei.academics.models import Subject
+from sistema_pei.people.models import Student
 
 
 class GradeSerializer(serializers.Serializer):
@@ -60,7 +62,7 @@ class StudentEnrollmentSerializer(serializers.Serializer):
         }
         subject_duration = duration_map.get(
             DEFAULT_SYNC_SUBJECT_DURATION_TYPE.lower(),
-            Subject.SubjectsDuration.SEMESTER
+            Subject.SubjectsDuration.SEMESTER,
         )
 
         for enrollment_data in enrollments_data:
@@ -72,7 +74,7 @@ class StudentEnrollmentSerializer(serializers.Serializer):
                 if not subject:
                     subject = Subject.objects.create(
                         name=subject_name,
-                        subject_type=subject_duration
+                        subject_type=subject_duration,
                     )
 
                 if student.course:
@@ -109,10 +111,12 @@ class StudentEnrollmentSerializer(serializers.Serializer):
                 sync_enroll_list.append(serialized_enrollment)
 
             except Exception as e:
-                sync_error_list.append({
-                    "data": enrollment_data,
-                    "error": str(e),
-                })
+                sync_error_list.append(
+                    {
+                        "data": enrollment_data,
+                        "error": str(e),
+                    }
+                )
                 continue
 
         return {
@@ -120,6 +124,7 @@ class StudentEnrollmentSerializer(serializers.Serializer):
             "processed": sync_enroll_list,
             "errors": sync_error_list,
         }
+
 
 class StudentReferencePeriodSerializer(serializers.Serializer):
     code = serializers.CharField()

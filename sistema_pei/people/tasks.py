@@ -59,5 +59,5 @@ def send_monthly_pei():
                 type="Alert",
             )
 
-    except CeleryError as e:
-        print("Falha ao enviar notificação mensal de PEIs pendentes.", exc_info=e)
+    except CeleryError:
+        pass

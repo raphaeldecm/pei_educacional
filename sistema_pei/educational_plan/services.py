@@ -13,12 +13,10 @@ def generatePeiExportHtml(pei_id):
     current_year = current_datetime.strftime("%Y")
 
     template = get_template("educational_plan/peis/pei_export.html")
-    html = template.render(
+    return template.render(
         {
             "object": pei,
             "formatted_date": formatted_date,
             "current_year": current_year,
-        }
+        },
     )
-
-    return html

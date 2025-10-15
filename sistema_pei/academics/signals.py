@@ -13,7 +13,8 @@ def createPeiForEnrollment(sender, instance, created, **kwargs):
         for teacher in instance.offer.teachers.all():
             # Verifica se já existe um PEI para esse teacher e enrollment
             if not Pei.objects.filter(
-                responsible_teacher=teacher, enrollment=instance
+                responsible_teacher=teacher,
+                enrollment=instance,
             ).exists():
                 Pei.objects.create(
                     enrollment=instance,
@@ -32,7 +33,8 @@ def createPeiForNewTeachers(sender, instance, action, reverse, model, pk_set, **
             for enrollment in instance.enrollments.all():
                 # Verifica se já existe um PEI para esse teacher e enrollment
                 if not Pei.objects.filter(
-                    responsible_teacher=teacher, enrollment=enrollment
+                    responsible_teacher=teacher,
+                    enrollment=enrollment,
                 ).exists():
                     Pei.objects.create(
                         enrollment=enrollment,

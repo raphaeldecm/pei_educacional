@@ -38,15 +38,16 @@ class OfferAdmin(admin.ModelAdmin):
     def get_teachers(self, obj):
         return ", ".join([teacher.name for teacher in obj.teachers.all()])
 
+
 class MatrixAdmin(admin.ModelAdmin):
-    search_fields = ['name','year']
+    search_fields = ["name", "year"]
     search_help_text = _("Pesquise a matriz pelo nome ou ano")
-    readonly_fields = ['updated_by','created_at']
-    list_filter = ['year']
-    
+    readonly_fields = ["updated_by", "created_at"]
+    list_filter = ["year"]
+
 
 admin.site.register(models.Subject, SubjectAdmin)
 admin.site.register(models.Course, CoursesAdmin)
 admin.site.register(models.Enrollment, EnrollmentAdmin)
 admin.site.register(models.Offer, OfferAdmin)
-admin.site.register(models.Matrix,MatrixAdmin)
+admin.site.register(models.Matrix, MatrixAdmin)

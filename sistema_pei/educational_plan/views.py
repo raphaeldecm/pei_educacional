@@ -9,15 +9,12 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views import generic
-from django.views.generic import DetailView
 from django.views.generic import View
-from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
 from django_filters.views import FilterView
 from xhtml2pdf import pisa
 
 from sistema_pei.core import constants
-from sistema_pei.core.mixins import ProtectedErrorMessageMixin
 from sistema_pei.core.mixins import TitleViewMixin
 from sistema_pei.educational_plan import models
 from sistema_pei.educational_plan.filters import PeiFilter
@@ -48,7 +45,6 @@ class PeiListView(
         return self.filterset_class(self.request.GET, queryset=queryset).qs
 
 
-
 class PeiUpdateView(
     SuccessMessageMixin,
     LoginRequiredMixin,
@@ -61,7 +57,6 @@ class PeiUpdateView(
     success_message = _("O PEI foi atualizado com sucesso.")
     template_name = "pei/pei_form.html"
     success_url = reverse_lazy("home")
-
 
     def dispatch(self, request, *args, **kwargs):
         # Verificar se o usuário logado é o professor associado ao PEI
@@ -92,7 +87,6 @@ class PeiDetailView(LoginRequiredMixin, TitleViewMixin, generic.DetailView):
         context["has_missing_opinions"] = self.object.has_missing_opinions()
 
         return context
-
 
 
 class PeiMarkCompletedView(CoordinatorPermission, LoginRequiredMixin, View):
@@ -135,7 +129,6 @@ class CommentCreateView(LoginRequiredMixin, View):
             comment.save()
             messages.success(request, "Comentário adicionado com sucesso.")
         else:
-            print(form.errors)
             messages.success(request, "Erro ao adicionar comentário.")
         return redirect("educational_plan:pei_detail", pk=pei.pk)
 
@@ -149,7 +142,8 @@ class CommentDeleteView(LoginRequiredMixin, View):
             messages.success(request, "Comentário removido com sucesso.")
         else:
             messages.error(
-                request, "Você não tem permissão para remover este comentário."
+                request,
+                "Você não tem permissão para remover este comentário.",
             )
 
         return redirect("educational_plan:pei_detail", pk=comment.pei.pk)
@@ -187,7 +181,8 @@ class AnswerDeleteView(LoginRequiredMixin, View):
             messages.success(request, "Comentário removido com sucesso.")
         else:
             messages.error(
-                request, "Você não tem permissão para remover este comentário."
+                request,
+                "Você não tem permissão para remover este comentário.",
             )
 
         return redirect("educational_plan:pei_detail", pk=answer.comment.pei.pk)

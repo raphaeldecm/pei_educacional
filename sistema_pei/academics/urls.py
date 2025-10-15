@@ -101,28 +101,28 @@ urlpatterns = [
         name="add_student_to_offer",
     ),
     path(
-        'matrix/list/',
+        "matrix/list/",
         views.MatrixListView.as_view(),
-        name='matrix_list'
+        name="matrix_list",
     ),
     path(
-        'matrix/detail/<int:pk>/',
+        "matrix/detail/<int:pk>/",
         views.MatrixDetailView.as_view(),
-        name='matrix_detail'
+        name="matrix_detail",
     ),
     path(
-        'matrix/create/',
+        "matrix/create/",
         views.MatrixCreateView.as_view(),
-        name='matrix_create'
+        name="matrix_create",
     ),
     path(
-        'matrix/edit/<int:pk>',
+        "matrix/edit/<int:pk>",
         views.MatrixEditView.as_view(),
-        name='matrix_edit'
+        name="matrix_edit",
     ),
     path(
-        'matrix/delete/<int:pk>',
+        "matrix/delete/<int:pk>",
         views.MatrixDeleteView.as_view(),
-        name='matrix_delete'
+        name="matrix_delete",
     ),
 ]
