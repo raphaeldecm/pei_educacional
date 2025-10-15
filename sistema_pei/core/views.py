@@ -36,7 +36,10 @@ class HomeListView(
         return queryset
 
     def get_teacher_dashboard_queryset(self):
-        """Retorna sempre a lista de peis do professor logado independente do filtro aplicado."""
+        """
+        Retorna sempre a lista de peis do professor logado
+        independente do filtro aplicado.
+        """
         queryset = Pei.objects.all()
         if self.request.user.groups.filter(name="Teacher").exists():
             queryset = queryset.filter(responsible_teacher__user=self.request.user)

@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth import models
 from django.db import models
 from django.db import transaction
 from django.utils import timezone
@@ -11,7 +10,6 @@ from sistema_pei.core import constants
 from sistema_pei.core.models import BaseModel
 from sistema_pei.core.models import get_sentinel_user
 from sistema_pei.users.decorators import profile
-from sistema_pei.users.models import User
 
 User = get_user_model()
 
@@ -222,7 +220,8 @@ class Student(Person):
         """
         date_now = now().date()
 
-        # retorna a ultima inscrição atualizada excluindo as que não tem data de sincronização
+        # retorna a ultima inscrição atualizada
+        # excluindo as que não tem data de sincronização
         last_sync = (
             self.enrollment_set.all()
             .exclude(last_synced_at=None)
@@ -245,7 +244,8 @@ class Student(Person):
         retorna a data da ultima sincronização feita
         """
 
-        # retorna a ultima inscrição atualizada excluindo as que não tem data de sincronização
+        # retorna a ultima inscrição atualizada
+        # excluindo as que não tem data de sincronização
         last_sync = (
             self.enrollment_set.all()
             .exclude(last_synced_at=None)

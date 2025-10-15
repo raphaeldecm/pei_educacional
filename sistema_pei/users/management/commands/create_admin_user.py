@@ -9,7 +9,7 @@ class Command(BaseCommand):
     ADMIN_NAME = "admin"
     ADMIN_EMAIL = "admin@nadic.ifrn.edu.br"
     ADMIN_PASSWORD = (
-        "argon2$argon2id$v=19$m=102400,t=2,p=8$S09uUzdDRDFPSWlDN2R3O"  # noqa: S105
+        "argon2$argon2id$v=19$m=102400,t=2,p=8$S09uUzdDRDFPSWlDN2R3O"
         "GJ6cWFvWQ$dCZshwPCs0FDEET8dc+KznlGxkZhwLMTtKGoWiB2JYo"
     )
     help = "Adding superuser..."

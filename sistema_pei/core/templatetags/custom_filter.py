@@ -1,4 +1,4 @@
-from django import template  # type: ignore  # noqa: PGH003
+from django import template  # type: ignore
 
 register = template.Library()
 

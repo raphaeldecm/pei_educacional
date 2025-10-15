@@ -62,7 +62,7 @@ def import_courses_csv(self, uploaded_file):
                 )
                 insert_counter += 1
 
-            except Exception:  # noqa: BLE001
+            except Exception:
                 error_counter += 1
                 continue
 
@@ -72,7 +72,7 @@ def import_courses_csv(self, uploaded_file):
         messages.success(self.request, success_message)
         return redirect(self.success_url)
 
-    except Exception as e:  # noqa: BLE001
+    except Exception as e:
         error_message = f"Erro ao processar o arquivo:\n{e}"
         messages.error(self.request, error_message)
         return redirect(self.success_url)
@@ -129,7 +129,7 @@ def import_subject_csv(self, uploaded_file):
                 )
                 insert_counter += 1
 
-            except Exception:  # noqa: BLE001
+            except Exception:
                 error_counter += 1
                 continue
 
@@ -141,7 +141,7 @@ def import_subject_csv(self, uploaded_file):
 
         return redirect(self.success_url)
 
-    except Exception as e:  # noqa: BLE001
+    except Exception as e:
         error_message = f"Erro ao processar o arquivo:\n{e}"
         messages.error(self.request, error_message)
         return redirect(self.success_url)

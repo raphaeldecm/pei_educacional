@@ -5,15 +5,15 @@ class NotificationEmailContent:
         message = (
             f"Olá, Professor(a) {professor_name},\n\n"
             "Esperamos que esteja bem.\n\n"
-            "Gostaríamos de informar que um novo Plano Educacional Individualizado (PEI) "
-            f"foi criado para a disciplina {subject_name} e está disponível para preenchimento no sistema.\n\n"
+            "Gostaríamos de informar que um novo Plano Educacional Individualizado (PEI) "  # noqa: E501
+            f"foi criado para a disciplina {subject_name} e está disponível para preenchimento no sistema.\n\n"  # noqa: E501
             "Detalhes do PEI:\n"
             f"- Disciplina: {subject_name}\n"
             f"- Aluno: {student_name}\n"
             f"- Semestre/Ano de Referência: {year_semester}\n\n"
-            "Pedimos que revise as informações e preencha os campos necessários conforme as necessidades educacionais do(a) aluno(a). "
-            "Caso tenha dúvidas ou precise de suporte, estamos à disposição para auxiliar.\n\n"
-            "Acesse o sistema para preencher o PEI e dar seguimento ao planejamento pedagógico.\n\n"
+            "Pedimos que revise as informações e preencha os campos necessários conforme as necessidades educacionais do(a) aluno(a). "  # noqa: E501
+            "Caso tenha dúvidas ou precise de suporte, estamos à disposição para auxiliar.\n\n"  # noqa: E501
+            "Acesse o sistema para preencher o PEI e dar seguimento ao planejamento pedagógico.\n\n"  # noqa: E501
             "Atenciosamente,\n"
             "Equipe de Gestão Educacional\n\n"
             "---\n"
@@ -26,10 +26,10 @@ class NotificationEmailContent:
         subject = "[Sistema PEI] PEI Removido"
         message = (
             f"Olá, Professor(a) {professor_name},\n\n"
-            "Informamos que o Plano Educacional Individualizado (PEI) para o(a) aluno(a) "
-            f"{student_name} na disciplina {subject_name}, referente ao semestre/ano {year_semester}, "
+            "Informamos que o Plano Educacional Individualizado (PEI) para o(a) aluno(a) "  # noqa: E501
+            f"{student_name} na disciplina {subject_name}, referente ao semestre/ano {year_semester}, "  # noqa: E501
             "foi removido do sistema.\n\n"
-            "Caso tenha dúvidas ou precise de informações adicionais, estamos à disposição para auxiliar.\n\n"
+            "Caso tenha dúvidas ou precise de informações adicionais, estamos à disposição para auxiliar.\n\n"  # noqa: E501
             "Atenciosamente,\n"
             "Equipe de Gestão Educacional\n\n"
             "---\n"
@@ -42,9 +42,9 @@ class NotificationEmailContent:
         subject = "[Sistema PEI] O histórico de um aluno foi alterado!"
         message = (
             f"Olá, Professor(a) {professor_name},\n\n"
-            f"Informamos que o historico do o(a) aluno(a) {student_name} foi alterado no sistema."
+            f"Informamos que o historico do o(a) aluno(a) {student_name} foi alterado no sistema."  # noqa: E501
             "para mais detalhes verifique o perfil do aluno.\n\n"
-            "Caso tenha dúvidas ou precise de informações adicionais, estamos à disposição para auxiliar.\n\n"
+            "Caso tenha dúvidas ou precise de informações adicionais, estamos à disposição para auxiliar.\n\n"  # noqa: E501
             "Atenciosamente,\n"
             "Equipe de Gestão Educacional\n\n"
             "---\n"
@@ -57,9 +57,9 @@ class NotificationEmailContent:
         subject = "[Sistema PEI] Novo comentário adicionado!"
         message = (
             f"Olá, Professor(a) {professor_name},\n\n"
-            f"Informamos que um novo comentário foi adicionado no pei do o(a) aluno(a) {student_name} na disciplina {subject_name}."
+            f"Informamos que um novo comentário foi adicionado no pei do o(a) aluno(a) {student_name} na disciplina {subject_name}."  # noqa: E501
             "para mais detalhes verifique o PEI do aluno.\n\n"
-            "Caso tenha dúvidas ou precise de informações adicionais, estamos à disposição para auxiliar.\n\n"
+            "Caso tenha dúvidas ou precise de informações adicionais, estamos à disposição para auxiliar.\n\n"  # noqa: E501
             "Atenciosamente,\n"
             "Equipe de Gestão Educacional\n\n"
             "---\n"
@@ -72,9 +72,9 @@ class NotificationEmailContent:
         subject = "[Sistema PEI] Seu comentário foi respondido!"
         message = (
             f"Olá, Professor(a) {professor_name},\n\n"
-            f"Informamos que seu comentário foi respondido no pei do o(a) aluno(a) {student_name} na disciplina {subject_name}."
+            f"Informamos que seu comentário foi respondido no pei do o(a) aluno(a) {student_name} na disciplina {subject_name}."  # noqa: E501
             "para mais detalhes verifique o PEI do aluno.\n\n"
-            "Caso tenha dúvidas ou precise de informações adicionais, estamos à disposição para auxiliar.\n\n"
+            "Caso tenha dúvidas ou precise de informações adicionais, estamos à disposição para auxiliar.\n\n"  # noqa: E501
             "Atenciosamente,\n"
             "Equipe de Gestão Educacional\n\n"
             "---\n"
@@ -89,7 +89,7 @@ class NotificationEmailContent:
             f"Olá, Professor(a) {professor_name},\n\n"
             f"Informamos que há {total_pending} PEIs pendentes para serem preenchidos."
             "Por favor, revise os PEIs pendentes.\n\n"
-            "Caso tenha dúvidas ou precise de informações adicionais, estamos à disposição para auxiliar.\n\n"
+            "Caso tenha dúvidas ou precise de informações adicionais, estamos à disposição para auxiliar.\n\n"  # noqa: E501
             "Atenciosamente,\n"
             "Equipe de Gestão Educacional\n\n"
             "---\n"

@@ -72,7 +72,10 @@ def fields_changed(sender, instance, **kwargs):
 
                 Notification.objects.create(
                     title="Historico de um aluno foi alterado!",
-                    text=f"O histórico do aluno {instance.name} foi alterado. Verfique o perfil do aluno para mais detalhes.",
+                    text=(
+                        f"O histórico do aluno {instance.name} foi alterado. "
+                        "Verfique o perfil do aluno para mais detalhes."
+                    ),
                     user=teacher.user,
                     type="Alert",
                     action=f"/people/profile/{instance.id}?tab=historic#tab",
@@ -100,7 +103,7 @@ def educational_necessities_changed(sender, instance, action, **kwargs):
 
             Notification.objects.create(
                 title="Necessidades Específicas de um aluno foram alteradas!",
-                text=f"As necessidades educacionais específicas do aluno {instance.name} foram alteradas. Verfique o perfil do aluno para mais detalhes.",
+                text=f"As necessidades educacionais específicas do aluno {instance.name} foram alteradas. Verfique o perfil do aluno para mais detalhes.",  # noqa: E501
                 user=teacher.user,
                 type="Alert",
                 action=f"/people/profile/{instance.id}",

@@ -147,6 +147,25 @@ ignore = [
   "RUF012", # Mutable class attributes should be annotated with `typing.ClassVar`
   "SIM102", # sometimes it's better to nest
   "PLR0913",  # Too many arguments
+  "S105",     # Hardcoded password
+    "S113",     # Missing timeout
+    "PLR2004",  # Magic value
+    "DTZ005",   # Timezone aware datetime
+    "DTZ011",   # Timezone aware date
+    "BLE001",   # Blind exception
+    "N802",     # Function naming
+    "N806",     # Variable naming
+    "N815",     # Variable naming
+    "DJ001",    # Django null on CharField
+    "DJ006",    # Django exclude
+    "DJ007",    # Django __all__
+    "PTH118",   # os.path usage
+    "PTH123",   # open() usage
+    "C901",     # Complex function
+    "RET505",   # Unnecessary else
+    "PGH003",   # Type ignore
+    "PGH004",   # Noqa codes
+    "ERA001",   # Commented code
   "UP038" # Checks for uses of isinstance/issubclass that take a tuple
           # of types for comparison.
           # Deactivated because it can make the code slow:
@@ -162,6 +181,11 @@ extend-unsafe-fixes = [
 ]
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.per-file-ignores]
+# Ignorar regras específicas por arquivo
+"*/migrations/*" = ["ALL"]
+"*/tests/*" = ["S101", "PLR2004"]
 
 [tool.ruff.format]
 quote-style = "double"

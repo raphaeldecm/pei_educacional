@@ -65,7 +65,8 @@ def import_student_csv(self, uploaded_file):
                             "necessidades especiais específicas"
                         ],
                         "general_necessitie": row[
-                            "outras necessidades educacionais especificas do(a) estudante"
+                            "outras necessidades educacionais especificas do(a) "
+                            "estudante"
                         ],
                         "creation_reasons": row[
                             "questões geradoras para criação do pei/adaptações"
@@ -86,7 +87,10 @@ def import_student_csv(self, uploaded_file):
                 error_counter += 1
                 continue
 
-        success_message = f"Discentes inseridos: {insert_counter}, Discentes com erro: {error_counter}"
+        success_message = (
+            f"Discentes inseridos: {insert_counter}, "
+            f"Discentes com erro: {error_counter}"
+        )
         messages.success(self.request, success_message)
         return redirect(self.success_url)
 

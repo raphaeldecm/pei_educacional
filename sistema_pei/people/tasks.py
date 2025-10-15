@@ -54,7 +54,7 @@ def send_monthly_pei():
 
             Notification.objects.create(
                 title="Há PEIs com preenchimento pendente!",
-                text=f"Você tem {total_pending} PEIs que ainda precisam ser preenchidos. Por favor, revise os PEIs pendentes.",
+                text=f"Você tem {total_pending} PEIs que ainda precisam ser preenchidos. Por favor, revise os PEIs pendentes.",  # noqa: E501
                 user=teacher.user,
                 type="Alert",
             )
