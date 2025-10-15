@@ -86,7 +86,6 @@ jobs:
             libpango1.0-dev \
             libgdk-pixbuf2.0-dev
 
-      # ✅ CORREÇÃO: Definir variáveis ANTES de instalar dependências
       - name: Set up environment variables
         run: |
           echo "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/sistema_pei_test" >> $GITHUB_ENV
