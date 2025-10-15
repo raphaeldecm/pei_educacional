@@ -1,12 +1,3 @@
-import requests
-from social_core.backends.oauth import BaseOAuth2
-import requests
-from django.contrib.auth import get_user_model
-from django.contrib.auth.backends import BaseBackend
-
-User = get_user_model()
-
-
 """
 Informações enviadas pelo SUAP durante o login
 
@@ -29,7 +20,12 @@ Informações enviadas pelo SUAP durante o login
 }
 """
 
+import requests
+from django.contrib.auth import get_user_model
+from django.contrib.auth.backends import BaseBackend
+from social_core.backends.oauth import BaseOAuth2
 
+User = get_user_model()
 
 class SuapOAuth2(BaseOAuth2):
     name = "suap"
