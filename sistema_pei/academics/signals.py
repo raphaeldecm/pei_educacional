@@ -8,7 +8,7 @@ from sistema_pei.educational_plan.models import Pei
 
 
 @receiver(post_save, sender=Enrollment)
-def createPeiForEnrollment(sender, instance, created, **kwargs):
+def create_pei_for_enrollment(sender, instance, created, **kwargs):
     if created:
         for teacher in instance.offer.teachers.all():
             # Verifica se já existe um PEI para esse teacher e enrollment
@@ -26,7 +26,15 @@ def createPeiForEnrollment(sender, instance, created, **kwargs):
 
 
 @receiver(m2m_changed, sender=Offer.teachers.through)
-def createPeiForNewTeachers(sender, instance, action, reverse, model, pk_set, **kwargs):
+def create_pei_for_new_teachers(
+    sender,
+    instance,
+    action,
+    reverse,
+    model,
+    pk_set,
+    **kwargs,
+):
     if action == "post_add":
         for teacher_id in pk_set:
             teacher = model.objects.get(id=teacher_id)
