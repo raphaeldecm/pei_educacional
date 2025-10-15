@@ -9,7 +9,6 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views import generic
-from django.views.generic import View
 from django.views.generic.edit import UpdateView
 from django_filters.views import FilterView
 from xhtml2pdf import pisa
@@ -152,7 +151,7 @@ class CommentDeleteView(LoginRequiredMixin, View):
 class AnswerCreateView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         try:
-            parentComment = Comment.objects.get(pk=self.kwargs["parent_pk"])
+            parent_comment = Comment.objects.get(pk=self.kwargs["parent_pk"])
         except Comment.DoesNotExist:
             messages.error(request, "Comentário não encontrado.")
             return redirect("educational_plan:pei_detail", pk=kwargs["pei_pk"])
@@ -161,7 +160,7 @@ class AnswerCreateView(LoginRequiredMixin, View):
 
         if form.is_valid():
             answer = form.save(commit=False)
-            answer.comment = parentComment
+            answer.comment = parent_comment
             answer.updated_by = request.user
             answer.created_by = request.user
             answer.save()
@@ -169,7 +168,7 @@ class AnswerCreateView(LoginRequiredMixin, View):
         else:
             messages.error(request, "Erro ao adicionar resposta.")
 
-        return redirect("educational_plan:pei_detail", pk=parentComment.pei.pk)
+        return redirect("educational_plan:pei_detail", pk=parent_comment.pei.pk)
 
 
 class AnswerDeleteView(LoginRequiredMixin, View):

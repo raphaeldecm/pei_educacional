@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 @receiver(post_save, sender=Pei)
-def pei_created(sender, instance, created, **kwargs):
+def handle_pei_creation(sender, instance, created, **kwargs):
     if created:
         try:
             teacher = instance.responsible_teacher
@@ -40,7 +40,10 @@ def pei_created(sender, instance, created, **kwargs):
 
             Notification.objects.create(
                 title="Novo PEI adicionado!",
-                text=f"O PEI do aluno {student_name}, na disciplina {subject_name} - {year_semester} foi adicionado, e você é o responsável.",
+                text=(
+                    f"O PEI do aluno {student_name}, na disciplina {subject_name} - "
+                    f"{year_semester} foi adicionado, e você é o responsável."
+                ),
                 user=teacher.user,
                 type="Alert",
                 action=f"/educational_plan/peis/detail/{instance.id}",
@@ -76,7 +79,11 @@ def pei_deleted(sender, instance, **kwargs):
 
         Notification.objects.create(
             title="PEI removido!",
-            text=f"O PEI do aluno {student_name}, na disciplina {subject_name} - {year_semester}, que você estava participando foi removido pelo coordenador.",
+            text=(
+                f"O PEI do aluno {student_name}, na disciplina {subject_name} - "
+                f"{year_semester}, que você estava participando foi removido pelo "
+                f"coordenador."
+            ),
             user=teacher.user,
             type="Alert",
             action="/educational_plan/peis/list/",
@@ -90,7 +97,7 @@ def pei_deleted(sender, instance, **kwargs):
 
 
 @receiver(post_save, sender=Comment)
-def pei_created(sender, instance, created, **kwargs):
+def handle_pei_status_update(sender, instance, created, **kwargs):
     if created:
         try:
             teacher = instance.pei.responsible_teacher
@@ -101,8 +108,14 @@ def pei_created(sender, instance, created, **kwargs):
                 return
 
             Notification.objects.create(
-                title=f"Novo comentário em PEI do aluno {instance.pei.enrollment.student}",
-                text=f"{author.name} comentou no PEI da disciplina {instance.pei.enrollment.offer.subject}: {instance.text}",
+                title=(
+                    f"Novo comentário em PEI do aluno "
+                    f"{instance.pei.enrollment.student}"
+                ),
+                text=(
+                    f"{author.name} comentou no PEI da disciplina "
+                    f"{instance.pei.enrollment.offer.subject}: {instance.text}"
+                ),
                 user=teacher.user,
                 type="Alert",
                 action=f"/educational_plan/peis/detail/{instance.id}",
@@ -116,13 +129,15 @@ def pei_created(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=Answer)
-def pei_created(sender, instance, created, **kwargs):
+def handle_pei_completion_workflow(sender, instance, created, **kwargs):
     if created:
         try:
             teacher = instance.comment.pei.responsible_teacher
             author = instance.created_by
-
-            # Não notificar caso o professor que criou a resposta seja o mesmo que criou o comentário
+            """
+                Não notificar caso o professor que criou a resposta
+                seja o mesmo que criou o comentário
+            """
             if teacher.user.id == author.id:
                 return
 
@@ -143,7 +158,10 @@ def pei_created(sender, instance, created, **kwargs):
 
             Notification.objects.create(
                 title=f"Usuário {author.name} respondeu seu comentário",
-                text=f"{instance.comment.created_by.name}: {instance.comment.text} >>> {instance.created_by.name}: {instance.text}",
+                text=(
+                    f"{instance.comment.created_by.name}: {instance.comment.text} >>> "
+                    f"{instance.created_by.name}: {instance.text}"
+                ),
                 user=teacher.user,
                 type="Alert",
                 action=f"/educational_plan/peis/detail/{instance.id}",
