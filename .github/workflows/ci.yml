@@ -86,17 +86,19 @@ jobs:
             libpango1.0-dev \
             libgdk-pixbuf2.0-dev
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements/local.txt
-
+      # ✅ CORREÇÃO: Definir variáveis ANTES de instalar dependências
       - name: Set up environment variables
         run: |
           echo "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/sistema_pei_test" >> $GITHUB_ENV
           echo "REDIS_URL=redis://localhost:6379/0" >> $GITHUB_ENV
+          echo "CELERY_BROKER_URL=redis://localhost:6379/0" >> $GITHUB_ENV
           echo "SECRET_KEY=test-secret-key-for-ci" >> $GITHUB_ENV
           echo "DJANGO_SETTINGS_MODULE=config.settings.test" >> $GITHUB_ENV
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements/local.txt
 
       - name: Run migrations
         run: python manage.py migrate
