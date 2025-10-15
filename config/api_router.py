@@ -38,7 +38,9 @@ urlpatterns = [
         name="enrollment-reference-period-update",
     ),
     path(
-        "peis_sync/version/", LatestAppVersionView.as_view(), name="peis_sync_version"
+        "peis_sync/version/",
+        LatestAppVersionView.as_view(),
+        name="peis_sync_version",
     ),
 ]
 urlpatterns += router.urls

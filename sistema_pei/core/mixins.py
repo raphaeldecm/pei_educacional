@@ -31,7 +31,7 @@ class OptionalUserFieldMixin:
             self.fields["user"].required = False
 
 
-class Icontains_with_unaccentMinxin:
+class IcontainsWithUnaccentMixin:
     """adiciona um filtro de busca ignorando acentos"""
 
     def search_icontains(self, query, name, value):
@@ -39,5 +39,5 @@ class Icontains_with_unaccentMinxin:
         Método que filtra o queryset com base no valor de busca
         """
         return query.filter(**{f"{name}__unaccent__icontains": value}).order_by(
-            Lower(name)
+            Lower(name),
         )

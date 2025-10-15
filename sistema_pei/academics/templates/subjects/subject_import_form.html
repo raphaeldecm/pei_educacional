@@ -49,7 +49,7 @@
           <label for="file-upload" class="cursor-pointer w-[50%]">
             <div id="upload-div"
                  class="capitalize text-[18px] py-[11px] px-[22px] min-w-[233px] border border-green-600 rounded-lg text-green-600 font-semibold cursor-pointer flex items-center justify-center gap-2 hover:scale-105 transition-all">
-              <img src="{%static 'images/icons/icon-upload-file.svg'%}" />
+              <img src="{% static 'images/icons/icon-upload-file.svg' %}" />
               <span id="upload-label">Enviar planilha preenchida</span>
               <input id="file-upload"
                      name="file"
@@ -62,7 +62,7 @@
              class="w-[50%]"
              download>
             <div class="capitalize text-[18px] py-[11px] px-[22px] min-w-[233px] border border-blue-600 rounded-lg text-blue-600 font-semibold cursor-pointer flex items-center justify-center gap-2 hover:scale-105 transition-all">
-              <img src="{%static 'images/icons/icon-download-file.svg'%}" />
+              <img src="{% static 'images/icons/icon-download-file.svg' %}" />
               Baixar modelo de planilha
             </div>
           </a>
@@ -73,6 +73,5 @@
   </div>
 {% endblock content %}
 {% block inline_javascript %}
-<script src="{% static 'js/global/page_import_form.js' %}"></script>
+  <script src="{% static 'js/global/page_import_form.js' %}"></script>
 {% endblock inline_javascript %}
-

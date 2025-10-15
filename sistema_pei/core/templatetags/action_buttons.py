@@ -10,11 +10,11 @@ register = template.Library()
 @register.inclusion_tag(
     filename="templatetags/action_buttons.html",
 )
-def action_buttons(detail_view, edit_view, object, model_name, **kwargs):
+def action_buttons(detail_view, edit_view, obj, model_name, **kwargs):
     return {
-        "detail_url": reverse(detail_view, args=[object.pk]),
-        "edit_url": reverse(edit_view, args=[object.pk]),
-        "object": object,
+        "detail_url": reverse(detail_view, args=[obj.pk]),
+        "edit_url": reverse(edit_view, args=[obj.pk]),
+        "object": obj,
         "model": model_name,
         "kwargs": kwargs,
     }
@@ -24,7 +24,13 @@ def action_buttons(detail_view, edit_view, object, model_name, **kwargs):
     "components/_action_item.html",
 )
 def action_item(
-    message, default_icon, hover_icon, border_class, hover_class, link="#", link_args=""
+    message,
+    default_icon,
+    hover_icon,
+    border_class,
+    hover_class,
+    link="#",
+    link_args="",
 ):
     return {
         "message": message,

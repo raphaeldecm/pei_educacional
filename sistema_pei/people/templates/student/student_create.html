@@ -162,13 +162,13 @@
         <div class="mt-[16px] border border-slate-300 rounded-lg py-2 px-3 max-h-[150px] overflow-y-auto gap-6">
           {% for value, label in form.sectors.field.choices %}
             <div class="flex items-center gap-1">
-              <input id="sector_{{ value }}" 
-                     type="checkbox" 
-                     class="hidden peer" 
-                     name="{{ form.sectors.html_name }}" 
-                     value="{{ value }}" 
+              <input id="sector_{{ value }}"
+                     type="checkbox"
+                     class="hidden peer"
+                     name="{{ form.sectors.html_name }}"
+                     value="{{ value }}"
                      {% if value|stringformat:"s" in form.sectors.value|stringformat:"s" %}checked{% endif %} />
-              <label for="sector_{{ value }}" 
+              <label for="sector_{{ value }}"
                      class="flex items-center cursor-pointer w-[20px] h-[20px] rounded-[5px] peer-checked:[&_img]:block bg-slate-300">
                 <img src="{% static 'images/icons/icon-checkbox-checked.svg' %}"
                      width="20px"
@@ -180,8 +180,6 @@
             </div>
           {% endfor %}
         </div>
-        
-
         {% if form.sectors.errors %}
           <ul class="list-disc p-2">
             {% for error in form.sectors.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}
@@ -210,9 +208,6 @@
             </div>
           {% endfor %}
         </div>
-
-
-
         {% if form.educational_necessities.errors %}
           <ul class="list-disc p-2">
             {% for error in form.educational_necessities.errors %}<li class="text-red-500 ml-2">{{ error }}</li>{% endfor %}

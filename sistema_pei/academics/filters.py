@@ -4,12 +4,12 @@ from django.utils import timezone
 
 from sistema_pei.academics import models
 from sistema_pei.academics.constants import COURSE_TYPE
-from sistema_pei.core.mixins import Icontains_with_unaccentMinxin
+from sistema_pei.core.mixins import IcontainsWithUnaccentMixin
 
 
 class CourseFilter(
     django_filters.FilterSet,
-    Icontains_with_unaccentMinxin,
+    IcontainsWithUnaccentMixin,
 ):
     name = django_filters.CharFilter(method="search_icontains", label="Nome")
     course_type = django_filters.ChoiceFilter(
@@ -83,7 +83,7 @@ class EnrollmentFilter(django_filters.FilterSet):
 
 class SubjectFilter(
     django_filters.FilterSet,
-    Icontains_with_unaccentMinxin,
+    IcontainsWithUnaccentMixin,
 ):
     search = django_filters.CharFilter(
         field_name="name",

@@ -110,12 +110,18 @@ class StudentEnrollmentSerializer(serializers.Serializer):
                 serialized_enrollment = EnrollmentResponseSerializer(enrollment).data
                 sync_enroll_list.append(serialized_enrollment)
 
-            except Exception as e:
+            except (
+                Subject.DoesNotExist,
+                Offer.DoesNotExist,
+                Enrollment.DoesNotExist,
+                KeyError,
+                ValueError,
+            ) as e:
                 sync_error_list.append(
                     {
                         "data": enrollment_data,
                         "error": str(e),
-                    }
+                    },
                 )
                 continue
 

@@ -44,7 +44,7 @@ class SubjectForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["courses"].queryset = models.Course.objects.all().order_by(
-            Lower("name")
+            Lower("name"),
         )
 
 

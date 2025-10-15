@@ -6,6 +6,8 @@ from sistema_pei.people.forms import AdminStudentForm
 # Register your models here.
 from . import models
 
+MAX_ITEMS = 50
+
 
 class CampusAdmin(admin.ModelAdmin):
     search_fields = ["name"]
@@ -81,11 +83,12 @@ class AlertaGlobalAdmin(admin.ModelAdmin):
     readonly_fields = ("criado_em", "atualizado_em")
     ordering = ("-data_inicio",)
 
+    @admin.display(
+        description="Mensagem",
+    )
     def mensagem_resumida(self, obj):
         texto_limpo = strip_tags(obj.mensagem)
-        return texto_limpo[:50] + ("..." if len(texto_limpo) > 50 else "")
-
-    mensagem_resumida.short_description = "Mensagem"
+        return texto_limpo[:50] + ("..." if len(texto_limpo) > MAX_ITEMS else "")
 
 
 admin.site.register(models.Campus, CampusAdmin)

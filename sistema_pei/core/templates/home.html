@@ -10,8 +10,8 @@
   {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
 {% endblock breadcrumb %}
 {% block content %}
-{%load_search_script%}
-<div class="w-full">
+  {% load_search_script %}
+  <div class="w-full">
     <div>
       <h1 class="font-semibold text-[24px]">Olá 👋, {{ request.user.name }}!</h1>
       <p class="text-[14px]">Seja bem-vindo (a)</p>
@@ -89,27 +89,27 @@
       <form>
         <div class="mb-[8px] flex w-full h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2">
           <img src="{% static 'images/icons/icon-search.svg' %}"
-          alt=""
-          width="18px"
-          height="18px" />
+               alt=""
+               width="18px"
+               height="18px" />
           <input type="text"
-          name="search"
-          placeholder="Pesquisar..."
-          class="outline-none text-[14px] placeholder:text-[14px] rounded-lg h-full w-full bg-neutral-50 placeholder:text-slate-500"
-          value="{{ request.GET.search }}" />
+                 name="search"
+                 placeholder="Pesquisar..."
+                 class="outline-none text-[14px] placeholder:text-[14px] rounded-lg h-full w-full bg-neutral-50 placeholder:text-slate-500"
+                 value="{{ request.GET.search }}" />
         </div>
         <div class="flex gap-[8px] flex-wrap">
           <div class="relative w-[322px] cursor-pointer [&_input]:text-[14px]">
-            {%search_option object_name='course' query=filter.form.course.field.queryset input_placeholder='Selecione o curso...'%}
+            {% search_option object_name='course' query=filter.form.course.field.queryset input_placeholder='Selecione o curso...' %}
           </div>
           <div class="flex gap-[8px] flex-wrap [&_input]:text-[14px]">
             <div class="relative w-[322px] cursor-pointer">
-              {%search_option object_name='subject' query=filter.form.subject.field.queryset input_placeholder='Selecione a disciplina...'%}
+              {% search_option object_name='subject' query=filter.form.subject.field.queryset input_placeholder='Selecione a disciplina...' %}
             </div>
           </div>
           <div class="flex gap-[8px] flex-wrap [&_input]:text-[14px]">
             <div class="relative w-[322px] cursor-pointer">
-              {%search_option object_name='teacher' query=filter.form.teacher.field.queryset input_placeholder='Selecione o professor...'%}
+              {% search_option object_name='teacher' query=filter.form.teacher.field.queryset input_placeholder='Selecione o professor...' %}
             </div>
           </div>
           <div class="flex h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2 w-full max-w-xs">
@@ -124,16 +124,18 @@
                  src="{% static 'images/icons/icon-updown-arrow.svg' %}"
                  width="24px"
                  height="24px" />
-                <select name="semester"
-                        class="cursor-pointer outline-none text-[14px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
-                  <option value="" {% if not request.GET.semester %}selected{% endif %} disabled>Selecione o semestre...</option>
-                  {% for semester_value, semester_label in filter.form.fields.semester.choices %}
-                    <option value="{{ semester_value }}"
-                            {% if request.GET.semester|stringformat:"s" == semester_value|stringformat:"s" %} selected {% endif %}>
-                      {{ semester_label }}
-                    </option>
-                  {% endfor %}
-                </select>
+            <select name="semester"
+                    class="cursor-pointer outline-none text-[14px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
+              <option value=""
+                      {% if not request.GET.semester %}selected{% endif %}
+                      disabled>Selecione o semestre...</option>
+              {% for semester_value, semester_label in filter.form.fields.semester.choices %}
+                <option value="{{ semester_value }}"
+                        {% if request.GET.semester|stringformat:"s" == semester_value|stringformat:"s" %}selected{% endif %}>
+                  {{ semester_label }}
+                </option>
+              {% endfor %}
+            </select>
           </div>
           <div class="relative w-[322px] cursor-pointer">
             <img class="absolute top-[12px] right-[10px] pointer-events-none  "
@@ -155,15 +157,12 @@
                  width="24px"
                  height="24px" />
             <select name="offer_type"
-            class="cursor-pointer outline-none text-[14px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
-              <option value="default" disabled selected>
-                Selecionar Tipo de oferta
-              </option>
-              {%for key,value in filter.form.offer_type.field.choices%}
-                <option value="{{key}}" {%if key == request.GET.offer_type%} selected {%endif%} >
-                  {{value}}
-                </option>
-              {%endfor%}
+                    class="cursor-pointer outline-none text-[14px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
+              <option value="default" disabled selected>Selecionar Tipo de oferta</option>
+              {% for key,value in filter.form.offer_type.field.choices %}
+                <option value="{{ key }}"
+                        {% if key == request.GET.offer_type %}selected{% endif %}>{{ value }}</option>
+              {% endfor %}
             </select>
           </div>
           <button class="flex items-center justify-center gap-[10px] min-w-[100px] h-[48px] bg-green-500 rounded-[6px] text-neutral-50 hover:scale-105 transition-all">
@@ -175,11 +174,11 @@
           </button>
           {% if request.GET %}
             <a href="{{ request.path }}"
-              class="flex items-center justify-center gap-[10px] min-w-[100px] h-[48px] bg-slate-500 rounded-[6px] text-neutral-50 hover:scale-105 transition-all">
+               class="flex items-center justify-center gap-[10px] min-w-[100px] h-[48px] bg-slate-500 rounded-[6px] text-neutral-50 hover:scale-105 transition-all">
               <img src="{% static 'images/icons/icon-filter-remove.svg' %}"
-                  alt=""
-                  width="20px"
-                  height="20px" />
+                   alt=""
+                   width="20px"
+                   height="20px" />
               <span class="text-[14px]">Limpar</span>
             </a>
           {% endif %}
@@ -197,67 +196,71 @@
           <th>Situação</th>
           <th style="text-align: center" class='pr-[30px]'>Ações</th>
         </tr>
-        </thead>
-        <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px] [&_td]:px-[8px]">
-          {% for object in object_list %}
-            <tr>
-              <td class="!pl-[5%]">
-                <div class="w-[48px] h-[48px]">
-                  <img src="{{ object.enrollment.student.image.url }}"
-                       alt=""
-                       class="rounded-full w-full h-full object-cover"
-                   />
+      </thead>
+      <tbody class="[&_tr]:border-t [&_tr]:border-slate-300 [&_tr]:h-[97px] [&_td]:px-[8px]">
+        {% for object in object_list %}
+          <tr>
+            <td class="!pl-[5%]">
+              <div class="w-[48px] h-[48px]">
+                <img src="{{ object.enrollment.student.image.url }}"
+                     alt=""
+                     class="rounded-full w-full h-full object-cover" />
+              </div>
+            </td>
+            <td title="{{ object.enrollment.student.registration }}"
+                class="max-w-[100px] overflow-hidden text-ellipsis text-nowrap">
+              {{ object.enrollment.student.registration }}
+            </td>
+            <td title="{{ object.enrollment.student.name }}"
+                class="max-w-[100px] overflow-hidden text-ellipsis text-nowrap">
+              {{ object.enrollment.student.name }}
+            </td>
+            <td title="{{ object.responsible_teacher }}"
+                class="max-w-[100px] overflow-hidden text-ellipsis text-nowrap">{{ object.responsible_teacher }}</td>
+            <td title="{{ object.enrollment.offer.subject }} - {{ object.enrollment.student.course.name }}"
+                class="max-w-[100px] overflow-hidden text-ellipsis text-nowrap">
+              {{ object.enrollment.offer.subject }}
+              <br />
+              <span class="text-sm text-slate-600/50">{{ object.enrollment.student.course.name }}</span>
+            </td>
+            <td>
+              {% if object.status == 'NOT_START' %}
+                <div class=" bg-red-300 text-red-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-red-700">
+                  PEI Não iniciado
                 </div>
-              </td>
-              <td title="{{ object.enrollment.student.registration }}" class="max-w-[100px] overflow-hidden text-ellipsis text-nowrap">{{ object.enrollment.student.registration }}</td>
-
-              <td title="{{ object.enrollment.student.name }}" class="max-w-[100px] overflow-hidden text-ellipsis text-nowrap" >{{ object.enrollment.student.name }}</td>
-
-              <td title="{{ object.responsible_teacher }}" class="max-w-[100px] overflow-hidden text-ellipsis text-nowrap">{{ object.responsible_teacher }}</td>
-
-              <td title="{{ object.enrollment.offer.subject }} - {{ object.enrollment.student.course.name }}" class="max-w-[100px] overflow-hidden text-ellipsis text-nowrap">
-                {{ object.enrollment.offer.subject }}
-                <br />
-                <span class="text-sm text-slate-600/50">{{ object.enrollment.student.course.name }}</span>
-              </td>
-              <td>
-                {% if object.status == 'NOT_START' %}
-                  <div class=" bg-red-300 text-red-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-red-700">
-                    PEI Não iniciado
-                  </div>
-                {% elif object.status == 'IN_PROGRESS' %}
-                  <div class=" bg-amber-300 text-amber-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-amber-700">
-                    PEI em andamento
-                  </div>
-                {% elif object.status == 'FEEDBACK' %}
-                  <div class=" bg-blue-300 text-blue-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-blue-700">
-                    PEI Preenchido
-                  </div>
-                {% elif object.status == 'COMPLETED' %}
-                  <div class=" bg-green-300 text-green-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-green-700">
-                    PEI Finalizado
-                  </div>
+              {% elif object.status == 'IN_PROGRESS' %}
+                <div class=" bg-amber-300 text-amber-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-amber-700">
+                  PEI em andamento
+                </div>
+              {% elif object.status == 'FEEDBACK' %}
+                <div class=" bg-blue-300 text-blue-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-blue-700">
+                  PEI Preenchido
+                </div>
+              {% elif object.status == 'COMPLETED' %}
+                <div class=" bg-green-300 text-green-700 rounded-full h-[41px] w-max px-[15px] flex items-center justify-center border border-green-700">
+                  PEI Finalizado
+                </div>
+              {% endif %}
+            </td>
+            <td class='h-full'>
+              <span class="flex justify-center items-center h-full gap-[30px] relative">
+                {% url 'educational_plan:pei_detail' object.pk as detail_url %}
+                {% action_item default_icon='images/icons/eye-action-icon.svg' hover_icon='images/icons/eye-action-hover-icon.svg' message="Visualizar Pei" border_class='border-[#deedfe]' hover_class='hover:bg-[#2462eb]' link=detail_url %}
+                {% if object.responsible_teacher.user == request.user %}
+                  {% url 'educational_plan:pei_update' object.id as edit_url %}
+                  {% action_item default_icon='images/icons/edit-icon.svg' hover_icon='images/icons/edit-hover-icon.svg' message="Editar Pei"  border_class='border-[#f4e7d9]' hover_class='hover:bg-[#ee8e5f]' link=edit_url %}
                 {% endif %}
-              </td>
-              <td class='h-full'>
-                <span class="flex justify-center items-center h-full gap-[30px] relative">
-                    {% url 'educational_plan:pei_detail' object.pk as detail_url%}
-                    {%action_item default_icon='images/icons/eye-action-icon.svg' hover_icon='images/icons/eye-action-hover-icon.svg' message="Visualizar Pei" border_class='border-[#deedfe]' hover_class='hover:bg-[#2462eb]' link=detail_url%}
-                  {% if object.responsible_teacher.user == request.user %}
-                    {%url 'educational_plan:pei_update' object.id as edit_url%}
-                    {%action_item default_icon='images/icons/edit-icon.svg' hover_icon='images/icons/edit-hover-icon.svg' message="Editar Pei"  border_class='border-[#f4e7d9]' hover_class='hover:bg-[#ee8e5f]' link=edit_url%}
-                  {% endif %}
-                </span>
-              </td>
-            </tr>
-          {% empty %}
-            <tr>
-              <td colspan="7" class="text-center">Nenhum PEI cadastrado.</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
+              </span>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="7" class="text-center">Nenhum PEI cadastrado.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
   {% include "components/_table_pagination.html" %}
 </div>
 {% endblock content %}

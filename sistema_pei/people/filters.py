@@ -9,7 +9,7 @@ from sistema_pei.core.constants import SYNC_OLD_INTERVAL
 # constants
 from sistema_pei.core.constants import SYNC_RECENT_INTERVAL
 from sistema_pei.core.constants import SYNC_REGULAR_INTERVAL
-from sistema_pei.core.mixins import Icontains_with_unaccentMinxin
+from sistema_pei.core.mixins import IcontainsWithUnaccentMixin
 
 from .models import Campus
 from .models import Student
@@ -18,7 +18,7 @@ from .models import Teacher
 
 class TeacherFilter(
     django_filters.FilterSet,
-    Icontains_with_unaccentMinxin,
+    IcontainsWithUnaccentMixin,
 ):
     name = django_filters.CharFilter(label="Nome", method="search_icontains")
     email = django_filters.CharFilter(lookup_expr="icontains", label="E-mail")
@@ -89,5 +89,5 @@ class StudentFilter(django_filters.FilterSet):
 
         # retorna os discentes que tem suas datas de sicronização no range do filtro
         return quaryset.filter(
-            enrollment__last_synced_at__range=filter_dates_values.get(value)
+            enrollment__last_synced_at__range=filter_dates_values.get(value),
         )

@@ -19,9 +19,9 @@
       {% csrf_token %}
       <div class="mb-4 col-span-2 flex flex-col items-center gap-4">
         <img id="profileImage"
-          src="{% if form.instance.photoAlt %}{{ form.instance.photoAlt.url }}{% elif form.instance.photo %}{{ form.instance.photo }}{% else %}{% static 'images/img/boy_user-profile.svg' %}{% endif %}"
-          alt="imagem de perfil"
-          class="h-40 w-40 rounded-full bg-transparent border object-cover text-transparent" />
+             src="{% if form.instance.photoAlt %}{{ form.instance.photoAlt.url }}{% elif form.instance.photo %}{{ form.instance.photo }}{% else %}{% static 'images/img/boy_user-profile.svg' %}{% endif %}"
+             alt="imagem de perfil"
+             class="h-40 w-40 rounded-full bg-transparent border object-cover text-transparent" />
         <label for="{{ form.photoAlt.id_for_label }}"
                class="font-sans font-medium text-lg text-ls block mb-4">
           Foto do docente <span class="text-red-500">*</span>

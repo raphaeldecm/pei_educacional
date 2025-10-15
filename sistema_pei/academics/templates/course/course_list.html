@@ -65,7 +65,7 @@
         </button>
       </div>
     </form>
-    {%register_and_import_buttons register_text="Cadastrar Novo Curso" register_link="academics:course_create" import_text="Importar Cursos" import_link='academics:course_import'%}
+    {% register_and_import_buttons register_text="Cadastrar Novo Curso" register_link="academics:course_create" import_text="Importar Cursos" import_link='academics:course_import' %}
     <div class="mt-[53px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg">
       <table class="table-auto w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px]">
         <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">
@@ -83,7 +83,7 @@
               <td>{{ object.get_period_display }}</td>
               <td>{{ object.course_type }}</td>
               <td>
-                {%action_buttons detail_view='academics:course_detail' edit_view='academics:course_update' object=object model_name='Curso'%}
+                {% action_buttons detail_view='academics:course_detail' edit_view='academics:course_update' object=object model_name='Curso' %}
               </td>
               {% include "components/_confirm_delete_modal.html" with title="Confirmar Exclusão do Curso" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="academics:course_delete" %}
             </tr>

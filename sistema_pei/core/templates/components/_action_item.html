@@ -1,18 +1,17 @@
+{% load static %}
 
-{%load static%}
-
-<div class="rounded-[12px] border-solid border-2 {{border_color}} {{hover_color}} group cursor-pointer hover:scale-105 transition-all">
-    <span class="absolute top-[-30px] text-[0.80rem] translate-x-[-40%] min-w-[150px] w-[40%] p-1 rounded-[10px] bg-neutral-200 text-black group-hover:flex font-medium items-center hidden justify-center">
-        {{message}}
-    </span>
-    <a href="{{link}}?{{link_args}}" class='block w-full h-full p-2'>
-            <img src="{%static default_icon%}"
-                alt=""
-                height="24px"
-                class="cursor-pointer group-hover:hidden"/>
-            <img src="{% static hover_icon%}"
-                alt=""
-                height="24px"
-                class="cursor-pointer hidden group-hover:block"/>
-        </a>
+<div class="rounded-[12px] border-solid border-2 {{ border_color }} {{ hover_color }} group cursor-pointer hover:scale-105 transition-all">
+  <span class="absolute top-[-30px] text-[0.80rem] translate-x-[-40%] min-w-[150px] w-[40%] p-1 rounded-[10px] bg-neutral-200 text-black group-hover:flex font-medium items-center hidden justify-center">
+    {{ message }}
+  </span>
+  <a href="{{ link }}?{{ link_args }}" class='block w-full h-full p-2'>
+    <img src="{% static default_icon %}"
+         alt=""
+         height="24px"
+         class="cursor-pointer group-hover:hidden" />
+    <img src="{% static hover_icon %}"
+         alt=""
+         height="24px"
+         class="cursor-pointer hidden group-hover:block" />
+  </a>
 </div>

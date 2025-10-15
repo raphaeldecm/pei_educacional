@@ -10,13 +10,16 @@
       <p>{{ message|safe }}</p>
     </section>
     <button class="close-btn ml-auto p-2 text-white" aria-label="Fechar">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      <svg xmlns="http://www.w3.org/2000/svg"
+           fill="none"
+           viewBox="0 0 24 24"
+           stroke="currentColor"
+           class="w-5 h-5">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
       </svg>
     </button>
   </article>
 {% endfor %}
-
 {% block inline_javascript %}
   <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -33,11 +36,11 @@
     });
 
     //apaga as menssagens depois de 4 segundos
-    document.addEventListener("DOMContentLoaded",()=>{
+    document.addEventListener("DOMContentLoaded", () => {
       const alertMessage = document.querySelectorAll('.alert-message')
-      setTimeout(()=>{
-        alertMessage.forEach(element=>element.remove())
-      },4000)
+      setTimeout(() => {
+        alertMessage.forEach(element => element.remove())
+      }, 4000)
     })
-    </script>
+  </script>
 {% endblock inline_javascript %}

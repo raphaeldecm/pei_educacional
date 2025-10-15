@@ -16,16 +16,15 @@
     <form class="w-full" action="{% url 'account_login' %}" method="post">
       {% csrf_token %}
       <div class="mb-4">
-      <label for="{{ form.login.id_for_label }}"
-        class="block text-gray-700 text-sm font-bold mb-2">Usuário SUAP:</label>
-      <input type="text"
-        id="{{ form.login.id_for_label }}"
-        name="{{ form.login.name }}"
-        placeholder="Digite sua matrícula do SUAP."
-        value="{{ form.login.value|default_if_none:'' }}"
-        class="bg-transparent font-sans appearance-none border rounded-lg w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
-        tabindex="0" 
-      />
+        <label for="{{ form.login.id_for_label }}"
+               class="block text-gray-700 text-sm font-bold mb-2">Usuário SUAP:</label>
+        <input type="text"
+               id="{{ form.login.id_for_label }}"
+               name="{{ form.login.name }}"
+               placeholder="Digite sua matrícula do SUAP."
+               value="{{ form.login.value|default_if_none:'' }}"
+               class="bg-transparent font-sans appearance-none border rounded-lg w-full py-2 px-3 placeholder:font-light font-light placeholder:text-slate-500 text-slate-900 hover:border-green-500 focus:outline-green-500"
+               tabindex="0" />
         {% comment %} /List Erros {% endcomment %}
       </div>
       <div class="mb-6">
@@ -49,8 +48,7 @@
       </div>
       <div class="flex flex-row-reverse items-center justify-between">
         {% comment %} <div class="flex flex-col">
-          <a href="{% url 'account_reset_password' %}"
-             class="font-sans inline-block align-baseline font-light text-sm text-green-500 hover:text-green-700 mb-3">
+          <a href="{% url 'account_reset_password' %}" class="font-sans inline-block align-baseline font-light text-sm text-green-500 hover:text-green-700 mb-3">
             Esqueceu a senha?
           </a>
         </div> {% endcomment %}
@@ -65,14 +63,14 @@
         <span class="px-3 text-gray-600">OU</span>
         <div class="w-full border-t border-gray-300"></div>
       </div>
-      <div class="flex gap-5">      
+      <div class="flex gap-5">
         <a class="flex items-center justify-center font-sans text-base button is-dark is-large border p-2 rounded-lg hover:text-green-500 hover:border-green-500 transition duration-300 ease-in-out"
-        href="{% url 'social:begin' 'suap' %}">
+           href="{% url 'social:begin' 'suap' %}">
           <span class="font-bold font-sans text-2xl pr-2">IF</span>
           Continuar com o SUAP
         </a>
         <a class="flex items-center justify-center font-sans text-base button is-dark is-large border p-2 rounded-lg hover:text-green-500 hover:border-green-500 transition duration-300 ease-in-out"
-          href="{% url 'peis_sync:app' %}">
+           href="{% url 'peis_sync:app' %}">
           <span class="font-bold font-sans text-2xl pr-2">&#8693;</span>
           Continuar para PEIs Sync
         </a>

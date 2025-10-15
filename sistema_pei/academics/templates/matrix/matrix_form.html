@@ -14,74 +14,54 @@
     <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
     <form method='post'>
       {% csrf_token %}
-       <div class="mt-[24px]">
-        <label for="" class="font-medium text-[18px]">
-            Codigo
-        </label>
+      <div class="mt-[24px]">
+        <label for="" class="font-medium text-[18px]">Codigo</label>
         <div class="relative w-full cursor-pointer mt-[5px]">
-            <input
-            type="number"
-            min='1'
-            step='1'
-            name="code"
-            placeholder="Digite o Codigo da Matriz"
-            value="{{form.code.value|default_if_none:''}}"
-            class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[10px]"
-            >
-            {%for erro in form.code.errors%}
-                <span class='ml-2 text-red-500 mt-4 block'>{{erro}}</span>
-            {%endfor%}
+          <input type="number"
+                 min='1'
+                 step='1'
+                 name="code"
+                 placeholder="Digite o Codigo da Matriz"
+                 value="{{ form.code.value|default_if_none:'' }}"
+                 class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[10px]" />
+          {% for erro in form.code.errors %}<span class='ml-2 text-red-500 mt-4 block'>{{ erro }}</span>{% endfor %}
         </div>
-    </div>        
-       <div class="mt-[24px]">
-        <label for="" class="font-medium text-[18px]">
-            Descrição
-        </label>
+      </div>
+      <div class="mt-[24px]">
+        <label for="" class="font-medium text-[18px]">Descrição</label>
         <div class="relative w-full cursor-pointer mt-[5px]">
-            <input
-            type="text"
-            name="description"
-            placeholder="Digite a descrição da Matriz"
-            value="{{form.description.value|default_if_none:''}}"
-            class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[10px]"
-            >
-            {%for erro in form.description.errors%}
-                <span class='ml-2 text-red-500 mt-4 block'>{{erro}}</span>
-            {%endfor%}
+          <input type="text"
+                 name="description"
+                 placeholder="Digite a descrição da Matriz"
+                 value="{{ form.description.value|default_if_none:'' }}"
+                 class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[10px]" />
+          {% for erro in form.description.errors %}<span class='ml-2 text-red-500 mt-4 block'>{{ erro }}</span>{% endfor %}
         </div>
-    </div>        
-    <div class="mt-[24px]">
-        <label for="" class="font-medium text-[18px]">
-            Ano
-        </label>
+      </div>
+      <div class="mt-[24px]">
+        <label for="" class="font-medium text-[18px]">Ano</label>
         <div class="relative w-full cursor-pointer mt-[5px]">
-            <input
-            type="number"
-            name="year"
-            min="0"
-            placeholder="Digite o Ano da Matriz"
-            value="{{form.year.value|default_if_none:''}}"
-            class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[10px]"
-            id="">
-            {%for erro in form.year.errors%}
-                <span class='ml-2 text-red-500 mt-4 block'>{{erro}}</span>
-            {%endfor%}
+          <input type="number"
+                 name="year"
+                 min="0"
+                 placeholder="Digite o Ano da Matriz"
+                 value="{{ form.year.value|default_if_none:'' }}"
+                 class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[10px]"
+                 id="" />
+          {% for erro in form.year.errors %}<span class='ml-2 text-red-500 mt-4 block'>{{ erro }}</span>{% endfor %}
         </div>
-    <div class="mt-[24px]">
-        <label for="" class="font-medium text-[18px]">
-            Esta Ativa?
-        </label>
-        <div class="relative w-full cursor-pointer mt-[5px]">
-            <select name="active" class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[10px]">
-                <option value="True" {%if form.active.value == True %}selected{%endif%}>Sim</option>
-                <option value="False" {%if form.active.value == False %}selected{%endif%}>Não</option>
+        <div class="mt-[24px]">
+          <label for="" class="font-medium text-[18px]">Esta Ativa?</label>
+          <div class="relative w-full cursor-pointer mt-[5px]">
+            <select name="active"
+                    class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[10px]">
+              <option value="True" {% if form.active.value == True %}selected{% endif %}>Sim</option>
+              <option value="False" {% if form.active.value == False %}selected{% endif %}>Não</option>
             </select>
-            {%for erro in form.active.errors%}
-                <span class='ml-2 text-red-500 mt-4 block'>{{erro}}</span>
-            {%endfor%}
+            {% for erro in form.active.errors %}<span class='ml-2 text-red-500 mt-4 block'>{{ erro }}</span>{% endfor %}
+          </div>
         </div>
-       </div>
-      {% include "components/_save_back_edit_buttons.html" with link_to_back="academics:offer_list" %}
-    </form>
-  </div>
-{% endblock content %}
+        {% include "components/_save_back_edit_buttons.html" with link_to_back="academics:offer_list" %}
+      </form>
+    </div>
+  {% endblock content %}

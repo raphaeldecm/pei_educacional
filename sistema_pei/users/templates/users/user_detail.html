@@ -27,7 +27,8 @@
     </div>
     <div class="flex flex-col flex-1 m-4">
       <div class="flex-1 mb-4">
-        <label for="{{ profile_user.name.id_for_label }}" class="font-medium text-[18px]">Nome:</label>
+        <label for="{{ profile_user.name.id_for_label }}"
+               class="font-medium text-[18px]">Nome:</label>
         <input type="text"
                name="{{ profile_user.name }}"
                id="{{ profile_user.name.id_for_label }}"
@@ -36,7 +37,8 @@
                readonly />
       </div>
       <div class="flex-1 mb-4">
-        <label for="{{ profile_user.email.id_for_label }}" class="font-medium text-[18px]">Email:</label>
+        <label for="{{ profile_user.email.id_for_label }}"
+               class="font-medium text-[18px]">Email:</label>
         <input type="text"
                name="{{ profile_user.email.name }}"
                id="{{ profile_user.email.id_for_label }}"
@@ -108,14 +110,8 @@
         {% comment %} <div class="flex-1 my-4">
           <label for="{{ form.sector.id_for_label }}" class="font-medium text-[18px]">Senha:</label>
           <div class="flex items-center">
-            <input type="text"
-                   name="{{ profile_user.sector.name }}"
-                   id="{{ profile_user.sector.id_for_label }}"
-                   class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]"
-                   value="{% if profile_user.has_usable_password %}Definida{% else %}Usuário sem senha{% endif %}"
-                   readonly />
-            <a href="{% url 'account_reset_password' %}"
-               class="font-sans inline-block align-baseline font-light text-sm text-green-500 hover:text-green-700 ml-2 mt-[16px]">
+            <input type="text" name="{{ profile_user.sector.name }}" id="{{ profile_user.sector.id_for_label }}" class="outline-none placeholder:text-[18px] placeholder:text-slate-500 rounded-lg bg-neutral-50 w-full h-[48px] px-[10px] border border-slate-300 mt-[16px]" value="{% if profile_user.has_usable_password %}Definida{% else %}Usuário sem senha{% endif %}" readonly />
+            <a href="{% url 'account_reset_password' %}" class="font-sans inline-block align-baseline font-light text-sm text-green-500 hover:text-green-700 ml-2 mt-[16px]">
               Definir senha
             </a>
           </div>

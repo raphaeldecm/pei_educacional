@@ -33,7 +33,7 @@ class SuapTokenValidateView(APIView):
             return Response(
                 {
                     "error": "Discente não encontrado no sistema pei. "
-                    "Entre em contato com o setor responsável"
+                    "Entre em contato com o setor responsável",
                 },
                 status=404,
             )
@@ -69,5 +69,5 @@ class SuapTokenValidateView(APIView):
             {
                 "access": str(refresh.access_token),
                 "refresh": str(refresh),
-            }
+            },
         )

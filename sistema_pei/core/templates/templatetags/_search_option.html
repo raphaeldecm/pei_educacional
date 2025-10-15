@@ -1,69 +1,94 @@
-
-          <input
-            type="search" 
-            name="" 
-            id="{{object_name}}_search"  
-            placeholder="{{input_placeholder}}"
-            aria-label="{{input_placeholder}}"
-            class="text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full placeholder:text-slate-500 appearance-none bg-neutral-50"
-            oninput=""
-            {%if current_input_value%}
-            value="{{current_input_value}}"
-            {%endif%}
-            >
-
-        <div id="{{object_name}}_labels_container" class="border border-slate-300 hidden rounded-lg w-full py-2 px-3 max-h-[150px] mt-2 min-h-[48px] overflow-y-auto absolute z-20 bg-neutral-50" role="listbox">
-          {%for object in query%}
-            <div class="course-item hidden items-center mt-1 gap-3" role="radio">
-              <input
-              type="radio" 
-              name="{{object_name}}"
-              id="{{object_name}}_{{object.id}}"
-              value="{{object.id}}"
-              class="hidden peer"
-              {%if current_query == object.id %}
-                checked
-              {%endif%}
-              >
-              <label
-              id="" 
-              for="{{object_name}}_{{object.id}}"
-              class="flex items-center {{object_name}}_label cursor-pointer w-full text-[16px] rounded-[5px] peer-checked:bg-green-100">
-                {{object}}
-              </label>
-            </div>
-          {%endfor%}
-        </div>
-
-{%block inline_javascript%}
-    <script>
+<input type="search"
+       name=""
+       id="{{ object_name }}_search"
+       placeholder="{{ input_placeholder }}"
+       aria-label="{{ input_placeholder }}"
+       class="text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full placeholder:text-slate-500 appearance-none bg-neutral-50"
+       oninput=""
+       {% if current_input_value %}value="{{ current_input_value }}"{% endif %} />
+<div id="{{ object_name }}_labels_container"
+     class="border border-slate-300 hidden rounded-lg w-full py-2 px-3 max-h-[150px] mt-2 min-h-[48px] overflow-y-auto absolute z-20 bg-neutral-50"
+     role="listbox">
+  {% for object in query %}
+    <div class="course-item hidden items-center mt-1 gap-3" role="radio">
+      <input type="radio"
+             name="{{ object_name }}"
+             id="{{ object_name }}_{{ object.id }}"
+             value="{{ object.id }}"
+             class="hidden peer"
+             {% if current_query == object.id %}checked{% endif %} />
+      <label id=""
+             for="{{ object_name }}_{{ object.id }}"
+             class="flex items-center {{ object_name }}_label cursor-pointer w-full text-[16px] rounded-[5px] peer-checked:bg-green-100">
+        {{ object }}
+      </label>
+    </div>
+  {% endfor %}
+</div>
+{% block inline_javascript %}
+  <script>
     //cria a variavel do input e labels de forma dinamica
-    let {{object_name}}_search = document.getElementById('{{object_name}}_search')
-    let {{object_name}}_labels = Array.from(document.getElementsByClassName('{{object_name}}_label'))
-    
-    {{object_name}}_search.addEventListener('input',()=>{
-      let input_value = {{object_name}}_search.value.toLowerCase()
+    let {
+      {
+        object_name
+      }
+    }
+    _search = document.getElementById('{{object_name}}_search')
+    let {
+      {
+        object_name
+      }
+    }
+    _labels = Array.from(document.getElementsByClassName('{{object_name}}_label'))
+
+    {
+      {
+        object_name
+      }
+    }
+    _search.addEventListener('input', () => {
+      let input_value = {
+        {
+          object_name
+        }
+      }
+      _search.value.toLowerCase()
       let hasResult = false
-      
-      {{object_name}}_labels.forEach(element=>{
-        let results = search(element,input_value)
-        if(results){
-          hasResult=true
+
+      {
+        {
+          object_name
+        }
+      }
+      _labels.forEach(element => {
+        let results = search(element, input_value)
+        if (results) {
+          hasResult = true
         }
       })
-      
+
       let labels_container = document.getElementById("{{object_name}}_labels_container")
-      
+
       hasResult ? labels_container.style.display = 'block' : labels_container.style.display = 'none'
 
-      window.addEventListener('click',()=>labels_container.style.display = 'none')
+      window.addEventListener('click', () => labels_container.style.display = 'none')
     })
 
-    {{object_name}}_labels.forEach(element=>{
-    //adiciona o evento de select
-    element.addEventListener("click",()=>{
-      select(element,{{object_name}}_search)
+    {
+      {
+        object_name
+      }
+    }
+    _labels.forEach(element => {
+      //adiciona o evento de select
+      element.addEventListener("click", () => {
+        select(element, {
+            {
+              object_name
+            }
+          }
+          _search)
+      })
     })
-  })
-</script>
-{%endblock%}
+  </script>
+{% endblock %}

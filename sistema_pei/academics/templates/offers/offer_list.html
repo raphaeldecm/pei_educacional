@@ -3,18 +3,17 @@
 {% load static i18n %}
 {% load breadcrumb_item %}
 {% load has_group %}
-{%load search_option%}
+{% load search_option %}
 {% load action_buttons %}
 {% load register_and_import_buttons %}
 
 {% block breadcrumb %}
-{% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
-{% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" url="academics:dashboard" %}
-{% breadcrumb_item text=title icon="images/icons/icon-courses-green.svg" %}
+  {% breadcrumb_item text="Home" icon="images/icons/icon-home-green.svg" url="home" first="true" %}
+  {% breadcrumb_item text="Acadêmico" icon="images/icons/icon-courses-green.svg" url="academics:dashboard" %}
+  {% breadcrumb_item text=title icon="images/icons/icon-courses-green.svg" %}
 {% endblock breadcrumb %}
-
 {% block content %}
-{%load_search_script%}
+  {% load_search_script %}
   <div class="w-full">
     <h1 class="text-[32px] font-medium mb-[38px]">{{ title }}</h1>
     <form>
@@ -31,10 +30,10 @@
       </div>
       <div class="flex gap-[8px] flex-wrap mb-[26px]">
         <div class="relative w-full max-w-xs cursor-pointer">
-          {%search_option object_name='subject' query=filter.form.subject.field.queryset input_placeholder='Buscar disciplina'%}
+          {% search_option object_name='subject' query=filter.form.subject.field.queryset input_placeholder='Buscar disciplina' %}
         </div>
         <div class="relative min-w-[222px] max-w-xs cursor-pointer">
-          {%search_option object_name='teachers' query=filter.form.teachers.field.queryset input_placeholder='Buscar Professores'%}
+          {% search_option object_name='teachers' query=filter.form.teachers.field.queryset input_placeholder='Buscar Professores' %}
         </div>
         <div class="flex h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2 w-full max-w-xs">
           <input type="number"
@@ -60,7 +59,7 @@
           </select>
         </div>
         <div class="relative min-w-[222px] max-w-xs cursor-pointer">
-          {%search_option object_name='course' query=filter.form.course.field.queryset input_placeholder='Buscar curso...'%}
+          {% search_option object_name='course' query=filter.form.course.field.queryset input_placeholder='Buscar curso...' %}
         </div>
         <div class="relative cursor-pointer w-full max-w-xs">
           <img class="absolute top-[12px] right-[10px] pointer-events-none"
@@ -71,9 +70,8 @@
                   class="cursor-pointer outline-none text-[18px] rounded-lg h-[48px] border px-[10px] border-slate-300 [&_option:bg-red-100] w-full text-slate-500 appearance-none bg-neutral-50">
             <option value="default" selected disabled>Selecione o Turno...</option>
             {% for period_value, period_label in filter.form.fields.period.choices %}
-              <option value="{{ period_value }}" {%if request.GET.period == period_value%}selected{%endif%}>
-                {{ period_label }}
-              </option>
+              <option value="{{ period_value }}"
+                      {% if request.GET.period == period_value %}selected{% endif %}>{{ period_label }}</option>
             {% endfor %}
           </select>
         </div>
@@ -87,7 +85,7 @@
       </div>
     </form>
     <div class="flex mt-3 gap-[16px]">
-      {% register_button text="Cadastrar Nova Oferta" link="academics:offer_create"%}
+      {% register_button text="Cadastrar Nova Oferta" link="academics:offer_create" %}
     </div>
     <div class="mt-[53px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg">
       <table class="w-full text-slate-900 text-[18px] border-collapse">
@@ -100,9 +98,7 @@
             <th class="px-4">Turno</th>
             <th class="px-4">Situação</th>
             <th colspan="3" style='text-align:center;' class="text-center pr-[30px]">
-              <span >
-                Ações
-              </span>
+              <span>Ações</span>
             </th>
           </tr>
         </thead>
@@ -114,7 +110,10 @@
               <td class="px-4 py-2">
                 {% for teacher in object.teachers.all|slice:":3" %}
                   {{ teacher.name }}
-                  {% if not forloop.last %},<br />{% endif %}
+                  {% if not forloop.last %}
+                    ,
+                    <br />
+                  {% endif %}
                 {% endfor %}
                 {% if object.teachers.all|length > 3 %}...{% endif %}
               </td>
@@ -136,9 +135,6 @@
         </tbody>
       </table>
     </div>
-
-
-
     {% include "components/_table_pagination.html" %}
   </div>
 {% endblock content %}

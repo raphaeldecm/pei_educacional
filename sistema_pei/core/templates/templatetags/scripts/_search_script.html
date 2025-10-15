@@ -1,20 +1,20 @@
-{%block inline_javascript%}
-<script>
-    let search = (element,input_value) =>{
-        let element_value = element.textContent.toLowerCase()
-        if(element_value.includes(input_value) && input_value){
+{% block inline_javascript %}
+  <script>
+    let search = (element, input_value) => {
+      let element_value = element.textContent.toLowerCase()
+      if (element_value.includes(input_value) && input_value) {
         element.parentNode.style.display = 'block'
         return true
-        }else{
+      } else {
         element.parentNode.style.display = 'none'
-        }
+      }
 
     }
 
-    let select = (element,input)=>{
-        let element_container = element.parentNode.parentNode
-        element_container.style.display = 'none'
-        input.value = element.textContent.trim()
+    let select = (element, input) => {
+      let element_container = element.parentNode.parentNode
+      element_container.style.display = 'none'
+      input.value = element.textContent.trim()
     }
-</script>
-{%endblock%}
+  </script>
+{% endblock %}

@@ -3,33 +3,33 @@
 
 <div class="flex justify-center items-center gap-[40px]">
   {% if not user|has_group:"Teacher" %}
-  <button class="hidden max-sm:block" onclick="handleToggleNav()">
-    <i class="fas fa-regular fa-bars text-2xl"></i>
-  </button>
-  <!-- Menu lateral mobile -->
-  <div id="mobileMenu"
-       tabindex="0"
-       onblur="handleToggleNav()"
-       class="hidden max-sm:flex w-[80vw] h-[105vh] overflow-hidden fixed left-[-100%] top-0 z-10 bg-slate-50 shadow-2xl flex-col p-4 duration-500">
-    <a href="{% url 'home' %}"
-       class="flex gap-[10px] py-[20px] rounded-lg px-4 border border-transparent {% if request.resolver_match.url_name == 'home' %}text-green-500  !border-green-500{% endif %}">
-      <img src="{% if request.resolver_match.url_name == 'home' %}{% static 'images/icons/icon-home-green.svg' %}{% else %}{% static 'images/icons/icon-home.svg' %}{% endif %}"
-           alt="" />
-      <span class="text-[20px]">Início</span>
-    </a>
-    <a href="{% url 'academics:dashboard' %}"
-       class="flex gap-[10px] py-[20px] rounded-lg px-4 border border-transparent {% if 'academics' in request.resolver_match.app_names or 'people' in request.resolver_match.app_names %}text-green-500 !border-green-500{% endif %}">
-      <img src="{% if 'academics' in request.resolver_match.app_names or 'people' in request.resolver_match.app_names %}{% static 'images/icons/icon-courses-green.svg' %}{% else %}{% static 'images/icons/icon-courses.svg' %}{% endif %}"
-           alt="" />
-      <span class="text-[20px]">Acadêmico</span>
-    </a>
-    <a href="{% url 'users:list' %}"
-       class="flex gap-[10px] py-[20px] rounded-lg px-4 border border-transparent {% if request.resolver_match.url_name == 'list' %}text-green-500  !border-green-500{% endif %}">
-      <img src="{% if request.resolver_match.url_name == 'list' %}{% static 'images/icons/icon-users-green.svg' %}{% else %}{% static 'images/icons/icon-users.svg' %}{% endif %}"
-           alt="" />
-      <span class="text-[20px]">Usuários</span>
-    </a>
-  </div>
+    <button class="hidden max-sm:block" onclick="handleToggleNav()">
+      <i class="fas fa-regular fa-bars text-2xl"></i>
+    </button>
+    <!-- Menu lateral mobile -->
+    <div id="mobileMenu"
+         tabindex="0"
+         onblur="handleToggleNav()"
+         class="hidden max-sm:flex w-[80vw] h-[105vh] overflow-hidden fixed left-[-100%] top-0 z-10 bg-slate-50 shadow-2xl flex-col p-4 duration-500">
+      <a href="{% url 'home' %}"
+         class="flex gap-[10px] py-[20px] rounded-lg px-4 border border-transparent {% if request.resolver_match.url_name == 'home' %}text-green-500  !border-green-500{% endif %}">
+        <img src="{% if request.resolver_match.url_name == 'home' %}{% static 'images/icons/icon-home-green.svg' %}{% else %}{% static 'images/icons/icon-home.svg' %}{% endif %}"
+             alt="" />
+        <span class="text-[20px]">Início</span>
+      </a>
+      <a href="{% url 'academics:dashboard' %}"
+         class="flex gap-[10px] py-[20px] rounded-lg px-4 border border-transparent {% if 'academics' in request.resolver_match.app_names or 'people' in request.resolver_match.app_names %}text-green-500 !border-green-500{% endif %}">
+        <img src="{% if 'academics' in request.resolver_match.app_names or 'people' in request.resolver_match.app_names %}{% static 'images/icons/icon-courses-green.svg' %}{% else %}{% static 'images/icons/icon-courses.svg' %}{% endif %}"
+             alt="" />
+        <span class="text-[20px]">Acadêmico</span>
+      </a>
+      <a href="{% url 'users:list' %}"
+         class="flex gap-[10px] py-[20px] rounded-lg px-4 border border-transparent {% if request.resolver_match.url_name == 'list' %}text-green-500  !border-green-500{% endif %}">
+        <img src="{% if request.resolver_match.url_name == 'list' %}{% static 'images/icons/icon-users-green.svg' %}{% else %}{% static 'images/icons/icon-users.svg' %}{% endif %}"
+             alt="" />
+        <span class="text-[20px]">Usuários</span>
+      </a>
+    </div>
   {% endif %}
   <h1>
     <a href="{% url 'home' %}">
@@ -41,14 +41,14 @@
   <nav class="hidden md:flex flex-col">
     <ul class="flex justify-center items-center gap-[28px] text-slate-500 text-base">
       {% if not user|has_group:"Teacher" %}
-      <li>
-        <a href="{% url 'home' %}"
-           class="flex gap-[10px] py-[10px] {% if request.resolver_match.url_name == 'home' %}text-green-500 border border-transparent border-b-green-500{% endif %}">
-          <img src="{% if request.resolver_match.url_name == 'home' %}{% static 'images/icons/icon-home-green.svg' %}{% else %}{% static 'images/icons/icon-home.svg' %}{% endif %}"
-               alt="" />
-          <span class="max-lg:hidden">Início</span>
-        </a>
-      </li>
+        <li>
+          <a href="{% url 'home' %}"
+             class="flex gap-[10px] py-[10px] {% if request.resolver_match.url_name == 'home' %}text-green-500 border border-transparent border-b-green-500{% endif %}">
+            <img src="{% if request.resolver_match.url_name == 'home' %}{% static 'images/icons/icon-home-green.svg' %}{% else %}{% static 'images/icons/icon-home.svg' %}{% endif %}"
+                 alt="" />
+            <span class="max-lg:hidden">Início</span>
+          </a>
+        </li>
         <li>
           <a href="{% url 'academics:dashboard' %}"
              class="flex gap-[10px] py-[10px] {% if 'academics' in request.resolver_match.app_names or 'people' in request.resolver_match.app_names %}text-green-500 border border-transparent border-b-green-500{% endif %}">
@@ -72,13 +72,8 @@
 {% if user.is_authenticated %}
   <div class="flex items-center justify-end relative text-left gap-6">
     {% comment %} <div class="flex w-full max-w-[300px] max-lg:max-w-[250px] max-md:max-w-full ml-4 h-[48px] border border-slate-300 rounded-lg px-[10px] gap-2 max-sm:hidden">
-      <img src="{% static 'images/icons/icon-search.svg' %}"
-           alt=""
-           width="18px"
-           height="18px" />
-      <input type="text"
-             placeholder="Pesquisar..."
-             class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50 placeholder:text-slate-500" />
+      <img src="{% static 'images/icons/icon-search.svg' %}" alt="" width="18px" height="18px" />
+      <input type="text" placeholder="Pesquisar..." class="outline-none placeholder:text-[18px] rounded-lg h-full w-full bg-neutral-50 placeholder:text-slate-500" />
     </div> {% endcomment %}
     <div id="notificationIcon" class="cursor-pointer relative group">
       {% if notifications %}
@@ -147,12 +142,12 @@
           <div class=" py-2.5 px-3 rounded-full">
             {% if user.photoAlt %}
               <img src="{{ user.photoAlt }}"
-                  class="rounded-full w-16 h-16"
-                  alt="{{ user.name }}" />
+                   class="rounded-full w-16 h-16"
+                   alt="{{ user.name }}" />
             {% else %}
               <img src="{{ user.photo }}"
-              class="rounded-full w-16 h-16"
-              alt="{{ user.name }}" />
+                   class="rounded-full w-16 h-16"
+                   alt="{{ user.name }}" />
             {% endif %}
           </div>
         {% else %}
@@ -169,20 +164,19 @@
          aria-labelledby="menu-button"
          tabindex="-1">
       <a href="{% url 'users:detail' user.pk %}"
-        role="menuitem"
-        aria-haspopup="true"
-        tabindex="-1"
-        id="menu-item-0"
-        class="flex gap-3 items-center">
-
+         role="menuitem"
+         aria-haspopup="true"
+         tabindex="-1"
+         id="menu-item-0"
+         class="flex gap-3 items-center">
         {% if user.photoAlt %}
           <img src="{{ user.photoAlt }}"
                class="w-10 h-10 rounded-full"
                alt="{{ user.name }}" />
         {% elif user.photo %}
           <img src="{{ user.photo }}"
-            class="w-10 h-10 rounded-full"
-            alt="{{ user.name }}" />
+               class="w-10 h-10 rounded-full"
+               alt="{{ user.name }}" />
         {% else %}
           <div class="bg-green-500/50 w-10 h-10 flex justify-center items-center rounded-full">
             <i class="fas fa-solid fa-user fa-lg"></i>

@@ -154,7 +154,7 @@ class OfferListView(LoginRequiredMixin, TitleViewMixin, FilterView, generic.List
             queryset = models.Offer.objects.filter(year=current_year)
 
         return self.filterset_class(self.request.GET, queryset=queryset).qs.order_by(
-            Lower("subject__name")
+            Lower("subject__name"),
         )
 
 

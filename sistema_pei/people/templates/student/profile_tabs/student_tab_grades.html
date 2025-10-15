@@ -14,7 +14,6 @@
       </a>
     {% endfor %}
   </div>
-
   {% if student_notes %}
     <div class="flex-1">
       <div class="border border-slate-300 rounded-lg px-[20px] py-[40px]">
@@ -22,7 +21,6 @@
           <canvas id="myChart"></canvas>
         </div>
       </div>
-
       <div class="mt-[36px] w-full h-max overflow-x-auto border border-slate-300 rounded-lg">
         <table class="table-auto w-full h-max [&_th]pt-[25px] rounded-lg text-slate-900 text-[18px]">
           <thead class="[&_th]:text-left [&_tr]:h-[91px] px-[84px]">
@@ -40,14 +38,13 @@
             {% for subject_grades in student_notes %}
               <tr>
                 <td class="pl-[76px]">{{ subject_grades.offer.subject.name }}</td>
-
                 <td>
                   {% if subject_grades.grade1 is not null %}
                     {{ subject_grades.grade1 }}
                   {% else %}
                     ---
                   {% endif %}
-                  <br>
+                  <br />
                   <span class="text-slate-400 text-sm">
                     {% if subject_grades.absences1 is not null %}
                       {{ subject_grades.absences1 }} falta{{ subject_grades.absences1|pluralize }}
@@ -56,14 +53,13 @@
                     {% endif %}
                   </span>
                 </td>
-
                 <td>
                   {% if subject_grades.grade2 is not null %}
                     {{ subject_grades.grade2 }}
                   {% else %}
                     ---
                   {% endif %}
-                  <br>
+                  <br />
                   <span class="text-slate-400 text-sm">
                     {% if subject_grades.absences2 is not null %}
                       {{ subject_grades.absences2 }} falta{{ subject_grades.absences2|pluralize }}
@@ -72,7 +68,6 @@
                     {% endif %}
                   </span>
                 </td>
-
                 {% if student.course.duration_type != "SEMESTER" %}
                   <td>
                     {% if subject_grades.grade3 is not null %}
@@ -80,7 +75,7 @@
                     {% else %}
                       ---
                     {% endif %}
-                    <br>
+                    <br />
                     <span class="text-slate-400 text-sm">
                       {% if subject_grades.absences3 is not null %}
                         {{ subject_grades.absences3 }} falta{{ subject_grades.absences3|pluralize }}
@@ -89,14 +84,13 @@
                       {% endif %}
                     </span>
                   </td>
-
                   <td>
                     {% if subject_grades.grade4 is not null %}
                       {{ subject_grades.grade4 }}
                     {% else %}
                       ---
                     {% endif %}
-                    <br>
+                    <br />
                     <span class="text-slate-400 text-sm">
                       {% if subject_grades.absences4 is not null %}
                         {{ subject_grades.absences4 }} falta{{ subject_grades.absences4|pluralize }}
@@ -124,7 +118,6 @@
     </p>
   {% endif %}
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
   const ctx = document.getElementById('myChart');
@@ -134,29 +127,64 @@
     data: {
       labels: [
         '1° Bimestre',
-        '2° Bimestre'
-        {% if student.course.duration_type != "SEMESTER" %},
-          '3° Bimestre',
-          '4° Bimestre'
-        {% endif %}
+        '2° Bimestre' {
+          %
+          if student.course.duration_type != "SEMESTER" %
+        },
+        '3° Bimestre',
+        '4° Bimestre' {
+          %
+          endif %
+        }
       ],
-      datasets: [
-        {% for subject_grades in student_notes %}
+      datasets: [{
+        %
+        for subject_grades in student_notes %
+      } {
+        label: "{{ subject_grades.offer.subject.name|escapejs }}",
+        data: [{
           {
-            label: "{{ subject_grades.offer.subject.name|escapejs }}",
-            data: [
-              {{ subject_grades.grade1|default:"0"|floatformat:"2"|cut:","|default:"0" }},
-              {{ subject_grades.grade2|default:"0"|floatformat:"2"|cut:","|default:"0" }}
-              {% if student.course.duration_type != "SEMESTER" %},
-                {{ subject_grades.grade3|default:"0"|floatformat:"2"|cut:","|default:"0" }},
-                {{ subject_grades.grade4|default:"0"|floatformat:"2"|cut:","|default:"0" }}
-              {% endif %}
-            ],
-            borderWidth: 2,
-            tension: 0.2
-          }{% if not forloop.last %},{% endif %}
-        {% endfor %}
-      ]
+            subject_grades.grade1 |
+              default: "0" | floatformat: "2" | cut: "," |
+              default: "0"
+          }
+        }, {
+          {
+            subject_grades.grade2 |
+              default: "0" | floatformat: "2" | cut: "," |
+              default: "0"
+          }
+        } {
+          %
+          if student.course.duration_type != "SEMESTER" %
+        }, {
+          {
+            subject_grades.grade3 |
+              default: "0" | floatformat: "2" | cut: "," |
+              default: "0"
+          }
+        }, {
+          {
+            subject_grades.grade4 |
+              default: "0" | floatformat: "2" | cut: "," |
+              default: "0"
+          }
+        } {
+          %
+          endif %
+        }],
+        borderWidth: 2,
+        tension: 0.2
+      } {
+        %
+        if not forloop.last %
+      }, {
+        %
+        endif %
+      } {
+        %
+        endfor %
+      }]
     },
     options: {
       responsive: true,
