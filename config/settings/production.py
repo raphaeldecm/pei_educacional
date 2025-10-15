@@ -71,7 +71,7 @@ SECURE_CONTENT_TYPE_NOSNIFF = env.bool(
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL regex.
-# ADMIN_URL = env("DJANGO_ADMIN_URL")  # noqa: ERA001
+# ADMIN_URL = env("DJANGO_ADMIN_URL")
 
 
 # Collectfast

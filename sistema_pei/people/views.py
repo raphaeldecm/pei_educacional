@@ -232,7 +232,7 @@ class ProfilePageView(LoginRequiredMixin, TemplateView):
     paginate_by = 10
     default_tab = "peis"
 
-    def get_context_data(self, **kwargs):  # noqa: C901, PLR0912, PLR0915
+    def get_context_data(self, **kwargs):  # noqa: PLR0912, PLR0915
         # TODO: Refatorar esse método. Está muito complexo.
         context = super().get_context_data(**kwargs)
         student_id = self.kwargs.get("pk")
