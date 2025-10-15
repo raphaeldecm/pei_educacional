@@ -40,6 +40,7 @@ class TestUserUpdateView:
         request.user = user
 
         view.request = request
+        view.object = user
         assert view.get_success_url() == f"/users/{user.pk}/"
 
     def test_get_object(self, user: User, rf: RequestFactory):

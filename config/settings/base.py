@@ -115,8 +115,8 @@ MIGRATION_MODULES = {"sites": "sistema_pei.contrib.sites.migrations"}
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#authentication-backends
 AUTHENTICATION_BACKENDS = [
-    "suap_backend.backends.SuapCredentialsBackend",
-    "suap_backend.backends.SuapOAuth2",
+    "sistema_pei.suap_backend.backends.SuapCredentialsBackend",
+    "sistema_pei.suap_backend.backends.SuapOAuth2",
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 ]

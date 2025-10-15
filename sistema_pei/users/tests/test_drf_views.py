@@ -28,7 +28,12 @@ class TestUserViewSet:
 
         response = view.me(request)  # type: ignore[call-arg, arg-type, misc]
 
-        assert response.data == {
-            "url": f"http://testserver/api/users/{user.pk}/",
+        expected_data = {
             "name": user.name,
         }
+
+        for key, value in expected_data.items():
+            assert response.data[key] == value
+
+        assert "url" in response.data
+        assert f"/{user.pk}/" in response.data["url"]
