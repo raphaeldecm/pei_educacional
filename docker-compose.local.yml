@@ -1,0 +1,85 @@
+volumes:
+  local_pei_postgres_data: {}
+  local_pei_postgres_data_backups: {}
+  local_pei_redis_data: {}
+
+services:
+  django: &django
+    build:
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
+    image: local_pei_django
+    container_name: local_pei_django
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - .:/app:z
+    env_file:
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
+    ports:
+      - "8000:8000"
+    command: /start
+    stdin_open: true
+    tty: true
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./compose/production/postgres/Dockerfile
+    image: local_pei_postgres
+    container_name: local_pei_postgres
+    volumes:
+      - local_pei_postgres_data:/var/lib/postgresql/data
+      - local_pei_postgres_data_backups:/backups
+    env_file:
+      - ./.envs/.local/.postgres
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: docker.io/redis:6
+    container_name: local_pei_redis
+    volumes:
+      - local_pei_redis_data:/data
+    ports:
+      - "6379:6379"
+
+  celeryworker:
+    <<: *django
+    image: local_pei_celeryworker
+    container_name: local_pei_celeryworker
+    depends_on:
+      - redis
+      - postgres
+    ports: []
+    command: /start-celeryworker
+
+  celerybeat:
+    <<: *django
+    image: local_pei_celerybeat
+    container_name: local_pei_celerybeat
+    depends_on:
+      - redis
+      - postgres
+    ports: []
+    command: /start-celerybeat
+
+  flower:
+    <<: *django
+    image: local_pei_flower
+    container_name: local_pei_flower
+    ports:
+      - "5555:5555"
+    command: /start-flower
+
+  mailpit:
+    image: axllent/mailpit
+    container_name: local_pei_mailpit
+    ports:
+      - "1025:1025"  # SMTP
+      - "8025:8025"  # Web UI
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
