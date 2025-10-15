@@ -77,17 +77,21 @@ jobs:
           python-version: '3.12'
           cache: 'pip'
 
-      # ✅ Instalar dependências do sistema (ANTES das dependências Python)
+      # ✅ CORREÇÃO: Instalar dependências do sistema completas
       - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y \
+            build-essential \
+            libpq-dev \
+            postgresql-server-dev-all \
             libcairo2-dev \
             libgirepository1.0-dev \
             libpango1.0-dev \
             libgdk-pixbuf2.0-dev \
             libffi-dev \
-            shared-mime-info
+            shared-mime-info \
+            python3-dev
 
       - name: Cache compiled dependencies
         uses: actions/cache@v4
