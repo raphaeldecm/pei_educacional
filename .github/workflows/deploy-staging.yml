@@ -30,7 +30,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: validate
-    environment: staging
+    # environment: staging
 
     steps:
     - name: Checkout staging branch
