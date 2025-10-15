@@ -28,6 +28,12 @@ jobs:
         echo "Workflow: ${{ github.workflow }}"
         echo "Run ID: ${{ github.run_id }}"
         echo "SHA: ${{ github.sha }}"
+        echo "=== SECRETS AND VARIABLES CHECK ==="
+        echo "SSH_PRIVATE_KEY_HMG available: ${{ secrets.SSH_PRIVATE_KEY_HMG != '' }}"
+        echo "KNOWN_HOSTS_HMG available: ${{ secrets.KNOWN_HOSTS_HMG != '' }}"
+        echo "SSH_PORT_HMG: ${{ vars.SSH_PORT_HMG }}"
+        echo "SSH_USER_HMG: ${{ vars.SSH_USER_HMG }}"
+        echo "SSH_HOST_HMG: ${{ vars.SSH_HOST_HMG }}"
         echo "========================="
 
     - name: Install SSH Key
