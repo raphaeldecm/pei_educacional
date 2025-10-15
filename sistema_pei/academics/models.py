@@ -153,7 +153,7 @@ class Offer(BaseModel):
     )
 
     year = models.PositiveSmallIntegerField(
-        verbose_name=_("Ano referência do período letivo")
+        verbose_name=_("Ano referência do período letivo"),
     )
     semester = models.PositiveSmallIntegerField(
         verbose_name=_("Semestre referência do período letivo"),
@@ -170,7 +170,10 @@ class Offer(BaseModel):
         return self.enrollments.count()
 
     def available_students(self):
-        """Retorna alunos disponíveis para inclusão que ainda não estão matriculados nesta oferta."""
+        """
+        Retorna alunos disponíveis para inclusão que ainda não estão
+        matriculados nesta oferta.
+        """
         Student = apps.get_model("people", "Student")
         return Student.objects.filter(course=self.course).exclude(
             id__in=self.enrollments.values_list("student_id", flat=True),
@@ -180,7 +183,7 @@ class Offer(BaseModel):
         """Adiciona um aluno à oferta. Levanta ValidationError se não for possível."""
         if self.status != Offer.OfferStatus.OPEN:
             raise ValidationError(
-                _("Não é possível adicionar alunos em uma oferta fechada.")
+                _("Não é possível adicionar alunos em uma oferta fechada."),
             )
 
         Enrollment = apps.get_model("academics", "Enrollment")
@@ -196,7 +199,10 @@ class Offer(BaseModel):
         )
 
     def remove_student(self, student):
-        """Remove um aluno da oferta, excluindo também PEIs associados. Levanta ValidationError se não for possível."""
+        """
+        Remove um aluno da oferta, excluindo também PEIs associados.
+        Levanta ValidationError se não for possível.
+        """
         Enrollment = apps.get_model("academics", "Enrollment")
         Pei = apps.get_model("educational_plan", "Pei")
 
@@ -207,12 +213,13 @@ class Offer(BaseModel):
         try:
             Pei.objects.filter(enrollment=enrollment).delete()
             enrollment.delete()
-        except ProtectedError:
+        except ProtectedError as err:
             raise ValidationError(
                 _(
-                    "Não é possível remover o discente desta oferta pois existem PEIs associados."
+                    "Não é possível remover o discente desta oferta "
+                    "pois existem PEIs associados.",
                 ),
-            )
+            ) from err
 
         return True
 
