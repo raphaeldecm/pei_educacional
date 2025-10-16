@@ -1,19 +1,21 @@
 name: Deploy to staging
 
 on:
-  push:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
     branches: [staging]
-    paths-ignore:
-      - 'docs/**'
-      - '**.md'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
     - name: Checkout staging branch
       uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.workflow_run.head_sha }}
 
     - name: Install SSH Key
       uses: shimataro/ssh-key-action@v2
