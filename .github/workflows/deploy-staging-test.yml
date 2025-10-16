@@ -1,4 +1,4 @@
-name: Deploy to staging (no environment)
+name: Deploy to staging
 
 on:
   push:
@@ -14,27 +14,6 @@ jobs:
     steps:
     - name: Checkout staging branch
       uses: actions/checkout@v4
-
-    - name: Debug branch and context information
-      run: |
-        echo "=== DEBUG INFORMATION ==="
-        echo "Current branch: $(git branch --show-current || echo 'detached')"
-        echo "Current commit: $(git rev-parse HEAD)"
-        echo "GitHub ref: ${{ github.ref }}"
-        echo "GitHub head ref: ${{ github.head_ref }}"
-        echo "Event name: ${{ github.event_name }}"
-        echo "Repository: ${{ github.repository }}"
-        echo "Actor: ${{ github.actor }}"
-        echo "Workflow: ${{ github.workflow }}"
-        echo "Run ID: ${{ github.run_id }}"
-        echo "SHA: ${{ github.sha }}"
-        echo "=== SECRETS AND VARIABLES CHECK ==="
-        echo "SSH_PRIVATE_KEY_HMG available: ${{ secrets.SSH_PRIVATE_KEY_HMG != '' }}"
-        echo "KNOWN_HOSTS_HMG available: ${{ secrets.KNOWN_HOSTS_HMG != '' }}"
-        echo "SSH_PORT_HMG: ${{ vars.SSH_PORT_HMG }}"
-        echo "SSH_USER_HMG: ${{ vars.SSH_USER_HMG }}"
-        echo "SSH_HOST_HMG: ${{ vars.SSH_HOST_HMG }}"
-        echo "========================="
 
     - name: Install SSH Key
       uses: shimataro/ssh-key-action@v2
@@ -58,9 +37,8 @@ jobs:
 
     - name: Deploy to staging server
       run: |
-        echo "🚀 Starting deployment from GitHub Actions..."
+        echo "🚀 Starting deployment to staging environment"
         echo "Repository: ${{ github.repository }}"
-        echo "Ref: ${{ github.ref }}"
         echo "SHA: ${{ github.sha }}"
 
         ssh app-server '
@@ -70,19 +48,10 @@ jobs:
           export PATH="$HOME/.pyenv/bin:$PATH"
 
           echo "🚀 Starting staging deployment..."
-
-          echo "📂 Navigating to: /opt/sistema_pei_hmg"
           cd /opt/sistema_pei_hmg
 
-          echo "📂 Current branch:"
-          git branch --show-current
-
           echo "📥 Updating source code..."
-
-          # Ensure we are using SSH for GitHub (correct repository)
           git remote set-url origin git@github.com:ifrn-pei/sistema_pei.git
-
-          # Fetch and pull using SSH
           git fetch origin
           git checkout staging
           git pull origin staging
@@ -90,7 +59,6 @@ jobs:
           echo "🔧 Verifying configurations..."
           if [ ! -f ".envs/.hmg/.django" ]; then
             echo "❌ ERROR: Django config file not found!"
-            find .envs -type f 2>/dev/null || echo "No .envs directory found"
             exit 1
           fi
 
@@ -99,33 +67,38 @@ jobs:
           echo "🛑 Stopping existing containers..."
           docker compose -f docker-compose.hmg.yml down --timeout 30 || true
 
-          echo "🧹 Cleaning up old resources..."
-          docker image prune -f --filter "until=72h" || true
+          echo "💾 Checking disk space..."
+          df -h | head -2
+
+          echo "🧹 Cleaning up Docker resources..."
+          # Limpeza agressiva para liberar espaço
+          docker system prune -af --volumes || true
+          docker builder prune -af || true
+          docker image prune -af || true
+
+          echo "💾 Disk space after cleanup:"
+          df -h | head -2
 
           echo "🔨 Building and starting containers..."
-          docker compose -f docker-compose.hmg.yml build --no-cache
+          # Build otimizado para espaço em disco
+          export DOCKER_BUILDKIT=1
+          docker compose -f docker-compose.hmg.yml build --no-cache --force-rm
           docker compose -f docker-compose.hmg.yml up -d
 
           echo "⏳ Waiting for containers to start..."
           sleep 30
 
           echo "🏥 Testing application health..."
-
-          # Check container status first
-          echo "📊 Container status:"
           docker compose -f docker-compose.hmg.yml ps
 
-          # Test with the correct host that is in ALLOWED_HOSTS
+          # Health check
           for i in {1..3}; do
             if curl -f -s -o /dev/null -H "Host: pei-hmg.ifrn.edu.br" http://10.21.0.125:8080 || \
                curl -f -s -o /dev/null http://10.21.0.125:8080; then
-              echo "✅ Health check passed (attempt $i)"
+              echo "✅ Health check passed"
               break
             elif [ $i -eq 3 ]; then
               echo "❌ Health check failed after 3 attempts"
-              echo "🔍 Checking Django container health..."
-              docker compose -f docker-compose.hmg.yml exec -T django python manage.py check --deploy || true
-              echo "📋 Recent container logs:"
               docker compose -f docker-compose.hmg.yml logs --tail=20 django
               exit 1
             else
@@ -134,15 +107,15 @@ jobs:
             fi
           done
 
-          echo "🔍 Final container verification..."
+          echo "🔍 Final verification..."
           RUNNING_CONTAINERS=$(docker compose -f docker-compose.hmg.yml ps --services --filter "status=running" | wc -l)
           if [ "$RUNNING_CONTAINERS" -gt 0 ]; then
-            echo "✅ $RUNNING_CONTAINERS containers are running"
+            echo "✅ $RUNNING_CONTAINERS containers running successfully"
           else
             echo "❌ No containers are running"
             exit 1
           fi
 
           echo "🎉 Staging deployment completed successfully!"
-          echo "🌐 Application should be available at: https://pei-hmg.ifrn.edu.br/"
+          echo "🌐 Application available at: https://pei-hmg.ifrn.edu.br/"
         '
