@@ -83,7 +83,7 @@
               <td>{{ object.get_period_display }}</td>
               <td>{{ object.course_type }}</td>
               <td>
-                {% action_buttons detail_view='academics:course_detail' edit_view='academics:course_update' object=object model_name='Curso' %}
+                {% action_buttons detail_view='academics:course_detail' edit_view='academics:course_update' obj=object model_name='Curso' %}
               </td>
               {% include "components/_confirm_delete_modal.html" with title="Confirmar Exclusão do Curso" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="academics:course_delete" %}
             </tr>
