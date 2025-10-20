@@ -74,7 +74,7 @@
                 {% endif %}
               </td>
               <td>
-                {% action_buttons detail_view='academics:matrix_detail' edit_view='academics:matrix_edit' model_name='Matriz' object=object %}
+                {% action_buttons detail_view='academics:matrix_detail' edit_view='academics:matrix_edit' model_name='Matriz' obj=object %}
               </td>
             </tr>
             {% include "components/_confirm_delete_modal.html" with title="Confirmar Exclusão da matriz" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="academics:matrix_delete" %}

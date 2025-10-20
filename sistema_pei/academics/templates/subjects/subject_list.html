@@ -102,7 +102,7 @@
               </td>
               <td>{{ object.get_subject_type_display }}</td>
               <td>
-                {% action_buttons detail_view='academics:subject_detail' edit_view='academics:subject_update' object=object model_name='Disciplina' %}
+                {% action_buttons detail_view='academics:subject_detail' edit_view='academics:subject_update' obj=object model_name='Disciplina' %}
               </td>
               {% include "components/_confirm_delete_modal.html" with title="Confirmar Exclusão da disciplina" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="academics:subject_delete" %}
             </tr>

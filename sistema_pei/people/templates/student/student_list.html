@@ -149,7 +149,7 @@
                 {% endwith %}
               </td>
               <td>
-                {% action_buttons detail_view='people:profile' edit_view='people:profile' model_name='Estudantes'  object=object  edit_url_args='tab=edit_student_data#tab' %}
+                {% action_buttons detail_view='people:profile' edit_view='people:profile' model_name='Estudantes'  obj=object  edit_url_args='tab=edit_student_data#tab' %}
               </td>
               {% include "components/_confirm_delete_modal.html" with title="Confirmar Exclusão do aluno" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="people:student_delete" %}
             </tr>

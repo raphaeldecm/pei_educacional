@@ -121,7 +121,7 @@
               <td class="px-4">{{ object.course.get_period_display }}</td>
               <td class="px-4">{{ object.status }}</td>
               <td>
-                {% action_buttons detail_view='academics:offer_detail' edit_view='academics:offer_update' model_name='Oferta' object=object %}
+                {% action_buttons detail_view='academics:offer_detail' edit_view='academics:offer_update' model_name='Oferta' obj=object %}
               </td>
             </tr>
             {% if user|has_group:"Coordinator" %}
