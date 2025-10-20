@@ -87,7 +87,7 @@
               <td>{{ object.email }}</td>
               <td>{{ object.campus.abbreviation }}</td>
               <td>
-                {% action_buttons detail_view='people:teacher_detail' edit_view='people:teacher_update' model_name='Docente' object=object %}
+                {% action_buttons detail_view='people:teacher_detail' edit_view='people:teacher_update' model_name='Docente' obj=object %}
               </td>
               {% include "components/_confirm_delete_modal.html" with title="Confirmar Exclusão de Docente" body_text="Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita." delete_url="people:teacher_delete" %}
             </tr>
