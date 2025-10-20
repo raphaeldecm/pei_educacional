@@ -2,13 +2,13 @@ name: CI
 
 on:
   pull_request:
-    branches: ['main', 'staging']
+    branches: ['main', 'staging', 'develop']
     paths-ignore:
       - 'docs/**'
       - 'templates/pages/profile_tabs/student_grades.html'
 
   push:
-    branches: ['main', 'staging']
+    branches: ['main', 'staging', 'develop']
     paths-ignore:
       - 'docs/**'
       - 'templates/pages/profile_tabs/student_grades.html'
