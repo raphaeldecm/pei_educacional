@@ -1,3 +1,7 @@
+"""
+Comando para popular o banco de dados com cursos a partir de um arquivo CSV.
+"""
+
 import csv
 import random
 
