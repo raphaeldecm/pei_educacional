@@ -9,6 +9,7 @@ from sistema_pei.academics.models import Offer
 from sistema_pei.academics.models import Subject
 from sistema_pei.people.tests.factories import StudentFactory
 from sistema_pei.people.tests.factories import TeacherFactory
+from sistema_pei.users.tests.factories import UserFactory
 
 
 class CourseFactory(factory.django.DjangoModelFactory):
@@ -31,6 +32,8 @@ class CourseFactory(factory.django.DjangoModelFactory):
         elements=[choice[0] for choice in Course.CourseDurationType.choices],
     )
     number_of_periods = factory.Faker("random_int", min=2, max=10)
+    created_by = factory.SubFactory(UserFactory)
+    updated_by = factory.SubFactory(UserFactory)
 
 
 class MatrixFactory(factory.django.DjangoModelFactory):
@@ -43,6 +46,8 @@ class MatrixFactory(factory.django.DjangoModelFactory):
     description = factory.Faker("sentence", nb_words=5, locale="pt_BR")
     year = factory.Faker("random_int", min=2015, max=2030)
     active = factory.Faker("boolean", chance_of_getting_true=80)
+    created_by = factory.SubFactory(UserFactory)
+    updated_by = factory.SubFactory(UserFactory)
 
 
 class SubjectFactory(factory.django.DjangoModelFactory):
@@ -62,6 +67,8 @@ class SubjectFactory(factory.django.DjangoModelFactory):
     methodology = factory.Faker("text", max_nb_chars=400, locale="pt_BR")
     resources = factory.Faker("text", max_nb_chars=300, locale="pt_BR")
     assessments = factory.Faker("text", max_nb_chars=400, locale="pt_BR")
+    created_by = factory.SubFactory(UserFactory)
+    updated_by = factory.SubFactory(UserFactory)
 
     @factory.post_generation
     def courses(self, create, extracted, **kwargs):
@@ -99,6 +106,8 @@ class OfferFactory(factory.django.DjangoModelFactory):
         "random_element",
         elements=[choice[0] for choice in Offer.Semester.choices],
     )
+    created_by = factory.SubFactory(UserFactory)
+    updated_by = factory.SubFactory(UserFactory)
 
     @factory.post_generation
     def teachers(self, create, extracted, **kwargs):
@@ -138,6 +147,8 @@ class EnrollmentFactory(factory.django.DjangoModelFactory):
 
     offer = factory.SubFactory(OfferFactory)
     student = factory.SubFactory(StudentFactory)
+    created_by = factory.SubFactory(UserFactory)
+    updated_by = factory.SubFactory(UserFactory)
     last_synced_at = factory.Faker(
         "date_time_this_year",
         tzinfo=timezone.get_current_timezone(),

@@ -6,6 +6,11 @@ python_files = [
     "tests.py",
     "test_*.py",
 ]
+testpaths = [
+    "tests",
+    "sistema_pei",
+]
+DJANGO_SETTINGS_MODULE = "config.settings.test"
 
 # ==== Coverage ====
 [tool.coverage.run]

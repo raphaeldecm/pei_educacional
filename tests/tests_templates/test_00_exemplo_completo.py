@@ -102,11 +102,14 @@ class TestEnrollmentGradeValidation:
         Resultado Esperado: Aceita a nota
         """
         # Arrange (Preparar)
-        enrollment = EnrollmentFactory.build(grade1=Decimal("0"))
+        enrollment = EnrollmentFactory.create(
+            grade1=Decimal("0"),
+            created_by=user,
+            updated_by=user,
+        )
 
         # Act (Agir)
         enrollment.full_clean()  # Valida o modelo
-        enrollment.save()
 
         # Assert (Verificar)
         assert enrollment.grade1 == Decimal("0")
@@ -120,11 +123,14 @@ class TestEnrollmentGradeValidation:
         Resultado Esperado: Aceita a nota
         """
         # Arrange
-        enrollment = EnrollmentFactory.build(grade1=Decimal("100"))
+        enrollment = EnrollmentFactory.create(
+            grade1=Decimal("100"),
+            created_by=user,
+            updated_by=user,
+        )
 
         # Act
         enrollment.full_clean()
-        enrollment.save()
 
         # Assert
         assert enrollment.grade1 == Decimal("100")
@@ -137,11 +143,14 @@ class TestEnrollmentGradeValidation:
         Resultado Esperado: Aceita a nota
         """
         # Arrange
-        enrollment = EnrollmentFactory.build(grade2=Decimal("0.01"))
+        enrollment = EnrollmentFactory.create(
+            grade2=Decimal("0.01"),
+            created_by=user,
+            updated_by=user,
+        )
 
         # Act
         enrollment.full_clean()
-        enrollment.save()
 
         # Assert
         assert enrollment.grade2 == Decimal("0.01")
@@ -154,11 +163,14 @@ class TestEnrollmentGradeValidation:
         Resultado Esperado: Aceita a nota
         """
         # Arrange
-        enrollment = EnrollmentFactory.build(grade3=Decimal("99.99"))
+        enrollment = EnrollmentFactory.create(
+            grade3=Decimal("99.99"),
+            created_by=user,
+            updated_by=user,
+        )
 
         # Act
         enrollment.full_clean()
-        enrollment.save()
 
         # Assert
         assert enrollment.grade3 == Decimal("99.99")
@@ -171,16 +183,19 @@ class TestEnrollmentGradeValidation:
         Resultado Esperado: Aceita a nota
         """
         # Arrange
-        enrollment = EnrollmentFactory.build(grade4=Decimal("50"))
+        enrollment = EnrollmentFactory.create(
+            grade4=Decimal("50"),
+            created_by=user,
+            updated_by=user,
+        )
 
         # Act
         enrollment.full_clean()
-        enrollment.save()
 
         # Assert
         assert enrollment.grade4 == Decimal("50")
 
-    def test_grade_invalid_below_minimum(self, user):
+    def test_grade_invalid_below_minimum(self, user, oferta_aberta):
         """
         Critério: Análise de Valor Limite (VL)
         Partição: CE1 (Inválida)
@@ -188,7 +203,15 @@ class TestEnrollmentGradeValidation:
         Resultado Esperado: Rejeita com ValidationError
         """
         # Arrange
-        enrollment = EnrollmentFactory.build(grade1=Decimal("-0.01"))
+        student = StudentFactory()
+        enrollment = Enrollment(
+            offer=oferta_aberta,
+            student=student,
+            grade1=Decimal("-0.01"),
+            YearSemesterReference=1,
+            created_by=user,
+            updated_by=user,
+        )
 
         # Act & Assert
         with pytest.raises(ValidationError) as exc_info:
@@ -197,7 +220,7 @@ class TestEnrollmentGradeValidation:
         # Verifica se o erro é realmente do campo grade1
         assert "grade1" in exc_info.value.message_dict
 
-    def test_grade_invalid_above_maximum(self, user):
+    def test_grade_invalid_above_maximum(self, user, oferta_aberta):
         """
         Critério: Análise de Valor Limite (VL)
         Partição: CE3 (Inválida)
@@ -205,13 +228,21 @@ class TestEnrollmentGradeValidation:
         Resultado Esperado: Rejeita com ValidationError
         """
         # Arrange
-        enrollment = EnrollmentFactory.build(grade2=Decimal("100.01"))
+        student = StudentFactory()
+        enrollment = Enrollment(
+            offer=oferta_aberta,
+            student=student,
+            grade2=Decimal("100.01"),
+            YearSemesterReference=1,
+            created_by=user,
+            updated_by=user,
+        )
 
         # Act & Assert
         with pytest.raises(ValidationError):
             enrollment.full_clean()
 
-    def test_grade_invalid_negative_value(self, user):
+    def test_grade_invalid_negative_value(self, user, oferta_aberta):
         """
         Critério: Classes de Equivalência (CE)
         Partição: CE1 (Inválida)
@@ -219,7 +250,15 @@ class TestEnrollmentGradeValidation:
         Resultado Esperado: Rejeita com ValidationError
         """
         # Arrange
-        enrollment = EnrollmentFactory.build(grade3=Decimal("-50"))
+        student = StudentFactory()
+        enrollment = Enrollment(
+            offer=oferta_aberta,
+            student=student,
+            grade3=Decimal("-50"),
+            YearSemesterReference=1,
+            created_by=user,
+            updated_by=user,
+        )
 
         # Act & Assert
         with pytest.raises(ValidationError):
