@@ -8,7 +8,7 @@ Esta atividade prática tem como objetivo aplicar os critérios de **Particionam
 
 - **Disciplina**: Teste de Software
 - **Tema**: Testes Funcionais
-- **Formato**: Duplas/Trios
+- **Formato**: Duplas
 
 ## 📋 Instruções
 
